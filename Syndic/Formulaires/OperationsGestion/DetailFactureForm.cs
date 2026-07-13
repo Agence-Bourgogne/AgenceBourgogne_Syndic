@@ -10,7 +10,7 @@ using Npgsql;
 
 namespace EspaceSyndic.Formulaires.OperationsGestion
 {
-    public partial class DetailFactureForm : EspaceSyndic.Formulaires.OperationsGestion.DetailOperationForm
+    public partial class DetailFactureForm : DetailOperationForm
     {
         SaisieFactureEntite entite = null;
 
@@ -150,7 +150,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
                 bCheckLot = true;
                 if (SaisieFactureController.getController().DeleteEntite(entite))
                     //FillDataGridView();
-                    this.Close();
+                    Close();
             }
         }
         protected override void ValidModification()

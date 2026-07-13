@@ -288,8 +288,8 @@ namespace EspaceSyndic.Formulaires.Ecritures
                 }
                 Database.CommitTransaction(trx);
                 MessageBox.Show("Modifications enregistrées");
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                DialogResult = DialogResult.OK;
+                Close();
             }
             catch (Exception ex)
             {

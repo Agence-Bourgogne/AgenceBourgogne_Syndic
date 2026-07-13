@@ -188,7 +188,7 @@ namespace Gerance.Formulaires.Factures
 
             if (!FacturesController.getController().InsertOrUpdate(facture))
                 return false;
-            this.Close();
+            Close();
             return true;
         }
 

@@ -3,7 +3,7 @@ using GeranceData.Common;
 
 namespace Gerance.Formulaires.Proprietaires
 {
-    public partial class TexteReleveForm : Gerance.Formulaires.Common.CommonTextForm
+    public partial class TexteReleveForm : Common.CommonTextForm
     {
         public TexteReleveForm()
         {

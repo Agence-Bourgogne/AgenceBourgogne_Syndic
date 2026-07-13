@@ -26,7 +26,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         public OperationsGestionForm()
         {
             InitializeComponent();
-            TitreForm = this.Text;
+            TitreForm = Text;
         }
 
         private void cbTypeOpe_SelectedIndexChanged(object sender, EventArgs e)
@@ -40,14 +40,14 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             int widthForm = (int)CommonRegistry.getRegistryValue(regKey, "width", -1);
             int heightForm = (int)CommonRegistry.getRegistryValue(regKey, "height", -1);
             if (widthForm != -1)
-                this.Width = widthForm;
+                Width = widthForm;
             else
-                this.Width = stdWidth;
+                Width = stdWidth;
             if (heightForm != -1)
-                this.Height = heightForm;
+                Height = heightForm;
             else
-                this.Height = stdHeight;
-            this.CenterToScreen();
+                Height = stdHeight;
+            CenterToScreen();
             foreach (DataGridViewColumn col in dataGridView.Columns)
             {
                 int index = (int)CommonRegistry.getRegistryValue(regKey, col.Name, -1);
@@ -60,14 +60,14 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             //System.Windows.Forms.SortOrder sortOrder = dataGridView.SortOrder;
             //if (sortOrder == System.Windows.Forms.SortOrder.None)
             {
-                System.Windows.Forms.SortOrder newOrder = (System.Windows.Forms.SortOrder)CommonRegistry.getRegistryValue(regKey, "SortOrder", 0);
+                SortOrder newOrder = (SortOrder)CommonRegistry.getRegistryValue(regKey, "SortOrder", 0);
                 String SortedColumn = (String) CommonRegistry.getAppRegistryValue(regKey, "SortedColumn", "");
-                if (newOrder != System.Windows.Forms.SortOrder.None && !String.IsNullOrEmpty(SortedColumn))
+                if (newOrder != SortOrder.None && !String.IsNullOrEmpty(SortedColumn))
                 {
                     DataGridViewColumnCollection cols = dataGridView.Columns;
-                    if (newOrder == System.Windows.Forms.SortOrder.Ascending)
+                    if (newOrder == SortOrder.Ascending)
                         dataGridView.Sort(cols[SortedColumn], ListSortDirection.Ascending);
-                    if (newOrder == System.Windows.Forms.SortOrder.Descending)
+                    if (newOrder == SortOrder.Descending)
                         dataGridView.Sort(cols[SortedColumn], ListSortDirection.Descending);
                 }
             }
@@ -86,15 +86,15 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         private void OperationsGestion_Load(object sender, EventArgs e)
         {
             btnEnter.Width = 0;
-            stdWidth = this.Width;
-            stdHeight = this.Height;
+            stdWidth = Width;
+            stdHeight = Height;
 
             int width = (int)CommonRegistry.getRegistryValue(regKey, "width", -1);
             if (width != -1)
-                this.Width = width;
+                Width = width;
             int height = (int)CommonRegistry.getRegistryValue(regKey, "height", -1);
             if (height != -1)
-                this.Height = height;
+                Height = height;
         }
         private void tbRefImmeuble_DoubleClick(object sender, EventArgs e)
         {
@@ -120,7 +120,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             DateTime dtFin = ckFin.Checked ? dateFin.Value : DateTime.Parse("01/01/1970");
             
             DataGridViewColumn sortedCol = dataGridView.SortedColumn;
-            System.Windows.Forms.SortOrder sortOrder = dataGridView.SortOrder;
+            SortOrder sortOrder = dataGridView.SortOrder;
 
             dataGridView.DataSource = SaisieFactureController.getController().getListeOperations(tbRefImmeuble.Text, tbNature.Text, dtDeb, dtFin, tbFournisseur.Text, tbLibelle.Text, tbMontant.Text, ckValid.Checked, tbBase.Text);
             DataGridViewColumnCollection cols = dataGridView.Columns;
@@ -136,9 +136,9 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             cols["statut"].Visible = false;
             cols["id"].Visible = false;
 
-            if ( sortOrder == System.Windows.Forms.SortOrder.Ascending)
+            if ( sortOrder == SortOrder.Ascending)
                 dataGridView.Sort(cols[sortedCol.Name], ListSortDirection.Ascending);
-            if (sortOrder == System.Windows.Forms.SortOrder.Descending)
+            if (sortOrder == SortOrder.Descending)
                 dataGridView.Sort(cols[sortedCol.Name], ListSortDirection.Descending);
 
             setRowIndicators();
@@ -153,7 +153,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             DateTime dtFin = ckFin.Checked ? dateFin.Value : DateTime.Parse("01/01/1970");
 
             DataGridViewColumn sortedCol = dataGridView.SortedColumn;
-            System.Windows.Forms.SortOrder sortOrder = dataGridView.SortOrder;
+            SortOrder sortOrder = dataGridView.SortOrder;
 
             dataGridView.DataSource = SaisieAppelFondController.getController().getListeViewOperations(tbRefImmeuble.Text, dtDeb, dtFin, tbLibelle.Text, tbMontant.Text, ckValid.Checked, tbBase.Text);
             DataGridViewColumnCollection cols = dataGridView.Columns;
@@ -162,9 +162,9 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             cols["id"].Visible = false;
             cols["liasse_id"].Visible = false;
 
-            if (sortOrder == System.Windows.Forms.SortOrder.Ascending)
+            if (sortOrder == SortOrder.Ascending)
                 dataGridView.Sort(cols[sortedCol.Name], ListSortDirection.Ascending);
-            if (sortOrder == System.Windows.Forms.SortOrder.Descending)
+            if (sortOrder == SortOrder.Descending)
                 dataGridView.Sort(cols[sortedCol.Name], ListSortDirection.Descending);
             
             setRowIndicators();
@@ -179,7 +179,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             DateTime dtFin = ckFin.Checked ? dateFin.Value : DateTime.Parse("01/01/1970");
 
             DataGridViewColumn sortedCol = dataGridView.SortedColumn;
-            System.Windows.Forms.SortOrder sortOrder = dataGridView.SortOrder;
+            SortOrder sortOrder = dataGridView.SortOrder;
 
             dataGridView.DataSource = SaisieReglementController.getController().getListeOperations(tbRefImmeuble.Text, tbLot.Text, dtDeb, dtFin, tbNature.Text, tbLibelle.Text, tbMontant.Text, ckValid.Checked);
             DataGridViewColumnCollection cols = dataGridView.Columns;
@@ -187,9 +187,9 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             cols["statut"].Visible = false;
             cols["id"].Visible = false;
 
-            if (sortOrder == System.Windows.Forms.SortOrder.Ascending)
+            if (sortOrder == SortOrder.Ascending)
                 dataGridView.Sort(cols[sortedCol.Name], ListSortDirection.Ascending);
-            if (sortOrder == System.Windows.Forms.SortOrder.Descending)
+            if (sortOrder == SortOrder.Descending)
                 dataGridView.Sort(cols[sortedCol.Name], ListSortDirection.Descending);
 
             setRowIndicators();
@@ -206,7 +206,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             DateTime dtFin = ckFin.Checked ? dateFin.Value : DateTime.Parse("01/01/1970");
 
             DataGridViewColumn sortedCol = dataGridView.SortedColumn;
-            System.Windows.Forms.SortOrder sortOrder = dataGridView.SortOrder;
+            SortOrder sortOrder = dataGridView.SortOrder;
 
             dataGridView.DataSource = OperationController.getController().getListeOperations(immeuble.id, tbLot.Text, type, ckValid.Checked ? (int) GlobalConstantes.StatutOperation.Valide :-1, dtDeb, dtFin, tbNature.Text, tbBase.Text, tbLibelle.Text, tbMontant.Text);
             DataGridViewColumnCollection cols = dataGridView.Columns;
@@ -221,9 +221,9 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             cols["credit"].Width = 50;
             cols["global"].Width = 50;
 
-            if (sortOrder == System.Windows.Forms.SortOrder.Ascending)
+            if (sortOrder == SortOrder.Ascending)
                 dataGridView.Sort(cols[sortedCol.Name], ListSortDirection.Ascending);
-            if (sortOrder == System.Windows.Forms.SortOrder.Descending)
+            if (sortOrder == SortOrder.Descending)
                 dataGridView.Sort(cols[sortedCol.Name], ListSortDirection.Descending);
 
             setRowIndicators();
@@ -252,11 +252,11 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             {
                 immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
                 if (immeuble != null)
-                    this.Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                    Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
 //                this.Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.ExerciceCourant.date_deb.ToShortDateString());
             }
             else
-                this.Text = TitreForm;
+                Text = TitreForm;
             string selected_id = "";
 
             if (dataGridView.SelectedRows.Count > 0)
@@ -594,9 +594,9 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         {
             if (regKey != "")
             {
-                CommonRegistry.setRegistryValue(regKey, "width", this.Width);
-                CommonRegistry.setRegistryValue(regKey, "height", this.Height);
-                if (dataGridView.SortOrder != System.Windows.Forms.SortOrder.None)
+                CommonRegistry.setRegistryValue(regKey, "width", Width);
+                CommonRegistry.setRegistryValue(regKey, "height", Height);
+                if (dataGridView.SortOrder != SortOrder.None)
                 {
                     CommonRegistry.setRegistryValue(regKey, "SortOrder", (int) dataGridView.SortOrder);
                     CommonRegistry.setRegistryValue(regKey, "SortedColumn", dataGridView.SortedColumn.Name);
@@ -615,9 +615,9 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             if (regKey != "")
             {
                 CommonRegistry.deleteRegistry(regKey);
-                this.Height = stdHeight;
-                this.Width = stdWidth;
-                this.CenterToParent();
+                Height = stdHeight;
+                Width = stdWidth;
+                CenterToParent();
                 commonValidating();
             }
         }

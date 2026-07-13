@@ -14,8 +14,8 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
     {
         bool bInLoad = false;
         public CoproprietaireEntite currentCoproprietaire = new CoproprietaireEntite();
-        EspaceSyndic.ServiceReference.UserEntitie _currentUsr;
-        List<EspaceSyndic.ServiceReference.DocumentEntitie> docs;
+        ServiceReference.UserEntitie _currentUsr;
+        List<ServiceReference.DocumentEntitie> docs;
         public WebUserCoproprietaire(CoproprietaireEntite copro)
         {
             InitializeComponent();
@@ -55,12 +55,12 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
                 treeView.Nodes.Add(parent);
 
                 //     EspaceSyndic.ServiceReference.UserEntitie usr = (EspaceSyndic.ServiceReference.UserEntitie)dataGridView.SelectedRows[0].DataBoundItem;
-                List<EspaceSyndic.ServiceReference.ChildrenEntitie> immeubles = ServiceReferenceUtils.GetInstance().GetCoproChildrens(currentCoproprietaire.id).OrderBy(x => x.Immeuble_id).ToList();
+                List<ServiceReference.ChildrenEntitie> immeubles = ServiceReferenceUtils.GetInstance().GetCoproChildrens(currentCoproprietaire.id).OrderBy(x => x.Immeuble_id).ToList();
 
              //   List<EspaceSyndic.ServiceReference.ChildrenEntitie> immeubles = ServiceReferenceUtils.GetInstance().GetUserCoproprietaires(_currentUsr.Guid).OrderBy(x => x.Immeuble_id).ToList();
                 String immeuble_id = "";
                 TreeNode current = null;
-                foreach (EspaceSyndic.ServiceReference.ChildrenEntitie child in immeubles)
+                foreach (ServiceReference.ChildrenEntitie child in immeubles)
                 {
                     if (immeuble_id != child.Immeuble_id)
                     {
@@ -96,10 +96,10 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
             TreeNode current = treeView.SelectedNode;
             string immeuble_id = "";
             string copro_id = "";
-            List<EspaceSyndic.ServiceReference.DocumentEntitie> listdocs = new List<ServiceReference.DocumentEntitie>();
+            List<ServiceReference.DocumentEntitie> listdocs = new List<ServiceReference.DocumentEntitie>();
             if (current != null && current.Tag != null)
             {
-                List<EspaceSyndic.ServiceReference.ChildrenEntitie> immeublesByUsers = ServiceReferenceUtils.GetInstance().GetCoproChildrens(currentCoproprietaire.id).OrderBy(x => x.Immeuble_id).ToList();
+                List<ServiceReference.ChildrenEntitie> immeublesByUsers = ServiceReferenceUtils.GetInstance().GetCoproChildrens(currentCoproprietaire.id).OrderBy(x => x.Immeuble_id).ToList();
                 //List<EspaceSyndic.ServiceReference.ChildrenEntitie> immeublesByUsers = ServiceReferenceUtils.GetInstance().GetUserCoproprietaires(_currentUsr.Guid).OrderBy(x => x.Immeuble_id).ToList();
                 if (current.Tag is ImmeubleEntite)
                 {
@@ -108,7 +108,7 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
                     immeuble_id = immeuble.getId();
                     if (immeublesByUsers.Exists(x=>x.Immeuble_id == immeuble_id))
                     {
-                        foreach (EspaceSyndic.ServiceReference.DocumentEntitie doc in docs)
+                        foreach (ServiceReference.DocumentEntitie doc in docs)
                         {
                             if(doc.immeuble_id == immeuble_id && ( doc.copro_id == "" || immeublesByUsers.Exists(x=>x.Immeuble_id == immeuble_id && x.Copro_id == doc.copro_id )) )
                                 listdocs.Add(doc);
@@ -126,7 +126,7 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
                     immeuble_id = copro.Immeuble.getId();
                      if (immeublesByUsers.Exists(x=>x.Immeuble_id == immeuble_id))
                     {
-                        foreach (EspaceSyndic.ServiceReference.DocumentEntitie doc in docs)
+                        foreach (ServiceReference.DocumentEntitie doc in docs)
                         {
                                if(doc.immeuble_id == immeuble_id &&  immeublesByUsers.Exists(x=>x.Immeuble_id == immeuble_id && x.Copro_id == doc.copro_id ))
                                    listdocs.Add(doc);
@@ -140,7 +140,7 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
                 }
             }
 
-            foreach (EspaceSyndic.ServiceReference.DocumentEntitie doc in listdocs)
+            foreach (ServiceReference.DocumentEntitie doc in listdocs)
             {
 
                 table.Rows.Add();
@@ -160,13 +160,13 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
                 FindCoproprietaireForm form = new FindCoproprietaireForm();
                 if (DialogResult.Cancel != form.ShowDialog())
                 {
-                    EspaceSyndic.ServiceReference.UserEntitie usr = null;// (EspaceSyndic.ServiceReference.UserEntitie)dataGridView.SelectedRows[0].DataBoundItem;
+                    ServiceReference.UserEntitie usr = null;// (EspaceSyndic.ServiceReference.UserEntitie)dataGridView.SelectedRows[0].DataBoundItem;
                     CoproprietaireEntite entite = CoproprietaireController.getController().getEntiteFromField("reference", form.reference);
                     try
                     {
                         if (entite != null)
                         {
-                            SyndicData.Entites.ImmeubleEntite immeuble = entite.Immeuble;
+                            ImmeubleEntite immeuble = entite.Immeuble;
                             string res = ServiceReferenceUtils.GetInstance().AddCopro(usr.Guid, immeuble.id, entite.id, immeuble.reference, immeuble.nom, entite.reference, entite.NomPrenom);
                             if (String.IsNullOrEmpty(res))
                             {
@@ -240,7 +240,7 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
             DataRowView drv = (DataRowView)listDoc.SelectedItems[0];
             string docGuid = drv["Guid"].ToString();
 
-            EspaceSyndic.ServiceReference.DocumentEntitie doc = docs.FirstOrDefault(x => x.Guid == docGuid);
+            ServiceReference.DocumentEntitie doc = docs.FirstOrDefault(x => x.Guid == docGuid);
             if (doc != null)
             {
                 btnDelDoc.Enabled = true;
@@ -259,7 +259,7 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
                         DataRowView drv = (DataRowView)listDoc.SelectedItems[i];
                         string docGuid = drv["Guid"].ToString();
 
-                        EspaceSyndic.ServiceReference.DocumentEntitie doc = docs.FirstOrDefault(x => x.Guid == docGuid);
+                        ServiceReference.DocumentEntitie doc = docs.FirstOrDefault(x => x.Guid == docGuid);
                         if (doc != null)
                         {
                           messageRetour +=  ServiceReferenceUtils.DeleteDocument(docGuid) + "\n";

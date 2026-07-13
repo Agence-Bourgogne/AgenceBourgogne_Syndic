@@ -17,7 +17,7 @@ namespace EspaceSyndic.Impressions.RemiseDeCles
         public ImprimerRemiseDeClesForm()
         {
             InitializeComponent();
-            TitreForm = this.Text;
+            TitreForm = Text;
         }
         
         private void lblImmeuble_Click(object sender, EventArgs e)
@@ -43,12 +43,12 @@ namespace EspaceSyndic.Impressions.RemiseDeCles
             if (immeuble != null )
             {
                 btnRapport.Enabled = true;
-                this.Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
             }
             else
             {
                 btnRapport.Enabled = false;
-                this.Text = TitreForm;
+                Text = TitreForm;
             }
         }
 
@@ -72,7 +72,7 @@ namespace EspaceSyndic.Impressions.RemiseDeCles
         private void tbHelpBox_KeyPress(object sender, KeyPressEventArgs e)
         {
 
-            if (Control.ModifierKeys == Keys.Control)
+            if (ModifierKeys == Keys.Control)
                 if (e.KeyChar == ' ')
                 {
                     e.Handled = true;

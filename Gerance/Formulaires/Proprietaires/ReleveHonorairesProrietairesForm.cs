@@ -9,7 +9,7 @@ using Microsoft.Reporting.WinForms;
 
 namespace Gerance.Formulaires.Proprietaires
 {
-    public partial class ReleveHonorairesProrietairesForm : Gerance.Formulaires.Common.CommonRapportForm
+    public partial class ReleveHonorairesProrietairesForm : Common.CommonRapportForm
     {
 //        NatureEntite natureHono, natureBail, natureNlle;
         
@@ -20,7 +20,7 @@ namespace Gerance.Formulaires.Proprietaires
 
         private void ReleveHonorairesProrietairesForm_Load(object sender, EventArgs e)
         {
-            this.reportViewer1.LocalReport.ReportEmbeddedResource = "Gerance.Formulaires.Proprietaires.Impressions.ReleveHonorairesProprioMasterReport.rdlc";
+            reportViewer1.LocalReport.ReportEmbeddedResource = "Gerance.Formulaires.Proprietaires.Impressions.ReleveHonorairesProprioMasterReport.rdlc";
             label3.Visible = dtEdition.Visible = false;
             reportViewer1.PrintingBegin += reportViewer1_PrintingBegin;
         
@@ -53,7 +53,7 @@ namespace Gerance.Formulaires.Proprietaires
                 proprietaire_id = proprio.id;
             }
 
-            this.reportViewer1.LocalReport.DataSources.Clear();
+            reportViewer1.LocalReport.DataSources.Clear();
 
             ReportParameter[] parameters = new ReportParameter[]{
                 new ReportParameter("dtDeb", dtDebut.Value.ToShortDateString()),
@@ -70,8 +70,8 @@ namespace Gerance.Formulaires.Proprietaires
                 return;
             }
 
-            this.reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("releve_honoraire_proprio", releves));
-            this.reportViewer1.RefreshReport();
+            reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("releve_honoraire_proprio", releves));
+            reportViewer1.RefreshReport();
 
         }
         //private void createFactureFromReglement(FacturesController factureCtl, ReglementEntite reglement, string nature_id, string libelle, decimal montant)

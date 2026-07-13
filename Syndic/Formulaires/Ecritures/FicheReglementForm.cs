@@ -27,7 +27,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
         public FicheReglementForm()
         {
             InitializeComponent();
-            TitreForm = this.Text;
+            TitreForm = Text;
         }
 
         private void FicheReglementForm_Load(object sender, EventArgs e)
@@ -142,7 +142,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
         private void tbCopro_Validating(object sender, CancelEventArgs e)
         {
             infoKey.DoFormText(this);
-            this.Text = TitreForm;
+            Text = TitreForm;
 
             if (tbCopro.Text != "")
             {
@@ -156,7 +156,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
                         tbEmetteur.Text = coproprietaire.nom;
                     ImmeubleEntite immeuble = coproprietaire.Immeuble;
                     if ( immeuble != null )
-                        this.Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                        Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
 
 
                     if (coproprietaire.huissier)
@@ -169,7 +169,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
                     else
                     {
                         tbLibCopro.Enabled = false;
-                        tbLibCopro.BackColor = Control.DefaultBackColor;
+                        tbLibCopro.BackColor = DefaultBackColor;
                     }
                 }
                 else
@@ -587,7 +587,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
         private void tbHelpBox_KeyPress(object sender, KeyPressEventArgs e)
         {
 
-            if (Control.ModifierKeys == Keys.Control)
+            if (ModifierKeys == Keys.Control)
                 if (e.KeyChar == ' ')
                 {
                     e.Handled = true;
@@ -628,7 +628,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
 
         private void tbLibelle_KeyUp(object sender, KeyEventArgs e)
         {
-            Common.StandardFunctionnalities.Standard_KeyPress(sender, e, false);
+            StandardFunctionnalities.Standard_KeyPress(sender, e, false);
         }
 
         private void btnEnter_Click(object sender, EventArgs e)

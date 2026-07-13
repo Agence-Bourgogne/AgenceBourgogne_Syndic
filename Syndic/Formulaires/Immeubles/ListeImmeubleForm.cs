@@ -68,7 +68,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
                 OrderColumns();
             }
             else
-                this.Close();
+                Close();
             BtnSave.Enabled = false;
             bLoading = false;
         }
@@ -143,7 +143,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
                     form.immeuble = controller.getEntiteById(entite.id);
 
                 form.StartPosition = FormStartPosition.CenterScreen;
-                form.Icon = this.Icon;
+                form.Icon = Icon;
                 form.ControlBox = true;
                 form.Show();
 

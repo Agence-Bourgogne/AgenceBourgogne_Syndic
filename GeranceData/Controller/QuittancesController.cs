@@ -175,7 +175,7 @@ namespace GeranceData.Controller
                 // TODO C'est moins ou Plus ??
                 //                locataire.total_du += old_montant;
                 locataire.total_du -= old_montant;
-                if (!QuittancesController.getController().deleteEntite(quittance))
+                if (!getController().deleteEntite(quittance))
                     throw new Exception("Annulation Quittance");
                 if (!LocataireController.getController().InsertOrUpdate(locataire))
                     throw new Exception("Mise à jour locataire");

@@ -15,7 +15,7 @@ namespace EspaceSyndic.UtilsApp
             {
                 urlWeb = ParametresDB.getParam1("SERVEUR", "ADDRESSE CONNECTION");
                 String hostSrv = ParametresDB.getParam1("SERVEUR", "HOTE SMTP"); //"smtp.gmail.com";
-                int uPort = Int32.Parse(SyndicData.Common.ParametresDB.getParam1("SERVEUR", "PORT SMTP")); // 587;
+                int uPort = Int32.Parse(ParametresDB.getParam1("SERVEUR", "PORT SMTP")); // 587;
                 String strUser = ParametresDB.getParam1("SERVEUR", "USER SMTP"); //"racattac13@gmail.com";
                 String strPswd = ParametresDB.getParam1("SERVEUR", "PASS GMAIL");
                 int testMode = Int32.Parse(ParametresDB.getParam1("SERVEUR", "TEST MODE")); // 587;
@@ -25,7 +25,7 @@ namespace EspaceSyndic.UtilsApp
                     SmtpClient SmtpServer = new SmtpClient();
                     SmtpServer.Host = hostSrv;
                     SmtpServer.Port = uPort;
-                    System.Net.Mail.MailMessage mail = new MailMessage();
+                    MailMessage mail = new MailMessage();
 
                     mail.From = new MailAddress(strUser);
                     mail.To.Add(strTo);

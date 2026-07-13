@@ -4,7 +4,7 @@ using GeranceData.Controller;
 
 namespace Gerance.Formulaires.Natures
 {
-    public partial class NatureListeForm : Gerance.Formulaires.Common.CommonListeForm
+    public partial class NatureListeForm : Common.CommonListeForm
     {
         public NatureListeForm()
         {

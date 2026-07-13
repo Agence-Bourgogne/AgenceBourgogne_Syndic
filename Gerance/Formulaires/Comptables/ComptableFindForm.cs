@@ -1,7 +1,7 @@
 ﻿using GeranceData.Controller;
 namespace Gerance.Formulaires.Comptables
 {
-    public partial class ComptableFindForm : Gerance.Formulaires.Common.CommonFindForm
+    public partial class ComptableFindForm : Common.CommonFindForm
     {
         public ComptableFindForm()
         {

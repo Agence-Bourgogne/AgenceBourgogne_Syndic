@@ -250,9 +250,9 @@ namespace EspaceSyndic.Formulaires.Budget
 
         private void tbNature_Validating(object sender, CancelEventArgs e)
         {
-            List<Npgsql.NpgsqlParameter> parameters = new List<Npgsql.NpgsqlParameter>
+            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>
             {
-                new Npgsql.NpgsqlParameter("reference", tbNature.Text)
+                new NpgsqlParameter("reference", tbNature.Text)
             }; 
 
             nature = NatureController.getController().getEntite("where reference = @reference and budgetisable=true", parameters);

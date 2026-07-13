@@ -30,7 +30,7 @@ namespace EspaceSyndic.Impressions.Bilan
         public ImprimerBilanComptableForm()
         {
             InitializeComponent();
-            TitreForm = this.Text;
+            TitreForm = Text;
             if ( UtilsApp.ServiceReferenceUtils.ServiceClientIsConfigured() )
                 btnExport.Visible = true;
         }
@@ -48,7 +48,7 @@ namespace EspaceSyndic.Impressions.Bilan
 
         private void tbRefImmeuble_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (Control.ModifierKeys == Keys.Control)
+            if (ModifierKeys == Keys.Control)
                 if (e.KeyChar == ' ')
                 {
                     e.Handled = true;
@@ -144,7 +144,7 @@ namespace EspaceSyndic.Impressions.Bilan
         private void btnRapport_Click(object sender, EventArgs e)
         {
             CreateReport();
-            this.reportViewer1.RefreshReport();
+            reportViewer1.RefreshReport();
         }
         void CreateReport()
         {
@@ -167,8 +167,8 @@ namespace EspaceSyndic.Impressions.Bilan
 
 
                 Cumuls();
-                string hdr_descr = SyndicData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
-                string hdr_agence = SyndicData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
+                string hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
+                string hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
 
                 ReportParameter[] reportParams = new ReportParameter[]{
                     new ReportParameter("DateEdition", dtEdition.Value.ToShortDateString()),
@@ -188,7 +188,7 @@ namespace EspaceSyndic.Impressions.Bilan
                     new ReportParameter("Header_Agence", hdr_agence),
                 };
 
-                this.reportViewer1.LocalReport.SetParameters(reportParams);
+                reportViewer1.LocalReport.SetParameters(reportParams);
             }
 
         }
@@ -228,7 +228,7 @@ namespace EspaceSyndic.Impressions.Bilan
             if (immeuble != null)
             {
                 ExerciceComptableEntite exercice = ExerciceComptableController.getController().getExerciceCourant(immeuble.id);
-                this.Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
                 if (exercice != null)
                 {
                     dtDebut.Value = exercice.date_deb;
@@ -240,7 +240,7 @@ namespace EspaceSyndic.Impressions.Bilan
             }
             else
             {
-                this.Text = TitreForm;
+                Text = TitreForm;
 
                 if (!"".Equals(tbRefImmeuble.Text))
                     tbRefImmeuble.BackColor = Color.Red;

@@ -88,7 +88,7 @@ namespace Gerance.Formulaires.Common
 
         private void btnEnter_Click(object sender, EventArgs e)
         {
-            CommonProjectsPartners.Utils.ControlsWindows.FocusNextTabbedControl(this);
+            ControlsWindows.FocusNextTabbedControl(this);
         }
 
         private void btnExport_Click(object sender, EventArgs e)
@@ -112,9 +112,9 @@ namespace Gerance.Formulaires.Common
         }
         protected virtual void ShowForm(Form form)
         {
-            this.Enabled = false;
+            Enabled = false;
             form.ShowDialog();
-            this.Enabled = true;
+            Enabled = true;
             FillDataGrid();
         }
         protected virtual DialogResult ShowFindForm(CommonFindForm form, Control tbResult)

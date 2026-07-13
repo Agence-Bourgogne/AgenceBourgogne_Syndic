@@ -36,17 +36,17 @@ namespace EspaceSyndic.Formulaires.Ecritures
         public FicheFactureForm()
         {
             InitializeComponent();
-            TitreForm = this.Text;
+            TitreForm = Text;
 
-            stdWidth = this.Width;
-            stdHeight = this.Height;
+            stdWidth = Width;
+            stdHeight = Height;
             
             int width = (int)CommonRegistry.getRegistryValue(regKey, "width", -1);
             if (width != -1)
-                this.Width = width;
+                Width = width;
             int height = (int)CommonRegistry.getRegistryValue(regKey, "height", -1);
             if (height != -1)
-                this.Height = height;
+                Height = height;
         }
 
         protected virtual void OrderColumns()
@@ -169,14 +169,14 @@ namespace EspaceSyndic.Formulaires.Ecritures
                 tbRefImmeuble.BackColor = Color.White;
                 ShowFromRepartitionImmeuble(immeuble);
                 tbBase.Enabled = true;
-                this.Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
                 infoForm.DoFormText(this, immeuble.note_repart);
             }
             else
             {
                 if ( !"".Equals(tbRefImmeuble.Text))
                     tbRefImmeuble.BackColor = Color.Red;
-                this.Text = TitreForm;
+                Text = TitreForm;
                 tbBase.Text = "";
                 tbBase.Enabled = false;
                 infoForm.Hide();
@@ -662,7 +662,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
                 return;
 
             if (res == DialogResult.No)
-                this.Close();
+                Close();
 
             if (res == DialogResult.Yes)
             {
@@ -676,7 +676,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
         private void tbHelpBox_KeyPress(object sender, KeyPressEventArgs e)
         {
 
-            if (Control.ModifierKeys == Keys.Control)
+            if (ModifierKeys == Keys.Control)
                 if (e.KeyChar == ' ')
                 {
                     e.Handled = true;
@@ -747,7 +747,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
 
         private void tbComment_KeyUp(object sender, KeyEventArgs e)
         {
-            Common.StandardFunctionnalities.Standard_KeyPress(sender, e);
+            StandardFunctionnalities.Standard_KeyPress(sender, e);
         }
 
         private void tbDateCreation_Enter(object sender, EventArgs e)
@@ -808,7 +808,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
                 infoKey.ShowForm(this);
             else
                 infoKey.Close();
-            this.Activate();
+            Activate();
         }
 
         private void btnRepart_Click(object sender, EventArgs e)
@@ -817,7 +817,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
                 infoForm.ShowForm(this);
             else
                 infoForm.Close();
-            this.Activate();
+            Activate();
         }
 
         private void btnDel_Click(object sender, EventArgs e)
@@ -840,8 +840,8 @@ namespace EspaceSyndic.Formulaires.Ecritures
         {
             if (regKey != "")
             {
-                CommonRegistry.setRegistryValue(regKey, "width", this.Width);
-                CommonRegistry.setRegistryValue(regKey, "height", this.Height);
+                CommonRegistry.setRegistryValue(regKey, "width", Width);
+                CommonRegistry.setRegistryValue(regKey, "height", Height);
 
                 foreach (DataGridViewColumn col in dataGridViewEcriture.Columns)
                 {
@@ -856,9 +856,9 @@ namespace EspaceSyndic.Formulaires.Ecritures
             if (regKey != "")
             {
                 CommonRegistry.deleteRegistry(regKey);
-                this.Height = stdHeight;
-                this.Width = stdWidth;
-                this.CenterToParent();
+                Height = stdHeight;
+                Width = stdWidth;
+                CenterToParent();
                 FillDatagridEcritures();
             }
         }

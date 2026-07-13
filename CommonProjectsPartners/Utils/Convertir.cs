@@ -10,7 +10,7 @@ namespace CommonProjectsPartners.Utils
         {
             if (value == null) return 0;
             if (value.ToString() == "") return 0;
-            int valeur = (int)System.Convert.ToDouble(value.ToString().Replace(".", ",").Replace("-", ""));
+            int valeur = (int)Convert.ToDouble(value.ToString().Replace(".", ",").Replace("-", ""));
             if (value.ToString().Trim().StartsWith("-"))
                 valeur = valeur * -1;
             return valeur;
@@ -21,7 +21,7 @@ namespace CommonProjectsPartners.Utils
             if (value == null) return 0;
             string txtValue = value.ToString().Replace(".", ",").Replace("-", "");
             if (txtValue == "") return 0;
-            float valeur = (float)System.Convert.ToDouble(txtValue);
+            float valeur = (float)Convert.ToDouble(txtValue);
             if (value.ToString().Trim().StartsWith("-"))
                 valeur = valeur * -1;
             return valeur;
@@ -31,7 +31,7 @@ namespace CommonProjectsPartners.Utils
             if (value == null) return 0;
 //            return (decimal)System.Convert.ToDouble(value.ToString().Replace(".", ","));
             if (value.ToString() == "") return 0;
-            decimal valeur = (decimal)System.Convert.ToDouble(value.ToString().Replace(".", ",").Replace("-", ""));
+            decimal valeur = (decimal)Convert.ToDouble(value.ToString().Replace(".", ",").Replace("-", ""));
             if (value.ToString().Trim().StartsWith("-"))
                 valeur = valeur * -1;
             return valeur;

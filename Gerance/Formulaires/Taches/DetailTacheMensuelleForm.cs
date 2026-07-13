@@ -5,7 +5,7 @@ using GeranceData.Entites;
 using CommonProjectsPartners.Utils;
 namespace Gerance.Formulaires.Taches
 {
-    public partial class DetailTacheMensuelleForm : Gerance.Formulaires.Common.BaseFicheForm
+    public partial class DetailTacheMensuelleForm : Common.BaseFicheForm
     {
         public DetailTacheMensuelleForm()
         {

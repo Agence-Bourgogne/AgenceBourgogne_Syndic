@@ -7,7 +7,7 @@ using GeranceData.Entites;
 
 namespace Gerance.Formulaires.Biens
 {
-    public partial class BienListeForm : Gerance.Formulaires.Common.CommonListeForm
+    public partial class BienListeForm : Common.CommonListeForm
     {
         public BienListeForm()
         {

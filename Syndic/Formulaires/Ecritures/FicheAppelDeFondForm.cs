@@ -32,7 +32,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
         public FicheAppelDeFondForm()
         {
             InitializeComponent();
-            TitreForm = this.Text;
+            TitreForm = Text;
         }
         private void Form_Load(object sender, EventArgs e)
         {
@@ -227,7 +227,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
                 tbRefImmeuble.BackColor = Color.White;
                 ShowFromRepartitionImmeuble(immeuble);
                 tbBase.Enabled = true;
-                this.Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
                 infoForm.DoFormText(this, immeuble.note_repart);
             }
             else
@@ -235,7 +235,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
                 if (!"".Equals(tbRefImmeuble.Text))
                     tbRefImmeuble.BackColor = Color.Red;
                 tbBase.Text = "";
-                this.Text = TitreForm;
+                Text = TitreForm;
                 tbBase.Enabled = false;
                 infoForm.Hide();
             }
@@ -454,7 +454,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
                 return;
             
             if (res == DialogResult.No)
-                this.Close();
+                Close();
 
             if ( res == DialogResult.Yes)
             {
@@ -547,7 +547,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
         private void tbHelpBox_KeyPress(object sender, KeyPressEventArgs e)
         {
 
-            if (Control.ModifierKeys == Keys.Control)
+            if (ModifierKeys == Keys.Control)
                 if (e.KeyChar == ' ')
                 {
                     e.Handled = true;
@@ -562,7 +562,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
 
         private void tbComment_KeyPress(object sender, KeyEventArgs e)
         {
-            Common.StandardFunctionnalities.Standard_KeyPress(sender, e);
+            StandardFunctionnalities.Standard_KeyPress(sender, e);
         }
         private void ShowOldLot()
         {
@@ -623,7 +623,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
                 infoKey.ShowForm(this);
             else
                 infoKey.Close();
-            this.Activate();
+            Activate();
         }
 
         private void btnRepart_Click(object sender, EventArgs e)
@@ -632,7 +632,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
                 infoForm.ShowForm(this);
             else
                 infoForm.Close();
-            this.Activate();
+            Activate();
         }
 
         private void btnDel_Click(object sender, EventArgs e)

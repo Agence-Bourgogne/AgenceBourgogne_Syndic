@@ -13,7 +13,7 @@ using Gerance.Formulaires.Syndic;
 using Gerance.Formulaires.Common;
 namespace Gerance.Formulaires.Reglements
 {
-    public partial class ReglementLocataireForm : Gerance.Formulaires.Common.BaseFicheForm
+    public partial class ReglementLocataireForm : BaseFicheForm
     {
         public ReglementLocataireForm()
         {
@@ -27,7 +27,7 @@ namespace Gerance.Formulaires.Reglements
             btnDelete.Location = btnFirst.Location;
             btnDelete.Enabled = dataGridView.SelectedRows.Count > 0;
             tbLblProprio.Location = new Point(lblProprio.Location.X, tbRefProprio.Location.Y);
-            tbLblProprio.Size = new System.Drawing.Size(lblProprio.Size.Width, tbLblProprio.Size.Height);
+            tbLblProprio.Size = new Size(lblProprio.Size.Width, tbLblProprio.Size.Height);
             tbLblProprio.TabStop = false;
             tbLblProprio.Enabled = false;
             tbLblProprio.Visible = false;
@@ -292,9 +292,9 @@ namespace Gerance.Formulaires.Reglements
             if ( total_du != 0 || bForceDetail || openPartiel )
             {
                 ReglementPartielForm form = new ReglementPartielForm(reglement);
-                this.Enabled = false;
+                Enabled = false;
                 DialogResult result = form.ShowDialog();
-                this.Enabled = true;
+                Enabled = true;
                 if (result != DialogResult.OK)
                     return false;
             }

@@ -24,7 +24,7 @@ namespace EspaceSyndic.Impressions.Additif
         public ImprimerAdditifForm()
         {
             InitializeComponent();
-            TitreForm = this.Text;
+            TitreForm = Text;
         }
 
         private void ImprimerConvocationForm_Load(object sender, EventArgs e)
@@ -71,7 +71,7 @@ namespace EspaceSyndic.Impressions.Additif
         private void tbHelpBox_KeyPress(object sender, KeyPressEventArgs e)
         {
 
-            if (Control.ModifierKeys == Keys.Control)
+            if (ModifierKeys == Keys.Control)
                 if (e.KeyChar == ' ')
                 {
                     e.Handled = true;
@@ -98,7 +98,7 @@ namespace EspaceSyndic.Impressions.Additif
                 else
                     tbText.Text = "";
 
-                this.Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
 
                 infoForm.DoFormText(this, immeuble.note);
                 try
@@ -114,7 +114,7 @@ namespace EspaceSyndic.Impressions.Additif
             }
             else
             {
-                this.Text = TitreForm;
+                Text = TitreForm;
                 btnRapport.Enabled = btnWord.Enabled = false;
                 infoForm.Hide();
             }
@@ -128,8 +128,8 @@ namespace EspaceSyndic.Impressions.Additif
         void CreateReport(string num_lot = "")
         {
             String repart_valeur = String.Format("{0}", repart.valeur);
-            string hdr_descr = SyndicData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
-            string hdr_agence = SyndicData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
+            string hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
+            string hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
             ReportParameter[] parameters = new ReportParameter[]{
                 new ReportParameter("DateEntete", dtDateEntete.Value.ToShortDateString()),
                 new ReportParameter("DateAssemblee", dtDateAssemblee.Value.ToShortDateString()),
@@ -143,9 +143,9 @@ namespace EspaceSyndic.Impressions.Additif
             };
             reportViewer1.LocalReport.SetParameters(parameters);
             if(string.IsNullOrEmpty(num_lot))
-                this.tableCoproImmeubleBindingSource.DataSource = CoproprietaireController.getController().CoproprietaireImmeubleDescription(immeuble.id);
+                tableCoproImmeubleBindingSource.DataSource = CoproprietaireController.getController().CoproprietaireImmeubleDescription(immeuble.id);
             else
-                this.tableCoproImmeubleBindingSource.DataSource = CoproprietaireController.getController().CoproprietaireImmeubleDescriptionByLot(immeuble.id,num_lot);
+                tableCoproImmeubleBindingSource.DataSource = CoproprietaireController.getController().CoproprietaireImmeubleDescriptionByLot(immeuble.id,num_lot);
 
             reportViewer1.RefreshReport();
         }
@@ -192,7 +192,7 @@ namespace EspaceSyndic.Impressions.Additif
         {
             if (immeuble == null) return;
             List<LotDescriptionEntite> lots = LotDescriptionController.getController().getListeLotDescription(immeuble.id);
-            EspaceSyndic.Impressions.RelevesIndividuels.ExportCopro dlg = new EspaceSyndic.Impressions.RelevesIndividuels.ExportCopro();
+            RelevesIndividuels.ExportCopro dlg = new RelevesIndividuels.ExportCopro();
             try
             {
                 dlg.Show(this);

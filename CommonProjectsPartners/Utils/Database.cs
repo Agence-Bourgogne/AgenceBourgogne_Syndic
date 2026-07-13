@@ -68,7 +68,7 @@ namespace CommonProjectsPartners.Utils
         public static DateTime GetTimestampServer(NpgsqlConnection cnx = null)
         {
             if ( cnx == null )
-                cnx = Utils.Database.GetInstance();
+                cnx = GetInstance();
             NpgsqlCommand sqlCmd = new NpgsqlCommand("select localtimestamp", cnx );
             object response = sqlCmd.ExecuteScalar();
             return Convert.ToDateTime(response);

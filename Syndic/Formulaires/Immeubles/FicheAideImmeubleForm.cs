@@ -56,12 +56,12 @@ namespace EspaceSyndic.Formulaires.Immeubles
             }
             comment.libelle = tbComment.Text;
             if (AideImmeubleController.getController().InsertOrUpdate(comment))
-                this.Close();
+                Close();
         }
 
         private void cancel_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void cbTypeComment_SelectedIndexChanged(object sender, EventArgs e)
@@ -88,7 +88,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
 
         private void tbRefImmeuble_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (Control.ModifierKeys == Keys.Control)
+            if (ModifierKeys == Keys.Control)
                 if (e.KeyChar == ' ')
                 {
                     e.Handled = true;
@@ -106,7 +106,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
 
         private void tbComment_Enter(object sender, EventArgs e)
         {
-            this.AcceptButton = null;
+            AcceptButton = null;
         }
         private void tbRefImmeuble_Leave(object sender, EventArgs e)
         {

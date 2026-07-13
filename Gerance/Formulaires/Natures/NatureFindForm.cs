@@ -2,7 +2,7 @@
 
 namespace Gerance.Formulaires.Natures
 {
-    public partial class NatureFindForm : Gerance.Formulaires.Common.CommonFindForm
+    public partial class NatureFindForm : Common.CommonFindForm
     {
         public NatureFindForm()
         {

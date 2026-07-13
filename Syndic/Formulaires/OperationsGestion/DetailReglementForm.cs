@@ -12,7 +12,7 @@ using Npgsql;
 
 namespace EspaceSyndic.Formulaires.OperationsGestion
 {
-    public partial class DetailReglementForm : EspaceSyndic.Formulaires.OperationsGestion.DetailOperationForm
+    public partial class DetailReglementForm : DetailOperationForm
     {
         ImmeubleEntite immeuble;
         SaisieReglementEntite entite;

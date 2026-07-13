@@ -4,7 +4,7 @@ using Microsoft.Reporting.WinForms;
 using GeranceData.Controller;
 namespace Gerance.Formulaires.Reglements
 {
-    public partial class ReglementPrintForm : Gerance.Formulaires.Common.CommonRapportForm
+    public partial class ReglementPrintForm : Common.CommonRapportForm
     {
         public ReglementPrintForm()
         {
@@ -30,13 +30,13 @@ namespace Gerance.Formulaires.Reglements
         {
             reportViewer1.LocalReport.DataSources.Clear();
             DataTable table = ReglementsController.getController().getPrintReglements(dtDebut.Value, dtFin.Value);
-            reportViewer1.LocalReport.DataSources.Add(new Microsoft.Reporting.WinForms.ReportDataSource("list_reglements", table));
+            reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("list_reglements", table));
             ReportParameter[] parameters = new ReportParameter[]{
                     new ReportParameter("date_debut", dtDebut.Value.ToShortDateString()),
                     new ReportParameter("date_fin", dtFin.Value.ToShortDateString()),
                 };
 
-            this.reportViewer1.LocalReport.SetParameters(parameters);
+            reportViewer1.LocalReport.SetParameters(parameters);
             reportViewer1.RefreshReport();
         }
     }

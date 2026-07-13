@@ -12,7 +12,7 @@ using CommonProjectsPartners.Utils;
 
 namespace Gerance.Formulaires.Documents
 {
-    public partial class DocumentsListeForm : CommonProjectsPartners.Utils.ScanUtilForm
+    public partial class DocumentsListeForm : ScanUtilForm
     {
         bool bInitialized = false;
         bool bLoading;
@@ -22,10 +22,10 @@ namespace Gerance.Formulaires.Documents
         {
             InitializeComponent();
             
-            enregistrerBDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            enregistrerBDToolStripMenuItem = new ToolStripMenuItem();
             enregistrerBDToolStripMenuItem.Text = "Enregistrer en Base de Données";
-            enregistrerBDToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
-            this.enregistrerBDToolStripMenuItem.Click += new System.EventHandler(SavePictureOnDB);
+            enregistrerBDToolStripMenuItem.ShortcutKeys = ((Keys)((Keys.Control | Keys.B)));
+            enregistrerBDToolStripMenuItem.Click += new EventHandler(SavePictureOnDB);
 
             fichierToolStripMenuItem.DropDownItems.Add(enregistrerBDToolStripMenuItem);
         }

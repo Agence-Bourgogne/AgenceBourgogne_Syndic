@@ -10,7 +10,7 @@ using Microsoft.Reporting.WinForms;
 
 namespace Gerance.Formulaires.Proprietaires
 {
-    public partial class ComptesProprietairesForm : Gerance.Formulaires.Common.CommonRapportForm
+    public partial class ComptesProprietairesForm : Common.CommonRapportForm
     {
         public ComptesProprietairesForm()
         {
@@ -92,7 +92,7 @@ namespace Gerance.Formulaires.Proprietaires
             
             List<String> idsProprio = new List<string>();
 
-            this.reportViewer1.LocalReport.DataSources.Clear();
+            reportViewer1.LocalReport.DataSources.Clear();
             DataTable reglements = ReglementsController.getController().getReleveCompteProprio(dtDebut.Value, dtFin.Value, proprio_id);
             releve_compte.DataSource = reglements;
             DataTable factures = FacturesController.getController().getDeductionProprio(dtDebut.Value, dtFin.Value, proprio_id);
@@ -138,9 +138,9 @@ namespace Gerance.Formulaires.Proprietaires
 
             reportViewer1.LocalReport.SetParameters(parameters);
 
-            this.reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("hdr_compte_proprio", hdr));
+            reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("hdr_compte_proprio", hdr));
             soldes.Clear();
-            this.reportViewer1.RefreshReport();
+            reportViewer1.RefreshReport();
         }
 
 

@@ -298,7 +298,7 @@ namespace SyndicData.Controller
 
         public bool AnnuleElement(string element_id)
         {
-            SaisieReglementEntite entite = SaisieReglementController.getController().getEntiteById(element_id);
+            SaisieReglementEntite entite = getController().getEntiteById(element_id);
             if ( entite != null )
                 return AnnuleElement(entite);
             return false;

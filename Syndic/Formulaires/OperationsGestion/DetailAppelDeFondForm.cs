@@ -10,7 +10,7 @@ using Npgsql;
 
 namespace EspaceSyndic.Formulaires.OperationsGestion
 {
-    public partial class DetailAppelDeFondForm : EspaceSyndic.Formulaires.OperationsGestion.DetailOperationForm
+    public partial class DetailAppelDeFondForm : DetailOperationForm
     {
         SaisieAppelFondEntite entite;
         public DetailAppelDeFondForm()

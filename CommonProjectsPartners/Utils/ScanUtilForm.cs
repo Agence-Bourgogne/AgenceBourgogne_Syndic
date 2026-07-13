@@ -60,7 +60,7 @@ namespace CommonProjectsPartners.Utils
             if (scanMethod == ScanMethod.WIA)
                 sc.WIAAcquire();
             if (scanMethod == ScanMethod.TWAIN)
-                sc.TwainAcquire(this.Handle);
+                sc.TwainAcquire(Handle);
         }
         private void RotateImage(RotateFlipType rotate)
         {
@@ -98,7 +98,7 @@ namespace CommonProjectsPartners.Utils
 
         private void btnEnter_Click(object sender, EventArgs e)
         {
-            CommonProjectsPartners.Utils.ControlsWindows.FocusNextTabbedControl(this);
+            ControlsWindows.FocusNextTabbedControl(this);
         }
 
         private void ScanUtilForm_Load(object sender, EventArgs e)

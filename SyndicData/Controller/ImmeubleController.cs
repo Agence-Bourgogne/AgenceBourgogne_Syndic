@@ -55,7 +55,7 @@ namespace SyndicData.Controller
             if (numlot != "")
             {
                 cmd += " and numero_lot = @numero_lot";
-                numero_lot = System.Convert.ToInt32(numlot);
+                numero_lot = Convert.ToInt32(numlot);
             }
             if ( saisie_id != "" )
             {
@@ -95,7 +95,7 @@ namespace SyndicData.Controller
             if (numlot != "")
             {
                 cmd += " and numero_lot = @numero_lot";
-                numero_lot = System.Convert.ToInt32(numlot);
+                numero_lot = Convert.ToInt32(numlot);
             }
             if (isFiscal)
                 cmd += " and c.declaration = true";
@@ -138,7 +138,7 @@ namespace SyndicData.Controller
             if (numlot != "")
             {
                 cmd += " and numero_lot = @numero_lot";
-                numero_lot = System.Convert.ToInt32(numlot);
+                numero_lot = Convert.ToInt32(numlot);
             }
             if (isFiscal)
                 cmd += " and c.declaration = true";

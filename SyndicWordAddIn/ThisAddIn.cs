@@ -12,12 +12,12 @@ namespace SyndicWordAddIn
     {
         List<string> filesName = new List<string>();
         
-        private void ThisAddIn_Startup(object sender, System.EventArgs e)
+        private void ThisAddIn_Startup(object sender, EventArgs e)
         {
             CommonRegistry.setCurrentApp("syndic");
         }
 
-        private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
+        private void ThisAddIn_Shutdown(object sender, EventArgs e)
         {
             foreach (string file in filesName)
             {
@@ -42,8 +42,8 @@ namespace SyndicWordAddIn
         /// </summary>
         private void InternalStartup()
         {
-            this.Startup += new System.EventHandler(ThisAddIn_Startup);
-            this.Shutdown += new System.EventHandler(ThisAddIn_Shutdown);
+            Startup += new EventHandler(ThisAddIn_Startup);
+            Shutdown += new EventHandler(ThisAddIn_Shutdown);
         }
         
         #endregion

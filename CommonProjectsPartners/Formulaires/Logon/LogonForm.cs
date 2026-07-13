@@ -47,16 +47,16 @@ namespace CommonProjectsPartners.Formulaires.Logon
                 if (!ValidUser(false))
                     tbPassword.Focus();
                 else
-                    this.Close();
+                    Close();
             }
             else
-                this.Close();
+                Close();
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
             bClose = true;
-            this.Close();
+            Close();
         }
 
         private void LogonForm_Load(object sender, EventArgs e)

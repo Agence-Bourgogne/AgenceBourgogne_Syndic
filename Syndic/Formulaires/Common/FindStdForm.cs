@@ -66,8 +66,8 @@ namespace EspaceSyndic.Formulaires.Common
                 reference = row["reference"].ToString();
                 if (tbResult != null)
                     tbResult.Text = reference;
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                DialogResult = DialogResult.OK;
+                Close();
             }
         }
 

@@ -56,7 +56,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             {
                 operation.statut = (int) GlobalConstantes.StatutOperation.Supprime;
                 if (OperationController.getController().InsertOrUpdate(operation))
-                    this.Close();
+                    Close();
             }
         }
 
@@ -77,7 +77,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             operation.coproprietaire_id = lot.coproprietaire_id;
 
             if (OperationController.getController().InsertOrUpdate(operation))
-                this.Close();
+                Close();
 
         }
         private void btnEnter_Click(object sender, EventArgs e)

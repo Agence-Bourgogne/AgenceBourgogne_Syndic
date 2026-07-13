@@ -19,9 +19,9 @@ namespace EspaceSyndic.Formulaires.Config
 
         private void btnValid_Click(object sender, EventArgs e)
         {
-            this.txtParam = tbComment.Text;
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+            txtParam = tbComment.Text;
+            DialogResult = DialogResult.OK;
+            Close();
         }
     }
 }

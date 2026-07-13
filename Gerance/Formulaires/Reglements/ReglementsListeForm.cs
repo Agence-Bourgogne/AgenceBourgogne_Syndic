@@ -96,9 +96,9 @@ namespace Gerance.Formulaires.Reglements
                 Decimal oldTotal_du = reglement.credit;
 
                 ReglementPartielForm form = new ReglementPartielForm(reglement);
-                this.Enabled = false;
+                Enabled = false;
                 DialogResult result = form.ShowDialog();
-                this.Enabled = true;
+                Enabled = true;
 
                 if (result != DialogResult.OK)
                     return ;

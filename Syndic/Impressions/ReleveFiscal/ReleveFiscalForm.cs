@@ -21,7 +21,7 @@ namespace EspaceSyndic.Impressions.ReleveFiscal
         public ReleveFiscalForm()
         {
             InitializeComponent();
-            TitreForm = this.Text;
+            TitreForm = Text;
         }
 
         private void ReleveFiscalForm_Load(object sender, EventArgs e)
@@ -75,7 +75,7 @@ namespace EspaceSyndic.Impressions.ReleveFiscal
                     dtDebut.Value = exercice.date_deb;
                     dtFin.Value = exercice.date_fin;
                 }
-                this.Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
                 lotsString.Clear();
                 foreach ( DataRow row in lots.Rows)
                 {
@@ -88,14 +88,14 @@ namespace EspaceSyndic.Impressions.ReleveFiscal
             {
                 if (!"".Equals(tbRefImmeuble.Text))
                     tbRefImmeuble.BackColor = Color.Red;
-                this.Text = TitreForm;
+                Text = TitreForm;
                 btnRapport.Enabled = false;
             }
         }
 
         private void tbRefImmeuble_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (Control.ModifierKeys == Keys.Control)
+            if (ModifierKeys == Keys.Control)
                 if (e.KeyChar == ' ')
                 {
                     e.Handled = true;
@@ -153,7 +153,7 @@ namespace EspaceSyndic.Impressions.ReleveFiscal
                     new ReportParameter("Header_Description", hdr_descr),
                     new ReportParameter("Header_Agence", hdr_agence),
                 };
-                this.reportViewer1.LocalReport.SetParameters(parameters);
+                reportViewer1.LocalReport.SetParameters(parameters);
 //                reportViewer1.RefreshReport();
             }
         }
@@ -162,7 +162,7 @@ namespace EspaceSyndic.Impressions.ReleveFiscal
         {
 //            CreateReport();
             List<LotDescriptionEntite> lots = LotDescriptionController.getController().getListeLotDescriptionFiscaux(immeuble.id);
-            EspaceSyndic.Impressions.RelevesIndividuels.ExportCopro dlg = new EspaceSyndic.Impressions.RelevesIndividuels.ExportCopro();
+            RelevesIndividuels.ExportCopro dlg = new RelevesIndividuels.ExportCopro();
             try
             {
 //                MessageBox.Show(UtilsApp.ServiceReferenceUtils.SendReportPDF(reportViewer1, "Releve Fiscal " + dtDebut.Value.Year, Guid.NewGuid().ToString(), immeuble.id, ""));

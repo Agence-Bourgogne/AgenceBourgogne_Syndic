@@ -5,7 +5,7 @@ using CommonProjectsPartners.Controller;
 
 namespace Gerance.Formulaires.Utilisateurs
 {
-    public partial class UtilisateursListeForm : Gerance.Formulaires.Common.CommonListeForm
+    public partial class UtilisateursListeForm : Common.CommonListeForm
     {
         public UtilisateursListeForm()
         {

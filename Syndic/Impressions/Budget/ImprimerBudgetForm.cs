@@ -75,7 +75,7 @@ namespace EspaceSyndic.Impressions.Budget
             if (immeuble != null)
             {
                 tbRefImmeuble.BackColor = Color.White;
-                FillCbExercice(this.exercice_id);
+                FillCbExercice(exercice_id);
             }
             else
             {
@@ -104,10 +104,10 @@ namespace EspaceSyndic.Impressions.Budget
                     new ReportParameter("Exercice", row["reference"].ToString()),
                 };
                 DataTable budgets = BudgetController.getController().getViewBudgets(immeuble.id, cbExercice.SelectedValue.ToString());
-                this.reportViewer1.LocalReport.DataSources.Clear();
-                this.reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("BudgetAnnexe3", budgets));
-                this.reportViewer1.LocalReport.SetParameters(parameters);
-                this.reportViewer1.RefreshReport();
+                reportViewer1.LocalReport.DataSources.Clear();
+                reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("BudgetAnnexe3", budgets));
+                reportViewer1.LocalReport.SetParameters(parameters);
+                reportViewer1.RefreshReport();
             }
         }
 
@@ -115,7 +115,7 @@ namespace EspaceSyndic.Impressions.Budget
         {
             if (immeuble == null) return;
            // List<LotDescriptionEntite> lots = LotDescriptionController.getController().getListeLotDescription(immeuble.id);
-            EspaceSyndic.Impressions.RelevesIndividuels.ExportCopro dlg = new EspaceSyndic.Impressions.RelevesIndividuels.ExportCopro();
+            RelevesIndividuels.ExportCopro dlg = new RelevesIndividuels.ExportCopro();
             try
             {
                 dlg.Show(this);

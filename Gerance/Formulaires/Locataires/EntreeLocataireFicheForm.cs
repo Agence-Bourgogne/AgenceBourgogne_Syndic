@@ -13,7 +13,7 @@ using Microsoft.Reporting.WinForms;
 
 namespace Gerance.Formulaires.Locataires
 {
-    public partial class EntreeLocataireFicheForm : Gerance.Formulaires.Common.BaseFicheForm
+    public partial class EntreeLocataireFicheForm : Common.BaseFicheForm
     {
         BienEntite bien;
         public EntreeLocataireFicheForm()
@@ -155,7 +155,7 @@ namespace Gerance.Formulaires.Locataires
             btnNext.Text = "Fiche";
             btnNext.Visible = true;
 
-            this.reportViewer1.Visible = false;
+            reportViewer1.Visible = false;
             setModified(false);
             dtFin.Value = new DateTime(dtDebut.Value.Year, dtDebut.Value.Month, 1).AddMonths(1).AddDays(-1);
         }
@@ -314,9 +314,9 @@ namespace Gerance.Formulaires.Locataires
                     reportViewer1.Visible = true;
                     reportViewer1.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
 
-                    string hdr_descr = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
-                    string hdr_agence = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
-                    string hdr_description_small = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION_SMALL");
+                    string hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
+                    string hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
+                    string hdr_description_small = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION_SMALL");
 
                     ReportParameter[] parameters = new ReportParameter[]{
                             new ReportParameter("typeReport", "1"),

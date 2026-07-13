@@ -7,7 +7,7 @@ using GeranceData.Entites;
 
 namespace Gerance.Formulaires.Proprietaires
 {
-    public partial class ProprietaireListeForm : Gerance.Formulaires.Common.CommonListeForm
+    public partial class ProprietaireListeForm : Common.CommonListeForm
     {
         public ProprietaireListeForm()
         {

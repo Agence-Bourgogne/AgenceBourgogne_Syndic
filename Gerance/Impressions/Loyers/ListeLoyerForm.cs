@@ -12,7 +12,7 @@ using CommonProjectsPartners.Common;
 
 namespace Gerance.Impressions.Loyers
 {
-    public partial class ListeLoyerForm : Gerance.Formulaires.Common.CommonRapportForm
+    public partial class ListeLoyerForm : Formulaires.Common.CommonRapportForm
     {
         public ListeLoyerForm()
         {
@@ -29,7 +29,7 @@ namespace Gerance.Impressions.Loyers
 
         private void lblRefLocataire_Click(object sender, EventArgs e)
         {
-            if (ShowFindForm(new LocataireFindForm(), tbRefLocataire) == System.Windows.Forms.DialogResult.OK)
+            if (ShowFindForm(new LocataireFindForm(), tbRefLocataire) == DialogResult.OK)
             {
                 tbRefLocataire_Validating(null, null);
             }

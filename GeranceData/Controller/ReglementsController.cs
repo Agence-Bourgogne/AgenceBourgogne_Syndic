@@ -297,7 +297,7 @@ namespace GeranceData.Controller
         public static bool DeleteReglement( string reglement_id)
         {
             bool rc = false;
-            ReglementEntite reglement = ReglementsController.getController().getEntiteById(reglement_id);
+            ReglementEntite reglement = getController().getEntiteById(reglement_id);
 
             if (reglement == null)
                 throw new Exception("Reglement Invalide");
@@ -319,7 +319,7 @@ namespace GeranceData.Controller
             try
             {
                 reglement.statut = (int)GlobalConstantes.StatutOperation.Supprime;
-                if (!ReglementsController.getController().InsertOrUpdate(reglement))
+                if (!getController().InsertOrUpdate(reglement))
                     throw new Exception("Erreur Reglement");
 
                 locataire.total_du = total_du;

@@ -56,8 +56,8 @@ namespace EspaceSyndic.Impressions.Facture
             {
                 liasses.Add(cbLiasse.SelectedValue.ToString());
             }
-            string hdr_descr = SyndicData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
-            string hdr_agence = SyndicData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
+            string hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
+            string hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
 
 
             ReportParameter[] parameters = new ReportParameter[]{
@@ -65,10 +65,10 @@ namespace EspaceSyndic.Impressions.Facture
                 new ReportParameter("Header_Agence", hdr_agence),
             };
 
-            this.reportViewer1.LocalReport.SetParameters(parameters);
+            reportViewer1.LocalReport.SetParameters(parameters);
             DataTable source = SaisieFactureController.getController().getMasterListeFacturation(liasses);
-            this.facturation_hdr_descrBindingSource.DataSource = source;
-            this.reportViewer1.RefreshReport();
+            facturation_hdr_descrBindingSource.DataSource = source;
+            reportViewer1.RefreshReport();
         }
 
         void SubreportProcessingEventHandler(object sender, SubreportProcessingEventArgs e)

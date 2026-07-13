@@ -12,7 +12,7 @@ using Microsoft.Reporting.WinForms;
 
 namespace Gerance.Formulaires.Locataires
 {
-    public partial class ChargesLocataireForm : Gerance.Formulaires.Common.BaseFicheForm
+    public partial class ChargesLocataireForm : Common.BaseFicheForm
     {
         LocataireEntite locataire;
         public ChargesLocataireForm()
@@ -228,7 +228,7 @@ namespace Gerance.Formulaires.Locataires
 
         private void ChargesLocataireForm_Load(object sender, EventArgs e)
         {
-            this.reportViewer1.Visible = false;
+            reportViewer1.Visible = false;
             reportViewer1.LocalReport.SubreportProcessing += new SubreportProcessingEventHandler(SubreportProcessingEventHandler);
         }
         // TODO Peux etre plusieurs locataires en une seule impression

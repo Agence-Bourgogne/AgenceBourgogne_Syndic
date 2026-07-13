@@ -11,7 +11,7 @@ using Gerance.Formulaires.Locataires;
 using Gerance.Formulaires.Proprietaires;
 namespace Gerance.Formulaires.Biens
 {
-    public partial class BienFicheForm : Gerance.Formulaires.Common.BaseFicheForm
+    public partial class BienFicheForm : Common.BaseFicheForm
     {
         BienEntite bien;
 

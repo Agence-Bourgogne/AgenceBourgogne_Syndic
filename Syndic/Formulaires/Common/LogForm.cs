@@ -12,7 +12,7 @@ namespace EspaceSyndic.Formulaires.Common
 
         private void BtnClose_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
     }
 }

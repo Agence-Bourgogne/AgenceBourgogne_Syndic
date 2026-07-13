@@ -1,7 +1,7 @@
 ﻿using GeranceData.Controller;
 namespace Gerance.Formulaires.Proprietaires
 {
-    public partial class ProprietaireFindForm : Gerance.Formulaires.Common.CommonFindForm
+    public partial class ProprietaireFindForm : Common.CommonFindForm
     {
         public ProprietaireFindForm()
         {

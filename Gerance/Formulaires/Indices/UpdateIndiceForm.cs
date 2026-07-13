@@ -21,7 +21,7 @@ namespace Gerance.Formulaires.Indices
                 tbLog.Text = txt;
             else
                 tbLog.Text += "\r\n" + txt;
-            this.Update();
+            Update();
         }
 
         private void UpdateIndiceForm_Load(object sender, EventArgs e)
@@ -51,7 +51,7 @@ namespace Gerance.Formulaires.Indices
                 string fileName = String.Format("{0}{1}.zip", path, bank);
                 string baseUrl = "http://www.bdm.insee.fr/bdm2/exporterSeries.action?liste_formats=txt&idbank={0}&periode=toutes&qualite=false&request_locale=fr";
                 string url = string.Format(baseUrl, bank);
-                Log(String.Format("Telechargement Indice {0} ({1}) sur {2} ", this.refIndice, bank, fileName));
+                Log(String.Format("Telechargement Indice {0} ({1}) sur {2} ", refIndice, bank, fileName));
 
                 if (WebUtils.DownLoadFile(url, fileName))
                 {
@@ -63,7 +63,7 @@ namespace Gerance.Formulaires.Indices
                         Log("Lectures des données");
                         DataTable table = Database.CSV2DataTable(path+fileToExtract, 2, false);
                         Log("Mise à jour base de données");
-                        if (IndiceController.getController().updateIndices(this.refIndice, table))
+                        if (IndiceController.getController().updateIndices(refIndice, table))
                         {
                             Log("Mise à jour base de données OK");
                         }

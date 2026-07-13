@@ -24,7 +24,7 @@ namespace EspaceSyndic.UtilsApp
             while (pos < lenReport)
             {
                 byte[] buffer = new byte[32768];
-                System.Buffer.BlockCopy(report, pos, buffer, 0, Math.Min(32768, (int)(lenReport - pos)));
+                Buffer.BlockCopy(report, pos, buffer, 0, Math.Min(32768, (int)(lenReport - pos)));
                 pos += 32768;
                 sc.UploadPartFile(Guid, buffer);
             }
@@ -52,7 +52,7 @@ namespace EspaceSyndic.UtilsApp
             while (pos < lenReport)
             {
                 byte[] buffer = new byte[32768];
-                System.Buffer.BlockCopy(report, pos, buffer, 0, Math.Min(32768, (int)(lenReport - pos)));
+                Buffer.BlockCopy(report, pos, buffer, 0, Math.Min(32768, (int)(lenReport - pos)));
                 pos += 32768;
                 sc.UploadPartFile(Guid, buffer);
             }

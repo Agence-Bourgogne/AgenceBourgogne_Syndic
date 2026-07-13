@@ -8,7 +8,7 @@ using CommonProjectsPartners.Utils;
 
 namespace Gerance.Impressions.ReglementsProprietaire
 {
-    public partial class ImpressionsReglementsProprietaireForm : Gerance.Formulaires.Common.CommonRapportForm
+    public partial class ImpressionsReglementsProprietaireForm : Formulaires.Common.CommonRapportForm
     {
         public ImpressionsReglementsProprietaireForm()
         {

@@ -88,10 +88,10 @@ namespace EspaceSyndic.Formulaires.Exercice
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            if (this.ActiveControl == btnOk)
+            if (ActiveControl == btnOk)
             {
                 if (UpdateExercice())
-                    this.Close();
+                    Close();
             }
             else
                 ControlsWindows.FocusNextTabbedControl(this);

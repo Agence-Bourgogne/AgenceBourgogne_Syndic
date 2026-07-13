@@ -73,9 +73,9 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
 
         protected void ShowForm(Form form)
         {
-            this.Enabled = false;
+            Enabled = false;
             form.ShowDialog();
-            this.Enabled = true;
+            Enabled = true;
             FillDataGrid();
         }
 
@@ -109,7 +109,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
 
         private void btnQuit_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
     }
 }

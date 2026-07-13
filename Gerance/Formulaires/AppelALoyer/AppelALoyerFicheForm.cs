@@ -8,7 +8,7 @@ using GeranceData.Entites;
 using GeranceData.Common;
 namespace Gerance.Formulaires.AppelALoyer
 {
-    public partial class AppelALoyerFicheForm : Gerance.Formulaires.Common.BaseFicheForm
+    public partial class AppelALoyerFicheForm : Common.BaseFicheForm
     {
         private DataGridView datagridView;
         private bool bComboInitialized = false;

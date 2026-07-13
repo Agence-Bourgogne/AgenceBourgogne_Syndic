@@ -25,7 +25,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         public DetailOperationForm(string facture_id)
         {
             InitializeComponent();
-            this.entite_id = facture_id;
+            entite_id = facture_id;
         }
         private void DetailOperationForm_Load(object sender, EventArgs e)
         {

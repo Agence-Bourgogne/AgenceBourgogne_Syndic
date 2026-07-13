@@ -14,7 +14,7 @@ namespace CommonProjectsPartners.Common
             Update,
             Delete 
         }
-        public static void Log(AuditDB.Operation operation, IAuditable entite, string schema, DateTime audit_date, string audit_user)
+        public static void Log(Operation operation, IAuditable entite, string schema, DateTime audit_date, string audit_user)
         {
             List<AuditChange> changes = new List<AuditChange>();
             if (operation == Operation.Update) 
@@ -80,8 +80,8 @@ namespace CommonProjectsPartners.Common
                     if (old_obj != null)
                         propertie_type = old_obj.GetType().Name;
             }
-            this.old_value = old_obj == null ? "":old_obj.ToString();
-            this.new_value = new_obj == null ? "":new_obj.ToString();
+            old_value = old_obj == null ? "":old_obj.ToString();
+            new_value = new_obj == null ? "":new_obj.ToString();
         }
     }
 

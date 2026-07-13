@@ -8,13 +8,13 @@ namespace Gerance.Formulaires.Syndic
     {
         public DatabaseSyndicConfigForm(string application) : base(application)
         {
-            this.ckAlternateCnx.Visible = true;
-            var iCnxSyndic = CommonRegistry.getRegistryValue(Gerance.GeranceApplication.SYNDIC_APPLICATION, "Database", "ConnexionSyndic", 0);
+            ckAlternateCnx.Visible = true;
+            var iCnxSyndic = CommonRegistry.getRegistryValue(GeranceApplication.SYNDIC_APPLICATION, "Database", "ConnexionSyndic", 0);
             ckAlternateCnx.Checked = ((int)iCnxSyndic) == 1;
         }
         protected override void setConnexionString(string strCnx)
         {
-            Database.setConnexionString(this.application, strCnx);
+            Database.setConnexionString(application, strCnx);
             CommonRegistry.setRegistryValue(application, "Database", "ConnexionSyndic", ckAlternateCnx.Checked ? 1:0);
 
             SyndicDatabase.SyndicProprio.Clear();
@@ -22,7 +22,7 @@ namespace Gerance.Formulaires.Syndic
             {
                 if (SyndicDatabase.ConnexionValide())
                 {
-                    this.Close();
+                    Close();
                     SyndicDatabase.StartLoadSyndicCopro();
                     MessageBox.Show("Connexion Ok");
                 }
@@ -30,7 +30,7 @@ namespace Gerance.Formulaires.Syndic
                     MessageBox.Show("Connexion KO");
             }
             else
-                this.Close();
+                Close();
         }
     }
 }

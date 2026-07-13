@@ -4,7 +4,7 @@ using CommonProjectsPartners.Entites;
 using CommonProjectsPartners.Controller;
 namespace Gerance.Formulaires.Utilisateurs
 {
-    public partial class UtilisateurFicheForm : Gerance.Formulaires.Common.BaseFicheForm
+    public partial class UtilisateurFicheForm : Common.BaseFicheForm
     {
         UserEntite user;
 
@@ -44,7 +44,7 @@ namespace Gerance.Formulaires.Utilisateurs
         {
 //            bool rc = true;
 
-            this.currentReference = tbReference.Text;
+            currentReference = tbReference.Text;
             user.reference = tbReference.Text;
             user.Password = tbPassword.Text;
             user.nom = tbNom.Text;

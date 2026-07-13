@@ -62,7 +62,7 @@ namespace SyndicData.Controller
             NpgsqlTransaction trx = Database.GetInstance().BeginTransaction();
             try
             {
-                OperationController controller = OperationController.getController();
+                OperationController controller = getController();
                 foreach (DataRow row in saisiesReglement.Rows)
                 {
                     SaisieReglementEntite reglement = new SaisieReglementEntite(row);
@@ -101,7 +101,7 @@ namespace SyndicData.Controller
             bool bAllValide = true;
             if ( saisiesAppel.Rows.Count < 0 ) 
                 return;
-            OperationController controller = OperationController.getController();
+            OperationController controller = getController();
 
             SaisieAppelFondEntite appel = new SaisieAppelFondEntite(saisiesAppel.Rows[0]);
             DataTable table_immrepart = ImmeubleRepartitionController.getController().getRepartitionImmeuble(appel.immeuble_id);;
@@ -183,7 +183,7 @@ namespace SyndicData.Controller
 
         public bool ValidOperationRepartitionIndividuelle(string immeuble_id, string liasse_id, int numero_operation)
         {
-            OperationController controller = OperationController.getController();  
+            OperationController controller = getController();  
             RepartIndividuelleController repartCtl = RepartIndividuelleController.getController();
             string cmd = String.Format("select * from {0} ", getSchemaTable());
             cmd += " where immeuble_id=@immeuble_id  and liasse_id=@liasse_id and numero_operation = @numero_operation and statut = @statut";
@@ -233,7 +233,7 @@ namespace SyndicData.Controller
             bool bAllValide = true;
             if (saisies.Rows.Count < 0)
                 return false;
-            OperationController controller = OperationController.getController();
+            OperationController controller = getController();
             NpgsqlTransaction trx = Database.GetInstance().BeginTransaction();
 
             try

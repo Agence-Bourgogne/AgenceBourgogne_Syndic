@@ -33,9 +33,9 @@ namespace EspaceSyndic.Impressions.Reglement
             // TODO Peux etre donner la possibilite d'imprimer des liasses Non Validees
             if (liasse_id == null || liasse_id == "")
                 MessageBox.Show("vous n'avez pas selectionner de liasse");
-            this.saisieremisechequeBindingSource.DataSource = SaisieReglementController.getController().GetListeReglementValideFromNature(liasse_id, cbReg.SelectedValue.ToString());
+            saisieremisechequeBindingSource.DataSource = SaisieReglementController.getController().GetListeReglementValideFromNature(liasse_id, cbReg.SelectedValue.ToString());
             reportViewer1.LocalReport.SubreportProcessing += new SubreportProcessingEventHandler(SubreportProcessingEventHandler);
-            this.reportViewer1.RefreshReport();
+            reportViewer1.RefreshReport();
         }
 
         void SubreportProcessingEventHandler(object sender, SubreportProcessingEventArgs e)

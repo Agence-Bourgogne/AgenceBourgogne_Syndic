@@ -29,7 +29,7 @@ namespace EspaceSyndic.Formulaires.Nature
         private void setFicheValues(NatureEntite newEntite)
         {
             if (newEntite != null)
-                this.entite = newEntite;
+                entite = newEntite;
 
             tbRef.Text = entite.reference;
             tbNom.Text = entite.nom;

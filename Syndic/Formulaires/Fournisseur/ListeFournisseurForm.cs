@@ -53,7 +53,7 @@ namespace EspaceSyndic.Formulaires.Fournisseur
                 OrderColumns();
             }
             else
-                this.Close();
+                Close();
             updateEditMode(false);
             bLoading = false;
         }
@@ -140,7 +140,7 @@ namespace EspaceSyndic.Formulaires.Fournisseur
                 if ( !"".Equals(entite.id))
                     form.entite = controller.getEntiteById(entite.id);
 
-                form.Icon = this.Icon;
+                form.Icon = Icon;
                 form.StartPosition = FormStartPosition.CenterScreen;
                 form.ControlBox = true;
                 form.Show();

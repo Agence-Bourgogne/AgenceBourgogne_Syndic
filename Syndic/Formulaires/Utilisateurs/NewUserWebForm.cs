@@ -7,26 +7,26 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
 {
     public partial class NewUserWebForm : Form
     {
-        EspaceSyndic.ServiceReference.UserEntitie usr = null;
+        ServiceReference.UserEntitie usr = null;
         //-------------------------------------------------------------
         public NewUserWebForm()
         {
             InitializeComponent();
         }
         //--------------------------------------------------------------
-        public NewUserWebForm(EspaceSyndic.ServiceReference.UserEntitie usr, string title = "")
+        public NewUserWebForm(ServiceReference.UserEntitie usr, string title = "")
         {
             InitializeComponent();
             this.usr = usr;
             if (!string.IsNullOrEmpty(title))
-                this.Text = title;
+                Text = title;
             tbCode.Text = usr.Code;
             tbPassword.Text = usr.Password;
         }
         //--------------------------------------------------------------
         private void btnOK_Click(object sender, EventArgs e)
         {
-            if (!CommonProjectsPartners.Utils.RegexUtils.IsValidEmail(tbCode.Text))
+            if (!RegexUtils.IsValidEmail(tbCode.Text))
                 MessageBox.Show("Format Email Invalide");
             else
             {
@@ -37,7 +37,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
                     {
                         if (ckSendMail.Checked)
                         {
-                            EspaceSyndic.UtilsApp.MailUtils.SendEMail(tbCode.Text, tbPassword.Text);
+                            MailUtils.SendEMail(tbCode.Text, tbPassword.Text);
                             // SendEMail(tbCode.Text, tbPassword.Text);
                         }
                         MessageBox.Show(this, "Utilisateur modifié avec succès");

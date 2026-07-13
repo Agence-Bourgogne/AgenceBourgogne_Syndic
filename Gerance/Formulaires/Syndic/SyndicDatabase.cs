@@ -22,7 +22,7 @@ namespace Gerance.Formulaires.Syndic
         {
             if (connection == null)
             {
-                connexionString = Database.getConnexionString(Gerance.GeranceApplication.SYNDIC_APPLICATION);
+                connexionString = Database.getConnexionString(GeranceApplication.SYNDIC_APPLICATION);
                 try
                 {
                     connection = new NpgsqlConnection(connexionString);
@@ -38,11 +38,11 @@ namespace Gerance.Formulaires.Syndic
         public static void StartLoadSyndicCopro()
         {
             SyndicProprio.Clear();
-            var iCnxSyndic =  CommonRegistry.getRegistryValue(Gerance.GeranceApplication.SYNDIC_APPLICATION, "Database", "ConnexionSyndic", 0);
+            var iCnxSyndic =  CommonRegistry.getRegistryValue(GeranceApplication.SYNDIC_APPLICATION, "Database", "ConnexionSyndic", 0);
             if ((int) iCnxSyndic == 1)
             {
                 BackgroundWorker worker = new BackgroundWorker();
-                Thread threadSyndic = new Thread(SyndicDatabase.LoadSyndicCopro);
+                Thread threadSyndic = new Thread(LoadSyndicCopro);
                 threadSyndic.Start();
             }
         }

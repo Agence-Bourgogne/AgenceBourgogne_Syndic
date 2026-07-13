@@ -29,7 +29,7 @@ namespace EspaceSyndic.Formulaires.Controles
 
         private void tbRefImmeuble_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (Control.ModifierKeys == Keys.Control)
+            if (ModifierKeys == Keys.Control)
                 if (e.KeyChar == ' ')
                 {
                     e.Handled = true;

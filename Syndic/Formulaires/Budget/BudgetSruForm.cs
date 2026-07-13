@@ -24,7 +24,7 @@ namespace EspaceSyndic.Formulaires.Budget
         public BudgetSruForm()
         {
             InitializeComponent();
-            TitreForm = this.Text;
+            TitreForm = Text;
         }
 
         private void BudgetSruForm_Load(object sender, EventArgs e)
@@ -91,14 +91,14 @@ namespace EspaceSyndic.Formulaires.Budget
                 tbNom.Text = immeuble.nom;
                 tbAdresse.Text = immeuble.Adresse;
                 FillComboExercice();
-                this.Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
             }
             else
             {
                 if (tbRefImmeuble.Text != "")
                     tbRefImmeuble.BackColor = Color.Red;
                 tbNom.Text = tbAdresse.Text = "";
-                this.Text = TitreForm;
+                Text = TitreForm;
             }
         }
 
@@ -125,7 +125,7 @@ namespace EspaceSyndic.Formulaires.Budget
         }
         private void tbHelpBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (Control.ModifierKeys == Keys.Control)
+            if (ModifierKeys == Keys.Control)
                 if (e.KeyChar == ' ')
                 {
                     e.Handled = true;

@@ -99,7 +99,7 @@ namespace SyndicData.Common
         public static bool IsBaseCompteur(string baseToCheck)
         {
             bool bCompteur = false;
-            string bases = ParametresDB.getParam1("BASES", "COMPTEURS");
+            string bases = getParam1("BASES", "COMPTEURS");
             if (bases != null)
             {
                 String[] base_compteur = bases.Replace(" ", "").Split(',');

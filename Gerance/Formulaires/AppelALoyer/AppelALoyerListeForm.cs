@@ -12,7 +12,7 @@ using Gerance.Formulaires.Locataires;
 using Gerance.Formulaires.Biens;
 namespace Gerance.Formulaires.AppelALoyer
 {
-    public partial class AppelALoyerListeForm : Gerance.Formulaires.Common.CommonGridviewForm
+    public partial class AppelALoyerListeForm : Common.CommonGridviewForm
     {
         public AppelALoyerListeForm()
         {

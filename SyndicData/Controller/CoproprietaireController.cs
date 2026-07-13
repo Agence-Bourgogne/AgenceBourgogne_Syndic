@@ -156,7 +156,7 @@ namespace SyndicData.Controller
             cmd += " WHERE (d.immeuble_id = @immeuble_id) ";
             if (numlot != "")
             {
-                numero_lot = System.Convert.ToInt32(numlot);
+                numero_lot = Convert.ToInt32(numlot);
                 cmd += " and numero_lot = @numero_lot ";
             }
             if (bByNom)

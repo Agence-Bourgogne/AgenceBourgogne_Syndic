@@ -26,7 +26,7 @@ namespace CommonProjectsPartners.Common
         {
             get
             {
-                return System.Windows.Forms.SystemInformation.ComputerName;
+                return SystemInformation.ComputerName;
             }
         }
         public static string AuditString
@@ -73,7 +73,7 @@ namespace CommonProjectsPartners.Common
         {
             Cursor.Current = Cursors.WaitCursor;
 
-            Microsoft.Office.Interop.Excel.Application xlApp = BaseApplication.GetExcelInstance();
+            Microsoft.Office.Interop.Excel.Application xlApp = GetExcelInstance();
             Workbook wb = xlApp.ActiveWorkbook;
             Worksheet ws;
             if (wb == null)
@@ -118,10 +118,10 @@ namespace CommonProjectsPartners.Common
                             //range.Value = row[col.ColumnName].ToString();
 //                            range.Value = row[idxCol];
                             var value = row[idxCol];
-                            if (value is System.Decimal)
+                            if (value is Decimal)
                                 range.Value = value;
                             else
-                                if (value is System.DateTime)
+                                if (value is DateTime)
                                     range.Value = ((DateTime)value).ToShortDateString();
                                 else
                                     range.Value = value.ToString();
@@ -137,8 +137,8 @@ namespace CommonProjectsPartners.Common
             Console.WriteLine(ta.TotalSeconds);
 
             xlApp.Visible = true;
-            ((Microsoft.Office.Interop.Excel._Workbook)wb).Activate();
-            ((Microsoft.Office.Interop.Excel._Worksheet)ws).Activate();
+            ((_Workbook)wb).Activate();
+            ((_Worksheet)ws).Activate();
             ws.Columns.AutoFit();
             Cursor.Current = Cursors.Default;
         }
@@ -147,7 +147,7 @@ namespace CommonProjectsPartners.Common
         {
             Cursor.Current = Cursors.WaitCursor;
 
-            Microsoft.Office.Interop.Excel.Application xlApp = BaseApplication.GetExcelInstance();
+            Microsoft.Office.Interop.Excel.Application xlApp = GetExcelInstance();
             Workbook wb = xlApp.ActiveWorkbook;
             Worksheet ws;
             if (wb == null)
@@ -194,10 +194,10 @@ namespace CommonProjectsPartners.Common
                         if (!colsToHide.Contains(col.Name) && col.Visible)
                         {
                             Range range = ws.Cells[iRow, iCol++];
-                            if (cell.Value  is  System.Decimal)
+                            if (cell.Value  is  Decimal)
                                 range.Value = cell.Value;
                             else
-                                if (cell.Value is System.DateTime)
+                                if (cell.Value is DateTime)
                                     range.Value = "'"+((DateTime) cell.Value).ToShortDateString();
                                 else
                                     range.Value = "'"+ cell.Value;
@@ -224,15 +224,15 @@ namespace CommonProjectsPartners.Common
             
             xlApp.Visible = true;
 
-            ((Microsoft.Office.Interop.Excel._Workbook)wb).Activate();
-            ((Microsoft.Office.Interop.Excel._Worksheet)ws).Activate();
+            ((_Workbook)wb).Activate();
+            ((_Worksheet)ws).Activate();
             ws.Columns.AutoFit();
             Cursor.Current = Cursors.Default;
             return ws;
         }
         public static void ColumnFormula(object wsObject, int colDesti , string colFormula, string colName, int colStop)
         {
-            Microsoft.Office.Interop.Excel._Worksheet ws = ((Microsoft.Office.Interop.Excel._Worksheet)wsObject);
+            _Worksheet ws = ((_Worksheet)wsObject);
             try
             {
                 Range range = ws.Rows;
@@ -257,7 +257,7 @@ namespace CommonProjectsPartners.Common
         }
         public static void OpenWordFile(string fileName)
         {
-            Word.Application wrdApp = BaseApplication.GetWordInstance();
+            Word.Application wrdApp = GetWordInstance();
             try
             {
                 wrdApp.Visible = true;
@@ -282,7 +282,7 @@ namespace CommonProjectsPartners.Common
 
         public static void ActivateWord()
         {
-            Word.Application wrdApp = BaseApplication.GetWordInstance();
+            Word.Application wrdApp = GetWordInstance();
             wrdApp.Visible = true;
             wrdApp.Activate();
         }
@@ -290,12 +290,12 @@ namespace CommonProjectsPartners.Common
         {
             if (!ext.StartsWith("."))
                 ext = "." + ext;
-            return System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ext;
+            return Path.GetTempPath() + Guid.NewGuid().ToString() + ext;
         }
 
         public static void MergeFiles(string outputFile, List<String> files, bool bDelete = true)
         {
-            Word.Application wrdApp = BaseApplication.GetWordInstance();
+            Word.Application wrdApp = GetWordInstance();
             try
             {
                 Word.Document doc = wrdApp.Documents.Add();
@@ -327,7 +327,7 @@ namespace CommonProjectsPartners.Common
                             sec.PageSetup.RightMargin = newDoc.PageSetup.RightMargin;
                         }
                         doc.Words.Last.InsertFile(file);
-                        ((Microsoft.Office.Interop.Word._Document)newDoc).Close();
+                        ((Word._Document)newDoc).Close();
                         if (bDelete)
                             File.Delete(file);
                     }
@@ -345,7 +345,7 @@ namespace CommonProjectsPartners.Common
 
         public static void PublipostageLettreWordAndInsertFile(System.Data.DataTable source, string modele, String DocToInsert, String FieldName, String FileResult = "")
         {
-            Word.Application wrdApp = BaseApplication.GetWordInstance();
+            Word.Application wrdApp = GetWordInstance();
 
             try
             {
@@ -358,18 +358,18 @@ namespace CommonProjectsPartners.Common
                     field.Range.InsertFile(DocToInsert);
                 }
 
-                string fileNameCsv = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
+                string fileNameCsv = Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
                 GenerateDataSource(source, fileNameCsv);
                 merge.MainDocumentType = Word.WdMailMergeMainDocType.wdFormLetters;
                 merge.OpenDataSource(fileNameCsv, false);
                 merge.Execute();
                 merge.ViewMailMergeFieldCodes = 0;
-                ((Microsoft.Office.Interop.Word._Document)doc).Close(oFalse);
+                ((Word._Document)doc).Close(oFalse);
                 
                 if ( !String.IsNullOrEmpty(FileResult))
                     wrdApp.ActiveDocument.SaveAs2(FileResult);
                 
-                ((Microsoft.Office.Interop.Word._Document)wrdApp.ActiveDocument).Close(oFalse);
+                ((Word._Document)wrdApp.ActiveDocument).Close(oFalse);
 
                 File.Delete(fileNameCsv);
             }
@@ -381,20 +381,20 @@ namespace CommonProjectsPartners.Common
 
         public static void PublipostageLettreWordAndFillTable(System.Data.DataTable source, string modele, List<String[]> datas, int indexTable, String FileResult = "")
         {
-            Word.Application wrdApp = BaseApplication.GetWordInstance();
+            Word.Application wrdApp = GetWordInstance();
 
             try
             {
                 Word.Document doc = wrdApp.Documents.Add(modele);
                 Word.MailMerge merge = doc.MailMerge;
 
-                string fileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
+                string fileName = Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
                 GenerateDataSource(source, fileName);
                 merge.MainDocumentType = Word.WdMailMergeMainDocType.wdFormLetters;
                 merge.OpenDataSource(fileName, false);
                 merge.Execute();
                 merge.ViewMailMergeFieldCodes = 0;
-                ((Microsoft.Office.Interop.Word._Document)doc).Close(oFalse);
+                ((Word._Document)doc).Close(oFalse);
                 File.Delete(fileName);
                 Word.Table table = wrdApp.ActiveDocument.Tables[indexTable];
                 int col = 1;
@@ -424,7 +424,7 @@ namespace CommonProjectsPartners.Common
                 if (!String.IsNullOrEmpty(FileResult))
                     wrdApp.ActiveDocument.SaveAs2(FileResult);
 
-                ((Microsoft.Office.Interop.Word._Document)wrdApp.ActiveDocument).Close(oFalse);
+                ((Word._Document)wrdApp.ActiveDocument).Close(oFalse);
             }
             catch (Exception ex)
             {
@@ -434,7 +434,7 @@ namespace CommonProjectsPartners.Common
 
         public static void PublipostageLettreWord(System.Data.DataTable source, string modele)
         {
-            Word.Application wrdApp = BaseApplication.GetWordInstance();
+            Word.Application wrdApp = GetWordInstance();
 
             try
             {
@@ -442,14 +442,14 @@ namespace CommonProjectsPartners.Common
                 Word.Document docMailing = wrdApp.Documents.Add(modele);
                 Word.MailMerge merge = docMailing.MailMerge;
 
-                string fileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
+                string fileName = Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
                 GenerateDataSource(source, fileName);
 
                 merge.MainDocumentType = Word.WdMailMergeMainDocType.wdFormLetters;
                 merge.OpenDataSource(fileName, false);
                 merge.Execute();
                 merge.ViewMailMergeFieldCodes = 0;
-                ((Microsoft.Office.Interop.Word._Document)docMailing).Close(oFalse);
+                ((Word._Document)docMailing).Close(oFalse);
                 File.Delete(fileName);
                 wrdApp.Activate();
             }
@@ -460,10 +460,10 @@ namespace CommonProjectsPartners.Common
         }
         public static void PublipostageEtiquetteWord( System.Data.DataTable source, string modele)
         {
-            Word.Application wrdApp = BaseApplication.GetWordInstance();
+            Word.Application wrdApp = GetWordInstance();
             try
             {
-                string fileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
+                string fileName = Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
                 wrdApp.Visible = true;
 
                 Word.Document docMailing = wrdApp.Documents.Add(modele);
@@ -512,7 +512,7 @@ namespace CommonProjectsPartners.Common
 
                 merge.Execute();
                 merge.ViewMailMergeFieldCodes = 0;
-                ((Microsoft.Office.Interop.Word._Document)docMailing).Close(oFalse);
+                ((Word._Document)docMailing).Close(oFalse);
                 File.Delete(fileName);
             }
             catch (Exception ex)

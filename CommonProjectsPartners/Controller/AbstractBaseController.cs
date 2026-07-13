@@ -39,16 +39,16 @@ namespace CommonProjectsPartners.Controller
             if (time == null)
                 setTimestampServer();
             else
-                this.TimestampServer = time;
+                TimestampServer = time;
         }
         public DateTime getTimestampServer()
         {
-            return this.TimestampServer;
+            return TimestampServer;
         }
         public DateTime setTimestampServer()
         {
-            this.TimestampServer = Database.GetTimestampServer();
-            return this.TimestampServer;
+            TimestampServer = Database.GetTimestampServer();
+            return TimestampServer;
         }
         public DataTable GetTableList()
             {

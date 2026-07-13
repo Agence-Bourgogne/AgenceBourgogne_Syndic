@@ -13,8 +13,8 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
     public partial class WebUserForm : Form
     {
         bool bInLoad = false;
-        EspaceSyndic.ServiceReference.UserEntitie _currentUsr;
-        List<EspaceSyndic.ServiceReference.DocumentEntitie> docs;
+        ServiceReference.UserEntitie _currentUsr;
+        List<ServiceReference.DocumentEntitie> docs;
         //----------------------------------------------------------------
         public WebUserForm()
         {
@@ -39,7 +39,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
             btnDelCopro.Enabled = false;
             btnAddDoc.Enabled = false;
             btnDelDoc.Enabled = false;
-            List<EspaceSyndic.ServiceReference.UserEntitie> users = ServiceReferenceUtils.GetInstance().GetAllUsers().ToList();
+            List<ServiceReference.UserEntitie> users = ServiceReferenceUtils.GetInstance().GetAllUsers().ToList();
             dataGridView.DataSource = users;
             DataGridViewColumnCollection cols = dataGridView.Columns;
             HideAndResizeColumns(cols);
@@ -80,12 +80,12 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
                 TreeNode parent = new TreeNode() { Text = "Immeubles", ImageIndex = 0 };
                 treeView.Nodes.Add(parent);
 
-                EspaceSyndic.ServiceReference.UserEntitie usr = (EspaceSyndic.ServiceReference.UserEntitie)dataGridView.SelectedRows[0].DataBoundItem;
+                ServiceReference.UserEntitie usr = (ServiceReference.UserEntitie)dataGridView.SelectedRows[0].DataBoundItem;
                 _currentUsr = usr;
-                List<EspaceSyndic.ServiceReference.ChildrenEntitie> immeubles = ServiceReferenceUtils.GetInstance().GetUserCoproprietaires(usr.Guid).OrderBy(x => x.Immeuble_id).ToList();
+                List<ServiceReference.ChildrenEntitie> immeubles = ServiceReferenceUtils.GetInstance().GetUserCoproprietaires(usr.Guid).OrderBy(x => x.Immeuble_id).ToList();
                 String immeuble_id = "";
                 TreeNode current = null;
-                foreach (EspaceSyndic.ServiceReference.ChildrenEntitie child in immeubles)
+                foreach (ServiceReference.ChildrenEntitie child in immeubles)
                 {
                     if (immeuble_id != child.Immeuble_id)
                     {
@@ -125,10 +125,10 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
             TreeNode current = treeView.SelectedNode;
             string immeuble_id = "";
             string copro_id = "";
-            List<EspaceSyndic.ServiceReference.DocumentEntitie> listdocs = new List<ServiceReference.DocumentEntitie>();
+            List<ServiceReference.DocumentEntitie> listdocs = new List<ServiceReference.DocumentEntitie>();
             if (current != null && current.Tag != null)
             {
-                List<EspaceSyndic.ServiceReference.ChildrenEntitie> immeublesByUsers = ServiceReferenceUtils.GetInstance().GetUserCoproprietaires(_currentUsr.Guid).OrderBy(x => x.Immeuble_id).ToList();
+                List<ServiceReference.ChildrenEntitie> immeublesByUsers = ServiceReferenceUtils.GetInstance().GetUserCoproprietaires(_currentUsr.Guid).OrderBy(x => x.Immeuble_id).ToList();
                 if (current.Tag is ImmeubleEntite)
                 {
 
@@ -136,7 +136,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
                     immeuble_id = immeuble.getId();
                     if (immeublesByUsers.Exists(x => x.Immeuble_id == immeuble_id))
                     {
-                        foreach (EspaceSyndic.ServiceReference.DocumentEntitie doc in docs)
+                        foreach (ServiceReference.DocumentEntitie doc in docs)
                         {
                             if (doc.immeuble_id == immeuble_id && doc.copro_id == "" )
                                 listdocs.Add(doc);
@@ -151,7 +151,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
                     immeuble_id = copro.Immeuble.getId();
                     if (immeublesByUsers.Exists(x => x.Immeuble_id == immeuble_id))
                     {
-                        foreach (EspaceSyndic.ServiceReference.DocumentEntitie doc in docs)
+                        foreach (ServiceReference.DocumentEntitie doc in docs)
                         {
                             if (doc.immeuble_id == immeuble_id && doc.copro_id == copro_id)
                                 listdocs.Add(doc);
@@ -160,7 +160,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
                 }
             }
 
-            foreach (EspaceSyndic.ServiceReference.DocumentEntitie doc in listdocs)
+            foreach (ServiceReference.DocumentEntitie doc in listdocs)
             {
 
                 table.Rows.Add();
@@ -182,13 +182,13 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
                 FindCoproprietaireForm form = new FindCoproprietaireForm();
                 if (DialogResult.Cancel != form.ShowDialog())
                 {
-                    EspaceSyndic.ServiceReference.UserEntitie usr = (EspaceSyndic.ServiceReference.UserEntitie)dataGridView.SelectedRows[0].DataBoundItem;
+                    ServiceReference.UserEntitie usr = (ServiceReference.UserEntitie)dataGridView.SelectedRows[0].DataBoundItem;
                     CoproprietaireEntite entite = CoproprietaireController.getController().getEntiteFromField("reference", form.reference);
                     try
                     {
                         if (entite != null)
                         {
-                            SyndicData.Entites.ImmeubleEntite immeuble = entite.Immeuble;
+                            ImmeubleEntite immeuble = entite.Immeuble;
                             string res = ServiceReferenceUtils.GetInstance().AddCopro(usr.Guid, immeuble.id, entite.id, immeuble.reference, immeuble.nom, entite.reference, entite.NomPrenom);
                             if (res == "0")
                             {
@@ -224,7 +224,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
         {
             if (DialogResult.OK == MessageBox.Show("Voulez vous vraiment supprimer l'utilisateur", "Opération irreversible", MessageBoxButtons.OKCancel, MessageBoxIcon.Question))
             {
-                EspaceSyndic.ServiceReference.UserEntitie usr = (EspaceSyndic.ServiceReference.UserEntitie)dataGridView.SelectedRows[0].DataBoundItem;
+                ServiceReference.UserEntitie usr = (ServiceReference.UserEntitie)dataGridView.SelectedRows[0].DataBoundItem;
                 if (usr != null)
                 {
                     string msg = ServiceReferenceUtils.DeleteUser(usr.Guid);
@@ -276,7 +276,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
         //----------------------------------------------------------------
         private void UpdateUser(object sender, EventArgs e)
         {
-            EspaceSyndic.ServiceReference.UserEntitie usr = (EspaceSyndic.ServiceReference.UserEntitie)dataGridView.SelectedRows[0].DataBoundItem;
+            ServiceReference.UserEntitie usr = (ServiceReference.UserEntitie)dataGridView.SelectedRows[0].DataBoundItem;
             if (usr != null)
             {
                 NewUserWebForm form = new NewUserWebForm(usr, "Modifier l'utilisateur");
@@ -298,7 +298,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
             DataRowView drv = (DataRowView)listDoc.SelectedItems[0];
             string docGuid = drv["Guid"].ToString();
 
-            EspaceSyndic.ServiceReference.DocumentEntitie doc = docs.FirstOrDefault(x => x.Guid == docGuid);
+            ServiceReference.DocumentEntitie doc = docs.FirstOrDefault(x => x.Guid == docGuid);
             if (doc != null)
             {
                 btnDelDoc.Enabled = true;
@@ -322,7 +322,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
                         DataRowView drv = (DataRowView)listDoc.SelectedItems[i];
                         string docGuid = drv["Guid"].ToString();
 
-                        EspaceSyndic.ServiceReference.DocumentEntitie doc = docs.FirstOrDefault(x => x.Guid == docGuid);
+                        ServiceReference.DocumentEntitie doc = docs.FirstOrDefault(x => x.Guid == docGuid);
                         if (doc != null)
                         {
                             messageRetour += ServiceReferenceUtils.DeleteDocument(docGuid) + "\n";
@@ -363,7 +363,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
 
         private void btnQuit_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
         //----------------------------------------------------------------
     }

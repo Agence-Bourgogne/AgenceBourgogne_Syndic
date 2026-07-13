@@ -224,7 +224,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
         //------------------------------------
         private void valid_Click(object sender, EventArgs e)
         {
-            if (!CommonProjectsPartners.Utils.RegexUtils.IsValidEmail(tbCode.Text))
+            if (!RegexUtils.IsValidEmail(tbCode.Text))
                 MessageBox.Show(this, "Format Email Invalide");
             else if (string.IsNullOrEmpty(tbPassword.Text))
             {
@@ -235,7 +235,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
                 string msg = ServiceReferenceUtils.CreateUser(tbCode.Text, tbPassword.Text);
                 if (String.Compare(msg, "0", System.Globalization.CultureInfo.CurrentCulture, System.Globalization.CompareOptions.IgnoreNonSpace | System.Globalization.CompareOptions.IgnoreCase) == 0)
                 {
-                    EspaceSyndic.ServiceReference.UserEntitie user = ServiceReferenceUtils.GetInstance().GetUserFromCode(tbCode.Text);
+                    ServiceReference.UserEntitie user = ServiceReferenceUtils.GetInstance().GetUserFromCode(tbCode.Text);
                     foreach (TreeNode node in treeView.Nodes[0].Nodes)
                     {
                         if (node.Checked)
@@ -253,12 +253,12 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
                     }
                     if(ckSendMail.Checked)
                     {
-                        EspaceSyndic.UtilsApp.MailUtils.SendEMail(tbCode.Text, tbPassword.Text);
+                        MailUtils.SendEMail(tbCode.Text, tbPassword.Text);
                        // SendEMail(tbCode.Text, tbPassword.Text);
                     }
                     MessageBox.Show(this, "Utilisateur crée avec succès");
                     DialogResult = DialogResult.OK;
-                    this.Close();
+                    Close();
                 }
                 else
                 {

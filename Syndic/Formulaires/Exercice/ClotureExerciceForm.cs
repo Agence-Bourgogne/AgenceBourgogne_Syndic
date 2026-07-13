@@ -27,7 +27,7 @@ namespace EspaceSyndic.Formulaires.Exercice
         public ClotureExerciceForm()
         {
             InitializeComponent();
-            TitreForm = this.Text;
+            TitreForm = Text;
         }
 
         private void btnEnter_Click(object sender, EventArgs e)
@@ -61,7 +61,7 @@ namespace EspaceSyndic.Formulaires.Exercice
                 }
                 DateTime datDeb = dtDeb.Value.AddYears(-1);
                 DateTime datFin = dtDeb.Value.AddDays(-1);
-                this.Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
 
                 decimal valueSoldeImm = OperationController.getController().getSoldeImmeuble(immeuble == null ? "" : immeuble.id, datDeb, datFin);
                 tbSolde.Text = valueSoldeImm.ToString();
@@ -70,7 +70,7 @@ namespace EspaceSyndic.Formulaires.Exercice
             {
                 if (tbRefImmeuble.Text != "")
                     tbRefImmeuble.BackColor = Color.Red;
-                this.Text = TitreForm;
+                Text = TitreForm;
                 dataGridView.DataSource = null;
             }
 
@@ -152,7 +152,7 @@ namespace EspaceSyndic.Formulaires.Exercice
                 TotauxForm.DoFormText(this, strTotaux);
                 TotauxForm.Text = "Totaux";
                 TotauxForm.ShowForm(this);
-                this.Activate();
+                Activate();
 
 //                decimal valueSoldeImm = OperationController.getController().getSoldeImmeuble(immeuble == null ? "" : immeuble.id, datDeb, datFin);
                 tbSolde.Text = valueSoldeImm.ToString();
@@ -168,7 +168,7 @@ namespace EspaceSyndic.Formulaires.Exercice
             DateTime datFin = dtDeb.Value.AddDays(-1);
             
             DataGridViewColumn sortedCol = dataGridView.SortedColumn;
-            System.Windows.Forms.SortOrder sortOrder = dataGridView.SortOrder;
+            SortOrder sortOrder = dataGridView.SortOrder;
 
 
             dataGridView.DataSource = SaisieFactureController.getController().getListeOperations(tbRefImmeuble.Text, "", datDeb, datFin, "", "", "", true, "");
@@ -184,9 +184,9 @@ namespace EspaceSyndic.Formulaires.Exercice
             cols["statut"].Visible = false;
             cols["id"].Visible = false;
             cols["ref_immeuble"].Visible = false;
-            if (sortOrder == System.Windows.Forms.SortOrder.Ascending)
+            if (sortOrder == SortOrder.Ascending)
                 dataGridView.Sort(cols[sortedCol.Name], ListSortDirection.Ascending);
-            if (sortOrder == System.Windows.Forms.SortOrder.Descending)
+            if (sortOrder == SortOrder.Descending)
                 dataGridView.Sort(cols[sortedCol.Name], ListSortDirection.Descending);
 
             if (sortedCol == null)
@@ -237,7 +237,7 @@ namespace EspaceSyndic.Formulaires.Exercice
             DateTime datFin = dtDeb.Value.AddDays(-1);
 
             DataGridViewColumn sortedCol = dataGridView.SortedColumn;
-            System.Windows.Forms.SortOrder sortOrder = dataGridView.SortOrder;
+            SortOrder sortOrder = dataGridView.SortOrder;
 
             dataGridView.DataSource = SaisieAppelFondController.getController().getListeOperations(tbRefImmeuble.Text, datDeb, datFin, "", "", true, "");
             DataGridViewColumnCollection cols = dataGridView.Columns;
@@ -246,9 +246,9 @@ namespace EspaceSyndic.Formulaires.Exercice
             cols["id"].Visible = false;
             cols["liasse_id"].Visible = false;
 
-            if (sortOrder == System.Windows.Forms.SortOrder.Ascending)
+            if (sortOrder == SortOrder.Ascending)
                 dataGridView.Sort(cols[sortedCol.Name], ListSortDirection.Ascending);
-            if (sortOrder == System.Windows.Forms.SortOrder.Descending)
+            if (sortOrder == SortOrder.Descending)
                 dataGridView.Sort(cols[sortedCol.Name], ListSortDirection.Descending);
             if (sortedCol == null)
                 dataGridView.Sort(cols["date_reference"], ListSortDirection.Ascending);
@@ -265,7 +265,7 @@ namespace EspaceSyndic.Formulaires.Exercice
             DateTime datFin = dtDeb.Value.AddDays(-1);
 
             DataGridViewColumn sortedCol = dataGridView.SortedColumn;
-            System.Windows.Forms.SortOrder sortOrder = dataGridView.SortOrder;
+            SortOrder sortOrder = dataGridView.SortOrder;
 
             dataGridView.DataSource = SaisieReglementController.getController().getListeOperations(tbRefImmeuble.Text, "", datDeb, datFin, "", "", "", true);
             DataGridViewColumnCollection cols = dataGridView.Columns;
@@ -273,9 +273,9 @@ namespace EspaceSyndic.Formulaires.Exercice
             cols["statut"].Visible = false;
             cols["id"].Visible = false;
 
-            if (sortOrder == System.Windows.Forms.SortOrder.Ascending)
+            if (sortOrder == SortOrder.Ascending)
                 dataGridView.Sort(cols[sortedCol.Name], ListSortDirection.Ascending);
-            if (sortOrder == System.Windows.Forms.SortOrder.Descending)
+            if (sortOrder == SortOrder.Descending)
                 dataGridView.Sort(cols[sortedCol.Name], ListSortDirection.Descending);
 
             if (sortedCol == null)
@@ -293,7 +293,7 @@ namespace EspaceSyndic.Formulaires.Exercice
             DateTime datFin = dtDeb.Value.AddDays(-1);
 
             DataGridViewColumn sortedCol = dataGridView.SortedColumn;
-            System.Windows.Forms.SortOrder sortOrder = dataGridView.SortOrder;
+            SortOrder sortOrder = dataGridView.SortOrder;
 
             dataGridView.DataSource = OperationController.getController().getListeOperations(immeuble.id, "", type, (int)GlobalConstantes.StatutOperation.Valide, datDeb, datFin, "", "");
             DataGridViewColumnCollection cols = dataGridView.Columns;
@@ -310,9 +310,9 @@ namespace EspaceSyndic.Formulaires.Exercice
             cols["global"].Width = 50;
             cols["date_relance"].Visible = false;
 
-            if (sortOrder == System.Windows.Forms.SortOrder.Ascending)
+            if (sortOrder == SortOrder.Ascending)
                 dataGridView.Sort(cols[sortedCol.Name], ListSortDirection.Ascending);
-            if (sortOrder == System.Windows.Forms.SortOrder.Descending)
+            if (sortOrder == SortOrder.Descending)
                 dataGridView.Sort(cols[sortedCol.Name], ListSortDirection.Descending);
             if (sortedCol == null)
                 dataGridView.Sort(cols["date_reference"], ListSortDirection.Ascending);
@@ -528,7 +528,7 @@ namespace EspaceSyndic.Formulaires.Exercice
         {
 
             if (!bLoading)
-                if (Control.ModifierKeys == Keys.Control)
+                if (ModifierKeys == Keys.Control)
                     if (e.KeyChar == ' ')
                     {
                         e.Handled = true;

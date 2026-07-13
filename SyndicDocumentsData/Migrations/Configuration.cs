@@ -2,7 +2,7 @@ namespace SyndicDocumentsData.Migrations
 {
     using System.Data.Entity.Migrations;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<SyndicDocumentsData.Models.BddContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<Models.BddContext>
     {
         public Configuration()
         {
@@ -10,7 +10,7 @@ namespace SyndicDocumentsData.Migrations
             AutomaticMigrationDataLossAllowed = true;
         }
 
-        protected override void Seed(SyndicDocumentsData.Models.BddContext context)
+        protected override void Seed(Models.BddContext context)
         {
             //  This method will be called after migrating to the latest version.
 

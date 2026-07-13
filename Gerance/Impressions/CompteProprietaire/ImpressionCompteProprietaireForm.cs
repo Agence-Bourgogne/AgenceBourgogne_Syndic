@@ -10,7 +10,7 @@ using Microsoft.Reporting.WinForms;
 
 namespace Gerance.Impressions.CompteProprietaire
 {
-    public partial class ImpressionCompteProprietaireForm : Gerance.Formulaires.Common.CommonGridviewForm
+    public partial class ImpressionCompteProprietaireForm : Formulaires.Common.CommonGridviewForm
     {
         public ImpressionCompteProprietaireForm()
         {

@@ -47,7 +47,7 @@ namespace EspaceSyndic.Formulaires.Extranet
             if (_immeuble != null)
             {
                 _immeuble_id = _immeuble.id;
-                EspaceSyndic.Impressions.RelevesIndividuels.ExportCopro dlg = new EspaceSyndic.Impressions.RelevesIndividuels.ExportCopro();
+                Impressions.RelevesIndividuels.ExportCopro dlg = new Impressions.RelevesIndividuels.ExportCopro();
                 try
                 {
                     dlg.Show(this);
@@ -244,13 +244,13 @@ namespace EspaceSyndic.Formulaires.Extranet
         private void btnQuit_Click(object sender, EventArgs e)
         {
             DialogResult = dialogResult?DialogResult.OK:DialogResult.Cancel;
-            this.Close();
+            Close();
         }
 
         private void PublishDocument_FormClosed(object sender, FormClosedEventArgs e)
         {
             DialogResult = dialogResult ? DialogResult.OK : DialogResult.Cancel;
-            this.Dispose();
+            Dispose();
         }
     }
     //---------------------------------------------------

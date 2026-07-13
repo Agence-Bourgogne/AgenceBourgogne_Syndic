@@ -29,7 +29,7 @@ namespace EspaceSyndic.Formulaires.Fournisseur
         private void setFicheValues(FournisseurEntite newEntite)
         {
             if (newEntite != null)
-                this.entite = newEntite;
+                entite = newEntite;
 
 	        tbRef.Text = entite.reference;
 	        tbNom.Text = entite.nom;
@@ -67,7 +67,7 @@ namespace EspaceSyndic.Formulaires.Fournisseur
         }
         private void btnQuit_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
         private void btnSave_Click(object sender, EventArgs e)
         {

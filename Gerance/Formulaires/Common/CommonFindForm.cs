@@ -46,8 +46,8 @@ namespace Gerance.Formulaires.Common
         {
             DataRowView row = (DataRowView) dataGridView.Rows[index].DataBoundItem;
             reference = row["reference"].ToString();
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+            DialogResult = DialogResult.OK;
+            Close();
         }
         private void dataGridView_KeyPress(object sender, KeyPressEventArgs e)
         {

@@ -12,7 +12,7 @@ using Npgsql;
 
 namespace Gerance.Formulaires.AppelALoyer
 {
-    public partial class AnnulationQuittanceForm : Gerance.Formulaires.Common.BaseFicheForm
+    public partial class AnnulationQuittanceForm : Common.BaseFicheForm
     {
         BienEntite bien;
         QuittanceEntite quittance;
@@ -334,7 +334,7 @@ namespace Gerance.Formulaires.AppelALoyer
                     trx.Commit();
                     setModified(false);
                     MessageBox.Show("Modifications enregistrées");
-                    this.Close();
+                    Close();
                 }
                 else
                 {

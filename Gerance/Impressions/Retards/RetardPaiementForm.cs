@@ -9,7 +9,7 @@ using Gerance.Formulaires.Locataires;
 using Microsoft.Reporting.WinForms;
 namespace Gerance.Impressions.Retards
 {
-    public partial class RetardPaiementForm : Gerance.Formulaires.Common.BaseFicheForm
+    public partial class RetardPaiementForm : Formulaires.Common.BaseFicheForm
     {
         string regKey;
         public RetardPaiementForm()
@@ -97,10 +97,10 @@ namespace Gerance.Impressions.Retards
             string montant_rappel = ParametresDB.getParam1("RETARD","MONTANT_RAPPEL");
             if ( montant_rappel == "")
                 montant_rappel="5";
-	        string hdr_descr = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
-            string hdr_agence = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
+	        string hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
+            string hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
 
-            this.reportViewer1.LocalReport.ReportEmbeddedResource = "Gerance.Impressions.Retards.RetardPaiementReport.rdlc";
+            reportViewer1.LocalReport.ReportEmbeddedResource = "Gerance.Impressions.Retards.RetardPaiementReport.rdlc";
             ReportParameter[] parameters = new ReportParameter[]{
                     new ReportParameter("dateEdition", dateEcriture.Value.ToShortDateString()),
                     new ReportParameter("montant_rappel", montant_rappel),
@@ -170,8 +170,8 @@ namespace Gerance.Impressions.Retards
             string montant_rappel = ParametresDB.getParam1("RETARD", "MONTANT_DEMEURE");
             if (montant_rappel == "")
                 montant_rappel = "46";
-            string hdr_descr = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
-            string hdr_agence = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
+            string hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
+            string hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
 
             ReportParameter[] parameters = new ReportParameter[]{
                     new ReportParameter("dateEdition", dateEcriture.Value.ToShortDateString()),
@@ -180,7 +180,7 @@ namespace Gerance.Impressions.Retards
                     new ReportParameter("Header_Agence", hdr_agence),
                 };
 
-            this.reportViewer1.LocalReport.ReportEmbeddedResource = "Gerance.Impressions.Retards.MiseEnDemeureReport.rdlc";
+            reportViewer1.LocalReport.ReportEmbeddedResource = "Gerance.Impressions.Retards.MiseEnDemeureReport.rdlc";
             reportViewer1.LocalReport.SetParameters(parameters);
             reportViewer1.LocalReport.DataSources.Clear();
             BindingSource selected = new BindingSource();

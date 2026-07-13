@@ -11,7 +11,7 @@ using Gerance.Formulaires.Locataires;
 using Gerance.Formulaires.Proprietaires;
 namespace Gerance.Formulaires.AppelALoyer
 {
-    public partial class ListeQuittanceForm : Gerance.Formulaires.Common.CommonGridviewForm
+    public partial class ListeQuittanceForm : Common.CommonGridviewForm
     {
         public ListeQuittanceForm()
         {

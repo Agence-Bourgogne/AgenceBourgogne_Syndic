@@ -27,7 +27,7 @@ namespace GeranceData.Entites
         {
             setValues(null);
             this.reference = reference;
-            this.nom = WorkflowController.TACHE_DEFINITION[reference];
+            nom = WorkflowController.TACHE_DEFINITION[reference];
             this.date_reference = new DateTime(date_reference.Year, date_reference.Month, 1);
             revision = 0;
         }

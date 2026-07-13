@@ -239,8 +239,8 @@ namespace EspaceSyndic.Formulaires.Ecritures
                 }
                 trx.Commit();
                 MessageBox.Show("Modifications enregistrées");
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                DialogResult = DialogResult.OK;
+                Close();
             }
             catch (Exception ex)
             {

@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using GeranceData.Controller;
 namespace Gerance.Formulaires.Comptables
 {
-    public partial class ComptableListeForm : Gerance.Formulaires.Common.CommonListeForm
+    public partial class ComptableListeForm : Common.CommonListeForm
     {
         public ComptableListeForm()
         {

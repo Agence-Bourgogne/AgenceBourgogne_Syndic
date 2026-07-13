@@ -5,12 +5,12 @@ using GeranceData.Controller;
 
 namespace Gerance.Formulaires.Taches
 {
-    public partial class SuiviTacheMensuelleForm : Gerance.Formulaires.Common.CommonGridviewForm
+    public partial class SuiviTacheMensuelleForm : Common.CommonGridviewForm
     {
         public SuiviTacheMensuelleForm()
         {
             InitializeComponent();
-            this.dataGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView_CellFormatting);
+            dataGridView.CellFormatting += new DataGridViewCellFormattingEventHandler(dataGridView_CellFormatting);
         }
         protected override void InitializeCombos()
         {

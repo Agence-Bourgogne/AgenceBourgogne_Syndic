@@ -143,7 +143,7 @@ namespace GeranceData.Entites
 
         public void SetValueFromQuittance()
         {
-            BienEntite bien = this.Bien;
+            BienEntite bien = Bien;
             if (bien != null)
             {
                 bien.montant_du = montant_quittance;

@@ -20,7 +20,7 @@ namespace EspaceSyndic.Formulaires.Budget
         }
         private void NouvelExerciceForm_Load(object sender, EventArgs e)
         {
-            this.MinimumSize = this.MaximumSize = this.Size;
+            MinimumSize = MaximumSize = Size;
             if (exercice_id == "")
             {
                 DateTime dt = ExerciceComptableController.getController().getNewDateDebutExercice(immeuble_id);
@@ -38,10 +38,10 @@ namespace EspaceSyndic.Formulaires.Budget
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            if (this.ActiveControl == btnOk)
+            if (ActiveControl == btnOk)
             {
                 if ( GenerateBudget())
-                    this.Close();
+                    Close();
             }
             else
                 ControlsWindows.FocusNextTabbedControl(this);
@@ -75,7 +75,7 @@ namespace EspaceSyndic.Formulaires.Budget
                 {
                     throw new Exception("New Exercice");
                 }
-                this.exercice_id = exercice.id;
+                exercice_id = exercice.id;
 
                 BudgetEntite budget = BudgetController.getController().getEntiteFromField("exercice_id", exercice.id);
 

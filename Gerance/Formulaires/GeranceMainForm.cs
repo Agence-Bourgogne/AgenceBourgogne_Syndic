@@ -22,7 +22,7 @@ namespace Gerance.Formulaires
 
         private void GeranceMainForm_Load(object sender, EventArgs e)
         {
-            this.Text = this.Text + " 1.0.0.47";
+            Text = Text + " 1.0.0.47";
             btnCancel.Width = 0;
             string lbl1 = ParametresDB.getParam1("PRESENTATION", "LABEL1", "AGENCE");
             string lbl2 = ParametresDB.getParam1("PRESENTATION", "LABEL2", "BOURGOGNE");
@@ -56,7 +56,7 @@ namespace Gerance.Formulaires
                     syndicEvent.Changed -= f.ChangedReference;
                 }
             }
-            this.Activate();
+            Activate();
         }
         private void GenericBtnCancel_Click(object sender, EventArgs e)
         {
@@ -84,7 +84,7 @@ namespace Gerance.Formulaires
                     ObjectHandle obj = Activator.CreateInstance("Gerance", className);
                     form = (Form)obj.Unwrap();
                     dicoForms.Add(className, form);
-                    form.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.GenericForm_FormClosed);
+                    form.FormClosed += new FormClosedEventHandler(GenericForm_FormClosed);
                     if (form is ICommonChangedListener)
                     {
                         ICommonChangedListener f = (ICommonChangedListener)form;
@@ -100,12 +100,12 @@ namespace Gerance.Formulaires
                 form.StartPosition = FormStartPosition.CenterScreen;
                 form.ControlBox = true;
                 form.ShowInTaskbar = true;
-                form.Icon = this.Icon;
+                form.Icon = Icon;
                 form.ShowIcon = true;
                 if (form.CancelButton != null)
                 {
                     Button btn = (Button)form.CancelButton;
-                    btn.Click += new System.EventHandler(this.GenericBtnCancel_Click); ;
+                    btn.Click += new EventHandler(GenericBtnCancel_Click); ;
                 }
                 form.Show();
                 form.Activate();
@@ -123,7 +123,7 @@ namespace Gerance.Formulaires
 
         private void parametresToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DatabaseConfigForm form = new DatabaseConfigForm(Gerance.GeranceApplication.CURRENT_APPLICATION);
+            DatabaseConfigForm form = new DatabaseConfigForm(GeranceApplication.CURRENT_APPLICATION);
             try
             {
                 form.ShowDialog();
@@ -135,7 +135,7 @@ namespace Gerance.Formulaires
         }
         private void paramètresDeConnexionSyndicToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DatabaseSyndicConfigForm form = new DatabaseSyndicConfigForm(Gerance.GeranceApplication.SYNDIC_APPLICATION);
+            DatabaseSyndicConfigForm form = new DatabaseSyndicConfigForm(GeranceApplication.SYNDIC_APPLICATION);
             try
             {
                 form.ShowDialog();
@@ -284,13 +284,13 @@ namespace Gerance.Formulaires
                 {
                     item.Value.Hide();
                 }
-                this.Hide();
+                Hide();
                 LogonForm logonForm = new LogonForm();
                 logonForm.ShowDialog();
                 if ( BaseApplication.userConnected != null)
-                    this.Show();
+                    Show();
                 else
-                    this.Close();
+                    Close();
             }
             catch (Exception ex)
             {
@@ -300,7 +300,7 @@ namespace Gerance.Formulaires
 
         private void quitterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void utilisateursToolStripMenuItem_Click(object sender, EventArgs e)

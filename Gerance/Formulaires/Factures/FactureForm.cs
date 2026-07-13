@@ -15,7 +15,7 @@ using GeranceData.Common;
 
 namespace Gerance.Formulaires.Factures
 {
-    public partial class FactureForm : Gerance.Formulaires.Common.BaseFicheForm
+    public partial class FactureForm : Common.BaseFicheForm
     {
         public FactureForm()
         {

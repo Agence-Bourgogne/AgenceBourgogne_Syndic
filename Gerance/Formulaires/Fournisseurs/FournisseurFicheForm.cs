@@ -6,7 +6,7 @@ using GeranceData.Entites;
 
 namespace Gerance.Formulaires.Fournisseurs
 {
-    public partial class FournisseurFicheForm : Gerance.Formulaires.Common.CommonFicheForm
+    public partial class FournisseurFicheForm : Common.CommonFicheForm
     {
         FournisseurEntite fournisseur;
         public FournisseurFicheForm()
@@ -71,7 +71,7 @@ namespace Gerance.Formulaires.Fournisseurs
 
         protected override bool saveValue()
         {
-            this.currentReference = tbReference.Text;
+            currentReference = tbReference.Text;
 
             fournisseur.reference = tbReference.Text;
             fournisseur.nom = tbNom.Text;

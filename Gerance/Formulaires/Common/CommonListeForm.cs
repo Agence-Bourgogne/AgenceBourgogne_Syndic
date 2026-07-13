@@ -73,9 +73,9 @@ namespace Gerance.Formulaires.Common
 
         protected virtual void ShowForm(Form form)
         {
-            this.Enabled = false;
+            Enabled = false;
             form.ShowDialog();
-            this.Enabled = true;
+            Enabled = true;
             FillDataGrid();
         }
 
@@ -113,7 +113,7 @@ namespace Gerance.Formulaires.Common
 
         private void btnQuit_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void dataGridView_ColumnDisplayIndexChanged(object sender, DataGridViewColumnEventArgs e)

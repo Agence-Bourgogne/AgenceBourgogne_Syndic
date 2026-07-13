@@ -108,7 +108,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
                     break;
             }
             if (bOk)
-                this.Close();
+                Close();
         }
 
         private void cbRepart_SelectedIndexChanged(object sender, EventArgs e)

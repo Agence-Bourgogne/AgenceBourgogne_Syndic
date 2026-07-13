@@ -56,75 +56,75 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
         private void AdapteControls()
         {
             int decal = 168;
-            System.Drawing.Size size = dataGridView.Size;
-            dataGridView.Size = new System.Drawing.Size(size.Width + decal, size.Height);
+            Size size = dataGridView.Size;
+            dataGridView.Size = new Size(size.Width + decal, size.Height);
             dataGridView.TabIndex = 6;
             valid.TabIndex = 7;
             cancel.TabIndex = 8;
         }
         private void InitializeComponent()
         {
-            this.tbGerant = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.panel1.SuspendLayout();
-            this.SuspendLayout();
+            tbGerant = new TextBox();
+            label3 = new Label();
+            panel1.SuspendLayout();
+            SuspendLayout();
             // 
             // panel1
             // 
-            this.panel1.Location = new System.Drawing.Point(12, 410);
-            this.panel1.Size = new System.Drawing.Size(553, 35);
+            panel1.Location = new Point(12, 410);
+            panel1.Size = new Size(553, 35);
             // 
             // cancel
             // 
-            this.cancel.Location = new System.Drawing.Point(296, 5);
+            cancel.Location = new Point(296, 5);
             // 
             // valid
             // 
-            this.valid.Location = new System.Drawing.Point(213, 5);
+            valid.Location = new Point(213, 5);
             // 
             // tbNom
             // 
-            this.tbNom.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            tbNom.ScrollBars = ScrollBars.Vertical;
             // 
             // btnEnter
             // 
-            this.btnEnter.Size = new System.Drawing.Size(0, 23);
+            btnEnter.Size = new Size(0, 23);
             // 
             // tbGerant
             // 
-            this.tbGerant.Location = new System.Drawing.Point(428, 6);
-            this.tbGerant.Name = "tbGerant";
-            this.tbGerant.Size = new System.Drawing.Size(137, 20);
-            this.tbGerant.TabIndex = 5;
-            this.tbGerant.TextChanged += new System.EventHandler(this.tbGerant_TextChanged);
+            tbGerant.Location = new Point(428, 6);
+            tbGerant.Name = "tbGerant";
+            tbGerant.Size = new Size(137, 20);
+            tbGerant.TabIndex = 5;
+            tbGerant.TextChanged += new EventHandler(tbGerant_TextChanged);
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(383, 9);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(39, 13);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Gérant";
+            label3.AutoSize = true;
+            label3.Location = new Point(383, 9);
+            label3.Name = "label3";
+            label3.Size = new Size(39, 13);
+            label3.TabIndex = 4;
+            label3.Text = "Gérant";
             // 
             // FindCoproprietaireForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(577, 455);
-            this.Controls.Add(this.tbGerant);
-            this.Controls.Add(this.label3);
-            this.Name = "FindCoproprietaireForm";
-            this.Controls.SetChildIndex(this.panel1, 0);
-            this.Controls.SetChildIndex(this.label1, 0);
-            this.Controls.SetChildIndex(this.tbRef, 0);
-            this.Controls.SetChildIndex(this.label2, 0);
-            this.Controls.SetChildIndex(this.tbNom, 0);
-            this.Controls.SetChildIndex(this.label3, 0);
-            this.Controls.SetChildIndex(this.tbGerant, 0);
-            this.panel1.ResumeLayout(false);
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new SizeF(6F, 13F);
+            AutoSize = true;
+            ClientSize = new Size(577, 455);
+            Controls.Add(tbGerant);
+            Controls.Add(label3);
+            Name = "FindCoproprietaireForm";
+            Controls.SetChildIndex(panel1, 0);
+            Controls.SetChildIndex(label1, 0);
+            Controls.SetChildIndex(tbRef, 0);
+            Controls.SetChildIndex(label2, 0);
+            Controls.SetChildIndex(tbNom, 0);
+            Controls.SetChildIndex(label3, 0);
+            Controls.SetChildIndex(tbGerant, 0);
+            panel1.ResumeLayout(false);
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 

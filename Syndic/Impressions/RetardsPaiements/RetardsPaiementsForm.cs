@@ -58,8 +58,8 @@ namespace EspaceSyndic.Impressions.RetardsPaiements
                 dataGridView.ClearSelection();
             }
             btnEnter.Height = 0;
-            this.reportViewer1.Visible = false;
-            this.reportViewer2.Visible = false;
+            reportViewer1.Visible = false;
+            reportViewer2.Visible = false;
 
         }
 
@@ -114,13 +114,13 @@ namespace EspaceSyndic.Impressions.RetardsPaiements
                     new ReportParameter("Seuil", tbSeuil.Text),
                     new ReportParameter("Sort", dataGridView.SortedColumn.Name),
                 };
-            this.reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("retardPaiements", sourceData));
-            this.reportViewer1.LocalReport.SetParameters(reportParams);
-            this.reportViewer1.RefreshReport();
+            reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("retardPaiements", sourceData));
+            reportViewer1.LocalReport.SetParameters(reportParams);
+            reportViewer1.RefreshReport();
 
-            this.reportViewer1.Visible = true;
-            this.reportViewer2.Visible = false;
-            this.dataGridView.Visible = false;
+            reportViewer1.Visible = true;
+            reportViewer2.Visible = false;
+            dataGridView.Visible = false;
         }
 
 
@@ -162,9 +162,9 @@ namespace EspaceSyndic.Impressions.RetardsPaiements
                     dataGridView.Sort(cols[sortedCol], ListSortDirection.Ascending);
                 else
                     dataGridView.Sort(cols[sortedCol], ListSortDirection.Descending);
-                this.reportViewer1.Visible = false;
-                this.reportViewer2.Visible = false;
-                this.dataGridView.Visible = true;
+                reportViewer1.Visible = false;
+                reportViewer2.Visible = false;
+                dataGridView.Visible = true;
                 dataGridView.ClearSelection();
             }
             catch (Exception ex)
@@ -328,9 +328,9 @@ namespace EspaceSyndic.Impressions.RetardsPaiements
                 {
                     rowGrid.Cells["relance"].Value = false;
                     rowGrid.Cells["type_relance"].Value = 0;
-                    rowGrid.Cells["première_relance"].Value = System.DBNull.Value;
-                    rowGrid.Cells["seconde_relance"].Value = System.DBNull.Value;
-                    rowGrid.Cells["mise_en_demeure"].Value = System.DBNull.Value;
+                    rowGrid.Cells["première_relance"].Value = DBNull.Value;
+                    rowGrid.Cells["seconde_relance"].Value = DBNull.Value;
+                    rowGrid.Cells["mise_en_demeure"].Value = DBNull.Value;
                     rowGrid.Tag = 0;
                 }
                 dataGridView.ClearSelection();
@@ -346,8 +346,8 @@ namespace EspaceSyndic.Impressions.RetardsPaiements
                     rowGrid.Cells["relance"].Value = true;
                     rowGrid.Cells["type_relance"].Value = 1;
                     rowGrid.Cells["première_relance"].Value = DateTime.Now.Date;
-                    rowGrid.Cells["seconde_relance"].Value = System.DBNull.Value;
-                    rowGrid.Cells["mise_en_demeure"].Value = System.DBNull.Value;
+                    rowGrid.Cells["seconde_relance"].Value = DBNull.Value;
+                    rowGrid.Cells["mise_en_demeure"].Value = DBNull.Value;
                     setLineColor(1, rowGrid.Index);
                     rowGrid.Tag = 0;
                 }
@@ -365,7 +365,7 @@ namespace EspaceSyndic.Impressions.RetardsPaiements
                     rowGrid.Cells["relance"].Value = true;
                     rowGrid.Cells["type_relance"].Value = 2;
                     rowGrid.Cells["seconde_relance"].Value = DateTime.Now.Date;
-                    rowGrid.Cells["mise_en_demeure"].Value = System.DBNull.Value;
+                    rowGrid.Cells["mise_en_demeure"].Value = DBNull.Value;
                     setLineColor(2, rowGrid.Index);
                     rowGrid.Tag = 1;
                 }

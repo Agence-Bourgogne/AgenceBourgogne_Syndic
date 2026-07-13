@@ -40,7 +40,7 @@ namespace EspaceSyndic.Impressions
             reportViewer1.LocalReport.DataSources.Clear();
             reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("CoproImmeubleDSet", CoproprietaireController.getController().CoproprietaireImmeubleDescription(immeuble.id)));
             reportViewer1.LocalReport.SetParameters(parameters);
-            this.reportViewer1.RefreshReport();
+            reportViewer1.RefreshReport();
         }
 
         private void tbRefImmeuble_Validating(object sender, CancelEventArgs e)

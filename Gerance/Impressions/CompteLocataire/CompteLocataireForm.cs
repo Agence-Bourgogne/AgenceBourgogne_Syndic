@@ -10,7 +10,7 @@ using Microsoft.Reporting.WinForms;
 
 namespace Gerance.Impressions.CompteLocataire
 {
-    public partial class CompteLocataireForm : Gerance.Formulaires.Common.CommonGridviewForm
+    public partial class CompteLocataireForm : Formulaires.Common.CommonGridviewForm
     {
         public CompteLocataireForm()
         {

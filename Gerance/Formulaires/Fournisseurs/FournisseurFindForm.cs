@@ -1,7 +1,7 @@
 ﻿using GeranceData.Controller;
 namespace Gerance.Formulaires.Fournisseurs
 {
-    public partial class FournisseurFindForm : Gerance.Formulaires.Common.CommonFindForm
+    public partial class FournisseurFindForm : Common.CommonFindForm
     {
         public FournisseurFindForm()
         {

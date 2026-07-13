@@ -46,7 +46,7 @@ namespace CommonProjectsPartners.Formulaires.Config
             Database.CloseConnection();
             if (Database.GetInstance() != null)
             {
-                this.Close();
+                Close();
                 MessageBox.Show("Connexion Ok");
             }
             else

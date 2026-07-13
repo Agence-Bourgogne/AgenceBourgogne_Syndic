@@ -16,7 +16,7 @@ namespace EspaceSyndic.Impressions
         public EtiquettePrintForm()
         {
             InitializeComponent();
-            TitreForm = this.Text;
+            TitreForm = Text;
         }
         private void lblImmeuble_Click(object sender, EventArgs e)
         {
@@ -34,13 +34,13 @@ namespace EspaceSyndic.Impressions
             immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
             if (immeuble != null)
             {
-                this.Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
                 btnRapport.Enabled = true;
             }
             else
             {
                 btnRapport.Enabled = false;
-                this.Text = TitreForm;
+                Text = TitreForm;
             }
         }
 

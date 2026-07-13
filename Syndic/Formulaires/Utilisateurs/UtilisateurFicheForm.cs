@@ -34,7 +34,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
         {
 //            bool rc = true;
 
-            this.currentReference = tbReference.Text;
+            currentReference = tbReference.Text;
             user.reference = tbReference.Text;
             user.Password = tbPassword.Text;
             user.nom = tbNom.Text;
@@ -48,13 +48,13 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
             modified = bModified;
             if (!modified)
             {
-                if (this.Text.EndsWith("*"))
-                    this.Text = this.Text.Replace(" *", "");
+                if (Text.EndsWith("*"))
+                    Text = Text.Replace(" *", "");
             }
             else
             {
-                if (!this.Text.EndsWith("*"))
-                    this.Text += " *";
+                if (!Text.EndsWith("*"))
+                    Text += " *";
             }
         }
 
@@ -162,8 +162,8 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
         protected  void tbTextChanged(object sender, EventArgs e)
         {
             modified = true;
-            if (!this.Text.EndsWith("*"))
-                this.Text += " *";
+            if (!Text.EndsWith("*"))
+                Text += " *";
         }
         protected bool bFromEnter;
         private void btnEnter_Click(object sender, EventArgs e)

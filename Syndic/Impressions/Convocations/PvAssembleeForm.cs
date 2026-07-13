@@ -13,7 +13,7 @@ namespace EspaceSyndic.Impressions.Convocations
         public PvAssembleeForm()
         {
             InitializeComponent();
-            TitreForm = this.Text;
+            TitreForm = Text;
         }
 
         private void immeubleUserControl1_ValidatingControle(object sender, CancelEventArgs e)
@@ -22,13 +22,13 @@ namespace EspaceSyndic.Impressions.Convocations
             if (immeuble != null)
             {
                 immeubleUserControl.Invalid = false;
-                this.Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
             }
             else
             {
                 if ( immeubleUserControl.tbRefImmeuble.Text != "")
                     immeubleUserControl.Invalid = true;
-                this.Text = TitreForm;
+                Text = TitreForm;
             }
         }
 

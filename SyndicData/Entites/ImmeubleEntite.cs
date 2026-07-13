@@ -22,7 +22,7 @@ namespace SyndicData.Entites
         public DateTime datecloture;
         public DateTime dateass;
         public string lieuconv;
-        public int statut = (int)AbstractBaseEntite.StatutEntite.Actif;
+        public int statut = (int)StatutEntite.Actif;
         public string texte_date;
         private DataTable immeuble_repart = null;
         private DataTable listeLots = null;

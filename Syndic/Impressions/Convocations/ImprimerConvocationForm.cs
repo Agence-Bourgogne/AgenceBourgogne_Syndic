@@ -126,7 +126,7 @@ namespace EspaceSyndic.Impressions.Convocations
         public ImprimerConvocationForm()
         {
             InitializeComponent();
-            TitreForm = this.Text;
+            TitreForm = Text;
         }
 
         private void ImprimerConvocationForm_Load(object sender, EventArgs e)
@@ -176,7 +176,7 @@ namespace EspaceSyndic.Impressions.Convocations
         private void tbHelpBox_KeyPress(object sender, KeyPressEventArgs e)
         {
 
-            if (Control.ModifierKeys == Keys.Control)
+            if (ModifierKeys == Keys.Control)
                 if (e.KeyChar == ' ')
                 {
                     e.Handled = true;
@@ -205,7 +205,7 @@ namespace EspaceSyndic.Impressions.Convocations
             if (immeuble != null)
             {
                 repart = ImmeubleRepartitionController.getController().getRepartitionImmeubleEntite(immeuble.id);
-                this.Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
                 infoForm.DoFormText(this, immeuble.note);
                 if ( immeuble.dateass.Year > 2000 )
                     dtDateAssemblee.Value = immeuble.dateass;
@@ -214,7 +214,7 @@ namespace EspaceSyndic.Impressions.Convocations
             }
             else
             {
-                this.Text = TitreForm;
+                Text = TitreForm;
                 btnRapport.Enabled = btnWord.Enabled = btnExport.Enabled = false;
                 infoForm.Hide();
             }
@@ -289,8 +289,8 @@ namespace EspaceSyndic.Impressions.Convocations
             }
 
             ordre = getOrdre(tbText.Lines);
-            string hdr_descr = SyndicData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
-            string hdr_agence = SyndicData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
+            string hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
+            string hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
             ReportParameter[] parameters = new ReportParameter[]{
                 new ReportParameter("DateEntete", dtDateEntete.Value.ToShortDateString()),
                 new ReportParameter("DateAssemblee", dtDateAssemblee.Value.ToShortDateString()),
@@ -318,10 +318,10 @@ namespace EspaceSyndic.Impressions.Convocations
                 else
                     reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("convocation", CoproprietaireController.getController().CoproprietaireImmeubleDescriptionByLot(immeuble.id, num_lot)));
                // reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("convocation", CoproprietaireController.getController().CoproprietaireImmeubleDescription(immeuble.id)));
-                this.reportViewer1.LocalReport.ReportEmbeddedResource = "EspaceSyndic.Impressions.Convocations.ConvocationReport.rdlc";
+                reportViewer1.LocalReport.ReportEmbeddedResource = "EspaceSyndic.Impressions.Convocations.ConvocationReport.rdlc";
             }
             else
-                this.reportViewer1.LocalReport.ReportEmbeddedResource = "EspaceSyndic.Impressions.Convocations.ConvocationMasterReport.rdlc";
+                reportViewer1.LocalReport.ReportEmbeddedResource = "EspaceSyndic.Impressions.Convocations.ConvocationMasterReport.rdlc";
 
             reportViewer1.LocalReport.SetParameters(parameters);
             reportViewer1.RefreshReport();
@@ -397,8 +397,8 @@ namespace EspaceSyndic.Impressions.Convocations
             string modelePresence = @"c:\syndic_modeles\feuillePresence.dotx";
             string modeleConvocTexte = @"c:\syndic_modeles\convocation_texte.dotx";
 
-            string hdr_descr = SyndicData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
-            string hdr_agence = SyndicData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
+            string hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
+            string hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
             List<NpgsqlParameter> parameters = new List<NpgsqlParameter>{
                 new NpgsqlParameter("DateEntete", dtDateEntete.Value.ToShortDateString()),
                 new NpgsqlParameter("DateAssemblee", dtDateAssemblee.Value.ToShortDateString()),
@@ -464,13 +464,13 @@ namespace EspaceSyndic.Impressions.Convocations
                 infoForm.ShowForm(this);
             else
                 infoForm.Close();
-            this.infoForm.Text = "Notes Assemblée";
-            this.Activate();
+            infoForm.Text = "Notes Assemblée";
+            Activate();
         }
 
         private void btnPV_Click(object sender, EventArgs e)
         {
-            EspaceSyndic.Impressions.Convocations.PvAssembleeForm form = new Impressions.Convocations.PvAssembleeForm();
+            PvAssembleeForm form = new PvAssembleeForm();
             form.ShowDialog();
         }
 
@@ -587,7 +587,7 @@ namespace EspaceSyndic.Impressions.Convocations
         {
             if (immeuble == null) return;
             List<LotDescriptionEntite> lots = LotDescriptionController.getController().getListeLotDescription(immeuble.id);
-            EspaceSyndic.Impressions.RelevesIndividuels.ExportCopro dlg = new EspaceSyndic.Impressions.RelevesIndividuels.ExportCopro();
+            RelevesIndividuels.ExportCopro dlg = new RelevesIndividuels.ExportCopro();
             try
             {
                 dlg.Show(this);

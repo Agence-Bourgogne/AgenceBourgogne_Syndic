@@ -75,8 +75,8 @@ namespace Gerance.Formulaires.Indices
                         tbCoeff.Text = row["variation"].ToString();
                     if (tbIndice != null)
                         tbIndice.Text = row["indice"].ToString();
-                    this.DialogResult = DialogResult.OK;
-                    this.Close();
+                    DialogResult = DialogResult.OK;
+                    Close();
                 }
             }
         }

@@ -9,7 +9,7 @@ using Gerance.Formulaires.Comptables;
 using GeranceData.Common;
 namespace Gerance.Formulaires.Locataires
 {
-    public partial class LocataireFicheForm : Gerance.Formulaires.Common.CommonFicheForm
+    public partial class LocataireFicheForm : Common.CommonFicheForm
     {
         public LocataireEntite locataire;
         public LocataireFicheForm()
@@ -81,7 +81,7 @@ namespace Gerance.Formulaires.Locataires
         }
         protected override bool saveValue()
         {
-            this.currentReference = tbReference.Text;
+            currentReference = tbReference.Text;
 
             locataire.reference = tbReference.Text;
             locataire.civilite = (int) cbCivilite.SelectedValue;

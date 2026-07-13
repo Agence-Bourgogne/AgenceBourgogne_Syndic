@@ -10,7 +10,7 @@ using GeranceData.Common;
 
 namespace Gerance.Formulaires.Proprietaires
 {
-    public partial class ProprietaireFicheForm : Gerance.Formulaires.Common.CommonFicheForm
+    public partial class ProprietaireFicheForm : Common.CommonFicheForm
     {
         public ProprietaireEntite proprietaire;
         public ProprietaireFicheForm()
@@ -83,7 +83,7 @@ namespace Gerance.Formulaires.Proprietaires
         }
         protected override bool saveValue()
         {
-            this.currentReference = tbReference.Text;
+            currentReference = tbReference.Text;
 
             proprietaire.reference = tbReference.Text;
             proprietaire.nom = tbNom.Text;

@@ -31,8 +31,8 @@ namespace EspaceSyndic.Impressions
         private void btnRapport_Click(object sender, EventArgs e)
         {
             DataTable source = ImmeubleController.getController().GetListeFromMonthCloture(tbMonth.Text.Replace(".",","));
-            this.immeubleBindingSource.DataSource = source;
-            this.reportViewer1.RefreshReport();
+            immeubleBindingSource.DataSource = source;
+            reportViewer1.RefreshReport();
         }
     }
 }

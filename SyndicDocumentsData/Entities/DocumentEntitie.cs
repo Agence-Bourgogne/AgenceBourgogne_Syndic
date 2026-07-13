@@ -24,7 +24,7 @@ namespace SyndicDocumentsData.Entities
         public DocumentEntitie(string text, string document_id, byte[] content, String immeuble_id, string copro_id)
         {
             this.text = text;
-            this.Guid = document_id;
+            Guid = document_id;
             this.content = content;
             this.immeuble_id = immeuble_id;
             this.copro_id = copro_id;

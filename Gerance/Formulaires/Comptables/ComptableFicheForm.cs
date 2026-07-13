@@ -6,7 +6,7 @@ using GeranceData.Entites;
 
 namespace Gerance.Formulaires.Comptables
 {
-    public partial class ComptableFicheForm : Gerance.Formulaires.Common.CommonFicheForm
+    public partial class ComptableFicheForm : Common.CommonFicheForm
     {
         private ComptableEntite comptable;
         public ComptableFicheForm()
@@ -54,7 +54,7 @@ namespace Gerance.Formulaires.Comptables
                 MessageBox.Show("La référence ne peux pas être vide");
                 return false;
             }
-            this.currentReference = tbReference.Text;
+            currentReference = tbReference.Text;
 
             comptable.reference = tbReference.Text;
             comptable.nom = tbNom.Text;

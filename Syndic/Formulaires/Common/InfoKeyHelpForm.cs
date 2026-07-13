@@ -14,7 +14,7 @@ namespace EspaceSyndic.Formulaires.Common
             //InitializeComponent();
             //this.helpKey = keyName;
             //this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HelpForm_FormClosing);
-            this.Text = "Raccourcis Claviers";
+            Text = "Raccourcis Claviers";
         }
         public void DoFormText(Form parent)
         {
@@ -29,12 +29,12 @@ namespace EspaceSyndic.Formulaires.Common
             {
                 base.DoFormText(parent, note);
                 int height = 13 * 15;
-                this.tbHelp.Height = height + 10;
-                this.Height = height;
+                tbHelp.Height = height + 10;
+                Height = height;
                 parent.Activate();
             }
             else
-                this.Visible = false;
+                Visible = false;
         }
         public override void DoFormText(Form parent, string note)
         {
@@ -49,12 +49,12 @@ namespace EspaceSyndic.Formulaires.Common
             {
                 base.DoFormText(parent, note);
                 int height = 13 * 15;
-                this.tbHelp.Height = height + 10;
-                this.Height = height;
+                tbHelp.Height = height + 10;
+                Height = height;
                 parent.Activate();
             }
             else
-                this.Visible = false;
+                Visible = false;
         }
     }
 }

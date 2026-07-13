@@ -72,13 +72,13 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
                 {
                     appel.lot_id = row["id"].ToString();
                     if (SaisieAppelFondController.getController().InsertOrUpdate(appel))
-                        this.Close();
+                        Close();
                 }
                 if (facture != null)
                 {
                     facture.lot_id = row["id"].ToString();
                     if (SaisieFactureController.getController().InsertOrUpdate(facture))
-                        this.Close();
+                        Close();
                 }
             }
         }

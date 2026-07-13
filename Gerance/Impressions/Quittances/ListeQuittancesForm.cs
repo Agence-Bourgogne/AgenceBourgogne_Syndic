@@ -3,7 +3,7 @@ using Microsoft.Reporting.WinForms;
 using GeranceData.Controller;
 namespace Gerance.Impressions.Quittances
 {
-    public partial class ListeQuittancesForm : Gerance.Formulaires.Common.CommonRapportForm
+    public partial class ListeQuittancesForm : Formulaires.Common.CommonRapportForm
     {
         public ListeQuittancesForm()
         {
@@ -12,7 +12,7 @@ namespace Gerance.Impressions.Quittances
 
         private void ListeQuittancesForm_Load(object sender, EventArgs e)
         {
-            int h = this.gbHeader.Height;
+            int h = gbHeader.Height;
             gbHeader.Visible = false;
             reportViewer1.Location = gbHeader.Location;
             reportViewer1.Height += h;

@@ -3,7 +3,7 @@ using GeranceData.Controller;
 
 namespace Gerance.Formulaires.Locataires
 {
-    public partial class LocataireLotFindForm : Gerance.Formulaires.Common.CommonFindForm
+    public partial class LocataireLotFindForm : Common.CommonFindForm
     {
         public string ref_immeuble;
         public LocataireLotFindForm()

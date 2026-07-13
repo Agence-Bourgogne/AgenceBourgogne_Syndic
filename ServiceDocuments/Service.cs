@@ -19,21 +19,21 @@ public class Service : IService
     public string CreateUser(string Code, String Password = "")
     {
         string msg = "";
-        SyndicDocumentsData.Models.IDal dal = new SyndicDocumentsData.Models.Dal();
+        IDal dal = new Dal();
         msg = dal.CreateUser(Code, Password);
         return msg;
     }
     public string DeleteUser(string Guid)
     {
         string msg = "";
-        SyndicDocumentsData.Models.IDal dal = new SyndicDocumentsData.Models.Dal();
+        IDal dal = new Dal();
         msg = dal.DeleteUser(Guid);
         return msg;
     }
     public string DeleteCopro(string Guid)
     {
         string msg = "";
-        SyndicDocumentsData.Models.IDal dal = new SyndicDocumentsData.Models.Dal();
+        IDal dal = new Dal();
         msg = dal.DeleteCopro(Guid);
         return msg;
     }
@@ -46,7 +46,7 @@ public class Service : IService
         {
             part = parts.Find(x => x.Key == Guid);
             offset = part.Content.Length;
-            System.Array.Resize(ref part.Content, part.Content.Length + filePart.Length);
+            Array.Resize(ref part.Content, part.Content.Length + filePart.Length);
         }
         else
         {
@@ -54,7 +54,7 @@ public class Service : IService
             part.Content = new byte[filePart.Length];
             parts.Add(part);
         }
-        System.Buffer.BlockCopy(filePart, 0, part.Content, offset, filePart.Length);
+        Buffer.BlockCopy(filePart, 0, part.Content, offset, filePart.Length);
     }
     public String CloseFile(string text, String Guid, string immeuble_id, string copro_id)
     {
@@ -125,7 +125,7 @@ public class Service : IService
     public string UpdateUser(string Guid, string Code, String Password = "")
     {
         string msg = "";
-        SyndicDocumentsData.Models.IDal dal = new SyndicDocumentsData.Models.Dal();
+        IDal dal = new Dal();
         msg = dal.UpdateUser(Guid, Code, Password);
         return msg;
     }

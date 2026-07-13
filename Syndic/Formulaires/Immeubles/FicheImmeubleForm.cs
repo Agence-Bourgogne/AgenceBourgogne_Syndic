@@ -34,7 +34,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
         private void setFicheValues(ImmeubleEntite newEntite)
         {
             if (newEntite != null)
-                this.immeuble = newEntite;
+                immeuble = newEntite;
             tbNumero.Text = immeuble.reference;
             tbAdresse.Text = immeuble.rue;
             tbCodePostal.Text = immeuble.codepostal;
@@ -154,7 +154,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
         }
         private void btnQuit_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
         protected void getNewEntite(String where, String message)
         {

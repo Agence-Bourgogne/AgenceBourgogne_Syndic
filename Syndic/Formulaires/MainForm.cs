@@ -31,7 +31,7 @@ namespace EspaceSyndic.Formulaires
         
         private void MainForm_Load(object sender, EventArgs e)
         {
-            this.Text = this.Text +" "+ Assembly.GetEntryAssembly().GetName().Version;//" 1.0.0.66";
+            Text = Text +" "+ Assembly.GetEntryAssembly().GetName().Version;//" 1.0.0.66";
             //this.Text = this.Text + " "+ Application.ProductVersion;
             btnCancel.Width = 0;
 
@@ -428,7 +428,7 @@ namespace EspaceSyndic.Formulaires
                     syndicEvent.Changed -= f.ChangedReference;
                 }
             }
-            this.Activate();
+            Activate();
         }
         private void GenericBtnCancel_Click(object sender, EventArgs e)
         {
@@ -456,7 +456,7 @@ namespace EspaceSyndic.Formulaires
                     ObjectHandle obj = Activator.CreateInstance("SyndicApplication", className);
                     form = (Form)obj.Unwrap();
                     dicoForms.Add(className, form);
-                    form.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.GenericForm_FormClosed);
+                    form.FormClosed += new FormClosedEventHandler(GenericForm_FormClosed);
                     if (form is ICommonChangedListener)
                     {
                         ICommonChangedListener f = (ICommonChangedListener) form;
@@ -472,12 +472,12 @@ namespace EspaceSyndic.Formulaires
                 form.StartPosition = FormStartPosition.CenterScreen;
                 form.ControlBox = true;
                 form.ShowInTaskbar = true;
-                form.Icon = this.Icon;
+                form.Icon = Icon;
                 form.ShowIcon = true;
                 if (form.CancelButton != null)
                 {
                     Button btn = (Button) form.CancelButton;
-                    btn.Click += new System.EventHandler(this.GenericBtnCancel_Click); ;
+                    btn.Click += new EventHandler(GenericBtnCancel_Click); ;
                 }
 
                 form.Show();
@@ -695,17 +695,17 @@ namespace EspaceSyndic.Formulaires
                 {
                     item.Value.Hide();
                 }
-                this.Hide();
+                Hide();
                 LogonForm logonForm = new LogonForm();
                 logonForm.ShowDialog();
                 if ( BaseApplication.userConnected != null)
                 {
                     if (BaseApplication.userConnected.reference == "GVI")
                         controlesDBToolStripMenuItem.Visible = true;
-                    this.Show();
+                    Show();
                 }
                 else
-                    this.Close();
+                    Close();
             }
             catch (Exception ex)
             {
@@ -715,7 +715,7 @@ namespace EspaceSyndic.Formulaires
 
         private void quitterToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void deconnexionToolStripMenuItem_Click(object sender, EventArgs e)
@@ -810,7 +810,7 @@ namespace EspaceSyndic.Formulaires
 
         private void impressionListeFacturesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            EspaceSyndic.Impressions.Facture.ImprimerListeFacturationForm form = new Impressions.Facture.ImprimerListeFacturationForm();
+            Impressions.Facture.ImprimerListeFacturationForm form = new Impressions.Facture.ImprimerListeFacturationForm();
             form.ShowDialog();
         }
 
@@ -821,7 +821,7 @@ namespace EspaceSyndic.Formulaires
 
         private void publicationDeDocumentsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            EspaceSyndic.Formulaires.Extranet.PublishDocument form = new EspaceSyndic.Formulaires.Extranet.PublishDocument();
+            Extranet.PublishDocument form = new Extranet.PublishDocument();
             form.ShowDialog();
         }
 

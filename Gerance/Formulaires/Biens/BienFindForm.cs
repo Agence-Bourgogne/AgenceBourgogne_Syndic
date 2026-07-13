@@ -1,7 +1,7 @@
 ﻿using GeranceData.Controller;
 namespace Gerance.Formulaires.Biens
 {
-    public partial class BienFindForm : Gerance.Formulaires.Common.CommonFindForm
+    public partial class BienFindForm : Common.CommonFindForm
     {
         public BienFindForm()
         {

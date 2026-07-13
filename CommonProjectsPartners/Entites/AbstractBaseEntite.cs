@@ -61,7 +61,7 @@ namespace CommonProjectsPartners.Entites
                     Console.WriteLine(e.Message);
                 }
             }
-            old_entite = (AbstractBaseEntite)this.MemberwiseClone();
+            old_entite = (AbstractBaseEntite)MemberwiseClone();
         }
         public virtual string GetInsertOrUdpateCommand(string schemaTable)
         {

@@ -22,7 +22,7 @@ namespace EspaceSyndic.Impressions.RelevesComptes
         public ReleveCompteCoproPrintForm()
         {
             InitializeComponent();
-            TitreForm = this.Text;
+            TitreForm = Text;
         }
         public void RefreshImmeuble(string ref_immeuble)
         {
@@ -72,7 +72,7 @@ namespace EspaceSyndic.Impressions.RelevesComptes
             if ( immeuble != null)
             {
                 btnRapport.Enabled = true;
-                this.Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
                 fillRapport();
             }
         }
@@ -110,11 +110,11 @@ namespace EspaceSyndic.Impressions.RelevesComptes
 
                 try
                 {
-                    this.reportViewer1.LocalReport.SetParameters(parameters);
+                    reportViewer1.LocalReport.SetParameters(parameters);
 
                     sourceData.Sort = "date_reference asc";
-                    this.reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("ReleveCompteCopro", sourceData));
-                    this.reportViewer1.RefreshReport();
+                    reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("ReleveCompteCopro", sourceData));
+                    reportViewer1.RefreshReport();
 
                 }
                 catch (Exception)

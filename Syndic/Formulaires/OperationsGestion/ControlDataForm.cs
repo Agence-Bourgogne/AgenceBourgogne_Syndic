@@ -72,11 +72,11 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             {
                 immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
                 if (immeuble != null)
-                    this.Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                    Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
                 FillComboExercice();
             }
             else
-                this.Text = TitreForm;
+                Text = TitreForm;
         }
 
         private void FillComboExercice()
@@ -478,7 +478,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
                 TotauxForm.DoFormText(this, strTotaux);
                 TotauxForm.Text = "Totaux";
                 TotauxForm.ShowForm(this);
-                this.Activate();
+                Activate();
             }
 
         }
@@ -533,7 +533,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         private void ControlDataForm_Load(object sender, EventArgs e)
         {
             btnEnter.Width = 0;
-            TitreForm = this.Text;
+            TitreForm = Text;
         }
 
         private void btnExport_Click(object sender, EventArgs e)

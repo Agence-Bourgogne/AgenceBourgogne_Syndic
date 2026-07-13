@@ -3,7 +3,7 @@ using GeranceData.Common;
 
 namespace Gerance.Impressions.EtatsFiscaux
 {
-    public partial class TexteReleveFiscalForm : Gerance.Formulaires.Common.CommonTextForm
+    public partial class TexteReleveFiscalForm : Formulaires.Common.CommonTextForm
     {
         public TexteReleveFiscalForm()
         {

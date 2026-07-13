@@ -23,7 +23,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         public CreateFacturefromOperationForm(OperationEntite entite)
         {
             InitializeComponent();
-            this.operation = entite;
+            operation = entite;
         }
 
         private void CreateFacturefromOperationForm_Load(object sender, EventArgs e)
@@ -119,7 +119,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
                 }
                 trx.Commit();
                 MessageBox.Show("Modification enregistrées");
-                this.Close();
+                Close();
             }
             catch (Exception ex)
             {

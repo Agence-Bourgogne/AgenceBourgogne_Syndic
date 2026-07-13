@@ -9,15 +9,15 @@ using CommonProjectsPartners.Common;
 
 namespace Gerance.Formulaires.Reglements
 {
-    public partial class RéglementProprietairesSyndicForm : Gerance.Formulaires.Common.CommonGridviewForm
+    public partial class RéglementProprietairesSyndicForm : Common.CommonGridviewForm
     {
         string locataires_id;
         public RéglementProprietairesSyndicForm()
         {
             InitializeComponent();
             locataires_id = SyndicDatabase.getListLocatairesId();
-            this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.reglement});
+            dataGridView.Columns.AddRange(new DataGridViewColumn[] {
+            reglement});
             dataGridView.CellContentClick += dataGridView_CellContentClick;
         }
 

@@ -29,14 +29,14 @@ namespace Gerance.Formulaires.Common
                 {
                     if (child is TextBox)
                     {
-                        child.TextChanged += new System.EventHandler(this.tbTextChanged);
+                        child.TextChanged += new EventHandler(tbTextChanged);
                     }
                 }
             }
             else
                 if (parent is TextBox)
                 {
-                    parent.TextChanged += new System.EventHandler(this.tbTextChanged);
+                    parent.TextChanged += new EventHandler(tbTextChanged);
                 }
         }
 
@@ -49,7 +49,7 @@ namespace Gerance.Formulaires.Common
             InitializeCombos();
             setFicheValues(getCurrentEntite(entite_id));
 
-            foreach (Control ctl in this.Controls)
+            foreach (Control ctl in Controls)
             {
                 setChangedEvent(ctl);
             }
@@ -64,20 +64,20 @@ namespace Gerance.Formulaires.Common
             modified = bModified;
             if (!modified)
             {
-                if (this.Text.EndsWith("*"))
-                    this.Text = this.Text.Replace(" *", "");
+                if (Text.EndsWith("*"))
+                    Text = Text.Replace(" *", "");
             }
             else
             {
-                if (!this.Text.EndsWith("*"))
-                    this.Text += " *";
+                if (!Text.EndsWith("*"))
+                    Text += " *";
             }
         }
         private void btnSave_Click(object sender, EventArgs e)
         {
             DialogResult rc = saveForm(false);
             if (rc != DialogResult.Cancel)
-                this.DialogResult = rc;
+                DialogResult = rc;
         }
 
         protected virtual bool saveValue()
@@ -162,8 +162,8 @@ namespace Gerance.Formulaires.Common
         protected virtual void tbTextChanged(object sender, EventArgs e)
         {
             modified = true;
-            if (!this.Text.EndsWith("*"))
-                this.Text += " *";
+            if (!Text.EndsWith("*"))
+                Text += " *";
         }
         protected bool bFromEnter;
         private void btnEnter_Click(object sender, EventArgs e)

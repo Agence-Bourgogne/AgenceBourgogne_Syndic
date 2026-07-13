@@ -10,7 +10,7 @@ using GeranceData.Common;
 
 namespace Gerance.Impressions.EtatsFiscaux
 {
-    public partial class ListeLoyerProprietaireForm : Gerance.Formulaires.Common.CommonRapportForm
+    public partial class ListeLoyerProprietaireForm : Formulaires.Common.CommonRapportForm
     {
         public ListeLoyerProprietaireForm()
         {
@@ -19,7 +19,7 @@ namespace Gerance.Impressions.EtatsFiscaux
 
         private void lblRefProprietaire_Click(object sender, EventArgs e)
         {
-            if (ShowFindForm(new ProprietaireFindForm(), tbRefProprietaire) == System.Windows.Forms.DialogResult.OK)
+            if (ShowFindForm(new ProprietaireFindForm(), tbRefProprietaire) == DialogResult.OK)
             {
                 tbRefProprietaire_Validating(null, null);
             }
@@ -72,8 +72,8 @@ namespace Gerance.Impressions.EtatsFiscaux
                 form.ShowDialog();
                 if (form.DialogResult != DialogResult.OK)
                     return;
-                string hdr_descr = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
-                string hdr_agence = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
+                string hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
+                string hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
 
                 ReportParameter[] parameters = new ReportParameter[]{
                     new ReportParameter("dateEdition", DateTime.Now.ToShortDateString()),

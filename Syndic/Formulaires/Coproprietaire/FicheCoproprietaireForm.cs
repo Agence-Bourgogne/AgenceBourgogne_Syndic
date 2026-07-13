@@ -31,7 +31,7 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
         private void setFicheValues(CoproprietaireEntite newEntite)
         {
             if (newEntite != null)
-                this.entite = newEntite;
+                entite = newEntite;
             tbRef.Text = entite.reference;
             tbNom.Text = entite.nom;
             tbPrenom.Text = entite.prenom;
@@ -117,7 +117,7 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
         //------------------------------------------------
         private void btnQuit_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
         //------------------------------------------------
         private void getNewEntite(String where, String message)

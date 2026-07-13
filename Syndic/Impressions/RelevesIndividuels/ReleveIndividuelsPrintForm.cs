@@ -35,7 +35,7 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
         public ReleveIndividuelsPrintForm()
         {
             InitializeComponent();
-            TitreForm = this.Text;
+            TitreForm = Text;
             if (UtilsApp.ServiceReferenceUtils.ServiceClientIsConfigured())
                 btnExport.Visible = true;
         }
@@ -67,7 +67,7 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
                 tbRefImmeuble.BackColor = Color.White;
                 DataTable lots = LotDescriptionController.getController().getListeLot(immeuble.id);
 
-                this.Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
 
                 ExerciceComptableEntite exercice = immeuble.ExerciceCourant;//ExerciceComptableController.getController().getExerciceCourant(immeuble.id);
                 if (exercice != null)
@@ -89,7 +89,7 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
             }
             else
             {
-                this.Text = TitreForm;
+                Text = TitreForm;
                 if (!"".Equals(tbRefImmeuble.Text))
                     tbRefImmeuble.BackColor = Color.Red;
                 btnRapport.Enabled = false;
@@ -99,7 +99,7 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
 
         private void tbRefImmeuble_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (Control.ModifierKeys == Keys.Control)
+            if (ModifierKeys == Keys.Control)
                 if (e.KeyChar == ' ')
                 {
                     e.Handled = true;
@@ -385,8 +385,8 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
             DataTable table_etat = new DataTable();
             table_etat.Columns.Add("code");
             table_etat.Columns.Add("libelle");
-            table_etat.Columns.Add("dettes", typeof(System.Decimal));
-            table_etat.Columns.Add("creances", typeof(System.Decimal));
+            table_etat.Columns.Add("dettes", typeof(Decimal));
+            table_etat.Columns.Add("creances", typeof(Decimal));
 
 
             table_etat.Rows.Add(new object[] { "1033", "Avance fond de roulement", 0.0, avance });
@@ -408,9 +408,9 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
                 new ReportParameter("Header_Agence", hdr_agence),
             };
        //     this.reportViewer1.LocalReport.ReportEmbeddedResource = "EspaceSyndic.Impressions.RelevesIndividuels.ReleveIndivMasterReport.rdlc";
-            Console.WriteLine(" test " + this.reportViewer1.LocalReport.ReportEmbeddedResource);
+            Console.WriteLine(" test " + reportViewer1.LocalReport.ReportEmbeddedResource);
            
-            this.reportViewer1.LocalReport.SetParameters(parameters);
+            reportViewer1.LocalReport.SetParameters(parameters);
             reportViewer1.LocalReport.DataSources.Clear();
             reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("immeuble_copro", tableImmeuble_copro));
             reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("etat_financier", table_etat));
@@ -519,7 +519,7 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
             table_soldes = OperationController.getController().getSoldesRelevesIndividuels(immeuble.id, dtDebut.Value, dtFin.Value);
             table_appel_fond = OperationController.getController().getSoldesRelevesIndividuels(immeuble.id, dtDebut.Value, dtFin.Value, true);
             solde_bidon = OperationController.getController().getSoldesBidon();
-            this.Enabled = false;
+            Enabled = false;
             ExportCopro dlg = new ExportCopro();
             try
             {
@@ -567,8 +567,8 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
                 dlg.Close();
                 MessageBox.Show(ex.Message);
             }
-            this.Enabled = true;
-            this.Activate();
+            Enabled = true;
+            Activate();
         }
     }
     class BaseDescription

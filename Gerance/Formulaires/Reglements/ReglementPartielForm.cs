@@ -6,7 +6,7 @@ using CommonProjectsPartners.Utils;
 
 namespace Gerance.Formulaires.Reglements
 {
-    public partial class ReglementPartielForm : Gerance.Formulaires.Common.BaseFicheForm
+    public partial class ReglementPartielForm : Common.BaseFicheForm
     {
         ReglementEntite reglement;
         // TODO à Paramétrer
@@ -34,7 +34,7 @@ namespace Gerance.Formulaires.Reglements
             {
                 if (ctl is TextBox)
                     if (ctl.Enabled)
-                        ctl.TextChanged += new System.EventHandler(this.tbPaiementTextChanged);
+                        ctl.TextChanged += new EventHandler(tbPaiementTextChanged);
             }
 
             LocataireEntite locataire = reglement.Locataire;

@@ -32,9 +32,9 @@ namespace EspaceSyndic.Impressions.Balances
         private void BalanceImmeubleProntForm_Load(object sender, EventArgs e)
         {
             btnEnter.Width = 0;
-            TitreForm = this.Text;
+            TitreForm = Text;
             cbBalance.SelectedIndex = typeBalance;
-            this.reportViewer1.Visible = false;
+            reportViewer1.Visible = false;
         }
         private void btnEnter_Click(object sender, EventArgs e)
         {
@@ -55,12 +55,12 @@ namespace EspaceSyndic.Impressions.Balances
             immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
             if (immeuble != null & cbBalance.SelectedIndex >= 0)
             {
-                this.Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
                 loadData();
             }
             else
             {
-                this.Text = TitreForm;
+                Text = TitreForm;
             }
         }
 
@@ -84,8 +84,8 @@ namespace EspaceSyndic.Impressions.Balances
 
         private void btnRapport_Click(object sender, EventArgs e)
         {
-            this.reportViewer1.Visible = true;
-            this.dataGridView.Visible = false;
+            reportViewer1.Visible = true;
+            dataGridView.Visible = false;
 
             string titre = "Balance Règlements Factures";
             if (cbBalance.SelectedIndex == 1)
@@ -95,9 +95,9 @@ namespace EspaceSyndic.Impressions.Balances
                     new ReportParameter("Titre", titre),
                     new ReportParameter("RefImmeuble", immeuble.reference)
                 };
-            this.reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("balance", sourceData));
-            this.reportViewer1.LocalReport.SetParameters(reportParams);
-            this.reportViewer1.RefreshReport();
+            reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("balance", sourceData));
+            reportViewer1.LocalReport.SetParameters(reportParams);
+            reportViewer1.RefreshReport();
         }
 
 
@@ -105,8 +105,8 @@ namespace EspaceSyndic.Impressions.Balances
         {
             if (immeuble == null)
                 return;
-            this.reportViewer1.Visible = false;
-            this.dataGridView.Visible = true;
+            reportViewer1.Visible = false;
+            dataGridView.Visible = true;
             dataGridView.DataSource = sourceData;
             DataGridViewColumnCollection cols = dataGridView.Columns;
             cols["type"].Visible = false;

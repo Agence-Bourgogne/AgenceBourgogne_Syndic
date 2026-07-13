@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using GeranceData.Controller;
 namespace Gerance.Formulaires.Fournisseurs
 {
-    public partial class FournisseurListeForm : Gerance.Formulaires.Common.CommonListeForm
+    public partial class FournisseurListeForm : Common.CommonListeForm
     {
         public FournisseurListeForm()
         {
@@ -16,7 +16,7 @@ namespace Gerance.Formulaires.Fournisseurs
         protected override void HideAndResizeColumns(DataGridViewColumnCollection cols)
         {
             base.HideAndResizeColumns(cols);
-            dataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
             cols["id"].Visible = false;
             cols["audit_created"].Visible = false;
             cols["audit_created_by"].Visible = false;

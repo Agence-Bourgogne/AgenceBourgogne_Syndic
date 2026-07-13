@@ -28,7 +28,7 @@ namespace EspaceSyndic.Impressions.AppelDeFond
         public ImprimerAppelDeFondForm()
         {
             InitializeComponent();
-            TitreForm = this.Text;
+            TitreForm = Text;
         }
 
         private void ValidAppelDeFondForm_Load(object sender, EventArgs e)
@@ -59,7 +59,7 @@ namespace EspaceSyndic.Impressions.AppelDeFond
         private void btnPrint_Click(object sender, EventArgs e)
         {
             CreateReport( tbLot.Text);
-            this.reportViewer1.RefreshReport();
+            reportViewer1.RefreshReport();
             dataGridView.ClearSelection();
         }
 
@@ -89,8 +89,8 @@ namespace EspaceSyndic.Impressions.AppelDeFond
                     return;
                 }
             }
-            string hdr_descr = SyndicData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
-            string hdr_agence = SyndicData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
+            string hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
+            string hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
 
             ReportParameter[] parameters = new ReportParameter[]{
                 new ReportParameter("TexteAppel", commentaire),
@@ -101,7 +101,7 @@ namespace EspaceSyndic.Impressions.AppelDeFond
                 new ReportParameter("Header_Agence", hdr_agence),
                 new ReportParameter("TexteDate", immeuble.texte_date),
             };
-            this.reportViewer1.LocalReport.SetParameters(parameters);
+            reportViewer1.LocalReport.SetParameters(parameters);
            // reportViewer1.LocalReport.DataSources.Clear();
             immeubleSource.DataSource = ImmeubleController.getController().GetDescriptionCoproprietairesImmeubleAF(immeuble.id, num_lot, false, saisie);
             immeubleSource.Filter = "";
@@ -140,7 +140,7 @@ namespace EspaceSyndic.Impressions.AppelDeFond
                 tbRefImmeuble.BackColor = Color.White;
                 DataTable lots = LotDescriptionController.getController().getListeLot(immeuble.id);
 
-                this.Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
 
                 if (immeuble.ExerciceCourant == null)
                     MessageBox.Show("Attention pas d'exercice comptable défini");
@@ -162,7 +162,7 @@ namespace EspaceSyndic.Impressions.AppelDeFond
             }
             else
             {
-                this.Text = TitreForm;                        
+                Text = TitreForm;                        
                 if (!"".Equals(tbRefImmeuble.Text))
                     tbRefImmeuble.BackColor = Color.Red;
                 btnRapport.Enabled = false;
@@ -170,7 +170,7 @@ namespace EspaceSyndic.Impressions.AppelDeFond
         }
         private void tbRefImmeuble_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (Control.ModifierKeys == Keys.Control)
+            if (ModifierKeys == Keys.Control)
                 if (e.KeyChar == ' ')
                 {
                     e.Handled = true;
@@ -262,7 +262,7 @@ namespace EspaceSyndic.Impressions.AppelDeFond
             List<LotDescriptionEntite> lots = LotDescriptionController.getController().getListeLotDescription(immeuble.id);
             if (lots == null || lots.Count == 0) return;
 
-            this.Enabled = false;
+            Enabled = false;
             ExportCopro dlg = new ExportCopro();
             try
             {
@@ -310,8 +310,8 @@ namespace EspaceSyndic.Impressions.AppelDeFond
                 dlg.Close();
                 MessageBox.Show(ex.Message);
             }
-            this.Enabled = true;
-            this.Activate();
+            Enabled = true;
+            Activate();
         }
     }
 }
