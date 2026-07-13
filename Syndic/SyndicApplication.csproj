@@ -29,9 +29,7 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.ReportingServices.ReportViewerControl.Winforms" Version="150.1652.0" />
 		<PackageReference Include="Npgsql" Version="8.0.9" />
-		<PackageReference Include="Microsoft.Owin" Version="2.0.0" />
-		<PackageReference Include="Owin" Version="1.0.0" />
-		<PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
+		<PackageReference Include="System.Resources.Extensions" Version="10.0.9" />
 	</ItemGroup>
 
 	<ItemGroup>
