@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using CommonProjectsPartners.Utils;
 using GeranceData.Controller;
@@ -13,7 +8,6 @@ using GeranceData.Entites;
 using Gerance.Formulaires.Biens;
 using Gerance.Formulaires.Proprietaires;
 using Gerance.Formulaires.Locataires;
-using Gerance.Formulaires.Common;
 
 namespace Gerance.Formulaires.Common
 {

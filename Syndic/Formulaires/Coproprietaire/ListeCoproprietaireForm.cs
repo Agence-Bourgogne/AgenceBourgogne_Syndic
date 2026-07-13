@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using SyndicData.Entites;
 using SyndicData.Controller;
 using SyndicData.Common;
 using CommonProjectsPartners.Utils;
 using CommonProjectsPartners.Common;
-using System.Diagnostics;
 
 namespace EspaceSyndic.Formulaires.Coproprietaire
 {

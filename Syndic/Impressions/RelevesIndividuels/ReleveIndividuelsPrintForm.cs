@@ -4,8 +4,6 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using EspaceSyndic.Formulaires.Immeubles;
 using SyndicData.Controller;
@@ -15,11 +13,9 @@ using Microsoft.Reporting.WinForms;
 using CommonProjectsPartners.Common;
 using EspaceSyndic.Formulaires.Coproprietaire;
 using EspaceSyndic.Formulaires.Exercice;
-using System.Resources;
 using System.IO;
 using System.Reflection;
-using System.Runtime.InteropServices.ComTypes;
-using System.Runtime.CompilerServices;
+
 namespace EspaceSyndic.Impressions.RelevesIndividuels
 {
     public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener

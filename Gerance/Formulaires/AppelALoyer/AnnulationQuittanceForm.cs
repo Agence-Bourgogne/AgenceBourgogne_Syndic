@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using Gerance.Formulaires.Biens;
 using Gerance.Formulaires.Locataires;
 using GeranceData.Controller;
 using GeranceData.Entites;
 using CommonProjectsPartners.Utils;
-using CommonProjectsPartners.Entites;
 using GeranceData.Common;
 using Npgsql;
 

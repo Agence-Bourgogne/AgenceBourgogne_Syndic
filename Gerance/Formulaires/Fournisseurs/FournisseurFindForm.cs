@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using GeranceData.Controller;
+﻿using GeranceData.Controller;
 namespace Gerance.Formulaires.Fournisseurs
 {
     public partial class FournisseurFindForm : Gerance.Formulaires.Common.CommonFindForm

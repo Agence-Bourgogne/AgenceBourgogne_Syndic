@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 //using System.Threading.Tasks;
 using System.Windows.Forms;
 using SyndicData.Entites;
@@ -13,7 +11,7 @@ using CommonProjectsPartners.Utils;
 using SyndicData.Common;
 using Npgsql;
 using EspaceSyndic.Formulaires.Immeubles;
-using EspaceSyndic.UtilsApp;
+
 namespace EspaceSyndic.Formulaires.Ecritures
 {
     public partial class FicheFactureRepartitionIndividuelle : Form

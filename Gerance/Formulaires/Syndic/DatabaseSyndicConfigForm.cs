@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CommonProjectsPartners.Formulaires.Config;
+﻿using CommonProjectsPartners.Formulaires.Config;
 using CommonProjectsPartners.Utils;
 using System.Windows.Forms;
 

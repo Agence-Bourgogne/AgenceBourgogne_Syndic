@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using GeranceData.Controller;
 using GeranceData.Entites;
-using Gerance.Formulaires.Common;
-using CommonProjectsPartners.Utils;
 using Microsoft.Reporting.WinForms;
-using Npgsql;
+
 namespace Gerance.Formulaires.Proprietaires
 {
     public partial class ReleveHonorairesProrietairesForm : Gerance.Formulaires.Common.CommonRapportForm

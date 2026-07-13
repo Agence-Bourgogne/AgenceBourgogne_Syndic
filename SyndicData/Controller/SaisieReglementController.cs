@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 //using System.Threading.Tasks;
 using System.Data;
 using Npgsql;
@@ -10,7 +8,7 @@ using SyndicData.Entites;
 using CommonProjectsPartners.Utils;
 using SyndicData.Common;
 using CommonProjectsPartners.Controller;
-using CommonProjectsPartners.Entites;
+
 namespace SyndicData.Controller
 {
     public class SaisieReglementController : AbstractBaseController<SaisieReglementEntite>

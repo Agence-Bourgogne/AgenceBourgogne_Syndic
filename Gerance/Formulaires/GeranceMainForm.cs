@@ -1,28 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Reflection;
 using System.Runtime.Remoting;
-using Gerance.Formulaires.Proprietaires;
-using Gerance.Formulaires.Natures;
 using CommonProjectsPartners.Formulaires.Config;
 using Gerance.Formulaires.Config;
-using Gerance.Formulaires.Locataires;
-using Gerance.Formulaires.Comptables;
-using Gerance.Formulaires.Fournisseurs;
 using CommonProjectsPartners.Common;
 using GeranceData.Common;
 using CommonProjectsPartners.Formulaires.Logon;
 using Gerance.Formulaires.Syndic;
-using Npgsql;
-using CommonProjectsPartners.Utils;
-using System.Threading;
+
 namespace Gerance.Formulaires
 {
     public partial class GeranceMainForm : Form

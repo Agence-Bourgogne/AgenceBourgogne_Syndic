@@ -1,25 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using SyndicData.Entites;
 using SyndicData.Controller;
 using SyndicData.Common;
 using CommonProjectsPartners.Common;
 using CommonProjectsPartners.Utils;
-using EspaceSyndic.Formulaires;
 using EspaceSyndic.Formulaires.Immeubles;
 using EspaceSyndic.Formulaires.Nature;
 using EspaceSyndic.Formulaires.Fournisseur;
 using EspaceSyndic.Formulaires.Coproprietaire;
 using EspaceSyndic.Formulaires.Common;
 using EspaceSyndic.UtilsApp;
-using Microsoft.Win32;
 
 namespace EspaceSyndic.Formulaires.Ecritures
 {

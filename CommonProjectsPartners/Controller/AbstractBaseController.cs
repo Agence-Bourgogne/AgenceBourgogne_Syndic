@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data;
 using System.Windows.Forms;
-using System.Windows;
 using Npgsql;
 using CommonProjectsPartners.Entites;
 using CommonProjectsPartners.Common;

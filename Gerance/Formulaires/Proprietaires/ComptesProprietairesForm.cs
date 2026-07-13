@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using GeranceData.Controller;
-using Gerance.Formulaires.Common;
 using GeranceData.Entites;
 using Microsoft.Reporting.WinForms;
-using Npgsql;
-using CommonProjectsPartners.Utils;
+
 namespace Gerance.Formulaires.Proprietaires
 {
     public partial class ComptesProprietairesForm : Gerance.Formulaires.Common.CommonRapportForm

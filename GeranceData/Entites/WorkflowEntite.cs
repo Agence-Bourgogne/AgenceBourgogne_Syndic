@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Reflection;
 using System.Data;
-using CommonProjectsPartners.Controller;
 using CommonProjectsPartners.Entites;
 using GeranceData.Controller;
-using System.Windows.Forms;
 
 namespace GeranceData.Entites
 {

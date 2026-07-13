@@ -2,9 +2,6 @@
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Reporting.WinForms;
 using SyndicData.Controller;
@@ -13,7 +10,6 @@ using CommonProjectsPartners.Utils;
 using CommonProjectsPartners.Common;
 using EspaceSyndic.Formulaires.Immeubles;
 using SyndicData.Common;
-using Npgsql;
 using EspaceSyndic.Formulaires;
 namespace EspaceSyndic.Impressions.RetardsPaiements
 {

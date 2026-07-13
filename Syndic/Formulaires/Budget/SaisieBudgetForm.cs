@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Npgsql;
 using SyndicData.Controller;
@@ -14,7 +11,6 @@ using EspaceSyndic.Formulaires.Immeubles;
 using EspaceSyndic.Formulaires.Nature;
 using CommonProjectsPartners.Utils;
 using CommonProjectsPartners.Common;
-using EspaceSyndic.UtilsApp;
 using SyndicData.Common;
 
 

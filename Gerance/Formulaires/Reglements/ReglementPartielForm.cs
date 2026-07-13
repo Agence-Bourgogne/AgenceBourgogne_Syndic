@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using GeranceData.Entites;
 using CommonProjectsPartners.Utils;
-using GeranceData.Controller;
 
 namespace Gerance.Formulaires.Reglements
 {

@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Gerance.Formulaires;
 using CommonProjectsPartners.Common;
 using CommonProjectsPartners.Utils;
-using System.IO.Compression;
-using System.IO;
-using System.Data;
-using CommonProjectsPartners.Formulaires.Logon;
 using CommonProjectsPartners.Formulaires.Config;
 using GeranceData.Common;
 

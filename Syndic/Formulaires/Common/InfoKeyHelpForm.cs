@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data;
 //using EspaceSyndic.Utils;
-using System.Drawing;
 using SyndicData.Common;
 
 namespace EspaceSyndic.Formulaires.Common

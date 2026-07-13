@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CommonProjectsPartners.Common
+﻿namespace CommonProjectsPartners.Common
 {
     public delegate void CommonChangedEventHandler(object sender, CommonEventArgs e);
     public class CommonChangedEvent

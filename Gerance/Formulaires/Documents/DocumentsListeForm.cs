@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using Gerance.Formulaires.Locataires;
 using Gerance.Formulaires.Common;
@@ -11,7 +9,7 @@ using GeranceData.Common;
 using GeranceData.Controller;
 using GeranceData.Entites;
 using CommonProjectsPartners.Utils;
-using System.IO;
+
 namespace Gerance.Formulaires.Documents
 {
     public partial class DocumentsListeForm : CommonProjectsPartners.Utils.ScanUtilForm

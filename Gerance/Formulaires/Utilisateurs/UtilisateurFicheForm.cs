@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using GeranceData.Controller;
-using GeranceData.Entites;
 using CommonProjectsPartners.Entites;
 using CommonProjectsPartners.Controller;
 namespace Gerance.Formulaires.Utilisateurs

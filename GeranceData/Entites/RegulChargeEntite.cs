@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GeranceData.Controller;
 using CommonProjectsPartners.Entites;
 using System.Data;
 using System.Reflection;

@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CommonProjectsPartners.Entites;
+﻿using CommonProjectsPartners.Entites;
 using System.Data;
-using Npgsql;
-using CommonProjectsPartners.Utils;
 using System.Reflection;
 using GeranceData.Controller;
 namespace GeranceData.Entites

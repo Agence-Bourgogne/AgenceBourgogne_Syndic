@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using SyndicData.Controller;
 using SyndicData.Entites;
 using SyndicData.Common;
 using CommonProjectsPartners.Utils;
-using EspaceSyndic.Formulaires.Nature;
-using EspaceSyndic.Formulaires.Fournisseur;
 using Npgsql;
 
 namespace EspaceSyndic.Formulaires.OperationsGestion

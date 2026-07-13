@@ -2,12 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Npgsql;
-using System.Windows.Forms;
 using CommonProjectsPartners.Utils;
-using CommonProjectsPartners.Controller;
 using System.Data;
 using GeranceData.Controller;
 using GeranceData.Entites;

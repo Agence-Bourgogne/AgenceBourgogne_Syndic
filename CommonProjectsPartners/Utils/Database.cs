@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Npgsql;
 using System.Windows.Forms;
 using System.Data;
 using System.IO;
-using System.Configuration;
-using Microsoft.Win32;
+
 namespace CommonProjectsPartners.Utils
 {
     public class Database

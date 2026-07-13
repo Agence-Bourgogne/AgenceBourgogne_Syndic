@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 //using System.Threading.Tasks;
 using System.Windows.Forms;
 using CommonProjectsPartners.Common;
 using SyndicData.Common;
-using System.Configuration;
 using CommonProjectsPartners.Utils;
 using CommonProjectsPartners.Formulaires.Config;
 using EspaceSyndic.Formulaires;

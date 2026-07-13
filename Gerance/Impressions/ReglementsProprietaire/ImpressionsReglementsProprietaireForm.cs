@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using Microsoft.Reporting.WinForms;
-using GeranceData.Entites;
 using GeranceData.Controller;
 using CommonProjectsPartners.Utils;
-using Npgsql;
+
 namespace Gerance.Impressions.ReglementsProprietaire
 {
     public partial class ImpressionsReglementsProprietaireForm : Gerance.Formulaires.Common.CommonRapportForm

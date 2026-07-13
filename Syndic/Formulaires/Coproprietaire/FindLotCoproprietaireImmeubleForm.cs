@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SyndicData.Controller;
+﻿using SyndicData.Controller;
 using EspaceSyndic.Formulaires.Common;
 using SyndicData.Entites;
 

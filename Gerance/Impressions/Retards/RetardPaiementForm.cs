@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using CommonProjectsPartners.Utils;
 using GeranceData.Common;
 using GeranceData.Controller;
-using GeranceData.Entites;
 using Gerance.Formulaires.Locataires;
 using Microsoft.Reporting.WinForms;
 namespace Gerance.Impressions.Retards

@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using CommonProjectsPartners.Utils;
 using SyndicData.Controller;
-using SyndicData.Entites;
 using SyndicData.Common;
 using EspaceSyndic.Impressions.Facture;
 using EspaceSyndic.Formulaires.OperationsGestion;
