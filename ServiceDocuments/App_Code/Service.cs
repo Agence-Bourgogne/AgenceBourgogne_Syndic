@@ -110,6 +110,15 @@ public class Service : IService
         }
         return childrens;
     }
+
+    public List<ChildrenEntitie> GetCoproChildrens(string copro_id)
+    {
+        List<ChildrenEntitie> childrens = new List<ChildrenEntitie>();
+        IDal dal = new Dal();
+        childrens = dal.GetCoproChildrens(copro_id);
+        return childrens;
+    }
+
     public string AddCopro(string user_id, string immeuble_id, String copro_id, string reference_imm, string adresse_imm, string reference_copro, string nom)
     {
         IDal dal = new Dal();

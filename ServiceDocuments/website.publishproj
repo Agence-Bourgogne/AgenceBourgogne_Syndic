@@ -42,7 +42,7 @@ Copyright (C) Microsoft Corporation. Tous droits réservés.
     </AssemblyAttributes>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Users\Rachid\Documents\Visual Studio 2013\Projects\SyndicDocuments\SyndicDocuments\SyndicDocumentsData\SyndicDocumentsData.csproj">
+    <ProjectReference Include="..\..\..\Users\Rachid\Documents\Visual Studio 2013\Projects\SyndicDocuments\SyndicDocumentsData\SyndicDocumentsData.csproj">
       <Project>{E69E04E0-5727-48BB-8454-C45CDEA8C8B5}</Project>
       <Name>SyndicDocumentsData</Name>
     </ProjectReference>
