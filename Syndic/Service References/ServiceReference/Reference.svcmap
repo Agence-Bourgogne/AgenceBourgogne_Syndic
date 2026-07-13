@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="36ed6307-0ca0-4968-a2ec-a8c727c16961" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="36ed6307-0ca0-4968-a2ec-a8c727c16961" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -19,13 +19,13 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://syndic.fullflash.fr/ServiceDocuments/Service.svc?wsdl" Protocol="http" SourceId="1" />
+    <MetadataSource Address="https://localhost:44373/Service.svc?wsdl" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="Service3.xsd" MetadataType="Schema" ID="bb67203f-93bc-45f6-8d4b-02cc02ae474c" SourceId="1" SourceUrl="http://syndic.fullflash.fr/ServiceDocuments/Service.svc?xsd=xsd2" />
-    <MetadataFile FileName="Service31.xsd" MetadataType="Schema" ID="77750ac2-826a-4d74-8ac5-45e88a980c31" SourceId="1" SourceUrl="http://syndic.fullflash.fr/ServiceDocuments/Service.svc?xsd=xsd1" />
-    <MetadataFile FileName="Service1.wsdl" MetadataType="Wsdl" ID="0cc9e429-a3af-4d03-99c7-e86954ea13aa" SourceId="1" SourceUrl="http://syndic.fullflash.fr/ServiceDocuments/Service.svc?wsdl" />
-    <MetadataFile FileName="Service32.xsd" MetadataType="Schema" ID="3eb99923-df32-444e-a81d-5466b9cf83a6" SourceId="1" SourceUrl="http://syndic.fullflash.fr/ServiceDocuments/Service.svc?xsd=xsd0" />
+    <MetadataFile FileName="Service.xsd" MetadataType="Schema" ID="d393368c-ae03-427d-bc9f-95fed64a1385" SourceId="1" SourceUrl="https://localhost:44373/Service.svc?xsd=xsd1" />
+    <MetadataFile FileName="Service1.xsd" MetadataType="Schema" ID="edec6a73-3326-4420-a376-7a4f3ea5e216" SourceId="1" SourceUrl="https://localhost:44373/Service.svc?xsd=xsd2" />
+    <MetadataFile FileName="Service.wsdl" MetadataType="Wsdl" ID="787f0e25-5c30-4ee5-a627-3649efb84e1a" SourceId="1" SourceUrl="https://localhost:44373/Service.svc?wsdl" />
+    <MetadataFile FileName="Service2.xsd" MetadataType="Schema" ID="b0e867c0-12a9-45dd-a35d-10c9f882fa49" SourceId="1" SourceUrl="https://localhost:44373/Service.svc?xsd=xsd0" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

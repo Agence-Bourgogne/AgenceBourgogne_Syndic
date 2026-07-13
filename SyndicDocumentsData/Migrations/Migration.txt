@@ -1,0 +1,4 @@
+﻿Enable-Migrations
+add-migration initial
+add-migration
+Update-Database -Verbose -Force
