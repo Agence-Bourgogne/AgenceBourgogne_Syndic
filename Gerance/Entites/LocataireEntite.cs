@@ -26,6 +26,7 @@ namespace GeranceData.Entites
         public string note;
         public string comptable_id;
         public decimal total_du;
+        public int civilite;
         public int statut;
 
         public LocataireEntite()
@@ -97,6 +98,7 @@ namespace GeranceData.Entites
                     _Bien = BienController.getController().getEntiteFromField("locataire_id", id);
                 return _Bien;
             }
+            set => _Bien = value;
         }
     }
 }

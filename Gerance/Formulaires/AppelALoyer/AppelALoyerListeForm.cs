@@ -86,6 +86,7 @@ namespace Gerance.Formulaires.AppelALoyer
                 ControlsWindows.ToTitleCase(cols);
             }
         }
+
         private void ckLoyer_CheckedChanged(object sender, EventArgs e)
         {
             cbMonth.Enabled = ckLoyer.Checked;

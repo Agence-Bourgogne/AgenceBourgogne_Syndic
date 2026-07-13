@@ -95,67 +95,71 @@ namespace GeranceData.Controller
             cmd += " order by 1";
             return getResultSQL(cmd);
         }
-        public DataTable getListeAppelsLoyer(int iMonth = -1, string refLocataire = "", string nomLocataire = "", string refImmeuble= "", string nomImmeuble = "", int typeLoyer = 0, int garantie = 0)
+
+        public DataTable getListeAppelsLoyer(
+        int iMonth = -1,
+        string refLocataire = "",
+        string nomLocataire = "",
+        string refImmeuble = "",
+        string nomImmeuble = "",
+        int typeLoyer = 0,
+        int garantie = 0,
+        bool bLoyer = true)
+      {
+        string str = "select b.id, b.reference as ref_immeuble, l.reference as ref_locataire, trim(concat(pa2.code, ' ', l.nom, ' ', l.prenom)) as locataire, " + " trim(concat(pa.code, ' ',p.nom, ' ', p.prenom)) as proprietaire, b.nom, b.montant_loyer, b.montant_charges, b.montant_augmentation" + $" from {this.getSchemaTable()} b" + $" join {this.getSchema()}.locataire l on l.id = b.locataire_id" + $" join {this.getSchema()}.proprietaire p on p.id = b.proprietaire_id" + " left join (SELECT groupe, code, iparam_1 FROM  parametres WHERE (groupe = 'CIVILITE')) pa on pa.iparam_1 = p.civilite" + " left join (SELECT groupe, code, iparam_1 FROM  parametres WHERE (groupe = 'CIVILITE')) pa2 on pa2.iparam_1 = l.civilite" + " where coalesce(locataire_id, '') != '' ";
+        if (bLoyer)
+          str += " and ( montant_loyer != 0 or frais_bail != 0 )";
+        if (iMonth != -1)
+          str += $" and mois_augmentation = {iMonth}";
+        if (refLocataire != "")
+          str += " and l.reference = @ref_locataire";
+        if (nomLocataire != "")
         {
-            string cmd = "select b.id, b.reference as ref_immeuble, l.reference as ref_locataire, concat(l.nom, ' ', l.prenom) as locataire, concat(p.nom, ' ', p.prenom) as proprietaire, b.nom, b.montant_loyer, b.montant_charges, b.montant_augmentation";
-            cmd += String.Format(" from {0} b", getSchemaTable());
-            cmd += String.Format(" join {0}.locataire l on l.id = b.locataire_id", getSchema());
-            cmd += String.Format(" join {0}.proprietaire p on p.id = b.proprietaire_id", getSchema());
-            //cmd += " where montant_loyer + montant_charges + valeur_taxe + montant_divers1 + montant_divers2 + montant_divers3 !=0";
-            cmd += " where coalesce(locataire_id, '') != '' and ( montant_loyer != 0 or frais_bail != 0 )";
-            if (iMonth != -1)
-                cmd += String.Format(" and mois_augmentation = {0}", iMonth);
-            if (refLocataire != "")
-                cmd += " and l.reference = @ref_locataire";
-            if (nomLocataire != "")
-            {
-                if ( !nomLocataire.EndsWith("%"))
-                    nomLocataire += "%";
-                cmd += " and l.nom like @nom_locataire";
-            }
-            if (refImmeuble != "")
-                cmd += " and b.reference = @ref_immeuble";
-            if (nomImmeuble != "")
-            {
-                if (!nomImmeuble.EndsWith("%"))
-                    nomImmeuble += "%";
-                cmd += " and b.nom like @nom_immeuble";
-            }
-            if (typeLoyer != 0)
-                if (typeLoyer == 1)
-                    cmd += " and periodicite_loyer = 12";
-                else
-                    cmd += " and periodicite_loyer = 4";
+          if (!nomLocataire.EndsWith("%"))
+            nomLocataire += "%";
+          str += " and l.nom like @nom_locataire";
+        }
+        if (refImmeuble != "")
+          str += " and b.reference = @ref_immeuble";
+        if (nomImmeuble != "")
+        {
+          if (!nomImmeuble.EndsWith("%"))
+            nomImmeuble += "%";
+          str += " and b.nom like @nom_immeuble";
+        }
+        switch (typeLoyer)
+        {
+          case 0:
             if (garantie == 1)
-                cmd += " and garantie_universelle=1";
-
-//            cmd += " order by b.reference";
-            cmd += " order by l.reference";
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>{
-                new NpgsqlParameter("ref_locataire", refLocataire),
-                new NpgsqlParameter("nom_locataire", nomLocataire),
-                new NpgsqlParameter("ref_immeuble", refImmeuble),
-                new NpgsqlParameter("nom_immeuble", nomImmeuble),
-            };
-
-            return getResultSQL(cmd, parameters);
+              str += " and garantie_universelle=1";
+            return this.getResultSQL(str + " order by l.reference", new List<NpgsqlParameter>()
+            {
+              new NpgsqlParameter("ref_locataire", (object) refLocataire),
+              new NpgsqlParameter("nom_locataire", (object) nomLocataire),
+              new NpgsqlParameter("ref_immeuble", (object) refImmeuble),
+              new NpgsqlParameter("nom_immeuble", (object) nomImmeuble)
+            });
+          case 1:
+            str += " and periodicite_loyer = 12";
+            goto case 0;
+          default:
+            str += " and periodicite_loyer = 4";
+            goto case 0;
         }
-        public DataTable getDetailAppelDeLoyer(string bien_id)
+      }
+
+      public DataTable getDetailAppelDeLoyer(string bien_id, DateTime dtDeb)
+      {
+        string cmd = "select " + "case when coalesce (comptable_id, '') != '' then  concat(c.nom, ' ', c.prenom) else trim(concat(pa.code, ' ', l.nom, ' ', l.prenom)) end as nom_loca, " + " case when coalesce (comptable_id, '') != '' then c.adresse else l.adresse end as adresse, " + " case when coalesce (comptable_id, '') != '' then c.codepostal else l.codepostal end as codepostal, " + " case when coalesce (comptable_id, '') != '' then c.ville else l.ville end as ville, " + " l.reference, b.adresse as imm_adress, b.ville as imm_ville, b.codepostal as imm_cp ," + " montant_loyer, montant_augmentation, valeur_taxe, montant_charges, frais_bail, " + " case when date_quittance >= @dtDeb then l.total_du- b.montant_du else l.total_du end as reste_du, " + " honoraires_locataire, " + " ((case when date_quittance >= @dtdeb then l.total_du- b.montant_du else l.total_du end) + " + " montant_loyer+ montant_augmentation+ valeur_taxe+ montant_charges+ frais_bail + honoraires_locataire + montant_divers1 + montant_divers2+montant_divers3 + montant_divers4+ montant_divers5 ) as total_du," + " montant_divers1, montant_divers2, montant_divers3, montant_divers4, montant_divers5," + " divers1, divers2, divers3, divers4, divers5 " + string.Format(" from {0}.biens b join {0}.locataire l on (l.id = b.locataire_id) ", (object) this.getSchema()) + $" left join {this.getSchema()}.comptable c on c.id = comptable_id " + " left join (SELECT groupe, code, iparam_1 FROM  parametres WHERE (groupe = 'CIVILITE')) pa on pa.iparam_1 = l.civilite" + " where b.id  = @bien_id";
+        List<NpgsqlParameter> parameters = new List<NpgsqlParameter>()
         {
-            string cmd = "select montant_loyer, montant_augmentation, valeur_taxe, montant_charges, frais_bail, l.total_du as reste_du,";
-            cmd += " (l.total_du + montant_loyer+ montant_augmentation+ valeur_taxe+ montant_charges+ frais_bail + montant_divers1 + montant_divers2+montant_divers3 + montant_divers4+ montant_divers5 ) as total_du,";
-//            cmd += " (montant_loyer+ montant_augmentation+ valeur_taxe+ montant_charges+ frais_bail + montant_divers1 + montant_divers2+montant_divers3 + montant_divers4+ montant_divers5 ) as total_du,";
-            cmd += " montant_divers1, montant_divers2, montant_divers3, montant_divers4, montant_divers5,";
-            cmd += " divers1, divers2, divers3, divers4, divers5, ";
-            cmd += " concat(l.nom, ' ', l.prenom) as nom_loca, l.adresse, l.codepostal, l.ville, l.reference, b.adresse as imm_adress, b.ville as imm_ville, b.codepostal as imm_cp";
-            cmd += String.Format(" from {0}.biens b join {0}.locataire l on (l.id = b.locataire_id) ", getSchema());
-            cmd += " where b.id  = @bien_id";
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>{
-                new NpgsqlParameter("bien_id", bien_id),
-            };
-//            Console.WriteLine(cmd);
-            return getResultSQL(cmd, parameters);
-        }
+          new NpgsqlParameter(nameof (bien_id), (object) bien_id),
+          new NpgsqlParameter(nameof (dtDeb), (object) dtDeb)
+        };
+        Console.WriteLine(cmd);
+        return this.getResultSQL(cmd, parameters);
+      }
+
         public DataTable getDetailQuittance(string bien_id)
         {
             string cmd = "select montant_loyer, montant_augmentation, valeur_taxe, montant_charges, frais_bail, l.total_du as reste_du,";
@@ -188,6 +192,31 @@ namespace GeranceData.Controller
             };
 //            Console.WriteLine(cmd);
             return getResultSQL(cmd, parameters);
+        }
+
+        public DataTable FindElement(
+            string bien,
+            string proprio,
+            string locataire,
+            string nomBien,
+            string nomProprio,
+            string nomLoca)
+        {
+            bien += "%";
+            proprio += "%";
+            locataire += "%";
+            nomBien += "%";
+            nomProprio += "%";
+            nomLoca += "%";
+            return this.getResultSQL("Select b.id as b_id, b.reference as bien, b.nom, p.id as p_id, p.reference as proprio , trim(concat(pa.code, ' ', p.nom, ' ', p.prenom)) as nom_proprietaire, " + " l.id as l_id, l.reference as locataire, trim(concat(pa2.code, ' ', l.nom, ' ', l.prenom)) as nom_locataire " + $" from {this.getSchemaTable()} b " + $" left join {this.getSchema()}.proprietaire p on p.id = b.proprietaire_id " + $" left join {this.getSchema()}.locataire l on l.id = b.locataire_id " + " left join (SELECT groupe, code, iparam_1 FROM  parametres WHERE (groupe = 'CIVILITE')) pa on pa.iparam_1 = p.civilite" + " left join (SELECT groupe, code, iparam_1 FROM  parametres WHERE (groupe = 'CIVILITE')) pa2 on pa.iparam_1 = l.civilite" + " where 1=1 " + " and b.reference like @bien " + " and p.reference like @proprio " + " and l.reference like @locataire " + " and upper(b.nom) like upper(@nomBien) " + " and upper(p.nom) like upper(@nomProprio) " + " and upper(l.nom) like upper(@nomLoca) ", new List<NpgsqlParameter>()
+            {
+                new NpgsqlParameter(nameof (bien), (object) bien),
+                new NpgsqlParameter(nameof (proprio), (object) proprio),
+                new NpgsqlParameter(nameof (locataire), (object) locataire),
+                new NpgsqlParameter(nameof (nomBien), (object) nomBien),
+                new NpgsqlParameter(nameof (nomProprio), (object) nomProprio),
+                new NpgsqlParameter(nameof (nomLoca), (object) nomLoca)
+            });
         }
     }
 }

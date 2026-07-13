@@ -76,5 +76,43 @@ namespace GeranceData.Controller
 
             return getResultSQL(cmd, parameters);
         }
+
+        public DataTable getListePaiementsLoyers(int paiement_type, DateTime dtDeb, DateTime dtFin)
+        {
+            string cmd = "select  " + "trim(concat(pa.code, ' ', nom, ' ', prenom)) as nom, regexp_replace(adresse, E'[\\n\\r]+', ' ', 'g' ) as adresse, concat(codepostal, ' ',ville) as ville , rib as num_compte, banque as Banque, credit-debit as montant, 'Loyer' as motif , id, reference, debit" + $" from {this.getSchemaTable()} p " + $" join (select proprietaire_id from {this.getSchema()}.reglements where date_reglement >= @dtDeb and date_reglement <= @dtFin group by 1) r" + " on r.proprietaire_id = p.id" + " left join (SELECT groupe, code, iparam_1 FROM  parametres WHERE (groupe = 'CIVILITE')) pa on pa.iparam_1 = p.civilite" + " where dernier_cheque > 0 and coalesce(paiement_type,0) = @paiement_type" + " order by nom ";
+            Console.WriteLine(cmd);
+            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>()
+            {
+                new NpgsqlParameter(nameof (paiement_type), (object) paiement_type),
+                new NpgsqlParameter(nameof (dtDeb), (object) dtDeb),
+                new NpgsqlParameter(nameof (dtFin), (object) dtFin)
+            };
+            Console.WriteLine(cmd);
+            return getResultSQL(cmd, parameters);
+        }
+
+        public DataTable getImpressionListePaiementsLoyers(
+            int paiement_type,
+            DateTime dtDeb,
+            DateTime dtFin)
+        {
+            string cmd = "select  " + "trim(concat(pa.code, ' ', nom, ' ', prenom)) as nom, regexp_replace(adresse, E'[\\n\\r]+', ' ', 'g' ) as adresse, concat(codepostal, ' ',ville) as ville , rib as num_compte, banque as Banque, " + " r.credit-r.debit +f.credit-f.debit as montant, 'Loyer' as motif , id, reference" + $" from {this.getSchemaTable()} p " + $" join (select proprietaire_id,sum(debit)  + sum(honoraire_locataire) + sum(etat_lieux) as debit, sum(credit)as credit   from {this.getSchema()}.reglements where date_reglement >= @dtDeb and date_reglement <= @dtFin and statut <> @statut_del group by 1 ) r" + " on r.proprietaire_id = p.id" + string.Format(" left join (select proprietaire_id, sum(debit)as debit, sum(abs(credit))as credit  from agence.factures where date_facture >= @dtDeb and date_facture <= @dtFin and statut <> @statut_del group by 1) f ", (object) this.getSchema()) + " on f.proprietaire_id = p.id" + " left join (SELECT groupe, code, iparam_1 FROM  parametres WHERE (groupe = 'CIVILITE')) pa on pa.iparam_1 = p.civilite" + " where dernier_cheque > 0 and coalesce(paiement_type,0) = @paiement_type" + " order by nom ";
+            Console.WriteLine(cmd);
+            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>()
+            {
+                new NpgsqlParameter(nameof (paiement_type), (object) paiement_type),
+                new NpgsqlParameter(nameof (dtDeb), (object) dtDeb),
+                new NpgsqlParameter(nameof (dtFin), (object) dtFin),
+                new NpgsqlParameter("statut_del", (object) 9)
+            };
+            Console.WriteLine(cmd);
+            return getResultSQL(cmd, parameters);
+        }
+
+        public DataTable GetConfigList()
+        {
+            DefaultOrder = "reference";
+            return getResultSQL($"select id, reference, trim(concat(pa.code, ' ', nom)) as nom, prenom, adresse, codepostal, ville,  rib, banque, statut from {this.getSchemaTable()} p" + " left join (SELECT groupe, code, iparam_1 FROM  parametres WHERE (groupe = 'CIVILITE')) pa on pa.iparam_1 = p.civilite" + $" order by {this.DefaultOrder}");
+        }
     }
 }

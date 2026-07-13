@@ -23,6 +23,7 @@ namespace GeranceData.Entites
         public decimal honoraire_locataire;
         public decimal frais_bail;
         public decimal valeur_taxe;
+        public decimal etat_lieux;
 
         public string divers1;
         public decimal montant_divers1;
@@ -137,6 +138,32 @@ namespace GeranceData.Entites
             divers5 = bien.divers5;
             montant_divers5 = bien.montant_divers5;
             this.date_quittance = date_quittance;
+        }
+
+        public void SetValueFromQuittance()
+        {
+            BienEntite bien = this.Bien;
+            if (bien == null)
+                return;
+            bien.montant_du = this.montant_quittance;
+            bien.montant_loyer = this.montant_loyer;
+            bien.montant_augmentation = this.montant_augmentation;
+            bien.montant_charges = this.montant_charge;
+            bien.montant_augmentation = this.montant_augmentation;
+            bien.honoraires_locataire = this.honoraire_locataire;
+            bien.frais_bail = this.frais_bail;
+            bien.etat_lieux = this.etat_lieux;
+            bien.valeur_taxe = this.valeur_taxe;
+            bien.divers1 = this.divers1;
+            bien.montant_divers1 = this.montant_divers1;
+            bien.divers2 = this.divers2;
+            bien.montant_divers2 = this.montant_divers2;
+            bien.divers3 = this.divers3;
+            bien.montant_divers3 = this.montant_divers3;
+            bien.divers4 = this.divers4;
+            bien.montant_divers4 = this.montant_divers4;
+            bien.divers5 = this.divers5;
+            bien.montant_divers5 = this.montant_divers5;
         }
         public decimal SumMontant()
         {

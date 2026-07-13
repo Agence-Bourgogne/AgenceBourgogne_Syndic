@@ -42,5 +42,21 @@ namespace GeranceData.Controller
             return getResultSQL(cmd, parameters);
             
         }
+
+        public CompteProprioEntite getEcriture(string proprietaire_id, DateTime dtEcriture)
+        {
+            CompteProprioEntite ecriture = (CompteProprioEntite) null;
+            DateTime dateTime1 = new DateTime(dtEcriture.Year, dtEcriture.Month, 1);
+            DateTime dateTime2 = dateTime1.AddMonths(1).AddDays(-1.0);
+            DataTable resultSql = this.getResultSQL($" select * from {this.getSchemaTable()}" + " where proprietaire_id = @proprietaire_id " + " and date_ecriture >= @dtDeb and date_ecriture <= @dtFin", new List<NpgsqlParameter>()
+            {
+                new NpgsqlParameter(nameof (proprietaire_id), (object) proprietaire_id),
+                new NpgsqlParameter("dtDeb", (object) dateTime1),
+                new NpgsqlParameter("dtFin", (object) dateTime2)
+            });
+            if (resultSql != null && resultSql.Rows.Count > 0)
+                ecriture = new CompteProprioEntite(resultSql.Rows[0]);
+            return ecriture;
+        }
     }
 }

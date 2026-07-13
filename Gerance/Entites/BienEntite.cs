@@ -32,6 +32,7 @@ namespace GeranceData.Entites
         public decimal montant_charges;
         public decimal montant_caution;
         public decimal montant_augmentation;
+        public decimal etat_lieux;
         public string divers1;
         public decimal montant_divers1;
         public string divers2;

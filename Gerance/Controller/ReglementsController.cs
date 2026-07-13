@@ -123,33 +123,33 @@ namespace GeranceData.Controller
 
             return getResultSQL(cmd, parameters);
         }
-        public DataTable getHdrReleveCompteProprio(DateTime dtDeb, DateTime dtFin, string ref_proprietaire = "")
+
+        private string QuotedRef(List<string> refProprio)
         {
-            string cmd = "select ";
-            cmd += " p.reference as p_reference, concat(p.nom, ' ', p.prenom) as p_nom , p.adresse as p_adresse, p.ville as p_ville, p.codepostal as p_codepostal,";
-            cmd += " b.adresse as b_adresse, b.nom as b_nom, b.ville as b_ville, b.codepostal as b_codepostal";
-            cmd += string.Format(" from {0} r ", getSchemaTable());
-            cmd += string.Format(" join {0}.locataire l on l.id = r.locataire_id", getSchema());
-            cmd += string.Format(" join {0}.proprietaire p on p.id = r.proprietaire_id", getSchema());
-            cmd += string.Format(" join {0}.biens b on b.id = r.bien_id", getSchema());
+            string str1 = "";
+            foreach (string str2 in refProprio)
+                str1 += $"{(str1 == "" ? (object) "" : (object) ",")}'{str2}'";
+            return str1;
+        }
 
-            if (ref_proprietaire != "")
-                cmd += " and p.reference = @ref_proprietaire";
-
-            cmd += " where date_reglement >= @dtDeb and date_reglement <= @dtFin";
-            cmd += " and r.statut != @statut_del";
-
-            cmd += " group by 1,2,3,4,5,6,7,8,9 ";
-            cmd += " order by 1";
-
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>{
-                new NpgsqlParameter("dtDeb", dtDeb),
-                new NpgsqlParameter("dtFin", dtFin),
-                new NpgsqlParameter("ref_proprietaire", ref_proprietaire),
-                new NpgsqlParameter("statut_del", (int) GlobalConstantes.StatutOperation.Supprime),
-            };
-
-            return getResultSQL(cmd, parameters);
+        public DataTable getHdrReleveCompteProprio(
+            DateTime dtDeb,
+            DateTime dtFin,
+            List<string> refProprio)
+        {
+            string str1 = "select " + " p.reference as p_reference, trim(concat(pa.code, ' ', p.nom, ' ', p.prenom)) as p_nom , p.adresse as p_adresse, concat(p.ville, '\r\n', p.pays)  as p_ville, " + " p.codepostal as p_codepostal," + " b.adresse as b_adresse, b.nom as b_nom, b.ville as b_ville, b.codepostal as b_codepostal" + $" from {this.getSchema()}.biens b " + $" join {this.getSchema()}.proprietaire p on b.proprietaire_id = p.id" + " left join (SELECT groupe, code, iparam_1 FROM  parametres WHERE (groupe = 'CIVILITE')) pa on pa.iparam_1 = p.civilite";
+            string str2 = this.QuotedRef(refProprio);
+            Console.WriteLine(str2);
+            string str3 = str1 + " where p.statut != @statut_del";
+            if (str2 != "")
+                str3 += $" and p.reference in ({str2})";
+            return this.getResultSQL(str3 + " group by 1,2,3,4,5,6,7,8,9 " + " order by 1", new List<NpgsqlParameter>()
+            {
+                new NpgsqlParameter(nameof (dtDeb), (object) dtDeb),
+                new NpgsqlParameter(nameof (dtFin), (object) dtFin),
+                new NpgsqlParameter("ref_proprietaire", (object) str2),
+                new NpgsqlParameter("statut_del", (object) 9)
+            });
         }
         public DataTable getReleveHonorairesProprietaires(DateTime dtDeb, DateTime dtFin, string proprietaire_id = "")
         {

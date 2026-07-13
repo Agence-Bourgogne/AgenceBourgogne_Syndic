@@ -68,6 +68,21 @@ namespace GeranceData.Controller
 
             return getResultSQL(cmd, parameters);
         }
+
+        public DataTable getSoldeProprio(string proprietaire_id = "")
+        {
+            string cmd = "select p.reference as p_reference, to_date('01/01/01', 'dd/mm/yy') as date_facture, 'Solde Antérieur' as nom, '' as libelle, abs(p.debit) as debit , abs(p.credit) as credit" + $" from {this.getSchema()}.proprietaire p " + "where debit <> 0 ";
+            if (proprietaire_id != "")
+                cmd += " and p.id = @proprietaire_id ";
+            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>()
+            {
+                new NpgsqlParameter(nameof (proprietaire_id), (object) proprietaire_id),
+                new NpgsqlParameter("statut_del", (object) 9)
+            };
+            Console.WriteLine(cmd);
+            return this.getResultSQL(cmd, parameters);
+        }
+
         public DataTable getDeductionProprio(DateTime dtDeb, DateTime dtFin, string proprietaire_id = "")
         {
             string cmd = "select p.reference as p_reference, f.date_facture, n.nom, f.libelle, abs(f.debit) as debit , abs(f.credit) as credit";

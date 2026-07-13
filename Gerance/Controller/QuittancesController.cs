@@ -133,5 +133,24 @@ namespace GeranceData.Controller
             }
             return bResult;
         }
+
+        public DataTable getDetailQuittanceForImpression(string quittance_id)
+        {
+            return this.getResultSQL("select q.montant_loyer, q.montant_augmentation, q.valeur_taxe, q.montant_charge as montant_charges, q.frais_bail as frais_bail, q.etat_lieux  as etat_lieux, 0 as reste_du, q.honoraire_locataire as honoraires_locataire, " + " (q.montant_loyer+ q.montant_augmentation+ q.valeur_taxe+ q.montant_charge+ q.frais_bail + q.etat_lieux + q.montant_divers1 + q.montant_divers2+q.montant_divers3 + q.montant_divers4+ q.montant_divers5 + honoraire_locataire) as total_du," + " q.montant_divers1, q.montant_divers2, q.montant_divers3, q.montant_divers4, q.montant_divers5," + " q.divers1, q.divers2, q.divers3, q.divers4, q.divers5, " + " trim(concat(pa.code, ' ', l.nom, ' ', l.prenom)) as nom_loca, l.adresse, l.codepostal, l.ville, l.reference, b.adresse as imm_adress, b.ville as imm_ville, b.codepostal as imm_cp" + " , b.periodicite_loyer" + string.Format(" from {0}.quittances q join {0}.biens b on q.bien_id = b.id join {0}.locataire l on l.id = q.locataire_id ", (object) this.getSchema()) + " left join (SELECT groupe, code, iparam_1 FROM  parametres WHERE (groupe = 'CIVILITE')) pa on pa.iparam_1 = l.civilite" + " where q.id  = @quittance_id ", new List<NpgsqlParameter>()
+            {
+                new NpgsqlParameter(nameof (quittance_id), (object) quittance_id)
+            });
+        }
+
+        public DataTable getDetailAppelDeLoyerEntree(string quittance_id)
+        {
+            string cmd = "select " + "case when coalesce (comptable_id, '') != '' then  concat(c.nom, ' ', c.prenom) else trim(concat(pa.code, ' ', l.nom, ' ', l.prenom)) end as nom_loca, " + " case when coalesce (comptable_id, '') != '' then c.adresse else l.adresse end as adresse, " + " case when coalesce (comptable_id, '') != '' then c.codepostal else l.codepostal end as codepostal, " + " case when coalesce (comptable_id, '') != '' then c.ville else l.ville end as ville, " + " l.reference, b.adresse as imm_adress, b.ville as imm_ville, b.codepostal as imm_cp ," + " q.montant_loyer, q.montant_augmentation, q.valeur_taxe, b.montant_charges, q.frais_bail as frais_bail , q.etat_lieux as etat_lieux, l.total_du as reste_du, b.honoraires_locataire, " + " (q.montant_loyer+ q.montant_augmentation+ q.valeur_taxe+ b.montant_charges+ q.frais_bail +q.etat_lieux+ b.honoraires_locataire + q.montant_divers1 + q.montant_divers2+q.montant_divers3 + q.montant_divers4+ q.montant_divers5 ) as total_du," + " q.montant_divers1, q.montant_divers2, q.montant_divers3, q.montant_divers4, q.montant_divers5," + " q.divers1, q.divers2, q.divers3, q.divers4, q.divers5 " + " , 12 as periodicite_loyer" + string.Format(" from {0}.quittances q join {0}.locataire l on (l.id = q.locataire_id) ", (object) this.getSchema()) + $" join {this.getSchema()}.biens b on (b.id = q.bien_id) " + $" left join {this.getSchema()}.comptable c on c.id = comptable_id " + " left join (SELECT groupe, code, iparam_1 FROM  parametres WHERE (groupe = 'CIVILITE')) pa on pa.iparam_1 = l.civilite" + " where q.id  = @quittance_id";
+            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>()
+            {
+                new NpgsqlParameter(nameof (quittance_id), (object) quittance_id)
+            };
+            Console.WriteLine(cmd);
+            return this.getResultSQL(cmd, parameters);
+        }
     }
 }

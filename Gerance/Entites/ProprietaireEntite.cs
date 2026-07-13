@@ -34,6 +34,7 @@ namespace GeranceData.Entites
         public int paiement_type;
         public string rib;
         public string banque;
+        public int civilite;
 
         public int statut;
 

@@ -28,6 +28,7 @@ namespace GeranceData.Entites
         public decimal honoraire_locataire;
         public decimal augmentation;
         public decimal frais_bail;
+        public decimal etat_lieux;
         public decimal valeur_taxe;
         public string divers1;
         public decimal montant_divers1;
