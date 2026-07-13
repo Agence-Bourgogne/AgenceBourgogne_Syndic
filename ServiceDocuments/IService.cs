@@ -34,6 +34,9 @@ public interface IService
     List<ChildrenEntitie> GetUserCoproprietaires(string guid);
 
     [OperationContract]
+    List<ChildrenEntitie> GetCoproChildrens(string copro_id);
+
+    [OperationContract]
     string AddCopro(string user_id, string immeuble_id, String copro_id, string reference_imm, string adresse_imm, string reference_copro, string nom);
 
     [OperationContract]
