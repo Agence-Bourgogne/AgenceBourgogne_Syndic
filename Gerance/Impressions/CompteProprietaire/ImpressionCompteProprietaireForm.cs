@@ -4,7 +4,6 @@ using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 using Gerance.Formulaires.Proprietaires;
-using GeranceData.Entites;
 using GeranceData.Controller;
 using Microsoft.Reporting.WinForms;
 

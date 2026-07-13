@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using System.Windows.Forms;
 using Microsoft.Reporting.WinForms;
 using SyndicData.Controller;

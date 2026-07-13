@@ -2,7 +2,7 @@
 using CommonProjectsPartners.Entites;
 using GeranceData.Controller;
 using System.Data;
-using System.Reflection;
+
 namespace GeranceData.Entites
 {
     public class CompteProprioEntite : AbstractBaseEntite

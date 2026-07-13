@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using Microsoft.Reporting.WinForms;
 using GeranceData.Controller;
 namespace Gerance.Formulaires.Reglements

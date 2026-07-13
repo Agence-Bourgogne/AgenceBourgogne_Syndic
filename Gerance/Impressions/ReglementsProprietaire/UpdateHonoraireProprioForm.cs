@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using GeranceData.Controller;
 using GeranceData.Entites;
-using Npgsql;
 using CommonProjectsPartners.Utils;
 
 namespace Gerance.Impressions.ReglementsProprietaire

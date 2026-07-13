@@ -4,8 +4,6 @@ using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 using GeranceData.Controller;
-using GeranceData.Entites;
-using Npgsql;
 using CommonProjectsPartners.Utils;
 using Gerance.Formulaires.Locataires;
 using Gerance.Formulaires.Proprietaires;

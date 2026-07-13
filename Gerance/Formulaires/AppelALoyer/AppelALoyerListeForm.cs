@@ -7,7 +7,6 @@ using Microsoft.Reporting.WinForms;
 using CommonProjectsPartners.Common;
 using CommonProjectsPartners.Utils;
 using GeranceData.Controller;
-using GeranceData.Entites;
 using Gerance.Formulaires.Locataires;
 using Gerance.Formulaires.Biens;
 namespace Gerance.Formulaires.AppelALoyer

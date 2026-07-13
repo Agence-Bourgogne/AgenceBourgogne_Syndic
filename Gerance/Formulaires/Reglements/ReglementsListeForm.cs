@@ -8,8 +8,7 @@ using Gerance.Formulaires.Locataires;
 using CommonProjectsPartners.Common;
 using CommonProjectsPartners.Utils;
 using GeranceData.Controller;
-using GeranceData.Entites;
-using Npgsql;
+
 namespace Gerance.Formulaires.Reglements
 {
     public partial class ReglementsListeForm : Form

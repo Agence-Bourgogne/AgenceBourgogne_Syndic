@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using CommonProjectsPartners.Controller;
 using GeranceData.Entites;
 using System.Data;

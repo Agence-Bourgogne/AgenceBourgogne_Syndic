@@ -4,7 +4,6 @@ using System.Data;
 using System.Windows.Forms;
 using CommonProjectsPartners.Utils;
 using GeranceData.Controller;
-using GeranceData.Entites;
 using Gerance.Formulaires.Biens;
 using Gerance.Formulaires.Proprietaires;
 using Gerance.Formulaires.Locataires;

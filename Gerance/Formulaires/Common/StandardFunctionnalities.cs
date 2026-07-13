@@ -1,5 +1,4 @@
-﻿using System.Data;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using GeranceData.Common;
 
 namespace Gerance.Formulaires.Common

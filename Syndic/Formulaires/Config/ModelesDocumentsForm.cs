@@ -3,7 +3,6 @@ using System.Data;
 using System.Windows.Forms;
 using SyndicData.Common;
 using SyndicData.Controller;
-using SyndicData.Entites;
 using CommonProjectsPartners.Utils;
 using CommonProjectsPartners.Common;
 using System.IO;

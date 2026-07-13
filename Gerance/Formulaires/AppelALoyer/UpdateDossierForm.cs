@@ -6,7 +6,6 @@ using System.Windows.Forms;
 using GeranceData.Controller;
 using GeranceData.Entites;
 using GeranceData.Common;
-using Npgsql;
 using CommonProjectsPartners.Utils;
 using Gerance.Formulaires.Common;
 using Gerance.Formulaires.Locataires;

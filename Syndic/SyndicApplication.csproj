@@ -901,9 +901,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Formulaires\Commentaires\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="scriptsSQL\Initiale_1.0.0.0\agence_base.txt" />
     <None Include="scriptsSQL\Initiale_1.0.0.0\schema_agence.txt" />

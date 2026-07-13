@@ -6,7 +6,6 @@ using SyndicData.Controller;
 using SyndicData.Entites;
 using SyndicData.Common;
 using CommonProjectsPartners.Utils;
-using Npgsql;
 
 namespace EspaceSyndic.Formulaires.OperationsGestion
 {

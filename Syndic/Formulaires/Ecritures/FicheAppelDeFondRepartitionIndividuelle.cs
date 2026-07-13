@@ -8,7 +8,6 @@ using SyndicData.Entites;
 using SyndicData.Controller;
 using CommonProjectsPartners.Utils;
 using SyndicData.Common;
-using Npgsql;
 
 namespace EspaceSyndic.Formulaires.Ecritures
 {

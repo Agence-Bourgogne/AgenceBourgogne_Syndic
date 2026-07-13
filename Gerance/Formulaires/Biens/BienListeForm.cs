@@ -3,7 +3,6 @@ using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 using GeranceData.Controller;
-using GeranceData.Entites;
 
 namespace Gerance.Formulaires.Biens
 {

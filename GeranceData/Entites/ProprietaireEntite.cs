@@ -1,6 +1,5 @@
 ﻿using CommonProjectsPartners.Entites;
 using System.Data;
-using System.Reflection;
 using GeranceData.Controller;
 namespace GeranceData.Entites
 {

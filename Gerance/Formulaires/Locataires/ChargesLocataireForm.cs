@@ -7,7 +7,6 @@ using CommonProjectsPartners.Entites;
 using GeranceData.Entites;
 using GeranceData.Controller;
 using CommonProjectsPartners.Utils;
-using Npgsql;
 using Microsoft.Reporting.WinForms;
 
 namespace Gerance.Formulaires.Locataires

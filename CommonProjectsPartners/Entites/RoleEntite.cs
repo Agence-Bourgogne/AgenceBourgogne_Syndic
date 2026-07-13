@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using System.Data;
+﻿using System.Data;
 
 namespace CommonProjectsPartners.Entites
 {

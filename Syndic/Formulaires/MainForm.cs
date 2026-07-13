@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
 using System.Reflection;
-using System.Runtime.Remoting;
 using System.IO;
 using EspaceSyndic.Formulaires.Immeubles;
 using EspaceSyndic.Formulaires.Config;
@@ -15,7 +14,7 @@ using EspaceSyndic.Impressions.Balances;
 using CommonProjectsPartners.Formulaires.Logon;
 using CommonProjectsPartners.Formulaires.Config;
 using CommonProjectsPartners.Utils;
-using Npgsql;
+
 namespace EspaceSyndic.Formulaires
 {
     public partial class MainForm : Form

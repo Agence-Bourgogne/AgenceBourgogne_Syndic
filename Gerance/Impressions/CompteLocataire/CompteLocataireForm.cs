@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using GeranceData.Entites;
 using GeranceData.Controller;
 using Gerance.Formulaires.Locataires;
 using Microsoft.Reporting.WinForms;

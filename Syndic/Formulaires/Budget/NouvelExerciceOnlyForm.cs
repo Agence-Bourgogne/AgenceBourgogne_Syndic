@@ -2,7 +2,6 @@
 using System.Windows.Forms;
 using SyndicData.Controller;
 using SyndicData.Entites;
-using Npgsql;
 using SyndicData.Common;
 using CommonProjectsPartners.Utils;
 namespace EspaceSyndic.Formulaires.Budget

@@ -1,5 +1,4 @@
-﻿using System.Data;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using SyndicData.Common;
 
 namespace EspaceSyndic.Formulaires.Common

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
 using GeranceData.Controller;
-using GeranceData.Entites;
 using GeranceData.Common;
 using CommonProjectsPartners.Utils;
 using CommonProjectsPartners.Common;

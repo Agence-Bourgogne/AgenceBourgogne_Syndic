@@ -1,5 +1,4 @@
-﻿using System;
-using CommonProjectsPartners.Entites;
+﻿using CommonProjectsPartners.Entites;
 using System.Data;
 namespace CommonProjectsPartners.Controller
 {

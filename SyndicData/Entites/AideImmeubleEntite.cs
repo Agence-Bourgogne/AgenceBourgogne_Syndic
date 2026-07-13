@@ -1,6 +1,5 @@
 ﻿using System.Data;
 using CommonProjectsPartners.Entites;
-using System.Reflection;
 
 
 namespace SyndicData.Entites

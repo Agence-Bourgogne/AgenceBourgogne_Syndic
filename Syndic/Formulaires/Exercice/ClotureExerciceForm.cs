@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using Npgsql;
 using SyndicData.Controller;
 using SyndicData.Entites;
 using EspaceSyndic.Formulaires.Immeubles;

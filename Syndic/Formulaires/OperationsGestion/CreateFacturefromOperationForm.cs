@@ -6,7 +6,6 @@ using System.Windows.Forms;
 using SyndicData.Controller;
 using SyndicData.Entites;
 using CommonProjectsPartners.Utils;
-using Npgsql;
 using SyndicData.Common;
 using EspaceSyndic.Formulaires.Fournisseur;
 namespace EspaceSyndic.Formulaires.OperationsGestion

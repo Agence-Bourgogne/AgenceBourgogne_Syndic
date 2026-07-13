@@ -1,5 +1,4 @@
-﻿using System;
-using GeranceData.Controller;
+﻿using GeranceData.Controller;
 
 namespace Gerance.Formulaires.Locataires
 {

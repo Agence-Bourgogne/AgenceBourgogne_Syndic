@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using System.Runtime.Remoting;
 using CommonProjectsPartners.Formulaires.Config;
 using Gerance.Formulaires.Config;
 using CommonProjectsPartners.Common;

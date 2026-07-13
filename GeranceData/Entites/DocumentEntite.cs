@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using System.Drawing;
 using System.Data;
 using CommonProjectsPartners.Entites;

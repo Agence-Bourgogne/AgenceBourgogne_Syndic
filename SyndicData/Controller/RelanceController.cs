@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Npgsql;
 using CommonProjectsPartners.Utils;
 using SyndicData.Entites;
 using System.Windows.Forms;

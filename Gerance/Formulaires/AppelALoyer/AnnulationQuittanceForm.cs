@@ -8,7 +8,6 @@ using GeranceData.Controller;
 using GeranceData.Entites;
 using CommonProjectsPartners.Utils;
 using GeranceData.Common;
-using Npgsql;
 
 namespace Gerance.Formulaires.AppelALoyer
 {

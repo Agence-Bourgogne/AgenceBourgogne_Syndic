@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using SyndicData.Controller;
-using SyndicData.Entites;
 using SyndicData.Common;
 using CommonProjectsPartners.Utils;
 using CommonProjectsPartners.Common;
