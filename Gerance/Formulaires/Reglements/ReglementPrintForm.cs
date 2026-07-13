@@ -29,9 +29,9 @@ namespace Gerance.Formulaires.Reglements
         private void fillRapport()
         {
             reportViewer1.LocalReport.DataSources.Clear();
-            DataTable table = ReglementsController.getController().getPrintReglements(dtDebut.Value, dtFin.Value);
+            var table = ReglementsController.getController().getPrintReglements(dtDebut.Value, dtFin.Value);
             reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("list_reglements", table));
-            ReportParameter[] parameters = new ReportParameter[]{
+            var parameters = new ReportParameter[]{
                     new ReportParameter("date_debut", dtDebut.Value.ToShortDateString()),
                     new ReportParameter("date_fin", dtFin.Value.ToShortDateString()),
                 };

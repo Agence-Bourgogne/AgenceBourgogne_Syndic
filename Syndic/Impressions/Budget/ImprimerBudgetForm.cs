@@ -34,7 +34,7 @@ namespace EspaceSyndic.Impressions.Budget
         }
         private void FillCbExercice(string exercice_id = "")
         {
-            DataTable exercices = ExerciceComptableController.getController().getListExerciceFromImmeuble(immeuble.id);
+            var exercices = ExerciceComptableController.getController().getListExerciceFromImmeuble(immeuble.id);
             cbExercice.Enabled = false;
             cbExercice.DataSource = exercices;
             cbExercice.ValueMember = "id";
@@ -49,8 +49,8 @@ namespace EspaceSyndic.Impressions.Budget
             if (cbExercice.SelectedValue != null)
                 if (cbExercice.Enabled && cbExercice.SelectedValue.ToString() != "")
                 {
-                    DataRowView row = (DataRowView)cbExercice.SelectedItem;
-                    string budget_id = row["budget_id"].ToString();
+                    var row = (DataRowView)cbExercice.SelectedItem;
+                    var budget_id = row["budget_id"].ToString();
                     //                    DateTime dt = (DateTime) row["date_deb"];
                     dtDeb.Value = (DateTime)row["date_deb"];
                     dtFin.Value = (DateTime)row["date_fin"];
@@ -59,7 +59,7 @@ namespace EspaceSyndic.Impressions.Budget
         }
         private void lblImmeuble_Click(object sender, EventArgs e)
         {
-            FindImmeubleForm form = new FindImmeubleForm();
+            var form = new FindImmeubleForm();
             form.ShowDialog();
             if (!"".Equals(form.reference))
             {
@@ -91,19 +91,19 @@ namespace EspaceSyndic.Impressions.Budget
 
         void CreateReport(string num_lot = "")
         {
-            DataRowView row = (DataRowView)cbExercice.SelectedItem;
+            var row = (DataRowView)cbExercice.SelectedItem;
 
             if (row != null)
             {
-                string hdr_descr = SyndicData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
-                string hdr_agence = SyndicData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
-                ReportParameter[] parameters = new ReportParameter[]{
+                var hdr_descr = SyndicData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
+                var hdr_agence = SyndicData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
+                var parameters = new ReportParameter[]{
                     new ReportParameter("DateEntete", dtEdition.Value.ToShortDateString()),
                     new ReportParameter("Header_Description", hdr_descr),
                     new ReportParameter("Header_Agence", hdr_agence),
                     new ReportParameter("Exercice", row["reference"].ToString()),
                 };
-                DataTable budgets = BudgetController.getController().getViewBudgets(immeuble.id, cbExercice.SelectedValue.ToString());
+                var budgets = BudgetController.getController().getViewBudgets(immeuble.id, cbExercice.SelectedValue.ToString());
                 reportViewer1.LocalReport.DataSources.Clear();
                 reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("BudgetAnnexe3", budgets));
                 reportViewer1.LocalReport.SetParameters(parameters);
@@ -115,7 +115,7 @@ namespace EspaceSyndic.Impressions.Budget
         {
             if (immeuble == null) return;
            // List<LotDescriptionEntite> lots = LotDescriptionController.getController().getListeLotDescription(immeuble.id);
-            RelevesIndividuels.ExportCopro dlg = new RelevesIndividuels.ExportCopro();
+            var dlg = new RelevesIndividuels.ExportCopro();
             try
             {
                 dlg.Show(this);

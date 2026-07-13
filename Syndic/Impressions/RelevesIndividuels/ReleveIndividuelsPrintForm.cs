@@ -49,7 +49,7 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
         }
         private void lblImmeuble_Click(object sender, EventArgs e)
         {
-            FindImmeubleForm form = new FindImmeubleForm();
+            var form = new FindImmeubleForm();
             form.ShowDialog();
             if (!"".Equals(form.reference))
             {
@@ -65,11 +65,11 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
             if (immeuble != null)
             {
                 tbRefImmeuble.BackColor = Color.White;
-                DataTable lots = LotDescriptionController.getController().getListeLot(immeuble.id);
+                var lots = LotDescriptionController.getController().getListeLot(immeuble.id);
 
-                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
 
-                ExerciceComptableEntite exercice = immeuble.ExerciceCourant;//ExerciceComptableController.getController().getExerciceCourant(immeuble.id);
+                var exercice = immeuble.ExerciceCourant;//ExerciceComptableController.getController().getExerciceCourant(immeuble.id);
                 if (exercice != null)
                 {
                     dtDebut.Value = exercice.date_deb;
@@ -131,7 +131,7 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
         string[] noCumulable = new String[] { "042", "043", "050", "051", "113", "123" };
         private bool isCumulable( string refNature)
         {
-            bool rc = true;
+            var rc = true;
             if (noCumulable.Contains(refNature))
                 return false;
             return rc;
@@ -139,20 +139,20 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
         
         protected void getBasesCompteurs()
         {
-            string bases = SyndicData.Common.ParametresDB.getParam1("BASES", "COMPTEURS");
+            var bases = SyndicData.Common.ParametresDB.getParam1("BASES", "COMPTEURS");
             if (bases != null)
             {
                 base_compteur = bases.Replace(" ", "").Split(',');
             }
         }
-        //------------------------------------------
+        //
         bool IsBaseCompteur(string base_repart)
         {
             if ( base_compteur == null)
                 getBasesCompteurs();
             return base_compteur.Contains(base_repart);
         }
-        //------------------------------------------
+        //
         private void loadDataReleve()
         {
             releve = OperationController.getController().GetReleveIndividuels(immeuble.id, dtDebut.Value, dtFin.Value);
@@ -167,13 +167,13 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
                     tableCondense.Columns.Add(col.ColumnName, col.DataType);
                 }
 
-            bool bDetail = ckDetail.Checked;
+            var bDetail = ckDetail.Checked;
             try
             {
-                int row2Update = -1;
+                var row2Update = -1;
                 foreach (DataRow row in releve.Rows)
                 {
-                    decimal debit = (decimal)row["debit"];
+                    var debit = (decimal)row["debit"];
 
                     if (debit != 0)
                         row["charge_loc"] = (decimal)row["debit"] * (decimal)row["charge_loc"] / 100;
@@ -181,12 +181,12 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
                         row["charge_loc"] = (decimal)row["credit"] * -1 * (decimal)row["charge_loc"] / 100;
 
                     //string base_ref = row["base_repart"].ToString();
-                    object[] rowItem = row.ItemArray;
+                    var rowItem = row.ItemArray;
                     rowItem[10] = Math.Abs((decimal)rowItem[10]);
 
                     if (bDetail)
                         copro_id = "";
-                    int ref_cpt = Convertir.ToInt(row["ref_cpt"].ToString());
+                    var ref_cpt = Convertir.ToInt(row["ref_cpt"].ToString());
                     if (copro_id != row["ref_copro"].ToString() )
                     {
                         tableCondense.Rows.Add(rowItem);
@@ -221,38 +221,38 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
                                     row2Update = -1;
                                 }
                                 else
+                                {
+                                    var current = tableCondense.Rows.Count - 1;
+                                    var oldItem = tableCondense.Rows[current].ItemArray;
+                                    //                                    if (!IsBaseCompteur(base_repart))
+                                    if (!IsBaseCompteur(oldItem[2].ToString())&&!IsBaseCompteur(base_repart))
                                     {
-                                        int current = tableCondense.Rows.Count - 1;
-                                        object[] oldItem = tableCondense.Rows[current].ItemArray;
-                                        //                                    if (!IsBaseCompteur(base_repart))
-                                        if (!IsBaseCompteur(oldItem[2].ToString())&&!IsBaseCompteur(base_repart))
-                                        {
-                                            oldItem[5] = ".";
-                                            object[] newItem = rowItem;
-                                            decimal value = Convertir.ToDecimal(oldItem[8]) + Convertir.ToDecimal(newItem[8]);
+                                        oldItem[5] = ".";
+                                        var newItem = rowItem;
+                                        var value = Convertir.ToDecimal(oldItem[8]) + Convertir.ToDecimal(newItem[8]);
 
-                                            oldItem[8] = value;
-                                            oldItem[9] = Convertir.ToDecimal(oldItem[9]) + Convertir.ToDecimal(newItem[9]);
-                                            oldItem[10] = Convertir.ToDecimal(oldItem[10]) + Convertir.ToDecimal(newItem[10]);
-                                            oldItem[11] = Convertir.ToDecimal(oldItem[11]) + Convertir.ToDecimal(newItem[11]);
-                                            tableCondense.Rows[current].ItemArray = oldItem;
-                                            row2Update = -1;
-                                        }
-                                        else
-                                            if (row2Update != -1)
-                                            {
-                                                DataRow oldRow = tableCondense.Rows[row2Update];
-                                                if ( oldRow["saisie_id"].ToString() != row["saisie_id"].ToString())
-                                                {
-                                                    row2Update = -1;
-                                                    tableCondense.Rows.Add(rowItem);
-                                                }
-                                                //Console.WriteLine("..");
-                                            }
+                                        oldItem[8] = value;
+                                        oldItem[9] = Convertir.ToDecimal(oldItem[9]) + Convertir.ToDecimal(newItem[9]);
+                                        oldItem[10] = Convertir.ToDecimal(oldItem[10]) + Convertir.ToDecimal(newItem[10]);
+                                        oldItem[11] = Convertir.ToDecimal(oldItem[11]) + Convertir.ToDecimal(newItem[11]);
+                                        tableCondense.Rows[current].ItemArray = oldItem;
+                                        row2Update = -1;
                                     }
+                                    else
+                                    if (row2Update != -1)
+                                    {
+                                        var oldRow = tableCondense.Rows[row2Update];
+                                        if ( oldRow["saisie_id"].ToString() != row["saisie_id"].ToString())
+                                        {
+                                            row2Update = -1;
+                                            tableCondense.Rows.Add(rowItem);
+                                        }
+                                        //Console.WriteLine("..");
+                                    }
+                                }
                     if (IsBaseCompteur (base_repart))
                     {
-                        bool bCumul = true;
+                        var bCumul = true;
                         if (row2Update == -1)
                         {
                             row2Update = tableCondense.Rows.Count - 1;
@@ -260,8 +260,8 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
                         }
                         if ( row2Update != -1 && bCumul)
                         {
-                            object[] oldItem = tableCondense.Rows[row2Update].ItemArray;
-                            object[] newItem = rowItem;
+                            var oldItem = tableCondense.Rows[row2Update].ItemArray;
+                            var newItem = rowItem;
                             oldItem[7] = Convertir.ToDecimal(oldItem[7]) + Convertir.ToDecimal(newItem[7]);
 //                            oldItem[8] = Convertir.ToDecimal(oldItem[8]) + Convertir.ToDecimal(newItem[9]);
                             oldItem[9] = Convertir.ToDecimal(oldItem[9]) + Convertir.ToDecimal(newItem[9]);
@@ -273,7 +273,7 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
                         double nouveau = Convertir.ToFloat(row["nouveau"].ToString());
                         if (nouveau != 0)
                         {
-                            for (int i = 1; i < rowItem.Length; i++)
+                            for (var i = 1; i < rowItem.Length; i++)
                                 rowItem[i] = null;
                             rowItem[5] = String.Format("Cpt {2} : Ancien Index {0}   -   Nouvel Index {1} ", ancien, nouveau, ref_cpt);
                             tableCondense.Rows.Add(rowItem);
@@ -289,7 +289,7 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
             } 
             Console.WriteLine("---");
         }
-        //------------------------------------------
+        //
         private void btnRapport_Click(object sender, EventArgs e)
         {
             try
@@ -315,7 +315,7 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
             tableImmeuble_copro = ImmeubleController.getController().GetDescriptionCoproprietairesImmeubleReleveIndividuel(immeuble.id, num_lot);
 
 
-            List<EtatFinancier> finance = new List<EtatFinancier>();
+            var finance = new List<EtatFinancier>();
             foreach (DataRow row in table_appel_fond.Rows)
             {
                 finance.Add(new EtatFinancier(row["coproprietaire_id"].ToString(), (decimal)row["credit"] - (decimal)row["debit"]));
@@ -327,8 +327,8 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
             avance = LotDescriptionController.getController().getAvanceImmeuble(immeuble.id);
             foreach (DataRow row in table_soldes.Rows)
             {
-                int ordre = (int)row["ordre"];
-                EtatFinancier etat = getIndiceCopro(finance, row["coproprietaire_id"].ToString());
+                var ordre = (int)row["ordre"];
+                var etat = getIndiceCopro(finance, row["coproprietaire_id"].ToString());
                 if (etat == null)
                 {
                     etat = new EtatFinancier(row["coproprietaire_id"].ToString());
@@ -341,7 +341,7 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
                         {
                             foreach (DataRow row_copro in tableImmeuble_copro.Rows)
                             {
-                                int statut = (int)row_copro["statut"];
+                                var statut = (int)row_copro["statut"];
                                 if (statut != 1)
                                     if (row_copro["copro_id"].ToString() == row["coproprietaire_id"].ToString())
                                     {
@@ -363,9 +363,9 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
                 }
             }
             decimal soldes = 0, reglement = 0, releve = 0, appel = 0;
-            foreach (EtatFinancier etat in finance)
+            foreach (var etat in finance)
             {
-                decimal cumul = etat.solde + etat.reglement + etat.releve;
+                var cumul = etat.solde + etat.reglement + etat.releve;
 
                 soldes += etat.solde;
                 reglement += etat.reglement;
@@ -382,7 +382,7 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
             //Console.WriteLine("{0} {1} {2}", sommes, excedents, avance);
             //Console.WriteLine("{0} {1} {2} {3}",  soldes, reglement, releve, appel);
 
-            DataTable table_etat = new DataTable();
+            var table_etat = new DataTable();
             table_etat.Columns.Add("code");
             table_etat.Columns.Add("libelle");
             table_etat.Columns.Add("dettes", typeof(Decimal));
@@ -397,10 +397,10 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
             if (solde > 0)
                 table_etat.Rows.Add(new object[] { "43", "Solde de banque débiteur", 0.0, solde });
 
-            string hdr_descr = SyndicData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
-            string hdr_agence = SyndicData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
+            var hdr_descr = SyndicData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
+            var hdr_agence = SyndicData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
 
-            ReportParameter[] parameters = new ReportParameter[]{
+            var parameters = new ReportParameter[]{
                 new ReportParameter("DateDebut", dtDebut.Value.ToShortDateString()),
                 new ReportParameter("DateFin", dtFin.Value.ToShortDateString()),
                 new ReportParameter("DateEdition", dtEdition.Value.ToShortDateString()),
@@ -416,46 +416,46 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
             reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("etat_financier", table_etat));
             reportViewer1.RefreshReport();
         }
-        //------------------------------------------
+        //
         DataTable getTableBase()
         {
-            DataView tv = (DataView)releve_copro.List;
-            DataTable tb = tv.ToTable();
-            List<string> base_def = new List<string>();
-            DataTable table = new DataTable();
+            var tv = (DataView)releve_copro.List;
+            var tb = tv.ToTable();
+            var base_def = new List<string>();
+            var table = new DataTable();
 
             table.Columns.Add("base_ref");
             table.Columns.Add("base_nom");
             foreach (DataRow row in tb.Rows)
             {
-                string base_ref = row["base_repart"].ToString();
+                var base_ref = row["base_repart"].ToString();
                 if (base_ref != "")
                 {
                    if (!base_def.Contains(base_ref))
-                    {
-                        base_def.Add(base_ref);
-                        table.Rows.Add(base_ref, row["base_nom"].ToString());
-                    }
+                   {
+                       base_def.Add(base_ref);
+                       table.Rows.Add(base_ref, row["base_nom"].ToString());
+                   }
                 }
             }
             return table;
         }
-        //------------------------------------------
+        //
         EtatFinancier getIndiceCopro(List<EtatFinancier> finance, string copro)
         {
-            foreach (EtatFinancier etat in finance )
+            foreach (var etat in finance )
             {
                 if ( etat.copro_id == copro )
                     return etat;
             }
             return null;
         }
-        //-----------------------------------------
+        //------
         void SubreportProcessingEventHandler(object sender, SubreportProcessingEventArgs e)
         {
-            string coproprietaire_id = e.Parameters[0].Values[0];
+            var coproprietaire_id = e.Parameters[0].Values[0];
             releve_copro.DataSource  = tableCondense;
-            releve_copro.Filter = String.Format("ref_copro = '{0}'", coproprietaire_id);
+            releve_copro.Filter = $"ref_copro = '{coproprietaire_id}'";
 
             base_descr.DataSource = getTableBase();
             base_descr.Sort = "base_ref";
@@ -464,9 +464,9 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
             releve_appel_fond.DataSource = table_appel_fond;
 
             immeuble_copro.DataSource = tableImmeuble_copro;
-            immeuble_copro.Filter = String.Format("copro_id = '{0}'", coproprietaire_id) ;
-            releve_soldes.Filter = String.Format("coproprietaire_id = '{0}'", coproprietaire_id);
-            releve_appel_fond.Filter = String.Format("coproprietaire_id = '{0}'", coproprietaire_id);
+            immeuble_copro.Filter = $"copro_id = '{coproprietaire_id}'";
+            releve_soldes.Filter = $"coproprietaire_id = '{coproprietaire_id}'";
+            releve_appel_fond.Filter = $"coproprietaire_id = '{coproprietaire_id}'";
 
             e.DataSources.Clear();
             e.DataSources.Add(new ReportDataSource("base_description", base_descr));
@@ -487,7 +487,7 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
 
         private void lblLot_Click(object sender, EventArgs e)
         {
-            FindLotCoproprietaireImmeubleForm form = new FindLotCoproprietaireImmeubleForm();
+            var form = new FindLotCoproprietaireImmeubleForm();
             form.immeuble = immeuble;
             form.ShowDialog();
             if (form.reference != "")
@@ -505,7 +505,7 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
         {
             if (immeuble == null)
                 return;
-            ReferenceExerciceForm form = new ReferenceExerciceForm(immeuble);
+            var form = new ReferenceExerciceForm(immeuble);
             form.ShowDialog();
             tbRefImmeuble_Validating(null, null);
         }
@@ -513,14 +513,14 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
         private void btnExport_Click(object sender, EventArgs e)
         {
             if (immeuble == null) return;
-            List<LotDescriptionEntite> lots = LotDescriptionController.getController().getListeLotDescription(immeuble.id);
+            var lots = LotDescriptionController.getController().getListeLotDescription(immeuble.id);
             if(lots == null || lots.Count == 0) return;
             loadDataReleve();
             table_soldes = OperationController.getController().getSoldesRelevesIndividuels(immeuble.id, dtDebut.Value, dtFin.Value);
             table_appel_fond = OperationController.getController().getSoldesRelevesIndividuels(immeuble.id, dtDebut.Value, dtFin.Value, true);
             solde_bidon = OperationController.getController().getSoldesBidon();
             Enabled = false;
-            ExportCopro dlg = new ExportCopro();
+            var dlg = new ExportCopro();
             try
             {
                 //string serveur = SyndicData.Common.ParametresDB.getParam1("SERVEUR", "ADDRESSE");
@@ -529,13 +529,13 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
                 dlg.Activate();
                 if (!string.IsNullOrEmpty(tbLot.Text) && lots.Exists(x=>x.numero_lot.ToString() == tbLot.Text))
                 {
-                    LotDescriptionEntite lot = lots.FirstOrDefault(x=>x.numero_lot.ToString() == tbLot.Text);
+                    var lot = lots.FirstOrDefault(x=>x.numero_lot.ToString() == tbLot.Text);
                     if(lot.Coproprietaire != null)
                     {
-                        CoproprietaireEntite copro = CoproprietaireController.getController().getEntiteById(lot.coproprietaire_id);
-                        string monthName = new DateTime(2010, 8, 1).ToString("MMM", System.Globalization.CultureInfo.CurrentCulture);
-                        string rapportName = "Releve Individuel " + copro.nom + "_" + monthName + "-" + dtFin.Value.Year.ToString();
-                        dlg.textBox1.Text = String.Format("Export releve individuel lot : {0}", lot.numero_lot);
+                        var copro = CoproprietaireController.getController().getEntiteById(lot.coproprietaire_id);
+                        var monthName = new DateTime(2010, 8, 1).ToString("MMM", System.Globalization.CultureInfo.CurrentCulture);
+                        var rapportName = "Releve Individuel " + copro.nom + "_" + monthName + "-" + dtFin.Value.Year.ToString();
+                        dlg.textBox1.Text = $"Export releve individuel lot : {lot.numero_lot}";
                         dlg.textBox1.Refresh();
                         CreateReport(lot.numero_lot.ToString());
                         UtilsApp.ServiceReferenceUtils.SendReportPDF(reportViewer1, rapportName, Guid.NewGuid().ToString(), lot.immeuble_id, lot.coproprietaire_id);
@@ -544,14 +544,14 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
                 else
                 {
                   //  CreateReport("");
-                    foreach (LotDescriptionEntite lot in lots)
+                    foreach (var lot in lots)
                     {
                         if(lot != null && lot.Coproprietaire != null)
                         {
-                            CoproprietaireEntite copro = CoproprietaireController.getController().getEntiteById(lot.coproprietaire_id);
-                            string monthName = new DateTime(2010, 8, 1).ToString("MMM", System.Globalization.CultureInfo.InvariantCulture);
-                            string rapportName = "Releve Individuel " + copro.nom + "_" + lot.numero_lot + "_" + monthName + "-" + dtFin.Value.Year.ToString();
-                            dlg.textBox1.Text = String.Format("Export releve individuel lot : {0}", lot.numero_lot);
+                            var copro = CoproprietaireController.getController().getEntiteById(lot.coproprietaire_id);
+                            var monthName = new DateTime(2010, 8, 1).ToString("MMM", System.Globalization.CultureInfo.InvariantCulture);
+                            var rapportName = "Releve Individuel " + copro.nom + "_" + lot.numero_lot + "_" + monthName + "-" + dtFin.Value.Year.ToString();
+                            dlg.textBox1.Text = $"Export releve individuel lot : {lot.numero_lot}";
                             dlg.textBox1.Refresh();
                             CreateReport(lot.numero_lot.ToString());
                             UtilsApp.ServiceReferenceUtils.SendReportPDF(reportViewer1, rapportName, Guid.NewGuid().ToString(), lot.immeuble_id, lot.coproprietaire_id);

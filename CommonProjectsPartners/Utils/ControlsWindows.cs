@@ -2,16 +2,14 @@
 using System.Windows.Forms;
 using System.Globalization;
 using System.Data;
-//using EspaceSyndic.Controller;
-//using EspaceSyndic.Entites;
 
 namespace CommonProjectsPartners.Utils
 {
-    public class ControlsWindows
+    public static class ControlsWindows
     {
         public static void addColumn(DataGridView grid, String title, int width=80)
         {
-            DataGridViewColumn column = new DataGridViewColumn();
+            var column = new DataGridViewColumn();
             column.HeaderText = title;
             column.Width = width;
             grid.Columns.Add(column);
@@ -19,7 +17,7 @@ namespace CommonProjectsPartners.Utils
         }
         public static void ToTitleCase(DataGridViewColumnCollection cols)
         {
-            TextInfo textInfo = new CultureInfo("fr-FR", false).TextInfo;
+            var textInfo = new CultureInfo("fr-FR", false).TextInfo;
             foreach (DataGridViewColumn col in cols)
             {
                 col.HeaderText = textInfo.ToTitleCase(col.HeaderText.Replace("_", " "));
@@ -33,7 +31,7 @@ namespace CommonProjectsPartners.Utils
         }
         public static void setAutoControle(TextBox tb, DataTable table)
         {
-            AutoCompleteStringCollection source = new AutoCompleteStringCollection();
+            var source = new AutoCompleteStringCollection();
             foreach (DataRow row in table.Rows)
                 source.Add(row[0].ToString());
 
@@ -43,31 +41,17 @@ namespace CommonProjectsPartners.Utils
         }
         public static void setTooltip(Control ctl, string txt)
         {
-            ToolTip tt = new ToolTip();
+            var tt = new ToolTip();
             tt.InitialDelay = 10;
             tt.SetToolTip(ctl, txt);
 
         }
-        //public static void FocusNextTabbedControl(Control current)
-        //{
-            
-        //    Control ctl = current.Parent.GetNextControl(current, true);
-        //    while (ctl != null)
-        //    {
-        //        if (!ctl.TabStop || !ctl.Enabled )
-        //            ctl = ctl.Parent.GetNextControl(ctl, true);
-        //        else
-        //            break;
-        //    }
-        //    if (ctl != null)
-        //        ctl.Focus();
-        //}
         public static void FocusNextTabbedControl(Form parent)
         {
-            Control current = parent.ActiveControl;
+            var current = parent.ActiveControl;
             if (current == null)
                 return;
-            Control ctl = parent.GetNextControl(current, true);
+            var ctl = parent.GetNextControl(current, true);
             while (ctl != null)
             {
                 if (!ctl.TabStop || !ctl.Enabled || !ctl.Visible)
@@ -80,7 +64,7 @@ namespace CommonProjectsPartners.Utils
         }
         public static bool IsCtrlSpace(KeyEventArgs e) 
         {
-            bool rc = false;
+            var rc = false;
             if (e.Control)
                 if (e.KeyCode == Keys.Space)
                 {
@@ -91,12 +75,12 @@ namespace CommonProjectsPartners.Utils
         }
         public static string userComputer(string value)
         {
-            string str = "";
+            var str = "";
             if (value != null)
             {
-                string[] s = value.Split(new string[] { "][" }, StringSplitOptions.None);
+                var s = value.Split(new string[] { "][" }, StringSplitOptions.None);
                 if (s.Length > 1)
-                    str = String.Format("{0} => {1}", s[1].Replace("]", ""), s[0].Replace("[", ""));
+                    str = $"{s[1].Replace("]", "")} => {s[0].Replace("[", "")}";
                 else
                     str = s[0];
             }

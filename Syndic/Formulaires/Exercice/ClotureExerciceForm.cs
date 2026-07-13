@@ -59,11 +59,11 @@ namespace EspaceSyndic.Formulaires.Exercice
                     dtDeb.Value = exercice.date_fin.AddDays(1);
                     dtFin.Value = dtDeb.Value.AddYears(1).AddDays(-1);
                 }
-                DateTime datDeb = dtDeb.Value.AddYears(-1);
-                DateTime datFin = dtDeb.Value.AddDays(-1);
-                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                var datDeb = dtDeb.Value.AddYears(-1);
+                var datFin = dtDeb.Value.AddDays(-1);
+                Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
 
-                decimal valueSoldeImm = OperationController.getController().getSoldeImmeuble(immeuble == null ? "" : immeuble.id, datDeb, datFin);
+                var valueSoldeImm = OperationController.getController().getSoldeImmeuble(immeuble == null ? "" : immeuble.id, datDeb, datFin);
                 tbSolde.Text = valueSoldeImm.ToString();
             }
             else
@@ -109,7 +109,7 @@ namespace EspaceSyndic.Formulaires.Exercice
                     case 4:
                         if (immeuble != null)
                         {
-                            FillFromOperations(GlobalConstantes.TypeMouvement.Depense.ToString());
+                            FillFromOperations(nameof(GlobalConstantes.TypeMouvement.Depense));
                         }
                         else
                             dataGridView.DataSource = null;
@@ -117,34 +117,34 @@ namespace EspaceSyndic.Formulaires.Exercice
                     case 5:
                         if (immeuble != null)
                         {
-                            FillFromOperations(GlobalConstantes.TypeMouvement.Recette.ToString());
+                            FillFromOperations(nameof(GlobalConstantes.TypeMouvement.Recette));
                         }
                         else
                             dataGridView.DataSource = null;
                         break;
                 }
             }
-            DateTime datDeb = dtDeb.Value.AddYears(-1);
-            DateTime datFin = dtDeb.Value.AddDays(-1);
+            var datDeb = dtDeb.Value.AddYears(-1);
+            var datFin = dtDeb.Value.AddDays(-1);
 
             if ( immeuble != null )
             {
-                decimal total_facture = SaisieFactureController.getController().getTotalOperationWithoutSolde(immeuble.id, datDeb, datFin);
+                var total_facture = SaisieFactureController.getController().getTotalOperationWithoutSolde(immeuble.id, datDeb, datFin);
 //                decimal total_appels = SaisieAppelFondController.getController().getTotalOperationWithoutSolde(immeuble.id, datDeb, datFin);
-                decimal total_reglements = SaisieReglementController.getController().getTotalOperationWithoutSolde(immeuble.id, datDeb, datFin);
-                decimal soldeReprise = SaisieFactureController.getController().getSoldeAnterieurImmeuble(immeuble.id, datDeb, datFin);
-                decimal valueSoldeImm = OperationController.getController().getSoldeImmeuble(immeuble == null ? "" : immeuble.id, datDeb, datFin);
-                decimal depenseOperation = OperationController.getController().getOperationDepense(immeuble.id, datDeb, datFin, "");
-                string strTotaux = String.Format("Factures: \t\t {0}\r\n", total_facture);
-                strTotaux += String.Format("Règlements: \t\t {0}\r\n", total_reglements);
+                var total_reglements = SaisieReglementController.getController().getTotalOperationWithoutSolde(immeuble.id, datDeb, datFin);
+                var soldeReprise = SaisieFactureController.getController().getSoldeAnterieurImmeuble(immeuble.id, datDeb, datFin);
+                var valueSoldeImm = OperationController.getController().getSoldeImmeuble(immeuble == null ? "" : immeuble.id, datDeb, datFin);
+                var depenseOperation = OperationController.getController().getOperationDepense(immeuble.id, datDeb, datFin, "");
+                var strTotaux = $"Factures: \t\t {total_facture}\r\n";
+                strTotaux += $"Règlements: \t\t {total_reglements}\r\n";
 
                 strTotaux += "\r\n";
-                strTotaux += String.Format("Operations Depenses: \t {0}\r\n", depenseOperation);
+                strTotaux += $"Operations Depenses: \t {depenseOperation}\r\n";
 //                strTotaux += String.Format("Operations Reglements: \t {0}\r\n", reglementOperation);
 
                 strTotaux += "\r\n";
-                strTotaux += String.Format("Solde Antérieur: \t {0}\r\n", soldeReprise);
-                strTotaux += String.Format("Solde Exercice: \t\t {0}\r\n", valueSoldeImm);
+                strTotaux += $"Solde Antérieur: \t {soldeReprise}\r\n";
+                strTotaux += $"Solde Exercice: \t\t {valueSoldeImm}\r\n";
                 //strTotaux += String.Format("Opération Débit: \t {0}\r\n", total_operations[0]);
                 //strTotaux += String.Format("Opération Crédit: \t {0}\r\n", total_operations[1]);
                 //strTotaux += String.Format("Débit - Crédit: \t\t {0}", total_operations[0] - total_operations[1]);
@@ -164,15 +164,15 @@ namespace EspaceSyndic.Formulaires.Exercice
         private void FillFromFacture()
         {
             bLoading = true;
-            DateTime datDeb = dtDeb.Value.AddYears(-1);
-            DateTime datFin = dtDeb.Value.AddDays(-1);
+            var datDeb = dtDeb.Value.AddYears(-1);
+            var datFin = dtDeb.Value.AddDays(-1);
             
-            DataGridViewColumn sortedCol = dataGridView.SortedColumn;
-            SortOrder sortOrder = dataGridView.SortOrder;
+            var sortedCol = dataGridView.SortedColumn;
+            var sortOrder = dataGridView.SortOrder;
 
 
             dataGridView.DataSource = SaisieFactureController.getController().getListeOperations(tbRefImmeuble.Text, "", datDeb, datFin, "", "", "", true, "");
-            DataGridViewColumnCollection cols = dataGridView.Columns;
+            var cols = dataGridView.Columns;
             ControlsWindows.ToTitleCase(cols);
 
             cols["base_repart"].Width = 40;
@@ -198,7 +198,7 @@ namespace EspaceSyndic.Formulaires.Exercice
         }
         private void ShowMontant()
         {
-            string nature = ParametresDB.getParam1("NATURE", "SOLDE BILAN");
+            var nature = ParametresDB.getParam1("NATURE", "SOLDE BILAN");
             
             lblMontant.Text = "Total";
             tbCredit.Visible = lblCredit.Visible = false;
@@ -206,7 +206,7 @@ namespace EspaceSyndic.Formulaires.Exercice
 
             foreach (DataGridViewRow rowGrid in dataGridView.Rows)
             {
-                DataRowView row = (DataRowView)rowGrid.DataBoundItem;
+                var row = (DataRowView)rowGrid.DataBoundItem;
                 if ( nature != row["ref_nature"].ToString() )
                     total += Convertir.ToDecimal(row["montant"]);
             }
@@ -214,13 +214,13 @@ namespace EspaceSyndic.Formulaires.Exercice
         }
         private void ShowDebitCredit()
         {
-            string nature = ParametresDB.getParam1("NATURE", "SOLDE BILAN");
+            var nature = ParametresDB.getParam1("NATURE", "SOLDE BILAN");
             lblMontant.Text = "Débit";
             tbCredit.Visible = lblCredit.Visible = true;
             Decimal debit = 0, credit = 0 ;
             foreach (DataGridViewRow rowGrid in dataGridView.Rows)
             {
-                DataRowView row = (DataRowView)rowGrid.DataBoundItem;
+                var row = (DataRowView)rowGrid.DataBoundItem;
                 if (nature != row["ref_nature"].ToString())
                 {
                     debit += Convertir.ToDecimal(row["debit"]);
@@ -233,14 +233,14 @@ namespace EspaceSyndic.Formulaires.Exercice
         private void FillFromAppelsDeFond()
         {
             bLoading = true;
-            DateTime datDeb = dtDeb.Value.AddYears(-1);
-            DateTime datFin = dtDeb.Value.AddDays(-1);
+            var datDeb = dtDeb.Value.AddYears(-1);
+            var datFin = dtDeb.Value.AddDays(-1);
 
-            DataGridViewColumn sortedCol = dataGridView.SortedColumn;
-            SortOrder sortOrder = dataGridView.SortOrder;
+            var sortedCol = dataGridView.SortedColumn;
+            var sortOrder = dataGridView.SortOrder;
 
             dataGridView.DataSource = SaisieAppelFondController.getController().getListeOperations(tbRefImmeuble.Text, datDeb, datFin, "", "", true, "");
-            DataGridViewColumnCollection cols = dataGridView.Columns;
+            var cols = dataGridView.Columns;
             ControlsWindows.ToTitleCase(cols);
             cols["statut"].Visible = false;
             cols["id"].Visible = false;
@@ -261,14 +261,14 @@ namespace EspaceSyndic.Formulaires.Exercice
         private void FillFromReglements()
         {
             bLoading = true;
-            DateTime datDeb = dtDeb.Value.AddYears(-1);
-            DateTime datFin = dtDeb.Value.AddDays(-1);
+            var datDeb = dtDeb.Value.AddYears(-1);
+            var datFin = dtDeb.Value.AddDays(-1);
 
-            DataGridViewColumn sortedCol = dataGridView.SortedColumn;
-            SortOrder sortOrder = dataGridView.SortOrder;
+            var sortedCol = dataGridView.SortedColumn;
+            var sortOrder = dataGridView.SortOrder;
 
             dataGridView.DataSource = SaisieReglementController.getController().getListeOperations(tbRefImmeuble.Text, "", datDeb, datFin, "", "", "", true);
-            DataGridViewColumnCollection cols = dataGridView.Columns;
+            var cols = dataGridView.Columns;
             ControlsWindows.ToTitleCase(cols);
             cols["statut"].Visible = false;
             cols["id"].Visible = false;
@@ -289,14 +289,14 @@ namespace EspaceSyndic.Formulaires.Exercice
         private void FillFromOperations(string type)
         {
             bLoading = true;
-            DateTime datDeb = dtDeb.Value.AddYears(-1);
-            DateTime datFin = dtDeb.Value.AddDays(-1);
+            var datDeb = dtDeb.Value.AddYears(-1);
+            var datFin = dtDeb.Value.AddDays(-1);
 
-            DataGridViewColumn sortedCol = dataGridView.SortedColumn;
-            SortOrder sortOrder = dataGridView.SortOrder;
+            var sortedCol = dataGridView.SortedColumn;
+            var sortOrder = dataGridView.SortOrder;
 
             dataGridView.DataSource = OperationController.getController().getListeOperations(immeuble.id, "", type, (int)GlobalConstantes.StatutOperation.Valide, datDeb, datFin, "", "");
-            DataGridViewColumnCollection cols = dataGridView.Columns;
+            var cols = dataGridView.Columns;
             ControlsWindows.ToTitleCase(cols);
             cols["statut"].Visible = false;
             cols["id"].Visible = false;
@@ -336,7 +336,7 @@ namespace EspaceSyndic.Formulaires.Exercice
         private void btnCloture_Click(object sender, EventArgs e)
         {
 
-            string exercice_id = exercice.id;
+            var exercice_id = exercice.id;
 
             if (DialogResult.Yes != MessageBox.Show("Cette opération est irreversible\r\nVoulez-vous Continuer", "Attention", MessageBoxButtons.YesNo))
             {
@@ -346,37 +346,37 @@ namespace EspaceSyndic.Formulaires.Exercice
             if (exercice_id != "")
             {
                 nature = getNatureCloture();
-                FournisseurEntite fournisseur = getFournisseurCloture();
-                String libelle = ParametresDB.getParam1("CLOTURE", "LIBELLE OPERATION");
+                var fournisseur = getFournisseurCloture();
+                var libelle = ParametresDB.getParam1("CLOTURE", "LIBELLE OPERATION");
 
-                ExerciceComptableEntite currExercice = exercice;
-                NpgsqlConnection cnx = Database.GetInstance();
-                NpgsqlTransaction trx = cnx.BeginTransaction();
+                var currExercice = exercice;
+                var cnx = Database.GetInstance();
+                var trx = cnx.BeginTransaction();
                 try
                 {
                     // TODO Voir pour TimestampServer
-                    ExerciceComptableEntite exercice_suivant = ExerciceComptableController.getController().createExerciceSuivant(exercice);
+                    var exercice_suivant = ExerciceComptableController.getController().createExerciceSuivant(exercice);
                     if ( exercice_suivant != null )
                     {
-                        DataTable soldeImm = SaisieFactureController.getController().getCurrentSoldeImmeuble(exercice_suivant.immeuble_id, exercice_suivant.date_deb, exercice_suivant.date_fin);
+                        var soldeImm = SaisieFactureController.getController().getCurrentSoldeImmeuble(exercice_suivant.immeuble_id, exercice_suivant.date_deb, exercice_suivant.date_fin);
 
                         if (soldeImm.Rows.Count <= 0)
                         {
-                            decimal valueSoldeImm = OperationController.getController().getSoldeImmeuble(currExercice.immeuble_id, currExercice.date_deb, currExercice.date_fin);
+                            var valueSoldeImm = OperationController.getController().getSoldeImmeuble(currExercice.immeuble_id, currExercice.date_deb, currExercice.date_fin);
                             //Console.WriteLine(" Solde immeuble : {0}", valueSoldeImm);
-                            LiasseEntite liasse = createLiasseReprise(valueSoldeImm);
+                            var liasse = createLiasseReprise(valueSoldeImm);
 
-                            SaisieFactureEntite facture = createFactureReprise(liasse, exercice_suivant.date_deb, valueSoldeImm);
+                            var facture = createFactureReprise(liasse, exercice_suivant.date_deb, valueSoldeImm);
                             facture.fournisseur_id = fournisseur.id;
                             facture.immeuble_id = currExercice.immeuble_id;
                             if (!SaisieFactureController.getController().InsertOrUpdate(facture))
                                 throw new Exception("Creation Facture");
 
-                            DataTable repart = LotDescriptionController.getController().getListeLot(immeuble.id);
-                            int numero_ligne = 0;
+                            var repart = LotDescriptionController.getController().getListeLot(immeuble.id);
+                            var numero_ligne = 0;
                             foreach (DataRow row in repart.Rows)
                             {
-                                LotDescriptionEntite repimm = new LotDescriptionEntite(row);
+                                var repimm = new LotDescriptionEntite(row);
                                 if (repimm.statut == (int)GlobalConstantes.StatutData.Supprime || repimm.coproprietaire_id == "")
                                     //if (repimm.statut != (int)GlobalConstantes.StatutData.Actif || repimm.coproprietaire_id == "")
                                 {
@@ -384,14 +384,14 @@ namespace EspaceSyndic.Formulaires.Exercice
                                     continue;
                                 }
 
-                                decimal soldeCopro = OperationController.getController().getSoldeImmeuble(immeuble.id, currExercice.date_deb, currExercice.date_fin, repimm.coproprietaire_id);
-                                OperationEntite operation = new OperationEntite(facture);
+                                var soldeCopro = OperationController.getController().getSoldeImmeuble(immeuble.id, currExercice.date_deb, currExercice.date_fin, repimm.coproprietaire_id);
+                                var operation = new OperationEntite(facture);
                                 operation.numero_ligne = numero_ligne++;
                                 operation.coproprietaire_id = repimm.coproprietaire_id;
                                 operation.lot_id = repimm.id;
                                 operation.libelle = libelle;
-                                operation.type_mouvement = GlobalConstantes.TypeMouvement.Recette.ToString();
-                                operation.type_operation = GlobalConstantes.TypeOperation.SoldeBilan.ToString();
+                                operation.type_mouvement = nameof(GlobalConstantes.TypeMouvement.Recette);
+                                operation.type_operation = nameof(GlobalConstantes.TypeOperation.SoldeBilan);
                                 if (soldeCopro <= 0)
                                     operation.debit = Math.Abs(soldeCopro);
                                 else
@@ -428,13 +428,13 @@ namespace EspaceSyndic.Formulaires.Exercice
 
         private LiasseEntite createLiasseReprise(decimal valueSoldeImm)
         {
-            LiasseEntite liasse = new LiasseEntite();
+            var liasse = new LiasseEntite();
             //liasse.id = liasse.get_uuid();
             liasse.isNew = true;
             liasse.montant = valueSoldeImm;
-            liasse.type_ecriture = GlobalConstantes.TypeOperation.Facture.ToString();
+            liasse.type_ecriture = nameof(GlobalConstantes.TypeOperation.Facture);
             liasse.statut = (int)GlobalConstantes.StatutOperation.Valide;
-            liasse.reference = String.Format("{0} du {1}", BaseApplication.ComputerName, DateTime.Now);
+            liasse.reference = $"{BaseApplication.ComputerName} du {DateTime.Now}";
             if (!LiasseController.getController().InsertOrUpdate(liasse))
                 throw new Exception("Creation Liasse");
             return liasse;
@@ -442,7 +442,7 @@ namespace EspaceSyndic.Formulaires.Exercice
         NatureEntite nature;
         private SaisieFactureEntite createFactureReprise(LiasseEntite liasse, DateTime dateDeb, decimal valueSoldeImm)
         {
-            SaisieFactureEntite facture = new SaisieFactureEntite();
+            var facture = new SaisieFactureEntite();
 
             facture.base_repart = "0";
             facture.date_operation = facture.date_reference = dateDeb;
@@ -456,12 +456,12 @@ namespace EspaceSyndic.Formulaires.Exercice
         }
         private FournisseurEntite getFournisseurCloture()
         {
-            string reference = ParametresDB.getParam1("CLOTURE", "FOURNISSEUR");
+            var reference = ParametresDB.getParam1("CLOTURE", "FOURNISSEUR");
             return FournisseurController.getController().getEntiteFromField("reference", reference);
         }
         private NatureEntite getNatureCloture()
         {
-            string reference = ParametresDB.getParam1("CLOTURE", "NATURE");
+            var reference = ParametresDB.getParam1("CLOTURE", "NATURE");
             return NatureController.getController().getEntiteFromField("reference", reference);
         }
 
@@ -474,7 +474,7 @@ namespace EspaceSyndic.Formulaires.Exercice
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
                 Form form = null;
                 switch (cbTypeOpe.SelectedIndex)
                 {
@@ -503,20 +503,20 @@ namespace EspaceSyndic.Formulaires.Exercice
 
         private void btnExport_Click(object sender, EventArgs e)
         {
-            List<string> colsToHide = new List<string>{"id", "statut"};
+            var colsToHide = new List<string>{"id", "statut"};
             BaseApplication.DataGridToExcel( dataGridView, colsToHide);
         }
 
         private void btnExercice_Click(object sender, EventArgs e)
         {
-            ReferenceExerciceForm form = new ReferenceExerciceForm(immeuble);
+            var form = new ReferenceExerciceForm(immeuble);
             form.ShowDialog();
             tbRefImmeuble_Validating(null, null);
         }
 
         private void lblImmeuble_Click(object sender, EventArgs e)
         {
-            FindImmeubleForm form = new FindImmeubleForm();
+            var form = new FindImmeubleForm();
             form.ShowDialog();
             if (!"".Equals(form.reference))
             {
@@ -543,12 +543,12 @@ namespace EspaceSyndic.Formulaires.Exercice
                 return;
             if ((int)CommonRegistry.getRegistryValue("", "", 0) == 0)
             {
-                NouvelExerciceOnlyForm form = new NouvelExerciceOnlyForm(immeuble.id);
+                var form = new NouvelExerciceOnlyForm(immeuble.id);
                 form.ShowDialog();
             }
             else
             {
-                NouvelExerciceForm form = new NouvelExerciceForm(immeuble.id);
+                var form = new NouvelExerciceForm(immeuble.id);
                 form.ShowDialog();
             }
 //            FillComboExercice();

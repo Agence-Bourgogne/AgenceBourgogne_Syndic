@@ -90,7 +90,7 @@ namespace Gerance.Formulaires.Locataires
             tbRefLocataire.BackColor = Color.White;
             if (tbRefLocataire.Text != "")
             {
-                LocataireEntite locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
+                var locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
                 if (locataire != null)
                 {
 //                    BienEntite bien = locataire.Bien;
@@ -161,11 +161,11 @@ namespace Gerance.Formulaires.Locataires
         }
         protected override void InitializeCombos()
         {
-            DateTime dt = DateTime.Parse("01/01/2000");
+            var dt = DateTime.Parse("01/01/2000");
 
-            for (int i = 0; i < 12; i++)
+            for (var i = 0; i < 12; i++)
             {
-                String[] lDate = dt.ToLongDateString().Split(' ');
+                var lDate = dt.ToLongDateString().Split(' ');
                 cbMoisAugm.Items.Add(lDate[2]);
                 dt = dt.AddMonths(1);
             }
@@ -203,15 +203,15 @@ namespace Gerance.Formulaires.Locataires
         }
         protected override bool saveValue()
         {
-            bool rc = false;
-            LocataireEntite locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
+            var rc = false;
+            var locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
 //            BienEntite bien = BienController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
             if (locataire != null)
             {
-                Npgsql.NpgsqlTransaction trx = Database.BeginTransaction();
+                var trx = Database.BeginTransaction();
                 try
                 {
-                    BienEntite bien = locataire.Bien;
+                    var bien = locataire.Bien;
                     if (bien != null)
                     {
                         // TODO Revoir FraisBail => Etat des lieux
@@ -241,7 +241,7 @@ namespace Gerance.Formulaires.Locataires
                         if (!BienController.getController().InsertOrUpdate(bien))
                             throw new Exception("Mise à jour du bien");
 
-                        QuittanceEntite quittance = QuittancesController.getController().getDerniereQuittance(locataire.id);
+                        var quittance = QuittancesController.getController().getDerniereQuittance(locataire.id);
                         if ( quittance == null )
                             quittance = new QuittanceEntite();
 
@@ -301,11 +301,11 @@ namespace Gerance.Formulaires.Locataires
             setModified(true);
             if (saveForm(false, false) != DialogResult.OK)
                 return;
-            LocataireEntite locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
+            var locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
 //            BienEntite bien = BienController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
             if (locataire != null)
             {
-                BienEntite bien = locataire.Bien;
+                var bien = locataire.Bien;
                 if (bien != null)
                 {
                     reportViewer1.Location = gbHdr.Location;
@@ -314,11 +314,11 @@ namespace Gerance.Formulaires.Locataires
                     reportViewer1.Visible = true;
                     reportViewer1.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
 
-                    string hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
-                    string hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
-                    string hdr_description_small = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION_SMALL");
+                    var hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
+                    var hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
+                    var hdr_description_small = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION_SMALL");
 
-                    ReportParameter[] parameters = new ReportParameter[]{
+                    var parameters = new ReportParameter[]{
                             new ReportParameter("typeReport", "1"),
                             new ReportParameter("dateEdition", DateTime.Now.ToShortDateString()),
                             new ReportParameter("dateDebut", dtDebut.Value.ToShortDateString()),
@@ -336,9 +336,9 @@ namespace Gerance.Formulaires.Locataires
 
                     // TODO  Imprimer la quittance et non le contenu du bien
                     //                    DataTable table = BienController.getController().getDetailAppelDeLoyerEntree(bien.id);
-                    DataTable table = QuittancesController.getController().getDetailAppelDeLoyerEntree(quittance_id);
+                    var table = QuittancesController.getController().getDetailAppelDeLoyerEntree(quittance_id);
 
-                    DataRow row = table.Rows[0];
+                    var row = table.Rows[0];
                     row["imm_adress"] = row["imm_adress"].ToString().Replace("\n", " ");
                     reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("QuittanceLoyerLocataire", table));
                     reportViewer1.RefreshReport();
@@ -365,7 +365,7 @@ namespace Gerance.Formulaires.Locataires
 
         private void btnGetCoeff_Click(object sender, EventArgs e)
         {
-            Indices.IndicesForm form = new Indices.IndicesForm( tbCoeff, tbIndice);
+            var form = new Indices.IndicesForm( tbCoeff, tbIndice);
             form.ShowDialog(this);
         }
 
@@ -381,8 +381,8 @@ namespace Gerance.Formulaires.Locataires
         {
             if ( bien == null )
                 return;
-            decimal loyer = Convertir.ToDecimal(tbLoyer.Text);
-            decimal tva = Math.Round((loyer ) * ((bien.taxe == 1) ? taux_tva : taux_bail) / 100, 2);
+            var loyer = Convertir.ToDecimal(tbLoyer.Text);
+            var tva = Math.Round((loyer ) * ((bien.taxe == 1) ? taux_tva : taux_bail) / 100, 2);
             tbTVA.Text = tva.ToString();
         }
 

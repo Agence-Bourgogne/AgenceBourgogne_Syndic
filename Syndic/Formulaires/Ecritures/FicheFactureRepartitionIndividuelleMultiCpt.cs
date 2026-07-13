@@ -26,10 +26,10 @@ namespace EspaceSyndic.Formulaires.Ecritures
         private void FicheFactureRepartitionIndividuelleMultiCpt_Load(object sender, EventArgs e)
         {
             btnEnter.Width = 0;
-            DataTable repart = LotRepartitionController.getController().GetListLotsDescription(immeuble.id, saisie.base_repart);
+            var repart = LotRepartitionController.getController().GetListLotsDescription(immeuble.id, saisie.base_repart);
             
             dataGridViewLots.DataSource = repart;
-            DataGridViewColumnCollection cols = dataGridViewLots.Columns;
+            var cols = dataGridViewLots.Columns;
 
             cols["id"].Visible = false;
             cols["coproprietaire_id"].Visible = false;
@@ -57,9 +57,9 @@ namespace EspaceSyndic.Formulaires.Ecritures
         {
             try
             {
-                DataTable table = OperationController.getController().getOperationFromSaisie(saisie.id);
-                DataTable repart = RepartIndividuelleController.getController().getRepartFromSaisie(saisie.id);
-                bool bFromSaisie = true;
+                var table = OperationController.getController().getOperationFromSaisie(saisie.id);
+                var repart = RepartIndividuelleController.getController().getRepartFromSaisie(saisie.id);
+                var bFromSaisie = true;
                 if (repart == null || repart.Rows.Count < 1)
                 {
                     repart = RepartIndividuelleController.getController().getLastRepartFromSaisie(saisie.immeuble_id, saisie.base_repart, GlobalConstantes.TypeSaisie.Facture) ;
@@ -69,11 +69,11 @@ namespace EspaceSyndic.Formulaires.Ecritures
                     tbGlobal.Text = repart.Rows[0]["global"].ToString();
 
                 tbMontantTotal.Text = saisie.montant.ToString();
-                String currentLotId = "";
-                Color currentColor = Color.LightBlue;
+                var currentLotId = "";
+                var currentColor = Color.LightBlue;
                 foreach (DataGridViewRow rowItem in dataGridViewLots.Rows)
                 {
-                    DataRowView rowGrid = (DataRowView)rowItem.DataBoundItem;
+                    var rowGrid = (DataRowView)rowItem.DataBoundItem;
                     foreach (DataRow row in table.Rows)
                     {
                         if (rowGrid["id"].ToString() == row["lot_id"].ToString() && (int)rowGrid["ref_cpt"] == (int)row["ref_cpt"])
@@ -120,17 +120,17 @@ namespace EspaceSyndic.Formulaires.Ecritures
         {
             if (((DataGridView)sender).Columns[e.ColumnIndex].Name == "index")
             {
-                DataGridViewCell cell = dataGridViewLots.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                var cell = dataGridViewLots.Rows[e.RowIndex].Cells[e.ColumnIndex];
                 //if ( !cell.ReadOnly )
                 {
-                    decimal montant = Convertir.ToDecimal(tbMontantTotal.Text);
-                    decimal global = Convertir.ToDecimal(tbGlobal.Text);
-                    decimal curr = Convertir.ToDecimal(cell.Value);
+                    var montant = Convertir.ToDecimal(tbMontantTotal.Text);
+                    var global = Convertir.ToDecimal(tbGlobal.Text);
+                    var curr = Convertir.ToDecimal(cell.Value);
                     if (global != 0)
                     {
-                        decimal value = montant * curr / global;
+                        var value = montant * curr / global;
                         if (value != 0)
-                            dataGridViewLots.Rows[e.RowIndex].Cells["montant"].Value = string.Format("{0:0.00}", value);
+                            dataGridViewLots.Rows[e.RowIndex].Cells["montant"].Value = $"{value:0.00}";
                         //else
                         //    dataGridViewLots.Rows[e.RowIndex].Cells["montant"].Value = null;
                     }
@@ -138,22 +138,22 @@ namespace EspaceSyndic.Formulaires.Ecritures
             }
             if (((DataGridView)sender).Columns[e.ColumnIndex].Name == "nouveau" || ((DataGridView)sender).Columns[e.ColumnIndex].Name == "ancien")
             {
-                DataGridViewRow row = dataGridViewLots.Rows[e.RowIndex];
+                var row = dataGridViewLots.Rows[e.RowIndex];
                 if (row != null)
                     if (row.Cells["ancien"].Value.ToString() != "" && row.Cells["nouveau"].Value.ToString() != "")
                     {
-                        decimal ancien = Convertir.ToDecimal(row.Cells["ancien"].Value);
-                        decimal nouveau = Convertir.ToDecimal(row.Cells["nouveau"].Value);
+                        var ancien = Convertir.ToDecimal(row.Cells["ancien"].Value);
+                        var nouveau = Convertir.ToDecimal(row.Cells["nouveau"].Value);
                         row.Cells["index"].Value = nouveau - ancien;
 
-                        decimal montant = Convertir.ToDecimal(tbMontantTotal.Text);
-                        decimal global = Convertir.ToDecimal(tbGlobal.Text);
-                        decimal curr = Convertir.ToDecimal(row.Cells["index"].Value);
+                        var montant = Convertir.ToDecimal(tbMontantTotal.Text);
+                        var global = Convertir.ToDecimal(tbGlobal.Text);
+                        var curr = Convertir.ToDecimal(row.Cells["index"].Value);
                         if (global != 0)
                         {
-                            decimal value = montant * curr / global;
+                            var value = montant * curr / global;
                             if (value != 0)
-                                dataGridViewLots.Rows[e.RowIndex].Cells["montant"].Value = string.Format("{0:0.00}", value);
+                                dataGridViewLots.Rows[e.RowIndex].Cells["montant"].Value = $"{value:0.00}";
                             else
                                 dataGridViewLots.Rows[e.RowIndex].Cells["montant"].Value = null;
                         }
@@ -171,7 +171,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
         {
             if (tbGlobal.Text != "")
             {
-                DataGridViewColumnCollection cols = dataGridViewLots.Columns;
+                var cols = dataGridViewLots.Columns;
                 cols["ancien"].ReadOnly = false;
                 cols["nouveau"].ReadOnly = false;
             }
@@ -194,7 +194,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
                 {
                     double total = Convertir.ToFloat(tbMontantTotal.Text);
                     //                    double total = Convertir.ToFloat(tbGlobal.Text);
-                    tbDiff.Text = String.Format("{0:0.00}", (total - current));
+                    tbDiff.Text = $"{(total - current):0.00}";
                     if (Math.Abs(total - current) > 1)
                         tbDiff.BackColor = Color.Red;
                 }
@@ -203,10 +203,10 @@ namespace EspaceSyndic.Formulaires.Ecritures
 
         private void dataGridViewLots_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            String name = dataGridViewLots.Columns[e.ColumnIndex].Name;
+            var name = dataGridViewLots.Columns[e.ColumnIndex].Name;
             if (name == "nouveau" || name == "ancien" || name == "index" || name == "montant")
             {
-                DataGridViewCell cell = dataGridViewLots.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                var cell = dataGridViewLots.Rows[e.RowIndex].Cells[e.ColumnIndex];
                 if (Convertir.ToDecimal(e.Value) == 0)
                     e.Value = "";
             }
@@ -228,7 +228,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
                 {
                     double total = Convertir.ToFloat(tbMontantTotal.Text);
                     //                    double total = Convertir.ToFloat(tbGlobal.Text);
-                    tbDiff.Text = String.Format("{0:0.00}", (total - current));
+                    tbDiff.Text = $"{(total - current):0.00}";
                     if (Math.Abs(total - current) > 1)
                         tbDiff.BackColor = Color.Red;
                 }
@@ -238,7 +238,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
 
         private void btnValid_Click(object sender, EventArgs e)
         {
-            int numligne = 1;
+            var numligne = 1;
 
             dataGridViewLots_CellValueChanged(null, null);
 
@@ -251,24 +251,24 @@ namespace EspaceSyndic.Formulaires.Ecritures
 
             try
             {
-                DateTime dt = DateTime.Now;
-                OperationController operationCtl = OperationController.getController();
-                RepartIndividuelleController repartCtl = RepartIndividuelleController.getController();
+                var dt = DateTime.Now;
+                var operationCtl = OperationController.getController();
+                var repartCtl = RepartIndividuelleController.getController();
 
                 repartCtl.setTimestampServer(dt);
                 operationCtl.setTimestampServer(dt);
                 if (!SaisieFactureController.getController().doInsertOrUpdate(saisie))
                     throw new Exception("Saisie Facture");
-                Decimal global = Convertir.ToDecimal(tbGlobal.Text);
+                var global = Convertir.ToDecimal(tbGlobal.Text);
 
                 foreach (DataGridViewRow rowGrid in dataGridViewLots.Rows)
                 {
-                    DataRowView row = (DataRowView)rowGrid.DataBoundItem;
-                    Decimal montant = Convertir.ToDecimal(row["montant"]);
+                    var row = (DataRowView)rowGrid.DataBoundItem;
+                    var montant = Convertir.ToDecimal(row["montant"]);
 
                     if (montant != 0 || rowGrid.Tag != null)
                     {
-                        OperationEntite operation = new OperationEntite(saisie);
+                        var operation = new OperationEntite(saisie);
                         if (rowGrid.Tag != null)
                             operation = new OperationEntite((DataRow)rowGrid.Tag);
                         operation.ref_cpt = Convertir.ToInt(rowGrid.Cells["ref_cpt"].Value);
@@ -276,11 +276,11 @@ namespace EspaceSyndic.Formulaires.Ecritures
                         if (!operationCtl.InsertOperationFromSaisie(saisie, operation, montant, row["coproprietaire_id"].ToString(), row["id"].ToString(), numligne++))
                             throw new Exception("Operation");
 
-                        DataGridViewCell cell = rowGrid.Cells["index"];
-                        RepartIndividuelleEntite repart = new RepartIndividuelleEntite((DataRow)cell.Tag);
-                        decimal index = Convertir.ToDecimal(rowGrid.Cells["index"].Value);
-                        decimal ancien = Convertir.ToDecimal(rowGrid.Cells["ancien"].Value);
-                        decimal nouveau = Convertir.ToDecimal(rowGrid.Cells["nouveau"].Value);
+                        var cell = rowGrid.Cells["index"];
+                        var repart = new RepartIndividuelleEntite((DataRow)cell.Tag);
+                        var index = Convertir.ToDecimal(rowGrid.Cells["index"].Value);
+                        var ancien = Convertir.ToDecimal(rowGrid.Cells["ancien"].Value);
+                        var nouveau = Convertir.ToDecimal(rowGrid.Cells["nouveau"].Value);
 
                         if (!repartCtl.InsertRepartIndividuelleFromSaisie(operation, repart, index, ancien, nouveau, global, GlobalConstantes.TypeSaisie.Facture, operation.ref_cpt))
                             throw new Exception("Repartition");

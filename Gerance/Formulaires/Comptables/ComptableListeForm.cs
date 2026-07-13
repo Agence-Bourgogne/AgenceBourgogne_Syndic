@@ -25,7 +25,7 @@ namespace Gerance.Formulaires.Comptables
         }
         protected override void ShowFicheForm(string entite_id)
         {
-            ComptableFicheForm form = new ComptableFicheForm(entite_id);
+            var form = new ComptableFicheForm(entite_id);
             ShowForm(form);
         }
     }

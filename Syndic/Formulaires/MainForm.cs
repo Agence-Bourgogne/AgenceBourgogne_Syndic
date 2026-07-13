@@ -35,8 +35,8 @@ namespace EspaceSyndic.Formulaires
             //this.Text = this.Text + " "+ Application.ProductVersion;
             btnCancel.Width = 0;
 
-            string lbl1 = ParametresDB.getParam1("PRESENTATION", "LABEL1", "AGENCE");
-            string lbl2 = ParametresDB.getParam1("PRESENTATION", "LABEL2", "BOURGOGNE");
+            var lbl1 = ParametresDB.getParam1("PRESENTATION", "LABEL1", "AGENCE");
+            var lbl2 = ParametresDB.getParam1("PRESENTATION", "LABEL2", "BOURGOGNE");
 
             label2.Text = lbl1;
             label3.Text = lbl2;
@@ -48,14 +48,14 @@ namespace EspaceSyndic.Formulaires
 
         private void verifOperationFacture(bool bRepare)
         {
-            StreamWriter file = new StreamWriter("c:\\ctl_reprise\\operation_facture_orphelines.csv", false);
-            StreamWriter file_1 = new StreamWriter("c:\\ctl_reprise\\operation_facture.csv", false);
-            DataTable table = OperationController.getController().getOperationRepriseFacture();
-            NpgsqlTransaction trx = Database.BeginTransaction();
+            var file = new StreamWriter("c:\\ctl_reprise\\operation_facture_orphelines.csv", false);
+            var file_1 = new StreamWriter("c:\\ctl_reprise\\operation_facture.csv", false);
+            var table = OperationController.getController().getOperationRepriseFacture();
+            var trx = Database.BeginTransaction();
 
             try
             {
-                string old_imm = "";
+                var old_imm = "";
                 foreach (DataRow row in table.Rows)
                 {
                     if (row["ref_imm"].ToString() != old_imm)
@@ -64,14 +64,16 @@ namespace EspaceSyndic.Formulaires
                         file_1.WriteLine("{0}", old_imm);
                         file.WriteLine("{0}", old_imm);
                     }
-                    OperationEntite operation = new OperationEntite(row);
-                    DataTable regs = SaisieFactureController.getController().getSaisieFacture(operation);
+                    var operation = new OperationEntite(row);
+                    var regs = SaisieFactureController.getController().getSaisieFacture(operation);
                         if (regs.Rows.Count > 1)
-                            file_1.WriteLine(String.Format("{0} ; {1} ; {2} ; {3} ; {4}; {5} ; {6} = {7}", operation.date_reference.ToShortDateString(), operation.credit, operation.debit, operation.global, operation.base_repart, operation.libelle, regs.Rows[0]["ref_imm"].ToString(), regs.Rows.Count));
+                            file_1.WriteLine(
+                                $"{operation.date_reference.ToShortDateString()} ; {operation.credit} ; {operation.debit} ; {operation.global} ; {operation.base_repart}; {operation.libelle} ; {regs.Rows[0]["ref_imm"].ToString()} = {regs.Rows.Count}");
                         else
                             if (regs.Rows.Count < 1)
                             {
-                                file.WriteLine(String.Format("{0} ; {1} ; {2} ; {3} ; {4}; {5}; {6}; {7}", operation.date_reference.ToShortDateString(), operation.credit, operation.debit, operation.global, operation.base_repart, operation.libelle, operation.Nature.reference, operation.Coproprietaire.reference));
+                                file.WriteLine(
+                                    $"{operation.date_reference.ToShortDateString()} ; {operation.credit} ; {operation.debit} ; {operation.global} ; {operation.base_repart}; {operation.libelle}; {operation.Nature.reference}; {operation.Coproprietaire.reference}");
                             }
                 }
                 trx.Commit();
@@ -88,14 +90,14 @@ namespace EspaceSyndic.Formulaires
 
         private void verifOperationReglement(bool bRepare)
         {
-            StreamWriter file = new StreamWriter("c:\\ctl_reprise\\operation_reglement.txt", false);
-            StreamWriter file_1 = new StreamWriter("c:\\ctl_reprise\\operation_reglement_1.txt", false);
-            DataTable table = OperationController.getController().getOperationRepriseReglement();
-            NpgsqlTransaction trx = Database.BeginTransaction();
+            var file = new StreamWriter("c:\\ctl_reprise\\operation_reglement.txt", false);
+            var file_1 = new StreamWriter("c:\\ctl_reprise\\operation_reglement_1.txt", false);
+            var table = OperationController.getController().getOperationRepriseReglement();
+            var trx = Database.BeginTransaction();
 
             try
             {
-                string old_imm = "";
+                var old_imm = "";
                 foreach (DataRow row in table.Rows)
                 {
                     if (row["ref_imm"].ToString() != old_imm)
@@ -104,26 +106,28 @@ namespace EspaceSyndic.Formulaires
                         file_1.WriteLine("{0}", old_imm);
                         file.WriteLine("{0}", old_imm);
                     }
-                    OperationEntite operation = new OperationEntite(row);
-                    DataTable regs = SaisieReglementController.getController().getSaisieReglement(operation);
+                    var operation = new OperationEntite(row);
+                    var regs = SaisieReglementController.getController().getSaisieReglement(operation);
                     if (regs != null)
                     {
-                        string ref_copro = "null";
+                        var ref_copro = "null";
 
                         if (regs.Rows.Count > 1){
                             if (regs.Rows[0]["ref_copro"] != null)
                                 ref_copro = regs.Rows[0]["ref_copro"].ToString();
-                            file_1.WriteLine(String.Format("{0} ; {1} ; {2} ; {3} ; {4}; {5} = {6}", operation.date_reference, operation.credit, operation.debit, operation.base_repart, operation.libelle, ref_copro, regs.Rows.Count));
+                            file_1.WriteLine(
+                                $"{operation.date_reference} ; {operation.credit} ; {operation.debit} ; {operation.base_repart} ; {operation.libelle}; {ref_copro} = {regs.Rows.Count}");
                         }
                         else
                             if (regs.Rows.Count < 1)
                             {
                                 if (operation.Coproprietaire != null)
                                     ref_copro = operation.Coproprietaire.reference;
-                                file.WriteLine(String.Format("{0} ; {1} ; {2} ; {3} ; {4}; {5}", operation.date_reference, operation.credit, operation.debit, operation.base_repart, operation.libelle, ref_copro));
+                                file.WriteLine(
+                                    $"{operation.date_reference} ; {operation.credit} ; {operation.debit} ; {operation.base_repart} ; {operation.libelle}; {ref_copro}");
                                 if (bRepare)
                                 {
-                                    SaisieReglementEntite entite = new SaisieReglementEntite(operation);
+                                    var entite = new SaisieReglementEntite(operation);
                                     entite.liasse_id = "Correction";
                                     if (!SaisieReglementController.getController().InsertOrUpdate(entite))
                                         throw new Exception("REglement");
@@ -145,14 +149,14 @@ namespace EspaceSyndic.Formulaires
         }
         private void verifOperationAppel(bool bRepare)
         {
-            StreamWriter file = new StreamWriter("c:\\ctl_reprise\\operation_appel_orphelin.csv", false);
-            StreamWriter file_1 = new StreamWriter("c:\\ctl_reprise\\operation_appel_doublon.csv", false);
-            DataTable table = OperationController.getController().getOperationRepriseAppels();
-            NpgsqlTransaction trx = Database.BeginTransaction();
+            var file = new StreamWriter("c:\\ctl_reprise\\operation_appel_orphelin.csv", false);
+            var file_1 = new StreamWriter("c:\\ctl_reprise\\operation_appel_doublon.csv", false);
+            var table = OperationController.getController().getOperationRepriseAppels();
+            var trx = Database.BeginTransaction();
 
             try
             {
-                string old_imm = "";
+                var old_imm = "";
                 foreach (DataRow row in table.Rows)
                 {
                     if (row["ref_imm"].ToString() != old_imm)
@@ -161,11 +165,11 @@ namespace EspaceSyndic.Formulaires
                         file_1.WriteLine("{0}", old_imm);
                         file.WriteLine("{0}", old_imm);
                     }
-                    OperationEntite operation = new OperationEntite(row);
-                    DataTable regs = SaisieAppelFondController.getController().getSaisieAppel(operation);
+                    var operation = new OperationEntite(row);
+                    var regs = SaisieAppelFondController.getController().getSaisieAppel(operation);
                     if (regs != null)
                     {
-                        string ref_copro = "null";
+                        var ref_copro = "null";
                         if (operation.Coproprietaire != null)
                             ref_copro = operation.Coproprietaire.reference;
 
@@ -173,15 +177,17 @@ namespace EspaceSyndic.Formulaires
                         {
                             //if (regs.Rows[0]["ref_copro"] != null)
                             //    ref_copro = regs.Rows[0]["ref_copro"].ToString();
-                            file_1.WriteLine(String.Format("{0} ; {1} ; {2} ; {3} ; {4}; {5} = {6}", operation.date_reference, operation.credit, operation.debit, operation.base_repart, operation.libelle, ref_copro, regs.Rows.Count));
+                            file_1.WriteLine(
+                                $"{operation.date_reference} ; {operation.credit} ; {operation.debit} ; {operation.base_repart} ; {operation.libelle}; {ref_copro} = {regs.Rows.Count}");
                         }
                         else
                             if (regs.Rows.Count < 1)
                             {
-                                file.WriteLine(String.Format("{0} ; {1} ; {2} ; {3} ; {4}; {5}", operation.date_reference, operation.credit, operation.debit, operation.base_repart, operation.libelle, ref_copro));
+                                file.WriteLine(
+                                    $"{operation.date_reference} ; {operation.credit} ; {operation.debit} ; {operation.base_repart} ; {operation.libelle}; {ref_copro}");
                                 if (bRepare)
                                 {
-                                    SaisieReglementEntite entite = new SaisieReglementEntite(operation);
+                                    var entite = new SaisieReglementEntite(operation);
                                     entite.liasse_id = "Correction";
                                     if (!SaisieReglementController.getController().InsertOrUpdate(entite))
                                         throw new Exception("REglement");
@@ -203,21 +209,21 @@ namespace EspaceSyndic.Formulaires
         }
         private void doFacture(DataRow row, StreamWriter file, StreamWriter file_1, bool bRepare)
         {
-            SaisieFactureEntite entite = new SaisieFactureEntite(row);
-            DataTable opes = OperationController.getController().getFactureOperations(entite);
+            var entite = new SaisieFactureEntite(row);
+            var opes = OperationController.getController().getFactureOperations(entite);
             decimal total = 0;
             //Console.WriteLine("{0} {1}", i++, opes.Rows.Count);
             foreach (DataRow opeRow in opes.Rows)
             {
-                decimal credit = Convertir.ToDecimal(opeRow["credit"]);
-                decimal debit = Convertir.ToDecimal(opeRow["debit"]);
+                var credit = Convertir.ToDecimal(opeRow["credit"]);
+                var debit = Convertir.ToDecimal(opeRow["debit"]);
                 total += credit - debit;
             }
             if (Math.Abs(Math.Abs(Math.Abs(total) - Math.Abs(entite.montant))) > 1)
             {
                 if (entite.base_repart.StartsWith( "8") && bRepare)
                 {
-                    OperationEntite operation = OperationController.getController().getEntiteById(opes.Rows[0]["id"].ToString());
+                    var operation = OperationController.getController().getEntiteById(opes.Rows[0]["id"].ToString());
                     entite.liasse_id = "Correction";
                     entite.lot_id = operation.lot_id;
                     operation.saisie_id = entite.id;
@@ -231,22 +237,24 @@ namespace EspaceSyndic.Formulaires
                 }
                 if (opes.Rows.Count > 0)
                 {
-                    file_1.WriteLine(String.Format("{0};{1};{2};{3};{4};{5};{6}", opes.Rows[0]["ref_copro"], entite.date_reference.ToShortDateString(), entite.montant, total, entite.libelle, entite.base_repart, entite.statut));
+                    file_1.WriteLine(
+                        $"{opes.Rows[0]["ref_copro"]};{entite.date_reference.ToShortDateString()};{entite.montant};{total};{entite.libelle};{entite.base_repart};{entite.statut}");
                 }
                 else
                     if ( entite.nature_id != "10230EAADFA54BCBBBE9434214D0AE50")
-                        file.WriteLine(String.Format("{0};{1};{2};{3};{4};{5};{6}", row["ref_imm"], entite.date_reference.ToShortDateString(), entite.montant, total, entite.libelle, entite.base_repart, entite.statut));
+                        file.WriteLine(
+                            $"{row["ref_imm"]};{entite.date_reference.ToShortDateString()};{entite.montant};{total};{entite.libelle};{entite.base_repart};{entite.statut}");
             }
         }
         private void verifFactures(bool bRepare)
         {
-            DataTable table = SaisieFactureController.getController().GetAllElements("", Database.NullDate, Database.NullDate);
-            StreamWriter file = new StreamWriter("c:\\ctl_reprise\\facture_orphelines.csv", false);
-            StreamWriter file_1 = new StreamWriter("c:\\ctl_reprise\\facture_montant_diff.csv", false);
-            NpgsqlTransaction trx = Database.BeginTransaction();
+            var table = SaisieFactureController.getController().GetAllElements("", Database.NullDate, Database.NullDate);
+            var file = new StreamWriter("c:\\ctl_reprise\\facture_orphelines.csv", false);
+            var file_1 = new StreamWriter("c:\\ctl_reprise\\facture_montant_diff.csv", false);
+            var trx = Database.BeginTransaction();
             try
             {
-                string old_imm = "";
+                var old_imm = "";
                 foreach (DataRow row in table.Rows)
                 {
                     if (row["ref_imm"].ToString() != old_imm)
@@ -270,10 +278,10 @@ namespace EspaceSyndic.Formulaires
         }
         private void verifAppelDeFond()
         {
-            DataTable table = SaisieAppelFondController.getController().GetAllElements();
-            StreamWriter file = new StreamWriter("c:\\ctl_reprise\\appel_orphelins.csv", false);
-            StreamWriter file_1 = new StreamWriter("c:\\ctl_reprise\\appel_montant_diff.csv", false);
-            string old_imm = "";
+            var table = SaisieAppelFondController.getController().GetAllElements();
+            var file = new StreamWriter("c:\\ctl_reprise\\appel_orphelins.csv", false);
+            var file_1 = new StreamWriter("c:\\ctl_reprise\\appel_montant_diff.csv", false);
+            var old_imm = "";
             foreach (DataRow row in table.Rows)
             {
                 if (row["ref_imm"].ToString() != old_imm)
@@ -282,24 +290,26 @@ namespace EspaceSyndic.Formulaires
                     file_1.WriteLine("*** {0}", old_imm);
                     file.WriteLine("*** {0}", old_imm);
                 }
-                SaisieAppelFondEntite entite = new SaisieAppelFondEntite(row);
+                var entite = new SaisieAppelFondEntite(row);
 //                if (entite.liasse_id.StartsWith("Reprise"))
                 {
-                    DataTable opes = OperationController.getController().getAppelDeFondOperations(entite);
+                    var opes = OperationController.getController().getAppelDeFondOperations(entite);
                     decimal total = 0;
                     foreach (DataRow opeRow in opes.Rows)
                     {
-                        decimal credit = Convertir.ToDecimal(opeRow["credit"]);
-                        decimal debit = Convertir.ToDecimal(opeRow["debit"]);
+                        var credit = Convertir.ToDecimal(opeRow["credit"]);
+                        var debit = Convertir.ToDecimal(opeRow["debit"]);
                         total += credit - debit;
                     }
 
                     if (Math.Abs(Math.Abs(total) - Math.Abs(entite.montant)) > 1)
                     {
                         if (opes.Rows.Count > 0)
-                            file_1.WriteLine(String.Format("{0};{1};{2};{3};{4}", opes.Rows[0]["ref_copro"], entite.date_reference.ToShortDateString(), entite.montant, total, entite.libelle));
+                            file_1.WriteLine(
+                                $"{opes.Rows[0]["ref_copro"]};{entite.date_reference.ToShortDateString()};{entite.montant};{total};{entite.libelle}");
                         else
-                            file.WriteLine(String.Format("{0};{1};{2};{3};{4}", row["ref_imm"], entite.date_reference.ToShortDateString(), entite.montant, total, entite.libelle));
+                            file.WriteLine(
+                                $"{row["ref_imm"]};{entite.date_reference.ToShortDateString()};{entite.montant};{total};{entite.libelle}");
                     }
                 }
             }
@@ -309,11 +319,11 @@ namespace EspaceSyndic.Formulaires
         }
         private void verifLotOperation(bool bUpdate)
         {
-            DataTable table = OperationController.getController().getBadOperations();
-            StreamWriter file = new StreamWriter("c:\\ctl_reprise\\lot_operation_0.txt", false);
-            StreamWriter file_1 = new StreamWriter("c:\\ctl_reprise\\lot_operation_1.txt", false);
-            NpgsqlTransaction trx = Database.BeginTransaction();
-            string old_imm = "";
+            var table = OperationController.getController().getBadOperations();
+            var file = new StreamWriter("c:\\ctl_reprise\\lot_operation_0.txt", false);
+            var file_1 = new StreamWriter("c:\\ctl_reprise\\lot_operation_1.txt", false);
+            var trx = Database.BeginTransaction();
+            var old_imm = "";
             try
             {
                 foreach (DataRow row in table.Rows)
@@ -324,8 +334,8 @@ namespace EspaceSyndic.Formulaires
                         file_1.WriteLine("*** {0}", old_imm);
                         file.WriteLine("*** {0}", old_imm);
                     }
-                    OperationEntite operation = new OperationEntite(row);
-                    LotDescriptionEntite lot = LotDescriptionController.getController().getLotFromCopro(operation.immeuble_id, operation.coproprietaire_id);
+                    var operation = new OperationEntite(row);
+                    var lot = LotDescriptionController.getController().getLotFromCopro(operation.immeuble_id, operation.coproprietaire_id);
                     if (lot != null)
                     {
                         operation.lot_id = lot.id;
@@ -348,12 +358,12 @@ namespace EspaceSyndic.Formulaires
         }
         private void verifReglement(bool bUpdate)
         {
-            DataTable table = SaisieReglementController.getController().GetAllElements("", Database.NullDate, Database.NullDate);
+            var table = SaisieReglementController.getController().GetAllElements("", Database.NullDate, Database.NullDate);
 
-            StreamWriter file = new StreamWriter("c:\\ctl_reprise\\reglement_0.txt", false);
-            StreamWriter file_1 = new StreamWriter("c:\\ctl_reprise\\reglement_1.txt", false);
-            NpgsqlTransaction trx = Database.BeginTransaction();
-            string old_imm = "";
+            var file = new StreamWriter("c:\\ctl_reprise\\reglement_0.txt", false);
+            var file_1 = new StreamWriter("c:\\ctl_reprise\\reglement_1.txt", false);
+            var trx = Database.BeginTransaction();
+            var old_imm = "";
             try
             {
                 foreach (DataRow row in table.Rows)
@@ -364,22 +374,24 @@ namespace EspaceSyndic.Formulaires
                         file_1.WriteLine("*** {0}", old_imm);
                         file.WriteLine("*** {0}", old_imm);
                     }
-                    SaisieReglementEntite entite = new SaisieReglementEntite(row);
+                    var entite = new SaisieReglementEntite(row);
 
-                    DataTable opes = OperationController.getController().getReglementOperations(entite);
+                    var opes = OperationController.getController().getReglementOperations(entite);
                     if (opes.Rows.Count != 1)
                     {
                         if (opes.Rows.Count > 0)
-                            file_1.WriteLine(String.Format("{0};{1};{2};{3};{4};{5};{6}", opes.Rows[0]["ref_copro"], opes.Rows.Count, entite.date_reference, entite.montant, entite.libelle, entite.emetteur, entite.banque));
+                            file_1.WriteLine(
+                                $"{opes.Rows[0]["ref_copro"]};{opes.Rows.Count};{entite.date_reference};{entite.montant};{entite.libelle};{entite.emetteur};{entite.banque}");
                         else
                         {
-                            string immeuble_id = row["immeuble_id"].ToString();
-                            file.WriteLine(String.Format("{0};{1};{2};{3};{4};{5};{6}", row["ref_copro"], row["immeuble_id"], entite.date_reference, entite.montant, entite.libelle, entite.emetteur, row["nature_id"]));
+                            var immeuble_id = row["immeuble_id"].ToString();
+                            file.WriteLine(
+                                $"{row["ref_copro"]};{row["immeuble_id"]};{entite.date_reference};{entite.montant};{entite.libelle};{entite.emetteur};{row["nature_id"]}");
                             if (bUpdate && !immeuble_id.StartsWith("*"))
                             {
                                 entite.liasse_id = "Correction";
-                                OperationEntite operation = new OperationEntite(entite);
-                                LotDescriptionEntite lot = LotDescriptionController.getController().getLotFromCopro(entite.immeuble_id, entite.coproprietaire_id);
+                                var operation = new OperationEntite(entite);
+                                var lot = LotDescriptionController.getController().getLotFromCopro(entite.immeuble_id, entite.coproprietaire_id);
                                 operation.coproprietaire_id = entite.coproprietaire_id;
                                 operation.lot_id = lot.id;
                                 if (!OperationController.getController().InsertOrUpdate(operation))
@@ -390,12 +402,12 @@ namespace EspaceSyndic.Formulaires
                         }
                     }
                 }
-                DataTable badOpe = OperationController.getController().getBadOperations();
+                var badOpe = OperationController.getController().getBadOperations();
                 old_imm = "";
                 foreach (DataRow rowOpe in badOpe.Rows)
                 {
-                    OperationEntite operation = new OperationEntite(rowOpe);
-                    LotDescriptionEntite lot = LotDescriptionController.getController().getLotFromCopro(operation.immeuble_id, operation.coproprietaire_id);
+                    var operation = new OperationEntite(rowOpe);
+                    var lot = LotDescriptionController.getController().getLotFromCopro(operation.immeuble_id, operation.coproprietaire_id);
                     operation.lot_id = lot.id;
                     if (!OperationController.getController().InsertOrUpdate(operation))
                         throw new Exception("Operation Lot");
@@ -415,8 +427,8 @@ namespace EspaceSyndic.Formulaires
 
         private void GenericForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Form form = (Form)sender;
-            String className = sender.GetType().ToString();
+            var form = (Form)sender;
+            var className = sender.GetType().ToString();
 
             Console.WriteLine(className);
             if (dicoForms.ContainsKey(className))
@@ -424,7 +436,7 @@ namespace EspaceSyndic.Formulaires
                 dicoForms.Remove(className);
                 if (form is ICommonChangedListener)
                 {
-                    ICommonChangedListener f = (ICommonChangedListener)form;
+                    var f = (ICommonChangedListener)form;
                     syndicEvent.Changed -= f.ChangedReference;
                 }
             }
@@ -432,11 +444,11 @@ namespace EspaceSyndic.Formulaires
         }
         private void GenericBtnCancel_Click(object sender, EventArgs e)
         {
-            Button btn = (Button)sender;
+            var btn = (Button)sender;
 
             if ( btn.Parent != null)
             {
-                Control parent = (Control) btn.Parent;
+                var parent = (Control) btn.Parent;
                 while ( parent != null )
                 {
                     parent = parent.Parent;
@@ -453,13 +465,13 @@ namespace EspaceSyndic.Formulaires
                 Form form = null;
                 if (!dicoForms.ContainsKey(className))
                 {
-                    ObjectHandle obj = Activator.CreateInstance("SyndicApplication", className);
+                    var obj = Activator.CreateInstance("SyndicApplication", className);
                     form = (Form)obj.Unwrap();
                     dicoForms.Add(className, form);
                     form.FormClosed += new FormClosedEventHandler(GenericForm_FormClosed);
                     if (form is ICommonChangedListener)
                     {
-                        ICommonChangedListener f = (ICommonChangedListener) form;
+                        var f = (ICommonChangedListener) form;
                         syndicEvent.Changed += new CommonChangedEventHandler(f.ChangedReference);
                     }
                 }
@@ -476,7 +488,7 @@ namespace EspaceSyndic.Formulaires
                 form.ShowIcon = true;
                 if (form.CancelButton != null)
                 {
-                    Button btn = (Button) form.CancelButton;
+                    var btn = (Button) form.CancelButton;
                     btn.Click += new EventHandler(GenericBtnCancel_Click); ;
                 }
 
@@ -539,7 +551,7 @@ namespace EspaceSyndic.Formulaires
 
         private void commentairesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FicheAideImmeubleForm form = new FicheAideImmeubleForm();
+            var form = new FicheAideImmeubleForm();
             try
             {
                 form.ShowDialog();
@@ -557,7 +569,7 @@ namespace EspaceSyndic.Formulaires
 
         private void parametresToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DatabaseConfigForm form = new DatabaseConfigForm(SyndicApplication.CURRENT_APPLICATION);
+            var form = new DatabaseConfigForm(SyndicApplication.CURRENT_APPLICATION);
             try
             {
                 form.ShowDialog();
@@ -620,7 +632,7 @@ namespace EspaceSyndic.Formulaires
 
         private void balanceReglementsAppelsDeFondImmeubleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            BalanceImmeublePrintForm form =  (BalanceImmeublePrintForm ) ShowForm("EspaceSyndic.Impressions.Balances.BalanceImmeublePrintForm");
+            var form =  (BalanceImmeublePrintForm ) ShowForm("EspaceSyndic.Impressions.Balances.BalanceImmeublePrintForm");
             form.RefreshTypeReport(1);
         }
         private void balanceReglementsFacturesPourUnImmeubleToolStripMenuItem_Click(object sender, EventArgs e)
@@ -665,7 +677,7 @@ namespace EspaceSyndic.Formulaires
 
         private void parametresGenerauxToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ConfigParamForm form = new ConfigParamForm();
+            var form = new ConfigParamForm();
             try
             {
                 form.ShowDialog();
@@ -691,12 +703,12 @@ namespace EspaceSyndic.Formulaires
 
             try
             {
-                foreach (KeyValuePair<String, Form> item in dicoForms)
+                foreach (var item in dicoForms)
                 {
                     item.Value.Hide();
                 }
                 Hide();
-                LogonForm logonForm = new LogonForm();
+                var logonForm = new LogonForm();
                 logonForm.ShowDialog();
                 if ( BaseApplication.userConnected != null)
                 {
@@ -724,7 +736,7 @@ namespace EspaceSyndic.Formulaires
         }
         private void MainForm_Activated(object sender, EventArgs e)
         {
-            foreach (KeyValuePair<String, Form> item in dicoForms)
+            foreach (var item in dicoForms)
             {
                 item.Value.Show();
             }
@@ -793,7 +805,7 @@ namespace EspaceSyndic.Formulaires
 
         private void aideMenuItem_Click(object sender, EventArgs e)
         {
-            AideForm form = new AideForm();
+            var form = new AideForm();
             form.ShowDialog();
         }
 
@@ -810,7 +822,7 @@ namespace EspaceSyndic.Formulaires
 
         private void impressionListeFacturesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Impressions.Facture.ImprimerListeFacturationForm form = new Impressions.Facture.ImprimerListeFacturationForm();
+            var form = new Impressions.Facture.ImprimerListeFacturationForm();
             form.ShowDialog();
         }
 
@@ -821,7 +833,7 @@ namespace EspaceSyndic.Formulaires
 
         private void publicationDeDocumentsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Extranet.PublishDocument form = new Extranet.PublishDocument();
+            var form = new Extranet.PublishDocument();
             form.ShowDialog();
         }
 

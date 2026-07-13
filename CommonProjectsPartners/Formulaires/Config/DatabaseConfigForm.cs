@@ -19,7 +19,7 @@ namespace CommonProjectsPartners.Formulaires.Config
         }
         private void ShowParam(TextBox tb, string param)
         {
-            String[] txt = param.Split('=');
+            var txt = param.Split('=');
             tb.Text = txt[1];
         }
         protected virtual string getConnexionString()
@@ -28,10 +28,10 @@ namespace CommonProjectsPartners.Formulaires.Config
         }
         private void ConfigForm_Load(object sender, EventArgs e)
         {
-            string str = getConnexionString();
+            var str = getConnexionString();
             if ( str != null && str!= "" )
             {
-                String[] parametres = str.Split(';');
+                var parametres = str.Split(';');
 
                 ShowParam(tbServeur, parametres[0]);
                 ShowParam(tbPort, parametres[1]);
@@ -54,7 +54,7 @@ namespace CommonProjectsPartners.Formulaires.Config
         }
         private void btnOk_Click(object sender, EventArgs e)
         {
-            string strCnx = String.Format("Server={0};Port={1};User Id={2};Password={3};Database={4}", 
+            var strCnx = String.Format("Server={0};Port={1};User Id={2};Password={3};Database={4}", 
                 tbServeur.Text,
                 tbPort.Text,
                 tbUser.Text,

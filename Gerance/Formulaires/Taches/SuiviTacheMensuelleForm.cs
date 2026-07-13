@@ -56,7 +56,7 @@ namespace Gerance.Formulaires.Taches
         }
         private void dataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            DataGridViewColumn col = dataGridView.Columns[e.ColumnIndex];
+            var col = dataGridView.Columns[e.ColumnIndex];
             if (col.Name == "utilisateur")
             {
                 e.Value = CommonProjectsPartners.Utils.ControlsWindows.userComputer(e.Value.ToString());

@@ -19,16 +19,16 @@ namespace SyndicWordAddIn
 
         private void ThisAddIn_Shutdown(object sender, EventArgs e)
         {
-            foreach (string file in filesName)
+            foreach (var file in filesName)
             {
                 File.Delete(file);
             }
         }
         internal void GenerationEtiquetteImmeuble(string refImmeuble)
         {
-            String modele = ParametresDB.getParam1("MODELES", "ETIQUETTES");
+            var modele = ParametresDB.getParam1("MODELES", "ETIQUETTES");
             BaseApplication.schema = ParametresDB.getParam1("AGENCE", "schema");
-            ImmeubleEntite immeuble = ImmeubleController.getController().getEntiteFromField("reference", refImmeuble);
+            var immeuble = ImmeubleController.getController().getEntiteFromField("reference", refImmeuble);
             if ( immeuble != null )
                 BaseApplication.PublipostageEtiquetteWord(CoproprietaireController.getController().CoproprietaireImmeubleDescription(immeuble.id), modele);
         }

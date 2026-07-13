@@ -27,12 +27,12 @@ namespace EspaceSyndic.Formulaires.Immeubles
 
         private void FicheRepartLot_FormClosing(object sender, FormClosingEventArgs e)
         {
-            List<LotDescriptionEntite> listToDel = new List<LotDescriptionEntite>();
+            var listToDel = new List<LotDescriptionEntite>();
 
             foreach (DataGridViewRow r in dataGridViewLots.Rows)
             {
-                DataRowView row = (DataRowView)r.DataBoundItem;
-                LotDescriptionEntite lot = LotDescriptionController.getController().getEntiteById ( row["id"].ToString());
+                var row = (DataRowView)r.DataBoundItem;
+                var lot = LotDescriptionController.getController().getEntiteById ( row["id"].ToString());
                 if (lot.statut == (int)GlobalConstantes.StatutData.Supprime)
                 {
                     listToDel.Add(lot);
@@ -40,7 +40,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
             }
             if (listToDel.Count > 0)
             {
-                DialogResult res = MessageBox.Show("Des lot ont été marqués comme supprimés définivement voulez les effacer ?", "Attention", MessageBoxButtons.YesNoCancel);
+                var res = MessageBox.Show("Des lot ont été marqués comme supprimés définivement voulez les effacer ?", "Attention", MessageBoxButtons.YesNoCancel);
                 if (res == DialogResult.Cancel)
                 {
                     e.Cancel = true;
@@ -48,11 +48,11 @@ namespace EspaceSyndic.Formulaires.Immeubles
                 else
                     if (res == DialogResult.Yes)
                     {
-                        NpgsqlTransaction trx = Database.BeginTransaction();
+                        var trx = Database.BeginTransaction();
   
                         try
                         {
-                            foreach (LotDescriptionEntite lot in listToDel)
+                            foreach (var lot in listToDel)
                             {
                                 LotDescriptionController.getController().deleteEntite(lot);
                             }
@@ -70,7 +70,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
 
         private int countLotActif(DataTable table)
         {
-            int count = 0;
+            var count = 0;
 
             foreach (DataRow row in table.Rows)
             {
@@ -85,13 +85,13 @@ namespace EspaceSyndic.Formulaires.Immeubles
         {
             Console.WriteLine("Bidon");
             repartitionImmeuble = immeuble.getRepartitionImmeuble();
-            DataTable table = LotDescriptionController.getController().getDataGridListeLotDescription(immeuble, false);
+            var table = LotDescriptionController.getController().getDataGridListeLotDescription(immeuble, false);
 
-            int nbLotActif = countLotActif(table);
+            var nbLotActif = countLotActif(table);
 
             if (nbLotActif < immeuble.nombrelots)
             {
-                int nb = immeuble.nombrelots - nbLotActif;
+                var nb = immeuble.nombrelots - nbLotActif;
                 table = LotDescriptionController.getController().createLotRepartition(immeuble, nb);
             }
             FillDataGridViewLot("");
@@ -117,7 +117,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
         }
         private void LoadRepartitionLots()
         {
-            LotRepartitionController controller = new LotRepartitionController();
+            var controller = new LotRepartitionController();
             repartitionLots = controller.GetLotsRepartition(immeuble);
         }
         private void ShowFromRepartitionImmeuble()
@@ -133,9 +133,9 @@ namespace EspaceSyndic.Formulaires.Immeubles
             }
             foreach ( DataRow row in repartitionImmeuble.Rows)
             {
-                int ligne = Convert.ToInt32( row["ligne"].ToString());
-                int colonne = Convert.ToInt32(row["colonne"].ToString());
-                int valeur = Convert.ToInt32(row["valeur"].ToString());
+                var ligne = Convert.ToInt32( row["ligne"].ToString());
+                var colonne = Convert.ToInt32(row["colonne"].ToString());
+                var valeur = Convert.ToInt32(row["valeur"].ToString());
                 ControlRepartition(ligne, colonne);
                 dataGridView.Rows[ligne - 1].Cells[colonne+1].ReadOnly = false;
                 dataGridView.Rows[ligne - 1].Cells[colonne + 1].ToolTipText = row["nom"].ToString();
@@ -156,11 +156,11 @@ namespace EspaceSyndic.Formulaires.Immeubles
         }
         private void ControlRepartition(int ligne, int colonne)
         {
-            DataRow totalRow = getRepartitionImmeuble(ligne, colonne);
-            int totalRepart = Convert.ToInt32(totalRow["valeur"].ToString());
+            var totalRow = getRepartitionImmeuble(ligne, colonne);
+            var totalRepart = Convert.ToInt32(totalRow["valeur"].ToString());
             if (totalRepart == 0)
                 return;
-            int totalLots = 0;
+            var totalLots = 0;
             if (repartitionLots != null)
                 foreach (DataRow row in repartitionLots.Rows)
                 {
@@ -190,7 +190,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
         {
             if (dataGridViewLots.SelectedRows.Count <= 0)
                 return;
-            DataRowView row = (DataRowView)dataGridViewLots.SelectedRows[0].DataBoundItem;
+            var row = (DataRowView)dataGridViewLots.SelectedRows[0].DataBoundItem;
             if (row != null )
             {
                 tbImmeuble.Text = immeuble.reference;
@@ -218,7 +218,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
                         cell.Tag = null;
                     }
                 }
-            string lot_id = currentLot["id"].ToString();
+            var lot_id = currentLot["id"].ToString();
 
             if (dataGridView.Rows.Count > 0)
             {
@@ -226,11 +226,10 @@ namespace EspaceSyndic.Formulaires.Immeubles
                 {
                     if (lot_id.Equals(row["lot_id"].ToString()))
                     {
-                        LotRepartitionEntite entite = new LotRepartitionEntite(row);
+                        var entite = new LotRepartitionEntite(row);
                         dataGridView.Rows[entite.ligne - 1].Cells[entite.colonne + 1].Tag = entite;
                         if (entite.valeur != 0 )
-                            //if ( entite.type_ventilation != (int) GlobalConstantes.TypeRepartition.Individuelle )
-                                dataGridView.Rows[entite.ligne - 1].Cells[entite.colonne +1 ].Value = entite.valeur.ToString();
+                            dataGridView.Rows[entite.ligne - 1].Cells[entite.colonne +1 ].Value = entite.valeur.ToString();
                     }
                 }
                 ShowFromRepartitionImmeuble();
@@ -242,7 +241,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
 
         private void lblReference_Click(object sender, EventArgs e)
         {
-            FindCoproprietaireForm form = new FindCoproprietaireForm();
+            var form = new FindCoproprietaireForm();
             form.ShowDialog();
             if (!"".Equals(form.reference))
                 tbCoproprietaire.Text = form.reference;
@@ -250,9 +249,9 @@ namespace EspaceSyndic.Formulaires.Immeubles
         }
         private CoproprietaireEntite getCoproprietaireEntite()
         {
-            CoproprietaireController controller = new CoproprietaireController();
-            NpgsqlParameter parameter = new NpgsqlParameter("@reference", tbCoproprietaire.Text);
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> { parameter };
+            var controller = new CoproprietaireController();
+            var parameter = new NpgsqlParameter("@reference", tbCoproprietaire.Text);
+            var parameters = new List<NpgsqlParameter> { parameter };
             return controller.getEntite(" where reference = @reference", parameters);
 
         }
@@ -262,7 +261,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
         }
         private void SaveRepartitionLot()
         {
-            LotRepartitionController controller = new LotRepartitionController();
+            var controller = new LotRepartitionController();
 
             foreach ( DataGridViewRow row in dataGridView.Rows)
             {
@@ -271,13 +270,13 @@ namespace EspaceSyndic.Formulaires.Immeubles
                     if ( cell.ColumnIndex != 0 )
                         if (!cell.ReadOnly)
                         {
-                            LotRepartitionEntite entite = (LotRepartitionEntite) cell.Tag;
+                            var entite = (LotRepartitionEntite) cell.Tag;
                             if ( entite == null)
                                 entite = new LotRepartitionEntite();
 
                             foreach (DataRow rowImm in repartitionImmeuble.Rows)
                             {
-                                ImmeubleRepartitionEntite imm = new ImmeubleRepartitionEntite(rowImm);
+                                var imm = new ImmeubleRepartitionEntite(rowImm);
                                 if (imm.ligne == (row.Index+1))
                                     if (imm.colonne == cell.ColumnIndex)
                                     {
@@ -290,7 +289,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
                             entite.lot_id = currentLot["id"].ToString();
                             entite.ligne = row.Index + 1; ;
                             entite.colonne = cell.ColumnIndex -1;
-                            entite.reference = String.Format("{0}{1}", entite.ligne, entite.colonne );
+                            entite.reference = $"{entite.ligne}{entite.colonne}";
                             if (cell.Value == null || cell.Value.Equals(""))
                                 entite.valeur = 0;
                             try
@@ -309,16 +308,16 @@ namespace EspaceSyndic.Formulaires.Immeubles
         {
 
             //LotDescriptionEntite entite = new LotDescriptionEntite();
-            LotDescriptionEntite entite = LotDescriptionController.getController().getEntiteById(currentLot["id"].ToString());
+            var entite = LotDescriptionController.getController().getEntiteById(currentLot["id"].ToString());
             //entite.id = currentLot["id"].ToString();
             entite.isNew = false;
             entite.immeuble_id = immeuble.id;
             entite.numero_lot = Convert.ToInt32(tbNumLot.Text);
-            string copro_id = "";
+            var copro_id = "";
 
 //            if (tbCoproprietaire.Text != "")
             {
-                CoproprietaireEntite copro = getCoproprietaireEntite();
+                var copro = getCoproprietaireEntite();
                 if (copro == null)
                 {
                     MessageBox.Show("Référence Copropriétaire Invalide");
@@ -336,7 +335,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
             entite.numero_etage = tbEtage.Text;
             entite.avance = Convert.ToDecimal(tbAvance.Text.Replace(".", ","));
 
-            LotDescriptionController controller = new LotDescriptionController();
+            var controller = new LotDescriptionController();
             if (controller.InsertOrUpdate(entite))
             {
 
@@ -350,7 +349,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
         private void FillDataGridViewLot(string oldSelect)
         {
             dataGridViewLots.DataSource = LotDescriptionController.getController().getDataGridListeLotDescription(immeuble, false);
-            DataGridViewColumnCollection cols = dataGridViewLots.Columns;
+            var cols = dataGridViewLots.Columns;
 
             cols["index"].Width = 40;
             cols["coproprietaire"].Width = 40;
@@ -379,7 +378,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
         }
         private void btnCoproAdd_Click(object sender, EventArgs e)
         {
-            FicheCoproprietaireForm form = new FicheCoproprietaireForm();
+            var form = new FicheCoproprietaireForm();
             form.ShowDialog();
             if ( form.entite != null )
                 tbCoproprietaire.Text = form.entite.reference;
@@ -394,10 +393,10 @@ namespace EspaceSyndic.Formulaires.Immeubles
         {
             if (dataGridViewLots.SelectedRows.Count <= 0)
                 return;
-            DataRowView row = (DataRowView)dataGridViewLots.SelectedRows[0].DataBoundItem;
+            var row = (DataRowView)dataGridViewLots.SelectedRows[0].DataBoundItem;
             if (row != null)
             {
-                LotDescriptionEntite lot = LotDescriptionController.getController().getEntiteById(row["id"].ToString());
+                var lot = LotDescriptionController.getController().getEntiteById(row["id"].ToString());
                 lot.statut = (int)GlobalConstantes.StatutData.Inactif;
                 LotDescriptionController.getController().InsertOrUpdate(lot);
                 FillDataGridViewLot(row["id"].ToString());
@@ -406,7 +405,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
 
         private void dataGridViewLots_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
         {
-            DataGridViewRow row = dataGridViewLots.Rows[e.RowIndex];
+            var row = dataGridViewLots.Rows[e.RowIndex];
             if (Convertir.ToInt(row.Cells["statut"].Value) == (int)GlobalConstantes.StatutData.Inactif)
             {
                 row.DefaultCellStyle.BackColor = Color.OrangeRed;
@@ -421,10 +420,10 @@ namespace EspaceSyndic.Formulaires.Immeubles
         {
             if (dataGridViewLots.SelectedRows.Count <= 0)
                 return;
-            DataRowView row = (DataRowView)dataGridViewLots.SelectedRows[0].DataBoundItem;
+            var row = (DataRowView)dataGridViewLots.SelectedRows[0].DataBoundItem;
             if (row != null)
             {
-                LotDescriptionEntite lot = LotDescriptionController.getController().getEntiteById ( row["id"].ToString());
+                var lot = LotDescriptionController.getController().getEntiteById ( row["id"].ToString());
                 lot.statut = (int) GlobalConstantes.StatutData.Actif;
                 LotDescriptionController.getController().InsertOrUpdate(lot);
                 FillDataGridViewLot(row["id"].ToString());
@@ -435,10 +434,10 @@ namespace EspaceSyndic.Formulaires.Immeubles
         {
             if (dataGridViewLots.SelectedRows.Count <= 0)
                 return;
-            DataRowView row = (DataRowView)dataGridViewLots.SelectedRows[0].DataBoundItem;
+            var row = (DataRowView)dataGridViewLots.SelectedRows[0].DataBoundItem;
             if (row != null)
             {
-                LotDescriptionEntite lot = LotDescriptionController.getController().getEntiteById(row["id"].ToString());
+                var lot = LotDescriptionController.getController().getEntiteById(row["id"].ToString());
                 lot.statut = (int)GlobalConstantes.StatutData.Supprime;
                 LotDescriptionController.getController().InsertOrUpdate(lot);
                 FillDataGridViewLot(row["id"].ToString());
@@ -449,12 +448,12 @@ namespace EspaceSyndic.Formulaires.Immeubles
         {
             if (e.RowIndex >= 0)
             {
-                DataGridViewRow row = dataGridViewLots.Rows[e.RowIndex];
+                var row = dataGridViewLots.Rows[e.RowIndex];
                 if (Convertir.ToInt(row.Cells["statut"].Value) == (int)GlobalConstantes.StatutData.Supprime)
                 {
                     e.Paint(e.CellBounds, e.PaintParts);
-                    Point pDeb = new Point(e.CellBounds.Left, e.CellBounds.Top + e.CellBounds.Height / 2);
-                    Point pEnd = new Point(e.CellBounds.Right, e.CellBounds.Top + e.CellBounds.Height / 2);
+                    var pDeb = new Point(e.CellBounds.Left, e.CellBounds.Top + e.CellBounds.Height / 2);
+                    var pEnd = new Point(e.CellBounds.Right, e.CellBounds.Top + e.CellBounds.Height / 2);
                     e.Graphics.DrawLine(new Pen(Color.Black, 1), pDeb, pEnd);
                     e.Handled = true;
                 }

@@ -35,7 +35,7 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
         {
             if (e.RowIndex >= 0)
             {
-                DataGridViewRow row = dataGridView.Rows[e.RowIndex];
+                var row = dataGridView.Rows[e.RowIndex];
                 if (Convertir.ToInt(row.Cells["statut"].Value) != (int)GlobalConstantes.StatutData.Actif)
                 {
                     row.DefaultCellStyle.BackColor = Color.OrangeRed;
@@ -46,17 +46,17 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
         public override void FillListFromFilter(string filter)
         {
             if (tbGerant.Text != "")
-                filter += String.Format(" and LOWER(nomcomp) like LOWER('{0}%') ", tbGerant.Text);
+                filter += $" and LOWER(nomcomp) like LOWER('{tbGerant.Text}%') ";
             source = controller.GetFindListStatut(filter);
             base.FillListFromFilter(filter);
-            DataGridViewColumnCollection cols = dataGridView.Columns;
+            var cols = dataGridView.Columns;
             cols["statut"].Visible = false;
         }
 
         private void AdapteControls()
         {
-            int decal = 168;
-            Size size = dataGridView.Size;
+            var decal = 168;
+            var size = dataGridView.Size;
             dataGridView.Size = new Size(size.Width + decal, size.Height);
             dataGridView.TabIndex = 6;
             valid.TabIndex = 7;

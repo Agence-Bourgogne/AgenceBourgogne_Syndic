@@ -19,11 +19,11 @@ namespace EspaceSyndic.Formulaires.Config
 
         private void ModelesDocumentsForm_Load(object sender, EventArgs e)
         {
-            ParametreEntite groupe = ParametreController.controller.getGroupeEntite("MODELES"); 
+            var groupe = ParametreController.controller.getGroupeEntite("MODELES"); 
             if ( groupe != null )
             { 
                 dataGridView.DataSource = ParametreController.controller.getListFromEntiteGroupe(groupe);
-                DataGridViewColumnCollection cols = dataGridView.Columns;
+                var cols = dataGridView.Columns;
                 cols["id"].Visible = false;
                 cols["groupe"].Visible = false;
                 cols["code"].Visible = false;
@@ -38,11 +38,11 @@ namespace EspaceSyndic.Formulaires.Config
                 cols["audit_created_by"].Visible = false;
                 cols["audit_updated"].Visible = false;
                 cols["audit_updated_by"].Visible = false;
-                string[] columnsDef = groupe.param_1.Split(',');
-                foreach (string coldef in columnsDef)
+                var columnsDef = groupe.param_1.Split(',');
+                foreach (var coldef in columnsDef)
                 {
-                    string[] paramCol = coldef.Replace(" as ", ":").Split(':');
-                    string colName = paramCol[0].ToLower().Trim();
+                    var paramCol = coldef.Replace(" as ", ":").Split(':');
+                    var colName = paramCol[0].ToLower().Trim();
                     cols[colName].Visible = true;
                     if (paramCol.Length > 1)
                         cols[colName].HeaderText = paramCol[1];
@@ -57,7 +57,7 @@ namespace EspaceSyndic.Formulaires.Config
         {
             if ( dataGridView.SelectedRows.Count > 0  )
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
                 if ( row != null )
                 {
                     Console.WriteLine(row["param_1"].ToString());
@@ -71,7 +71,7 @@ namespace EspaceSyndic.Formulaires.Config
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                String serveur_modeles = ParametresDB.getParam1("PARAMETRES_DIVERS", "SERVEUR_MODELES");
+                var serveur_modeles = ParametresDB.getParam1("PARAMETRES_DIVERS", "SERVEUR_MODELES");
                 if (!serveur_modeles.EndsWith("\\"))
                     serveur_modeles += "\\";
 
@@ -79,13 +79,13 @@ namespace EspaceSyndic.Formulaires.Config
                 {
                     foreach (DataGridViewRow rowGrid in dataGridView.SelectedRows)
                     {
-                        DataRowView row = (DataRowView)rowGrid.DataBoundItem;
+                        var row = (DataRowView)rowGrid.DataBoundItem;
                         if (row != null)
                         {
-                            string fileSrc = row["param_1"].ToString();
-                            FileInfo fInfoSrc = new FileInfo(fileSrc);
-                            FileInfo fInfoDst = new FileInfo(serveur_modeles + fInfoSrc.Name);
-                            bool bWriteFile = true;
+                            var fileSrc = row["param_1"].ToString();
+                            var fInfoSrc = new FileInfo(fileSrc);
+                            var fInfoDst = new FileInfo(serveur_modeles + fInfoSrc.Name);
+                            var bWriteFile = true;
                             if (fInfoDst.LastWriteTime > fInfoSrc.LastWriteTime)
                             {
                                 if (DialogResult.Yes != MessageBox.Show("Le fichier sur le serveur est plus récent que le fichier local\r\nVoulez-vous Continuer", "Attention", MessageBoxButtons.YesNo))
@@ -94,7 +94,7 @@ namespace EspaceSyndic.Formulaires.Config
                             if (bWriteFile)
                             {
                                 Console.WriteLine(fInfoSrc.Name);
-                                Guid g = Guid.NewGuid();
+                                var g = Guid.NewGuid();
                                 
                                 File.Move(fInfoDst.FullName, fInfoDst.FullName+"."+g.ToString());
                                 File.Copy(fInfoSrc.FullName, fInfoDst.FullName);
@@ -114,7 +114,7 @@ namespace EspaceSyndic.Formulaires.Config
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                String serveur_modeles = ParametresDB.getParam1("PARAMETRES_DIVERS", "SERVEUR_MODELES");
+                var serveur_modeles = ParametresDB.getParam1("PARAMETRES_DIVERS", "SERVEUR_MODELES");
                 if (!serveur_modeles.EndsWith("\\"))
                     serveur_modeles += "\\";
 
@@ -122,13 +122,13 @@ namespace EspaceSyndic.Formulaires.Config
                 {
                     foreach (DataGridViewRow rowGrid in dataGridView.SelectedRows)
                     {
-                        DataRowView row = (DataRowView)rowGrid.DataBoundItem;
+                        var row = (DataRowView)rowGrid.DataBoundItem;
                         if (row != null)
                         {
-                            string fileDst = row["param_1"].ToString();
-                            FileInfo fInfoDst = new FileInfo(fileDst);
-                            FileInfo fInfoSrc = new FileInfo(serveur_modeles + fInfoDst.Name);
-                            bool bWriteFile = true;
+                            var fileDst = row["param_1"].ToString();
+                            var fInfoDst = new FileInfo(fileDst);
+                            var fInfoSrc = new FileInfo(serveur_modeles + fInfoDst.Name);
+                            var bWriteFile = true;
                             if (fInfoDst.LastWriteTime > fInfoSrc.LastWriteTime)
                             {
                                 if (DialogResult.Yes != MessageBox.Show("Le fichier local est plus récent que le fichier sur le serveur\r\nVoulez-vous Continuer", "Attention", MessageBoxButtons.YesNo))
@@ -137,7 +137,7 @@ namespace EspaceSyndic.Formulaires.Config
                             if (bWriteFile)
                             {
                                 Console.WriteLine(fInfoSrc.Name);
-                                Guid g = Guid.NewGuid();
+                                var g = Guid.NewGuid();
 
                                 File.Move(fInfoDst.FullName, fInfoDst.FullName + "." + g.ToString());
                                 File.Copy(fInfoSrc.FullName, fInfoDst.FullName);

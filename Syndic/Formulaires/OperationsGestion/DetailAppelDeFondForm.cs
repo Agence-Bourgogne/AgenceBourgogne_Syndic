@@ -26,12 +26,12 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             entite = SaisieAppelFondController.getController().getEntiteById(entite_id);
             if (entite == null)
                 return;
-            String filtre = String.Format("where immeuble_id = '{0}' and reference = '{1}'", entite.immeuble_id, entite.base_repart);
+            var filtre = $"where immeuble_id = '{entite.immeuble_id}' and reference = '{entite.base_repart}'";
 
             tbRefImmeuble.Enabled = false;
             tbBase.Enabled = false;
 
-            bool bEnabled = entite.statut <= (int)GlobalConstantes.StatutOperation.Valide;//&& !facture.liasse_id.StartsWith("Reprise");
+            var bEnabled = entite.statut <= (int)GlobalConstantes.StatutOperation.Valide;//&& !facture.liasse_id.StartsWith("Reprise");
 
             tbNature.Enabled = false;
             tbFournisseur.Enabled = bEnabled;
@@ -52,7 +52,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         }
         protected virtual void fillFormFromMaster()
         {
-            ImmeubleEntite immeuble = ImmeubleController.getController().getEntiteById(entite.immeuble_id);
+            var immeuble = ImmeubleController.getController().getEntiteById(entite.immeuble_id);
             nature = NatureController.getController().getEntiteById(entite.nature_id);
 
             tbRefImmeuble.Text = immeuble.reference;
@@ -98,7 +98,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
                 dataGridView.MultiSelect = false;
             }
 
-            DataGridViewColumnCollection cols = dataGridView.Columns;
+            var cols = dataGridView.Columns;
             ControlsWindows.ToTitleCase(cols);
             cols["ref_nature"].Width = 40;
             cols["nature"].MinimumWidth = 140;
@@ -114,8 +114,8 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             decimal total = 0;
             foreach (DataRow row in table.Rows)
             {
-                decimal credit = Convertir.ToDecimal(row["credit"]);
-                decimal debit = Convertir.ToDecimal(row["debit"]);
+                var credit = Convertir.ToDecimal(row["credit"]);
+                var debit = Convertir.ToDecimal(row["debit"]);
                 total += credit - debit;
             }
             tbTotal.Text = Math.Abs(total).ToString();
@@ -140,23 +140,23 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         }
         protected override void ValidModification()
         {
-            bool bRepartChanged = false;
-            decimal montant = Convertir.ToDecimal(tbMontant.Text);
-            string ref_nature = tbNature.Text;
-            string ref_fournisseur = tbFournisseur.Text;
-            DateTime date_reference = DateTime.Parse(tbDateCreation.Text);
-            string comment = tbComment.Text;
-            string comment_fournisseur = tbCommentaireFournisseur.Text;
-            string base_repart = tbBase.Text;
+            var bRepartChanged = false;
+            var montant = Convertir.ToDecimal(tbMontant.Text);
+            var ref_nature = tbNature.Text;
+            var ref_fournisseur = tbFournisseur.Text;
+            var date_reference = DateTime.Parse(tbDateCreation.Text);
+            var comment = tbComment.Text;
+            var comment_fournisseur = tbCommentaireFournisseur.Text;
+            var base_repart = tbBase.Text;
 
-            NatureEntite nature = NatureController.getController().getEntiteFromField("reference", ref_nature);
+            var nature = NatureController.getController().getEntiteFromField("reference", ref_nature);
 
             if (dataGridView.Rows.Count == 1)
                 bRepartChanged = false;
             if (!bRepartChanged)
             {
-                NpgsqlConnection cnx = Database.GetInstance();
-                NpgsqlTransaction trx = cnx.BeginTransaction();
+                var cnx = Database.GetInstance();
+                var trx = cnx.BeginTransaction();
 
                 try
                 {
@@ -172,8 +172,8 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
                         throw new Exception("Appel de Fond");
                     foreach (DataGridViewRow rowGrid in dataGridView.Rows)
                     {
-                        DataRowView row = (DataRowView)rowGrid.DataBoundItem;
-                        OperationEntite operation = OperationController.getController().getEntiteById(row["id"].ToString());
+                        var row = (DataRowView)rowGrid.DataBoundItem;
+                        var operation = OperationController.getController().getEntiteById(row["id"].ToString());
                         operation.nature_id = nature.id;
                         operation.date_reference = date_reference;
                         operation.base_repart = entite.base_repart;
@@ -196,10 +196,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
                     MessageBox.Show(ex.Message);
                 }
             }
-            else
-            {
-                MessageBox.Show("La modification de ces élements entraine une nouvelle repartition\rVous devez annulez cet élément et le recréer");
-            }
+
             entite = SaisieAppelFondController.getController().getEntiteById(entite.id);
             fillFormFromMaster();
         }
@@ -218,13 +215,13 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                NpgsqlTransaction trx = Database.BeginTransaction();
+                var trx = Database.BeginTransaction();
                 try
                 {
                     foreach (DataGridViewRow rowGrid in dataGridView.SelectedRows)
                     {
-                        DataRowView row = (DataRowView)rowGrid.DataBoundItem;
-                        OperationEntite operation = OperationController.getController().getEntiteById(row["id"].ToString());
+                        var row = (DataRowView)rowGrid.DataBoundItem;
+                        var operation = OperationController.getController().getEntiteById(row["id"].ToString());
                         if (operation != null)
                         {
                             operation.statut = (int)GlobalConstantes.StatutOperation.Supprime;
@@ -247,14 +244,14 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                NpgsqlTransaction trx = Database.BeginTransaction();
+                var trx = Database.BeginTransaction();
 
                 try
                 {
                     foreach (DataGridViewRow rowGrid in dataGridView.SelectedRows)
                     {
-                        DataRowView row = (DataRowView)rowGrid.DataBoundItem;
-                        OperationEntite operation = OperationController.getController().getEntiteById(row["id"].ToString());
+                        var row = (DataRowView)rowGrid.DataBoundItem;
+                        var operation = OperationController.getController().getEntiteById(row["id"].ToString());
                         if (operation != null)
                         {
                             operation.saisie_id = entite.id;
@@ -280,8 +277,8 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                DataRowView row = (DataRowView) dataGridView.SelectedRows[0].DataBoundItem;
-                DetailElementOperationForm form = new DetailElementOperationForm(row["id"].ToString());
+                var row = (DataRowView) dataGridView.SelectedRows[0].DataBoundItem;
+                var form = new DetailElementOperationForm(row["id"].ToString());
                 form.ShowDialog();
                 FillDataGridView();
             }

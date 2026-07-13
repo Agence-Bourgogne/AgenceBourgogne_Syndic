@@ -31,7 +31,7 @@ namespace EspaceSyndic.Formulaires.Nature
                 dataGridView.DataSource = controller.GetAllEntite();
             if (dataGridView.DataSource != null)
             {
-                DataGridViewColumnCollection cols = dataGridView.Columns;
+                var cols = dataGridView.Columns;
                 //if ( cols["type_charge_cb"] == null )
                 ParametresDB.bindGridComboColumn(cols, "TYPECHARGE", "type_charge");
                 cols["id"].Visible = false;
@@ -60,7 +60,7 @@ namespace EspaceSyndic.Formulaires.Nature
         {
             if (controller.SaveList((DataTable)dataGridView.DataSource))
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
                 if (row.Row.RowState != DataRowState.Detached)
                     edition(new NatureEntite(row.Row));
             }
@@ -95,7 +95,7 @@ namespace EspaceSyndic.Formulaires.Nature
         {
             try
             {
-                FicheNatureForm form = new FicheNatureForm();
+                var form = new FicheNatureForm();
                 form.entite = entite;
                 form.ShowDialog();
                 dataGridView.DataSource = controller.GetList();
@@ -121,23 +121,23 @@ namespace EspaceSyndic.Formulaires.Nature
 
         private void btnExport_Click(object sender, EventArgs e)
         {
-            List<string> colsToHide = new List<string> { "id", "audit_created_by", "audit_created", "audit_updated", "audit_updated_by" };
+            var colsToHide = new List<string> { "id", "audit_created_by", "audit_created", "audit_updated", "audit_updated_by" };
             BaseApplication.DataGridToExcel(dataGridView, colsToHide);
         }
 
         private void btnFiltre_Click(object sender, EventArgs e)
         {
-            FindNatureForm form = new FindNatureForm();
-            BindingSource source = new BindingSource();// (BindingSource)dataGridView.DataSource;
+            var form = new FindNatureForm();
+            var source = new BindingSource();// (BindingSource)dataGridView.DataSource;
             source.DataSource = dataGridView.DataSource;
             if (DialogResult.Cancel != form.ShowDialog())
             {
-                int action = (int)CommonRegistry.getRegistryValue("Parametres", "ActionFiltre", 0);
+                var action = (int)CommonRegistry.getRegistryValue("Parametres", "ActionFiltre", 0);
                 if (action == 1)
-                    source.Filter = String.Format("reference = '{0}'", form.reference);
+                    source.Filter = $"reference = '{form.reference}'";
                 else
                 {
-                    FicheNatureForm fiche = new FicheNatureForm();
+                    var fiche = new FicheNatureForm();
                     fiche.entite = controller.getEntiteFromField("reference", form.reference);
                     fiche.ShowDialog();
                 }
@@ -154,7 +154,7 @@ namespace EspaceSyndic.Formulaires.Nature
 
         private void dataGridView_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
         {
-            DataGridViewRow row = dataGridView.Rows[e.RowIndex];
+            var row = dataGridView.Rows[e.RowIndex];
             if ((int)row.Cells["statut"].Value == 9)
             {
                 dataGridView.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.OrangeRed;

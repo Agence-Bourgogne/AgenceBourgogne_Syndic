@@ -27,7 +27,8 @@ namespace Gerance.Formulaires.Proprietaires
 
         private void CreationFactureHonorairesFrais_Load(object sender, EventArgs e)
         {
-            tbMessage.Text = String.Format("Vous allez générer les factures\r\nd'Honoraires et de Frais\r\nPour la période du {0} au {1}", dtDebut.ToShortDateString(), dtFin.ToShortDateString());
+            tbMessage.Text =
+                $"Vous allez générer les factures\r\nd'Honoraires et de Frais\r\nPour la période du {dtDebut.ToShortDateString()} au {dtFin.ToShortDateString()}";
             tbMessage.Select(tbMessage.Text.Length+1, -1);
         }
 
@@ -42,8 +43,8 @@ namespace Gerance.Formulaires.Proprietaires
 //            if (montant > 0)
             if (montant != 0)
             {
-                FactureEntite facture = FacturesController.getController().getFactureHonoraire(reglement, nature_id, libelle, montant);
-                string msg = String.Format("\r\n{0} : {1} €", libelle, montant);
+                var facture = FacturesController.getController().getFactureHonoraire(reglement, nature_id, libelle, montant);
+                var msg = $"\r\n{libelle} : {montant} €";
 
                 if (facture != null)
                 {
@@ -61,41 +62,42 @@ namespace Gerance.Formulaires.Proprietaires
         const int REFERENCE_TACHE = 1;
         private bool ValidationFacture()
         {
-            bool rc = false;
+            var rc = false;
 
-            String libelleHono = "Honoraires Agence";
-            String libelleTvaHono = "TVA sur Honoraires";
-            string libelleFraisBail = "Frais Administratifs";
-            string libelleEtatLieux = "Etats des Lieux";
+            var libelleHono = "Honoraires Agence";
+            var libelleTvaHono = "TVA sur Honoraires";
+            var libelleFraisBail = "Frais Administratifs";
+            var libelleEtatLieux = "Etats des Lieux";
 
             // TODO Paramétrer Taux TVA
-            decimal tauxTva = (decimal)0.2;
+            var tauxTva = (decimal)0.2;
 
             //TODO Paramétrer Natures
-            NatureEntite natureHono = NatureController.getController().getEntiteFromField("reference", "020");
-            NatureEntite natureBail = NatureController.getController().getEntiteFromField("reference", "011");
-            NatureEntite natureNlle = NatureController.getController().getEntiteFromField("reference", "010");
+            var natureHono = NatureController.getController().getEntiteFromField("reference", "020");
+            var natureBail = NatureController.getController().getEntiteFromField("reference", "011");
+            var natureNlle = NatureController.getController().getEntiteFromField("reference", "010");
 
             // TODO Quid de plusieurs réglements locataire sur la période 
-            DataTable reglements = ReglementsController.getController().getReleveHonorairesProprietairesForFacture(dtDebut, dtFin, proprietaire_id);
+            var reglements = ReglementsController.getController().getReleveHonorairesProprietairesForFacture(dtDebut, dtFin, proprietaire_id);
             
-            NpgsqlConnection cnx = Database.GetInstance();
-            NpgsqlTransaction trx = cnx.BeginTransaction();
-            DateTime dtWorkflow = new DateTime(dtDebut.Year, dtDebut.Month, 1);
-            DateTime dtServer = FacturesController.getController().setTimestampServer();
+            var cnx = Database.GetInstance();
+            var trx = cnx.BeginTransaction();
+            var dtWorkflow = new DateTime(dtDebut.Year, dtDebut.Month, 1);
+            var dtServer = FacturesController.getController().setTimestampServer();
             WorkflowController.getController().setTimestampServer(dtServer);
             WorkflowDetailController.getController().setTimestampServer(FacturesController.getController().getTimestampServer());
             try
             {
-                WorkflowEntite workflow = WorkflowController.getController().WriteRecord(REFERENCE_TACHE, dtWorkflow);
+                var workflow = WorkflowController.getController().WriteRecord(REFERENCE_TACHE, dtWorkflow);
 
                 foreach (DataRow row in reglements.Rows)
                 {
-                    ReglementEntite reglement = new ReglementEntite(row);
-                    decimal tauxHono = Convertir.ToDecimal(row["taux_honoraire"].ToString()) / 100;
+                    var reglement = new ReglementEntite(row);
+                    var tauxHono = Convertir.ToDecimal(row["taux_honoraire"].ToString()) / 100;
 //                    if (reglement.base_honoraire > 0)
                     {
-                        tbMessage.Text += String.Format("\r\n*** Proprietaire: {0} <= {1}", reglement.Proprietaire.NomPrenom, reglement.Locataire.NomPrenom);
+                        tbMessage.Text +=
+                            $"\r\n*** Proprietaire: {reglement.Proprietaire.NomPrenom} <= {reglement.Locataire.NomPrenom}";
                         tbMessage.Update();
 
                         Console.WriteLine(reglement.Locataire.reference);

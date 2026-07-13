@@ -20,11 +20,11 @@ namespace GeranceData.Controller
         }
         public DataTable getDetailCompteProprietaire(string ref_proprio)
         {
-            string cmd = "select ";
+            var cmd = "select ";
             cmd += "p.reference, trim(concat (pa.code, ' ' , p.nom, ' ', p.prenom)) as nom, date_ecriture, cp.libelle, cp.debit, cp.credit ";
 
-            cmd += String.Format(" from {0} cp ", getSchemaTable());
-            cmd += String.Format(" join {0}.proprietaire p on p.id =  cp.proprietaire_id", getSchema());
+            cmd += $" from {getSchemaTable()} cp ";
+            cmd += $" join {getSchema()}.proprietaire p on p.id =  cp.proprietaire_id";
             cmd += string.Format(" left join (SELECT groupe, code, iparam_1 FROM  parametres WHERE (groupe = 'CIVILITE')) pa on pa.iparam_1 = p.civilite", getSchema());
 
             cmd += " where p.reference = @ref_proprio";
@@ -32,7 +32,7 @@ namespace GeranceData.Controller
             cmd += " order by cp.date_ecriture desc";
 
 
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>{
+            var parameters = new List<NpgsqlParameter>{
                 new NpgsqlParameter("ref_proprio", ref_proprio),
             };
 
@@ -42,17 +42,17 @@ namespace GeranceData.Controller
         public CompteProprioEntite getEcriture(string proprietaire_id, DateTime dtEcriture)
         {
             CompteProprioEntite compte = null;
-            DateTime dtDeb = new DateTime(dtEcriture.Year, dtEcriture.Month, 1);
-            DateTime dtFin = dtDeb.AddMonths(1).AddDays(-1);
-            string cmd = String.Format(" select * from {0}", getSchemaTable());
+            var dtDeb = new DateTime(dtEcriture.Year, dtEcriture.Month, 1);
+            var dtFin = dtDeb.AddMonths(1).AddDays(-1);
+            var cmd = $" select * from {getSchemaTable()}";
             cmd += " where proprietaire_id = @proprietaire_id ";
             cmd += " and date_ecriture >= @dtDeb and date_ecriture <= @dtFin";
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>{
+            var parameters = new List<NpgsqlParameter>{
                 new NpgsqlParameter("proprietaire_id", proprietaire_id),
                 new NpgsqlParameter("dtDeb", dtDeb),
                 new NpgsqlParameter("dtFin", dtFin),
             };
-            DataTable table = getResultSQL(cmd, parameters);
+            var table = getResultSQL(cmd, parameters);
             if (table != null && table.Rows.Count > 0)
                 compte = new CompteProprioEntite(table.Rows[0]);
             return compte;   

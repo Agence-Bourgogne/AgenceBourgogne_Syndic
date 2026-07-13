@@ -27,7 +27,7 @@ namespace SyndicData.Entites
         }
         public override void setValues(DataRow row)
         {
-            FieldInfo[] members = GetType().GetFields();
+            var members = GetType().GetFields();
 
             updatables.Clear();
             updatables.Add(new UpdateField("immeuble_id", true, members));

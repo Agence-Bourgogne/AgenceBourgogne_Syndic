@@ -34,11 +34,11 @@ namespace Gerance.Formulaires.AppelALoyer
         {
             if (bComboInitialized)
                 return;
-            DateTime dt = DateTime.Parse("01/01/2000");
+            var dt = DateTime.Parse("01/01/2000");
 
-            for (int i = 0; i < 12; i++)
+            for (var i = 0; i < 12; i++)
             {
-                String[] lDate = dt.ToLongDateString().Split(' ');
+                var lDate = dt.ToLongDateString().Split(' ');
                 cbMoisAugment.Items.Add(lDate[2]);
 
                 dt = dt.AddMonths(1);
@@ -48,7 +48,7 @@ namespace Gerance.Formulaires.AppelALoyer
         }
         protected void setTotal()
         {
-            decimal total = Convertir.ToDecimal(tbReste.Text);
+            var total = Convertir.ToDecimal(tbReste.Text);
 
             total += Convertir.ToDecimal(tbLoyer.Text);
             total += Convertir.ToDecimal(tbAugment.Text);
@@ -73,7 +73,7 @@ namespace Gerance.Formulaires.AppelALoyer
 
         protected override AbstractBaseEntite getCurrentEntite(string entite_id)
         {
-            BienEntite entite = BienController.getController().getEntiteById(entite_id);
+            var entite = BienController.getController().getEntiteById(entite_id);
             return entite;
         }
         protected override void setFicheValues(AbstractBaseEntite abstract_entite)
@@ -84,7 +84,7 @@ namespace Gerance.Formulaires.AppelALoyer
 
                 InitCombo();
                 
-                LocataireEntite locataire = bien.Locataire;
+                var locataire = bien.Locataire;
                 decimal reste_du = 0;
                 tbRefImmeuble.Text = bien.reference;
                 tbLot.Text = bien.numero_lot.ToString();
@@ -142,7 +142,7 @@ namespace Gerance.Formulaires.AppelALoyer
                 {
                     if ( datagridView.SelectedRows.Count > 0 )
                     {
-                        int current = datagridView.SelectedRows[0].Index;
+                        var current = datagridView.SelectedRows[0].Index;
                         datagridView.Rows[current].Selected = false;
                         switch (sens)
                         {
@@ -161,9 +161,9 @@ namespace Gerance.Formulaires.AppelALoyer
                         }
 
                         datagridView.Rows[current].Selected = true;
-                        DataGridViewRow row = datagridView.Rows[current];
+                        var row = datagridView.Rows[current];
                         entite_id = row.Cells["id"].Value.ToString();
-                        BienEntite entite = (BienEntite)getCurrentEntite(entite_id);
+                        var entite = (BienEntite)getCurrentEntite(entite_id);
                         if (entite != null)
                             setFicheValues(entite);
                     }
@@ -177,8 +177,8 @@ namespace Gerance.Formulaires.AppelALoyer
 
         protected override bool saveValue()
         {
-            bool rc = false;
-            BienEntite entite = (BienEntite)getCurrentEntite(entite_id);
+            var rc = false;
+            var entite = (BienEntite)getCurrentEntite(entite_id);
             if (entite != null)
             {
                 entite.montant_loyer = Convertir.ToDecimal(tbLoyer.Text);
@@ -227,7 +227,7 @@ namespace Gerance.Formulaires.AppelALoyer
 
         private void btnGetCoeff_Click(object sender, EventArgs e)
         {
-            Indices.IndicesForm form = new Indices.IndicesForm( tbCoeff, tbIndice);
+            var form = new Indices.IndicesForm( tbCoeff, tbIndice);
             form.ShowDialog(this);
             if (Convertir.ToDecimal(tbCoeff.Text) != (decimal)0.0)
             {
@@ -236,9 +236,9 @@ namespace Gerance.Formulaires.AppelALoyer
         }
         private void btnUpdateLoyer_Click(object sender, EventArgs e)
         {
-            decimal loyer = Convertir.ToDecimal(tbLoyer.Text);
-            decimal augment = Convertir.ToDecimal(tbAugment.Text);
-            decimal new_loyer = loyer+augment;
+            var loyer = Convertir.ToDecimal(tbLoyer.Text);
+            var augment = Convertir.ToDecimal(tbAugment.Text);
+            var new_loyer = loyer+augment;
 
             tbLoyer.Text = new_loyer.ToString();
             tbAugment.Text = "0";
@@ -252,10 +252,10 @@ namespace Gerance.Formulaires.AppelALoyer
             }
             else
             {
-                decimal variation = Convertir.ToDecimal(tbCoeff.Text) / 100;
-                decimal loyer = Convertir.ToDecimal(tbLoyer.Text);
-                decimal augment = variation * loyer;
-                tbAugment.Text = String.Format("{0:N2}",augment);
+                var variation = Convertir.ToDecimal(tbCoeff.Text) / 100;
+                var loyer = Convertir.ToDecimal(tbLoyer.Text);
+                var augment = variation * loyer;
+                tbAugment.Text = $"{augment:N2}";
                 tbLoyer_Validating(null, null);
             }
         }
@@ -267,14 +267,14 @@ namespace Gerance.Formulaires.AppelALoyer
 
         private void tbLoyer_Validating(object sender, CancelEventArgs e)
         {
-            decimal loyer = Convertir.ToDecimal(tbLoyer.Text) + Convertir.ToDecimal(tbAugment.Text);
-            decimal tva = Math.Round((loyer) * ((bien.taxe == 1) ? taux_tva : taux_bail) / 100, 2);
+            var loyer = Convertir.ToDecimal(tbLoyer.Text) + Convertir.ToDecimal(tbAugment.Text);
+            var tva = Math.Round((loyer) * ((bien.taxe == 1) ? taux_tva : taux_bail) / 100, 2);
             tbTVA.Text = tva.ToString();
         }
 
         private void lblPresta5_Click(object sender, EventArgs e)
         {
-            Label lbl = (Label)sender;
+            var lbl = (Label)sender;
             switch (lbl.Name)
             {
                 case "lblPresta1":

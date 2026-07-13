@@ -33,7 +33,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
         private void FicheReglementForm_Load(object sender, EventArgs e)
         {
             ControlsWindows.setAutoControle(tbNature, NatureController.getController().getAutoComplete("reference"));
-            DateTime dt = DateTime.Now;
+            var dt = DateTime.Now;
             tbDate.Text = dt.ToShortDateString();
             fillCBLiasse();
             EnableSaveAction();
@@ -77,7 +77,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
             }
             else
             {
-                DataTable table = OperationController.getController().getSoldeRepriseCoproprietaire(coproprietaire.id);
+                var table = OperationController.getController().getSoldeRepriseCoproprietaire(coproprietaire.id);
                 if (table.Rows.Count <= 0)
                     table = OperationController.getController().getSoldeRepriseCoproprietaireVide(coproprietaire.id);
                 dataGridViewLots.DataSource = table;
@@ -91,7 +91,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
         }
         protected void EnableSaveAction()
         {
-            bool enable = true;
+            var enable = true;
 
             enable &= (coproprietaire != null);
             enable &= (tbNature.AutoCompleteCustomSource.Contains(tbNature.Text));
@@ -105,7 +105,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
         protected void cbLiasse_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!cbLiasse.Enabled) return;
-            DataRowView row = (DataRowView)cbLiasse.SelectedItem;
+            var row = (DataRowView)cbLiasse.SelectedItem;
             tbTotal.Text = row["montant"].ToString();
             tbTotal_TextChanged(null, null);
 
@@ -115,19 +115,19 @@ namespace EspaceSyndic.Formulaires.Ecritures
         }
         protected void tbTotal_TextChanged(object sender, EventArgs e)
         {
-            float total = Convertir.ToFloat(tbTotal.Text);
+            var total = Convertir.ToFloat(tbTotal.Text);
         }
 
         private void setAutoCompleteCoproprietaire()
         {
 
-            AutoCompleteStringCollection autoComplete = CoproprietaireController.getController().getAutoComplete("reference");
+            var autoComplete = CoproprietaireController.getController().getAutoComplete("reference");
             ControlsWindows.setAutoControle(tbCopro, autoComplete);
         }
 
         private void lblCopro_Click(object sender, EventArgs e)
         {
-            FindCoproprietaireForm form = new FindCoproprietaireForm();
+            var form = new FindCoproprietaireForm();
             form.ShowDialog();
             if (!"".Equals(form.reference))
             {
@@ -150,13 +150,13 @@ namespace EspaceSyndic.Formulaires.Ecritures
                 if (coproprietaire != null)
                 {
                     tbCopro.BackColor = /*tbLibCopro.BackColor = */Color.White;
-                    tbLibCopro.Text = String.Format("{0} {1}", coproprietaire.nom.Trim(), coproprietaire.prenom);
+                    tbLibCopro.Text = $"{coproprietaire.nom.Trim()} {coproprietaire.prenom}";
                     tbEmetteur.Text = coproprietaire.nomcomp.Trim();
                     if ( tbEmetteur.Text == "" )
                         tbEmetteur.Text = coproprietaire.nom;
-                    ImmeubleEntite immeuble = coproprietaire.Immeuble;
+                    var immeuble = coproprietaire.Immeuble;
                     if ( immeuble != null )
-                        Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                        Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
 
 
                     if (coproprietaire.huissier)
@@ -185,7 +185,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
         {
             if (!tbNature.Enabled)
                 return;
-            FindNatureForm form = new FindNatureForm();
+            var form = new FindNatureForm();
 
             form.ShowDialog();
             if (!"".Equals(form.reference))
@@ -246,7 +246,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
 
         private bool ValidateForm()
         {
-            string msg = "";
+            var msg = "";
 
             if (tbMontant.Text.Equals("")) msg += "Montant Invalide\r\n";
             if (tbNature.Text.Equals("")) 
@@ -284,14 +284,14 @@ namespace EspaceSyndic.Formulaires.Ecritures
                 return false;
             }
 
-            DateTime dtFac = Convert.ToDateTime(tbDate.Text);
-            ExerciceComptableEntite exercice = ExerciceComptableController.getController().getExerciceFromDate(immeuble.id, dtFac);
+            var dtFac = Convert.ToDateTime(tbDate.Text);
+            var exercice = ExerciceComptableController.getController().getExerciceFromDate(immeuble.id, dtFac);
 
             if (exercice != null)
             {
                 if (exercice.statut != (int)GlobalConstantes.StatutExercice.Ouvert)
                 {
-                    DialogResult dr = MessageBox.Show("La date de l'opération correspond à un exercice Cloturé\r\nVoulez vous continuer", "Attention", MessageBoxButtons.YesNo);
+                    var dr = MessageBox.Show("La date de l'opération correspond à un exercice Cloturé\r\nVoulez vous continuer", "Attention", MessageBoxButtons.YesNo);
                     if (dr != DialogResult.Yes)
                         return false;
                 }
@@ -304,15 +304,15 @@ namespace EspaceSyndic.Formulaires.Ecritures
             if (!ValidateForm())
                 return;
 
-            DataRowView rowGrid = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
+            var rowGrid = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
 
             if (rowGrid != null)
             {
-                DataRow row = rowGrid.Row;
-                NpgsqlTransaction trx = Database.GetInstance().BeginTransaction();
+                var row = rowGrid.Row;
+                var trx = Database.GetInstance().BeginTransaction();
                 try
                 {
-                    SaisieReglementEntite saisie = SaisieReglementController.getController().getEntiteById(row["id"].ToString());
+                    var saisie = SaisieReglementController.getController().getEntiteById(row["id"].ToString());
                     if (saisie != null)
                     {
                         saisie = FillSaisieFromForm(saisie);
@@ -356,23 +356,23 @@ namespace EspaceSyndic.Formulaires.Ecritures
                 return;
             if (tbMontant.Text.Equals("")) return;
             if (tbNature.Text.Equals("")) return;
-            NatureEntite nature = NatureController.getController().getEntiteFromField("reference", tbNature.Text);
+            var nature = NatureController.getController().getEntiteFromField("reference", tbNature.Text);
             if (nature == null) return;
 
-            NpgsqlTransaction trx = Database.GetInstance().BeginTransaction();
-            bool bNewLiasse = false;
-            int numero_operation = 1;
-            string liasse_id = cbLiasse.SelectedValue.ToString();
+            var trx = Database.GetInstance().BeginTransaction();
+            var bNewLiasse = false;
+            var numero_operation = 1;
+            var liasse_id = cbLiasse.SelectedValue.ToString();
             try
             {
                 if (LiasseEntite.NOUVELLE_ID.Equals(liasse_id))
                 {
-                    LiasseEntite liasse = new LiasseEntite();
+                    var liasse = new LiasseEntite();
                     liasse.isNew = true;
                     liasse.montant = Convertir.ToDecimal(tbTotal.Text);
                     liasse.type_ecriture = getTypeEcriture().ToString();
                     liasse.statut = (int)GlobalConstantes.StatutOperation.Brouillon;
-                    liasse.reference = String.Format("{0} du {1}", BaseApplication.ComputerName, DateTime.Now);
+                    liasse.reference = $"{BaseApplication.ComputerName} du {DateTime.Now}";
                     LiasseController.getController().InsertOrUpdate(liasse);
                     liasse_id = liasse.id;
                     bNewLiasse = true;
@@ -381,13 +381,13 @@ namespace EspaceSyndic.Formulaires.Ecritures
 
 //TODO Revoir cette saisie pour gérer les payements sur plusieurs Lots
             
-                string immeuble_id = "";
-                string compte_banque = "";
-                string lot_id = "";
+                var immeuble_id = "";
+                var compte_banque = "";
+                var lot_id = "";
 
                 if (dataGridViewLots.Rows.Count > 0)
                 {
-                    DataRowView row = (DataRowView)dataGridViewLots.Rows[0].DataBoundItem;
+                    var row = (DataRowView)dataGridViewLots.Rows[0].DataBoundItem;
                     immeuble_id = row["immeuble_id"].ToString();
                     compte_banque = row["comptebanque"].ToString();
                     lot_id = row["lot_id"].ToString();
@@ -409,7 +409,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
                     compte_banque = immeuble.comptebanque;
                 }
             
-                SaisieReglementEntite saisie = new SaisieReglementEntite();
+                var saisie = new SaisieReglementEntite();
                 saisie.liasse_id = liasse_id;
 
                 saisie.date_operation = saisie.date_reference = Convert.ToDateTime(tbDate.Text);
@@ -444,18 +444,18 @@ namespace EspaceSyndic.Formulaires.Ecritures
         }
         private bool WriteSaisieInOperation(SaisieReglementEntite entite, String immeuble_id, string lot_id)
         {
-            int numero_ligne = 1;
-            bool allValide = true;
+            var numero_ligne = 1;
+            var allValide = true;
 
-            OperationController controller = OperationController.getController();
+            var controller = OperationController.getController();
             foreach (DataGridViewRow rowGrid in dataGridViewLots.Rows)
             {
-                DataRowView row = (DataRowView)rowGrid.DataBoundItem;
+                var row = (DataRowView)rowGrid.DataBoundItem;
 
-                OperationEntite operation = new OperationEntite();
-                operation.type_mouvement = GlobalConstantes.TypeMouvement.Recette.ToString();
+                var operation = new OperationEntite();
+                operation.type_mouvement = nameof(GlobalConstantes.TypeMouvement.Recette);
                 operation.date_operation = operation.date_reference = entite.date_reference;
-                operation.type_operation = GlobalConstantes.TypeOperation.Tresorerie.ToString();
+                operation.type_operation = nameof(GlobalConstantes.TypeOperation.Tresorerie);
                 operation.numero_operation = entite.numero_operation;
                 operation.numero_ligne = numero_ligne++;
                 operation.saisie_id = entite.id;
@@ -480,28 +480,28 @@ namespace EspaceSyndic.Formulaires.Ecritures
         }
         private bool UpdateSaisieInOperation(SaisieReglementEntite saisie)
         {
-            bool allValide = true;
-            string cmd = String.Format("select * from {0} ", OperationController.getController().getSchemaTable());
+            var allValide = true;
+            var cmd = $"select * from {OperationController.getController().getSchemaTable()} ";
             cmd += " where saisie_id = @saisie_id and immeuble_id = @immeuble_id and lot_id = @lot_id";
-            OperationController controller = OperationController.getController();
+            var controller = OperationController.getController();
             foreach (DataGridViewRow rowGrid in dataGridViewLots.Rows)
             {
-                DataRowView row = (DataRowView)rowGrid.DataBoundItem;
+                var row = (DataRowView)rowGrid.DataBoundItem;
 
                 //Console.WriteLine(saisie.id);
                 //Console.WriteLine(row["immeuble_id"].ToString());
                 //Console.WriteLine(row["lot_id"].ToString());
-                List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+                var parameters = new List<NpgsqlParameter> 
                 {
                     new NpgsqlParameter("@saisie_id", saisie.id),
                     new NpgsqlParameter("@immeuble_id", row["immeuble_id"].ToString()),
                     new NpgsqlParameter("@lot_id", row["lot_id"].ToString())
                 };
-                DataTable table = OperationController.getController().getResultSQL(cmd, parameters);
+                var table = OperationController.getController().getResultSQL(cmd, parameters);
                 if ( table != null )
                     if (table.Rows.Count > 0)
                     {
-                        OperationEntite operation = new OperationEntite(table.Rows[0]);
+                        var operation = new OperationEntite(table.Rows[0]);
                         operation.coproprietaire_id = saisie.coproprietaire_id;
                         operation.nature_id = saisie.nature_id;
                         operation.date_reference = operation.date_operation = saisie.date_reference;
@@ -520,7 +520,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
 
         private void selectComboLiasse(string liasse_id)
         {
-            DataTable source = LiasseController.getController().getLiasseActives(GlobalConstantes.TypeOperation.Tresorerie);
+            var source = LiasseController.getController().getLiasseActives(GlobalConstantes.TypeOperation.Tresorerie);
             cbLiasse.DataSource = source;
             foreach (DataRow row in source.Rows)
             {
@@ -536,15 +536,15 @@ namespace EspaceSyndic.Formulaires.Ecritures
         {
 
             bLoadEcriture = true;
-            string liasse_id = cbLiasse.SelectedValue.ToString();
-            DataTable source = SaisieReglementController.getController().getGridRowSaisieReglement(liasse_id);
+            var liasse_id = cbLiasse.SelectedValue.ToString();
+            var source = SaisieReglementController.getController().getGridRowSaisieReglement(liasse_id);
             dataGridViewEcriture.DataSource = source;
             dataGridViewEcriture.ClearSelection();
             if ( dataGridViewLots.DataSource  != null )
                 dataGridViewLots.DataSource = null;
             if (source != null)
             {
-                DataGridViewColumnCollection cols = dataGridViewEcriture.Columns;
+                var cols = dataGridViewEcriture.Columns;
                 cols["id"].Visible = false;
                 cols["immeuble_id"].Visible = false;
                 cols["coproprietaire_id"].Visible = false;
@@ -576,11 +576,11 @@ namespace EspaceSyndic.Formulaires.Ecritures
         }
         private void btnSave_Click(object sender, EventArgs e)
         {
-            string liasse_id = cbLiasse.SelectedValue.ToString();
+            var liasse_id = cbLiasse.SelectedValue.ToString();
             OperationController.getController().ValidateReglement(liasse_id);
             cbLiasse.DataSource = LiasseController.getController().getLiasseActives(getTypeEcriture());
 
-            ImprimerListeReglementForm form = new ImprimerListeReglementForm();
+            var form = new ImprimerListeReglementForm();
             form.liasse_id = liasse_id;
             form.ShowDialog();
         }
@@ -605,10 +605,10 @@ namespace EspaceSyndic.Formulaires.Ecritures
             if (!bLoadEcriture)
                 if (dataGridViewEcriture.SelectedRows.Count > 0)
                 {
-                    DataRowView rowGrid = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
+                    var rowGrid = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
                     if (rowGrid != null)
                     {
-                        DataRow row = rowGrid.Row;
+                        var row = rowGrid.Row;
                         tbCopro.Text = row["coproprietaire_ref"].ToString();
                         tbNature.Text = row["nature_ref"].ToString();
                         tbMontant.Text = row["montant"].ToString();
@@ -656,10 +656,10 @@ namespace EspaceSyndic.Formulaires.Ecritures
         {
             if (dataGridViewEcriture.SelectedRows.Count > 0)
             {
-                DataRowView rowGrid = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
+                var rowGrid = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
                 if (rowGrid != null)
                 {
-                    DataRow row = rowGrid.Row;
+                    var row = rowGrid.Row;
                     if (row != null)
                     {
                         if ( DialogResult.Yes == MessageBox.Show("Etes vous sur de vouloir annuler cet element", "Attention", MessageBoxButtons.YesNo))

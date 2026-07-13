@@ -82,7 +82,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
                 return DialogResult.OK;
             if (bShowMessage)
             {
-                DialogResult result = MessageBox.Show("Des modifications on été apportéees\nVoulez-vous les enregistrer",
+                var result = MessageBox.Show("Des modifications on été apportéees\nVoulez-vous les enregistrer",
                     "", MessageBoxButtons.YesNoCancel);
                 if (result == DialogResult.Cancel)
                     return result;
@@ -91,7 +91,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
                     return result;
                 }
             }
-            bool rc = saveValue();
+            var rc = saveValue();
             if (rc && !bShowResult)
             {
                 modified = false;
@@ -114,7 +114,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
 
             try
             {
-                AbstractBaseEntite entite = getEntite(where);
+                var entite = getEntite(where);
                 if (entite != null)
                     setFicheValues(entite);
 
@@ -148,11 +148,11 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
         }
         protected  void btnPrev_Click(object sender, EventArgs e)
         {
-            getNewEntite(String.Format("where reference < '{0}' order by reference desc", currentReference), "Début de liste atteint");
+            getNewEntite($"where reference < '{currentReference}' order by reference desc", "Début de liste atteint");
         }
         protected  void btnNext_Click(object sender, EventArgs e)
         {
-            getNewEntite(String.Format("where reference > '{0}' order by reference ", currentReference), "Fin de liste atteinte");
+            getNewEntite($"where reference > '{currentReference}' order by reference ", "Fin de liste atteinte");
         }
         protected  void btnLast_Click(object sender, EventArgs e)
         {

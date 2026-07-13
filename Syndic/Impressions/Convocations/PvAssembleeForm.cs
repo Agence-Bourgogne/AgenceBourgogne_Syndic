@@ -22,7 +22,7 @@ namespace EspaceSyndic.Impressions.Convocations
             if (immeuble != null)
             {
                 immeubleUserControl.Invalid = false;
-                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
             }
             else
             {

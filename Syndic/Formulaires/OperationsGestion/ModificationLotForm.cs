@@ -37,13 +37,13 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             cbLot.ValueMember = "reference";
             if (appel != null)
             {
-                LotDescriptionEntite lot = LotDescriptionController.getController().getEntiteById(appel.lot_id);
+                var lot = LotDescriptionController.getController().getEntiteById(appel.lot_id);
                 if (lot != null)
                     cbLot.SelectedValue = lot.numero_lot;
             }
             if (facture != null)
             {
-                LotDescriptionEntite lot = LotDescriptionController.getController().getEntiteById(facture.lot_id);
+                var lot = LotDescriptionController.getController().getEntiteById(facture.lot_id);
                 if (lot != null)
                     cbLot.SelectedValue = lot.numero_lot;
             }
@@ -65,7 +65,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
 
         private void btnValid_Click(object sender, EventArgs e)
         {
-            DataRowView row = (DataRowView) cbLot.SelectedItem;
+            var row = (DataRowView) cbLot.SelectedItem;
             if (row != null)
             {
                 if (appel != null)

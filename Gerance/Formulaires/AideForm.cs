@@ -17,8 +17,8 @@ namespace Gerance.Formulaires
             var assembly = Assembly.GetExecutingAssembly();
             var resourceName = "Gerance.Formulaires.roadmap.txt";
 
-            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
-            using (StreamReader reader = new StreamReader(stream))
+            using (var stream = assembly.GetManifestResourceStream(resourceName))
+            using (var reader = new StreamReader(stream))
             {
                 tbAide.Text = reader.ReadToEnd();
             }            

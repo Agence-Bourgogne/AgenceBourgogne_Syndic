@@ -21,8 +21,8 @@ namespace Gerance.Formulaires.Factures
 
         private void FacturesListeForm_Load(object sender, EventArgs e)
         {
-            DateTime dtNow = DateTime.Now;
-            DateTime dt = new DateTime(dtNow.Year, dtNow.Month, 1);
+            var dtNow = DateTime.Now;
+            var dt = new DateTime(dtNow.Year, dtNow.Month, 1);
             dtDebut.Value = dt;
             dtFin.Value = dt.AddMonths(1).AddDays(-1);
             btnEnter.Width = 0;
@@ -35,7 +35,7 @@ namespace Gerance.Formulaires.Factures
             dataGridView.DataSource = FacturesController.getController().getListeFactures(dtDebut.Value, dtFin.Value, tbRefLocataire.Text);
             if (dataGridView.DataSource != null)
             {
-                DataGridViewColumnCollection cols = dataGridView.Columns;
+                var cols = dataGridView.Columns;
                 cols["locataire"].MinimumWidth = 120;
                 cols["libelle"].MinimumWidth = 120;
                 cols["immeuble"].MinimumWidth = 120;
@@ -56,7 +56,7 @@ namespace Gerance.Formulaires.Factures
 
         private void btnExport_Click(object sender, EventArgs e)
         {
-            List<string> colsToHide = new List<string> { "id" };
+            var colsToHide = new List<string> { "id" };
             BaseApplication.DataGridToExcel(dataGridView, colsToHide);
         }
 
@@ -64,8 +64,8 @@ namespace Gerance.Formulaires.Factures
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
-                FactureDetailForm form = new FactureDetailForm(row["id"].ToString());
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var form = new FactureDetailForm(row["id"].ToString());
                 form.ShowDialog();
                 FillDataGrid();
             }
@@ -80,8 +80,8 @@ namespace Gerance.Formulaires.Factures
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
-                FactureEntite facture = FacturesController.getController().getEntiteById(row["id"].ToString());
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var facture = FacturesController.getController().getEntiteById(row["id"].ToString());
                 if (facture != null)
                 {
                     facture.statut = (int)GlobalConstantes.StatutOperation.Supprime;
@@ -97,7 +97,7 @@ namespace Gerance.Formulaires.Factures
         }
         protected DialogResult ShowFindForm(CommonFindForm form, Control tbResult)
         {
-            DialogResult res = form.ShowDialog();
+            var res = form.ShowDialog();
             if (res == DialogResult.OK)
                 tbResult.Text = form.reference;
             return res;

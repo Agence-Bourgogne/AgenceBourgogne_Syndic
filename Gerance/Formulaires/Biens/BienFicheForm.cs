@@ -32,7 +32,7 @@ namespace Gerance.Formulaires.Biens
                 bien = new BienEntite();
 
 //            currentReference = String.Format("{0}-{1}", bien.reference, bien.numero_lot.ToString("0000"));
-            currentReference = String.Format("{0}-{1}", bien.reference, bien.id);
+            currentReference = $"{bien.reference}-{bien.id}";
             InitializeCombos();
 
             tbReference.Text = bien.reference;
@@ -114,11 +114,11 @@ namespace Gerance.Formulaires.Biens
 
             Console.WriteLine("InitializeCombo");
             // 
-            DateTime dt = DateTime.Parse("01/01/2000");
+            var dt = DateTime.Parse("01/01/2000");
 
-            for (int i = 0; i < 12; i++)
+            for (var i = 0; i < 12; i++)
             {
-                String[] lDate = dt.ToLongDateString().Split(' ');
+                var lDate = dt.ToLongDateString().Split(' ');
                 cbMoisAugm.Items.Add(lDate[2]);
                 dt = dt.AddMonths(1);
             }
@@ -154,7 +154,7 @@ namespace Gerance.Formulaires.Biens
             if ( tbRefProprio.Text != "" )
                 if (tbRefProprio.Text != bien.Proprietaire.reference)
                 {
-                    ProprietaireEntite proprietaire = ProprietaireController.getController().getEntiteFromField("reference", tbRefProprio.Text);
+                    var proprietaire = ProprietaireController.getController().getEntiteFromField("reference", tbRefProprio.Text);
 
                     if (proprietaire == null)
                         tbRefProprio.BackColor = Color.Red;
@@ -170,7 +170,7 @@ namespace Gerance.Formulaires.Biens
             if ( tbRefLocataire.Text != "")
                 if (tbRefLocataire.Text != bien.Locataire.reference)
                 {
-                    LocataireEntite locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
+                    var locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
                     if (locataire == null)
                         tbRefLocataire.BackColor = Color.Red;
                     bien.Locataire = locataire;
@@ -204,7 +204,7 @@ namespace Gerance.Formulaires.Biens
 
         private void btnProprioAdd_Click(object sender, EventArgs e)
         {
-            ProprietaireFicheForm form = new ProprietaireFicheForm();
+            var form = new ProprietaireFicheForm();
             form.ShowDialog();
             if (form.proprietaire != null)
             {
@@ -216,7 +216,7 @@ namespace Gerance.Formulaires.Biens
 
         private void btnLocataireAdd_Click(object sender, EventArgs e)
         {
-            LocataireFicheForm form = new LocataireFicheForm();
+            var form = new LocataireFicheForm();
             form.ShowDialog();
             if (form.locataire != null)
             {

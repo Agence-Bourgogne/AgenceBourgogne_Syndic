@@ -18,21 +18,21 @@ public class Service : IService
 
     public string CreateUser(string Code, String Password = "")
     {
-        string msg = "";
+        var msg = "";
         IDal dal = new Dal();
         msg = dal.CreateUser(Code, Password);
         return msg;
     }
     public string DeleteUser(string Guid)
     {
-        string msg = "";
+        var msg = "";
         IDal dal = new Dal();
         msg = dal.DeleteUser(Guid);
         return msg;
     }
     public string DeleteCopro(string Guid)
     {
-        string msg = "";
+        var msg = "";
         IDal dal = new Dal();
         msg = dal.DeleteCopro(Guid);
         return msg;
@@ -41,7 +41,7 @@ public class Service : IService
     {
         //Console.WriteLine("Uploaded file {0} with {1} bytes", fileName, totalBytesRead);
         PartsFile part = null;
-        int offset = 0;
+        var offset = 0;
         if (parts.Exists(x => x.Key == Guid))
         {
             part = parts.Find(x => x.Key == Guid);
@@ -58,12 +58,12 @@ public class Service : IService
     }
     public String CloseFile(string text, String Guid, string immeuble_id, string copro_id)
     {
-        String resText = "";
+        var resText = "";
         if (parts.Exists(x => x.Key == Guid))
         {
             try
             {
-                PartsFile part = parts.Find(x => x.Key == Guid);
+                var part = parts.Find(x => x.Key == Guid);
                 IDal dal = new Dal();
                 dal.CreateDocument(text, Guid, part.Content, immeuble_id, copro_id);
                 resText = "Document Enregistré";
@@ -95,9 +95,9 @@ public class Service : IService
     }
     public List<ChildrenEntitie> GetUserCoproprietaires(string guid)
     {
-        List<ChildrenEntitie> childrens = new List<ChildrenEntitie>();
+        var childrens = new List<ChildrenEntitie>();
         IDal dal = new Dal();
-        UserEntitie user = dal.GetUserFromGuid(guid);
+        var user = dal.GetUserFromGuid(guid);
         if (user != null)
         {
             childrens = dal.GetUserChildrens(user.Guid);
@@ -107,7 +107,7 @@ public class Service : IService
 
     public List<ChildrenEntitie> GetCoproChildrens(string copro_id)
     {
-        List<ChildrenEntitie> childrens = new List<ChildrenEntitie>();
+        var childrens = new List<ChildrenEntitie>();
         IDal dal = new Dal();
         childrens = dal.GetCoproChildrens(copro_id);
         return childrens;
@@ -124,7 +124,7 @@ public class Service : IService
     }
     public string UpdateUser(string Guid, string Code, String Password = "")
     {
-        string msg = "";
+        var msg = "";
         IDal dal = new Dal();
         msg = dal.UpdateUser(Guid, Code, Password);
         return msg;
@@ -136,7 +136,7 @@ public class Service : IService
     }
     public string DeleteDocument(string Guid)
     {
-        string msg = "";
+        var msg = "";
         IDal dal = new Dal();
         msg = dal.DeleteDocument(Guid);
         return msg;

@@ -29,7 +29,8 @@ namespace Gerance.Formulaires.Proprietaires
 
         private void UpdateSoldeProprietairesForm_Load(object sender, EventArgs e)
         {
-            tbMessage.Text = String.Format("Mise à jour les comptes Proprietaires\r\nPour la période du {0} au {1}", dtDebut.ToShortDateString(), dtFin.ToShortDateString());
+            tbMessage.Text =
+                $"Mise à jour les comptes Proprietaires\r\nPour la période du {dtDebut.ToShortDateString()} au {dtFin.ToShortDateString()}";
             tbMessage.SelectionStart = tbMessage.Text.Length;
         }
 
@@ -42,7 +43,7 @@ namespace Gerance.Formulaires.Proprietaires
         {
             foreach (DataRow row in table.Rows)
             {
-                string reference = row["p_reference"].ToString();
+                var reference = row["p_reference"].ToString();
                 if (!list.Contains(reference))
                 {
                     list.Add(reference);
@@ -53,18 +54,18 @@ namespace Gerance.Formulaires.Proprietaires
 
         List<SoldeProprio> getSoldes()
         {
-            List<SoldeProprio> soldes = new List<SoldeProprio>();
-            BindingSource releve_compte = new BindingSource();
-            BindingSource facture_compte = new BindingSource();
+            var soldes = new List<SoldeProprio>();
+            var releve_compte = new BindingSource();
+            var facture_compte = new BindingSource();
 
             //DataTable tableHdr = ReglementsController.getController().getHdrReleveCompteProprio(dtDebut, dtFin, proprietaire_id);
-            List<String> idsProprio = new List<string>();
+            var idsProprio = new List<string>();
 
             releve_compte.DataSource = ReglementsController.getController().getReleveCompteProprio(dtDebut, dtFin);
             facture_compte.DataSource = FacturesController.getController().getDeductionProprio(dtDebut, dtFin);
             SetReferenceProprio(idsProprio, (DataTable) releve_compte.DataSource);
             SetReferenceProprio(idsProprio, (DataTable) facture_compte.DataSource);
-            DataTable tableHdr = ReglementsController.getController().getHdrReleveCompteProprio(dtDebut, dtFin, idsProprio);
+            var tableHdr = ReglementsController.getController().getHdrReleveCompteProprio(dtDebut, dtFin, idsProprio);
 
             soldes.Clear();
 
@@ -72,14 +73,14 @@ namespace Gerance.Formulaires.Proprietaires
 
             foreach (DataRow row in tableHdr.Rows)
             {
-                string refProprio = row["p_reference"].ToString();
+                var refProprio = row["p_reference"].ToString();
 
-                releve_compte.Filter = String.Format("p_reference = '{0}'", refProprio);
-                facture_compte.Filter = String.Format("p_reference = '{0}'", refProprio);
+                releve_compte.Filter = $"p_reference = '{refProprio}'";
+                facture_compte.Filter = $"p_reference = '{refProprio}'";
 
-                decimal loyers = ComptesProprietairesForm.getSomme(releve_compte, 0);
+                var loyers = ComptesProprietairesForm.getSomme(releve_compte, 0);
 //                decimal deduction = Math.Abs(ComptesProprietairesForm.getSomme(facture_compte, 1));
-                decimal deduction = ComptesProprietairesForm.getSomme(facture_compte, 1);
+                var deduction = ComptesProprietairesForm.getSomme(facture_compte, 1);
                 soldes.Add(new SoldeProprio(refProprio, loyers, deduction));
             }
             return soldes;
@@ -87,30 +88,31 @@ namespace Gerance.Formulaires.Proprietaires
         const int REFERENCE_TACHE = 2; 
         private void MiseAJourCompteProprio()
         {
-            List<SoldeProprio> soldes = getSoldes();
+            var soldes = getSoldes();
 
-            DateTime dtServer = ProprietaireController.getController().setTimestampServer();
-            DateTime dtWorkflow = new DateTime(dtDebut.Year, dtDebut.Month, 1);
+            var dtServer = ProprietaireController.getController().setTimestampServer();
+            var dtWorkflow = new DateTime(dtDebut.Year, dtDebut.Month, 1);
             WorkflowController.getController().setTimestampServer(dtServer);
             WorkflowDetailController.getController().setTimestampServer(dtServer);
 
-            NpgsqlTransaction trx = Database.BeginTransaction();
+            var trx = Database.BeginTransaction();
             try
             {
-                WorkflowEntite workflow = WorkflowController.getController().WriteRecord(REFERENCE_TACHE, dtWorkflow);
-                List<string> proprios = new List<String>();
-                foreach (SoldeProprio soldeProp in soldes)
+                var workflow = WorkflowController.getController().WriteRecord(REFERENCE_TACHE, dtWorkflow);
+                var proprios = new List<String>();
+                foreach (var soldeProp in soldes)
                 {
-                    ProprietaireEntite proprio = ProprietaireController.getController().getEntiteFromField("reference", soldeProp.reference);
+                    var proprio = ProprietaireController.getController().getEntiteFromField("reference", soldeProp.reference);
                     if (proprio != null)
                         if ( !proprios.Contains( proprio.id))
                         {
-                            decimal solde = soldeProp.loyers + soldeProp.deductions;
+                            var solde = soldeProp.loyers + soldeProp.deductions;
                             //decimal solde = soldeProp.loyers - soldeProp.deductions;
                             //if (soldeProp.deductions > 0)
                             //    solde = soldeProp.loyers + soldeProp.deductions;
 
-                            string msg = String.Format("\r\n*** Mise à jour compte de {0} {1} : {2} €", proprio.reference, proprio.NomPrenom, solde);
+                            var msg =
+                                $"\r\n*** Mise à jour compte de {proprio.reference} {proprio.NomPrenom} : {solde} €";
                             proprio.dernier_cheque = solde;
                             proprios.Add(proprio.id);
                             if (solde < 0)

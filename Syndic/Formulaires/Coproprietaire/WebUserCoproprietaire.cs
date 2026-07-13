@@ -14,7 +14,6 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
     {
         bool bInLoad = false;
         public CoproprietaireEntite currentCoproprietaire = new CoproprietaireEntite();
-        ServiceReference.UserEntitie _currentUsr;
         List<ServiceReference.DocumentEntitie> docs;
         public WebUserCoproprietaire(CoproprietaireEntite copro)
         {
@@ -22,7 +21,7 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
             currentCoproprietaire = copro;
            // _currentUsr = 
         }
-        //-----------------------------------------------------------
+        //---
         private void WebUserForm_Load(object sender, EventArgs e)
         {
             try
@@ -36,7 +35,7 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
                 MessageBox.Show(ex.Message);
             }
         }
-        //-----------------------------------------------------------
+        //---
         private void RefreshAll()
         {
             btnDelCopro.Enabled = false;
@@ -44,34 +43,34 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
             listDoc.DataSource = null;
             FillTreeView();
         }
-        //-----------------------------------------------------------
+        //---
         private void FillTreeView()
         {
             bInLoad = true;
             try
             {
                 treeView.Nodes.Clear();
-                TreeNode parent = new TreeNode() { Text = "Immeubles", ImageIndex = 0 };
+                var parent = new TreeNode() { Text = "Immeubles", ImageIndex = 0 };
                 treeView.Nodes.Add(parent);
 
                 //     EspaceSyndic.ServiceReference.UserEntitie usr = (EspaceSyndic.ServiceReference.UserEntitie)dataGridView.SelectedRows[0].DataBoundItem;
-                List<ServiceReference.ChildrenEntitie> immeubles = ServiceReferenceUtils.GetInstance().GetCoproChildrens(currentCoproprietaire.id).OrderBy(x => x.Immeuble_id).ToList();
+                var immeubles = ServiceReferenceUtils.GetInstance().GetCoproChildrens(currentCoproprietaire.id).OrderBy(x => x.Immeuble_id).ToList();
 
              //   List<EspaceSyndic.ServiceReference.ChildrenEntitie> immeubles = ServiceReferenceUtils.GetInstance().GetUserCoproprietaires(_currentUsr.Guid).OrderBy(x => x.Immeuble_id).ToList();
-                String immeuble_id = "";
+                var immeuble_id = "";
                 TreeNode current = null;
-                foreach (ServiceReference.ChildrenEntitie child in immeubles)
+                foreach (var child in immeubles)
                 {
                     if (immeuble_id != child.Immeuble_id)
                     {
-                        ImmeubleEntite immeuble = ImmeubleController.getController().getEntiteById(child.Immeuble_id);
+                        var immeuble = ImmeubleController.getController().getEntiteById(child.Immeuble_id);
                         immeuble_id = child.Immeuble_id;
                         current = new TreeNode() { Text = immeuble.nom, ImageIndex = 1, Tag = immeuble };
                         parent.Nodes.Add(current);
                     }
                     if (!String.IsNullOrEmpty(child.Copro_id))
                     {
-                        CoproprietaireEntite copro = CoproprietaireController.getController().getEntiteById(child.Copro_id);
+                        var copro = CoproprietaireController.getController().getEntiteById(child.Copro_id);
                         current.Nodes.Add(new TreeNode() { Text = copro.reference + ":" + copro.NomPrenom, Tag = copro });
                     }
                 }
@@ -84,31 +83,31 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
             }
             bInLoad = false;
         }
-        //-----------------------------------------------------------
+        //---
         private void FillLvDocs()
         {
             bInLoad = true;
             listDoc.DataSource = null;
-            int row = 0;
-            DataTable table = new DataTable();
+            var row = 0;
+            var table = new DataTable();
             table.Columns.Add("Document");
             table.Columns.Add("Guid");
-            TreeNode current = treeView.SelectedNode;
-            string immeuble_id = "";
-            string copro_id = "";
-            List<ServiceReference.DocumentEntitie> listdocs = new List<ServiceReference.DocumentEntitie>();
+            var current = treeView.SelectedNode;
+            var immeuble_id = "";
+            var copro_id = "";
+            var listdocs = new List<ServiceReference.DocumentEntitie>();
             if (current != null && current.Tag != null)
             {
-                List<ServiceReference.ChildrenEntitie> immeublesByUsers = ServiceReferenceUtils.GetInstance().GetCoproChildrens(currentCoproprietaire.id).OrderBy(x => x.Immeuble_id).ToList();
+                var immeublesByUsers = ServiceReferenceUtils.GetInstance().GetCoproChildrens(currentCoproprietaire.id).OrderBy(x => x.Immeuble_id).ToList();
                 //List<EspaceSyndic.ServiceReference.ChildrenEntitie> immeublesByUsers = ServiceReferenceUtils.GetInstance().GetUserCoproprietaires(_currentUsr.Guid).OrderBy(x => x.Immeuble_id).ToList();
                 if (current.Tag is ImmeubleEntite)
                 {
       
-                    ImmeubleEntite immeuble = (ImmeubleEntite)current.Tag;
+                    var immeuble = (ImmeubleEntite)current.Tag;
                     immeuble_id = immeuble.getId();
                     if (immeublesByUsers.Exists(x=>x.Immeuble_id == immeuble_id))
                     {
-                        foreach (ServiceReference.DocumentEntitie doc in docs)
+                        foreach (var doc in docs)
                         {
                             if(doc.immeuble_id == immeuble_id && ( doc.copro_id == "" || immeublesByUsers.Exists(x=>x.Immeuble_id == immeuble_id && x.Copro_id == doc.copro_id )) )
                                 listdocs.Add(doc);
@@ -121,12 +120,12 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
                 }
                 else if (current.Tag is CoproprietaireEntite)
                 {
-                    CoproprietaireEntite copro = (CoproprietaireEntite)current.Tag;
+                    var copro = (CoproprietaireEntite)current.Tag;
                     copro_id = copro.getId();
                     immeuble_id = copro.Immeuble.getId();
                      if (immeublesByUsers.Exists(x=>x.Immeuble_id == immeuble_id))
                     {
-                        foreach (ServiceReference.DocumentEntitie doc in docs)
+                        foreach (var doc in docs)
                         {
                                if(doc.immeuble_id == immeuble_id &&  immeublesByUsers.Exists(x=>x.Immeuble_id == immeuble_id && x.Copro_id == doc.copro_id ))
                                    listdocs.Add(doc);
@@ -140,7 +139,7 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
                 }
             }
 
-            foreach (ServiceReference.DocumentEntitie doc in listdocs)
+            foreach (var doc in listdocs)
             {
 
                 table.Rows.Add();
@@ -157,17 +156,17 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
         private void btnNewCopro_Click(object sender, EventArgs e)
         {
 
-                FindCoproprietaireForm form = new FindCoproprietaireForm();
+                var form = new FindCoproprietaireForm();
                 if (DialogResult.Cancel != form.ShowDialog())
                 {
                     ServiceReference.UserEntitie usr = null;// (EspaceSyndic.ServiceReference.UserEntitie)dataGridView.SelectedRows[0].DataBoundItem;
-                    CoproprietaireEntite entite = CoproprietaireController.getController().getEntiteFromField("reference", form.reference);
+                    var entite = CoproprietaireController.getController().getEntiteFromField("reference", form.reference);
                     try
                     {
                         if (entite != null)
                         {
-                            ImmeubleEntite immeuble = entite.Immeuble;
-                            string res = ServiceReferenceUtils.GetInstance().AddCopro(usr.Guid, immeuble.id, entite.id, immeuble.reference, immeuble.nom, entite.reference, entite.NomPrenom);
+                            var immeuble = entite.Immeuble;
+                            var res = ServiceReferenceUtils.GetInstance().AddCopro(usr.Guid, immeuble.id, entite.id, immeuble.reference, immeuble.nom, entite.reference, entite.NomPrenom);
                             if (String.IsNullOrEmpty(res))
                             {
                                 FillTreeView();
@@ -183,31 +182,31 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
                 }
 
         }
-        //----------------------------------------
+        //-----
 
         private void btnDelCopro_Click(object sender, EventArgs e)
         {
             if (DialogResult.OK == MessageBox.Show("Voulez vous vraiment supprimer la copropriete", "Opération irreversible", MessageBoxButtons.OKCancel, MessageBoxIcon.Question))
             {
-                TreeNode current = treeView.SelectedNode;
+                var current = treeView.SelectedNode;
                 if (current != null)
                     if (current.Tag != null && (current.Tag is CoproprietaireEntite))
                     {
-                        CoproprietaireEntite copro = (CoproprietaireEntite)current.Tag;
+                        var copro = (CoproprietaireEntite)current.Tag;
                         MessageBox.Show(ServiceReferenceUtils.DeleteCopro(copro.id));
                         RefreshAll();
                     }
             }
 
         }
-        //----------------------------------------
+        //-----
         private void treeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
             if (bInLoad)
                 return;
             btnDelCopro.Enabled = false;
             btnDelDoc.Enabled = false;
-            TreeNode current = treeView.SelectedNode;
+            var current = treeView.SelectedNode;
             if (current != null)
                 if (current.Tag != null && (current.Tag is CoproprietaireEntite))
                     btnDelCopro.Enabled = true;
@@ -237,10 +236,10 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
                 btnDelDoc.Enabled = false;
                 return;
             }
-            DataRowView drv = (DataRowView)listDoc.SelectedItems[0];
-            string docGuid = drv["Guid"].ToString();
+            var drv = (DataRowView)listDoc.SelectedItems[0];
+            var docGuid = drv["Guid"].ToString();
 
-            ServiceReference.DocumentEntitie doc = docs.FirstOrDefault(x => x.Guid == docGuid);
+            var doc = docs.FirstOrDefault(x => x.Guid == docGuid);
             if (doc != null)
             {
                 btnDelDoc.Enabled = true;
@@ -253,13 +252,13 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
             {
                 if (DialogResult.OK == MessageBox.Show("Voulez vous vraiment supprimer le(s) document(s)", "Opération irreversible", MessageBoxButtons.OKCancel, MessageBoxIcon.Question))
                 {
-                    string messageRetour = "";
-                    for (int i = 0; i < listDoc.SelectedItems.Count; i++)
+                    var messageRetour = "";
+                    for (var i = 0; i < listDoc.SelectedItems.Count; i++)
                     {
-                        DataRowView drv = (DataRowView)listDoc.SelectedItems[i];
-                        string docGuid = drv["Guid"].ToString();
+                        var drv = (DataRowView)listDoc.SelectedItems[i];
+                        var docGuid = drv["Guid"].ToString();
 
-                        ServiceReference.DocumentEntitie doc = docs.FirstOrDefault(x => x.Guid == docGuid);
+                        var doc = docs.FirstOrDefault(x => x.Guid == docGuid);
                         if (doc != null)
                         {
                           messageRetour +=  ServiceReferenceUtils.DeleteDocument(docGuid) + "\n";

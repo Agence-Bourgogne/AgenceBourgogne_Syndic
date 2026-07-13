@@ -30,11 +30,11 @@ namespace Gerance.Formulaires.Config
                 return;
             if (cbGroupe.SelectedIndex < 0)
                 return;
-            DataRow row = ((DataRowView)cbGroupe.SelectedItem).Row;
+            var row = ((DataRowView)cbGroupe.SelectedItem).Row;
             ParametreController.controller.SaveList((DataTable)dataGridView.DataSource, true);
             groupe = new ParametreEntite(row);
             dataGridView.DataSource = ParametreController.controller.getListFromEntiteGroupe(groupe);
-            DataGridViewColumnCollection cols = dataGridView.Columns;
+            var cols = dataGridView.Columns;
             cols["id"].Visible = false;
             cols["groupe"].Visible = false;
             cols["code"].Visible = false;
@@ -49,11 +49,11 @@ namespace Gerance.Formulaires.Config
             cols["audit_created_by"].Visible = false;
             cols["audit_updated"].Visible = false;
             cols["audit_updated_by"].Visible = false;
-            string[] columnsDef = groupe.param_1.Split(',');
-            foreach (string coldef in columnsDef)
+            var columnsDef = groupe.param_1.Split(',');
+            foreach (var coldef in columnsDef)
             {
-                string[] paramCol = coldef.Replace(" as ", ":").Split(':');
-                string colName = paramCol[0].ToLower().Trim();
+                var paramCol = coldef.Replace(" as ", ":").Split(':');
+                var colName = paramCol[0].ToLower().Trim();
                 cols[colName].Visible = true;
                 if (paramCol.Length > 1)
                     cols[colName].HeaderText = paramCol[1];

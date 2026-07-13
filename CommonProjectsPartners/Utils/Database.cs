@@ -36,7 +36,7 @@ namespace CommonProjectsPartners.Utils
         }
         public static NpgsqlTransaction BeginTransaction()
         {
-            NpgsqlConnection cnx = GetInstance();
+            var cnx = GetInstance();
             return cnx.BeginTransaction();
         }
         public static void CloseConnection()
@@ -69,15 +69,15 @@ namespace CommonProjectsPartners.Utils
         {
             if ( cnx == null )
                 cnx = GetInstance();
-            NpgsqlCommand sqlCmd = new NpgsqlCommand("select localtimestamp", cnx );
-            object response = sqlCmd.ExecuteScalar();
+            var sqlCmd = new NpgsqlCommand("select localtimestamp", cnx );
+            var response = sqlCmd.ExecuteScalar();
             return Convert.ToDateTime(response);
         }
         
         public static void SerializeCSV(DataTable sourceTable, TextWriter writer, bool includeHeaders = true, bool bEncoding = false) 
         {
             if (includeHeaders) {
-                List<string> headerValues = new List<string>();
+                var headerValues = new List<string>();
                 foreach (DataColumn column in sourceTable.Columns) {
                     headerValues.Add(QuoteValue(column.ColumnName));
                 }
@@ -88,7 +88,7 @@ namespace CommonProjectsPartners.Utils
             foreach (DataRow row in sourceTable.Rows) {
                 items = row.ItemArray.Select(o => QuoteValue(o.ToString())).ToArray();
 
-                string line = String.Join(";", items);
+                var line = String.Join(";", items);
                 //if (bEncoding)
                 //{
                 //    Encoding iso = Encoding.GetEncoding("ISO-8859-1");
@@ -109,11 +109,11 @@ namespace CommonProjectsPartners.Utils
         }
         public static string ToQuotedString(List<string> values)
         {
-            string quoted = "";
+            var quoted = "";
 
-            foreach ( string value in values)
+            foreach ( var value in values)
             {
-                quoted += (quoted == "" ? "" : ", ") + String.Format("'{0}'", value);
+                quoted += (quoted == "" ? "" : ", ") + $"'{value}'";
             }
             return quoted;
         }
@@ -135,7 +135,7 @@ namespace CommonProjectsPartners.Utils
             else
             {
                 var colHeaders = lines.ElementAt(skipLine + 1).Split(';');
-                int i = 0;
+                var i = 0;
                 foreach (var colName in colHeaders)
                 {
                     table.Columns.Add("col"+i.ToString());
@@ -143,7 +143,7 @@ namespace CommonProjectsPartners.Utils
                 }
             }
 
-            foreach (string record in lines.Skip (skipLine+1))
+            foreach (var record in lines.Skip (skipLine+1))
             {
                 table.Rows.Add(record.Split(';'));
             }
@@ -152,7 +152,7 @@ namespace CommonProjectsPartners.Utils
         public static IEnumerable<string> ReadLines(string fileName)
         {
             StreamReader reader = null;
-            List<string> lines = new List<string>();
+            var lines = new List<string>();
             try
             {
                 reader = new StreamReader(fileName);

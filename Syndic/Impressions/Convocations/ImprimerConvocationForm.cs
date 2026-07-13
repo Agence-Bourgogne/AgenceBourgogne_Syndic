@@ -36,9 +36,9 @@ namespace EspaceSyndic.Impressions.Convocations
             if (number < 0)
                 return "moins " + ConvertToWords(Math.Abs(number));
 
-            string words = "";
+            var words = "";
 
-            long integerPart = (long)Math.Floor(number);
+            var integerPart = (long)Math.Floor(number);
             words = ConvertToWordsInternal(integerPart);
             //long fractionalPart = (long)(Math.Round((number - integerPart), 2) * 100); // الأجزاء العشرية
 
@@ -53,7 +53,7 @@ namespace EspaceSyndic.Impressions.Convocations
         }
         private static string ConvertToWordsInternal(long number)
         {
-            string words = "";
+            var words = "";
 
             if ((number / 1000000000000) > 0)
             {
@@ -151,7 +151,7 @@ namespace EspaceSyndic.Impressions.Convocations
 
         private string GetLieuAssemblee()
         {
-            string lieu = "";
+            var lieu = "";
             if (immeuble != null)
                 lieu = immeuble.lieuconv;
             if (lieu == "")
@@ -160,7 +160,7 @@ namespace EspaceSyndic.Impressions.Convocations
         }
         private void lblImmeuble_Click(object sender, EventArgs e)
         {
-            FindImmeubleForm form = new FindImmeubleForm();
+            var form = new FindImmeubleForm();
             form.ShowDialog();
             if (!"".Equals(form.reference))
             {
@@ -188,10 +188,10 @@ namespace EspaceSyndic.Impressions.Convocations
 
         void SetTextHeader()
         {
-            String aide = "CONVOCATION";
+            var aide = "CONVOCATION";
             if (immeuble != null)
             {
-                AideImmeubleEntite comment = AideImmeubleController.getController().getAideImmeuble(immeuble.id, aide);
+                var comment = AideImmeubleController.getController().getAideImmeuble(immeuble.id, aide);
                 if (comment != null)
                 {
                     tbText.Text = comment.libelle;
@@ -205,7 +205,7 @@ namespace EspaceSyndic.Impressions.Convocations
             if (immeuble != null)
             {
                 repart = ImmeubleRepartitionController.getController().getRepartitionImmeubleEntite(immeuble.id);
-                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
                 infoForm.DoFormText(this, immeuble.note);
                 if ( immeuble.dateass.Year > 2000 )
                     dtDateAssemblee.Value = immeuble.dateass;
@@ -225,7 +225,7 @@ namespace EspaceSyndic.Impressions.Convocations
             e.DataSources.Clear();
             if (e.ReportPath == "ConvocationReport" ) 
             {
-                BindingSource src = new BindingSource();
+                var src = new BindingSource();
                 if(ForExport)
                     src.DataSource = CoproprietaireController.getController().CoproprietaireImmeubleDescriptionByLot(immeuble.id, currentLot);
                 else
@@ -242,7 +242,7 @@ namespace EspaceSyndic.Impressions.Convocations
             }
             if (e.ReportPath.EndsWith("FeuillePresence.rdlc"))
             {
-                BindingSource src = new BindingSource();
+                var src = new BindingSource();
                 if (ForExport)
                     src.DataSource = CoproprietaireController.getController().CoproprietaireImmeubleDescriptionByLot(immeuble.id, currentLot, true);
                 else
@@ -255,11 +255,11 @@ namespace EspaceSyndic.Impressions.Convocations
 
         string getOrdre(string[] lines)
         {
-            string text = "";
+            var text = "";
             //int tabWidth = 4;
             //int minTab = 120;
             
-            foreach (string l in lines)
+            foreach (var l in lines)
             {
                 text += l.Replace("\t", "    ")+"\n";
             }
@@ -277,11 +277,11 @@ namespace EspaceSyndic.Impressions.Convocations
         {
             ForExport = !string.IsNullOrEmpty(num_lot);
             currentLot = num_lot;
-            string yearAss = String.Format(" {0}", dtDateAssemblee.Value.Year);
-            string dateAssemblee = dtDateAssemblee.Value.ToLongDateString().Replace(yearAss, "");
-            string anneeAssemblee = ConvertToWords(dtDateAssemblee.Value.Year).ToUpper(); // ConvertAmount(dtDateAssemblee.Value.Year);
-            //---------------------------------------------------
-            string ordre = tbText.Text;//.Replace("\t", "........");
+            var yearAss = $" {dtDateAssemblee.Value.Year}";
+            var dateAssemblee = dtDateAssemblee.Value.ToLongDateString().Replace(yearAss, "");
+            var anneeAssemblee = ConvertToWords(dtDateAssemblee.Value.Year).ToUpper(); // ConvertAmount(dtDateAssemblee.Value.Year);
+            //--
+            var ordre = tbText.Text;//.Replace("\t", "........");
             if (String.IsNullOrWhiteSpace(tbHeure.Text.Replace(":", "")))
             {
                 MessageBox.Show("L'heure de convocation n'est pas renseignée");
@@ -289,16 +289,16 @@ namespace EspaceSyndic.Impressions.Convocations
             }
 
             ordre = getOrdre(tbText.Lines);
-            string hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
-            string hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
-            ReportParameter[] parameters = new ReportParameter[]{
+            var hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
+            var hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
+            var parameters = new ReportParameter[]{
                 new ReportParameter("DateEntete", dtDateEntete.Value.ToShortDateString()),
                 new ReportParameter("DateAssemblee", dtDateAssemblee.Value.ToShortDateString()),
                 new ReportParameter("DateLimite", ""),//dtLimite.Value.ToShortDateString()),
                 new ReportParameter("HeureAssemblee", tbHeure.Text.Replace (":", " H ")),
                 new ReportParameter("OrdreDuJour", ordre),
                 new ReportParameter("Convocation", "Convocation "+ cbConvoc.SelectedItem),
-                new ReportParameter("repart_immeuble", String.Format("{0}", repart.valeur)),
+                new ReportParameter("repart_immeuble", $"{repart.valeur}"),
                 new ReportParameter("paragraphe_decret", ParametresDB.getParam1("IMPRESSION", "PARAGRAPHE_DECRET")),
                 new ReportParameter("paragraphe_decret_contenu", ParametresDB.getParam1("IMPRESSION", "PARAMETRE_DECRET_CONTENU")),
                 new ReportParameter("LieuAssemblee", tbLieu.Text),
@@ -329,12 +329,13 @@ namespace EspaceSyndic.Impressions.Convocations
 
         List<String[]> GetTablePresence(DataTable table)
         {
-            List<String[]> datas =new List<string[]>();
+            var datas =new List<string[]>();
 
             foreach (DataRow row in table.Rows)
             {
-                String[] data = new String[4];
-                data[0] = String.Format("{0} {1}\r\n{2}\r\n{3} {4}", row["Civilite"], row["coproprietaire"], row["adressecoproprietaire"], row["codepostalcoproprietaire"], row["villecoproprietaire"]);
+                var data = new String[4];
+                data[0] =
+                    $"{row["Civilite"]} {row["coproprietaire"]}\r\n{row["adressecoproprietaire"]}\r\n{row["codepostalcoproprietaire"]} {row["villecoproprietaire"]}";
                 data[1] = row["referencecoproprietaire"].ToString();
                 data[2] = "";
                 data[3] = row["valeur"].ToString();// +"/ " + repart.valeur;
@@ -346,7 +347,7 @@ namespace EspaceSyndic.Impressions.Convocations
 
         String GetDocOrdreDuJour()
         {
-            OpenFileDialog dlg = new OpenFileDialog();
+            var dlg = new OpenFileDialog();
             dlg.Filter = "Document Word (*.docx)|*.docx|Tous les fichiers|*.*";
             dlg.Title = "Choisir le document Ordre du jour";
             if (dlg.ShowDialog() != DialogResult.OK)
@@ -358,17 +359,10 @@ namespace EspaceSyndic.Impressions.Convocations
 
         NpgsqlParameter[] ParamTextDateAssemblee()
         {
-            //-------------------------------------------------
-            //int posYear = dtDateAssemblee.Value.Year - 2014;
-            //string anneeAssemblee = "DEUX MILLE ";
-            //if (posYear >= 0 && posYear < yearText.Length)
-            //    anneeAssemblee += yearText[posYear];
-            //string yearAss = String.Format(" {0}", dtDateAssemblee.Value.Year);
-            //string dateAssemblee = dtDateAssemblee.Value.ToLongDateString().Replace(yearAss, "");
-            string yearAss = String.Format(" {0}", dtDateAssemblee.Value.Year);
-            string dateAssemblee = dtDateAssemblee.Value.ToLongDateString().Replace(yearAss, "");
-            string anneeAssemblee = ConvertToWords(dtDateAssemblee.Value.Year).ToUpper(); // ConvertAmount(dtDateAssemblee.Value.Year);
-            //-----------------------------------------------------------------------------------------
+            var yearAss = $" {dtDateAssemblee.Value.Year}";
+            var dateAssemblee = dtDateAssemblee.Value.ToLongDateString().Replace(yearAss, "");
+            var anneeAssemblee = ConvertToWords(dtDateAssemblee.Value.Year).ToUpper(); // ConvertAmount(dtDateAssemblee.Value.Year);
+            
             NpgsqlParameter[] parameters = new NpgsqlParameter[]{
                 new NpgsqlParameter("AnneeAssemblee", anneeAssemblee),
                 new NpgsqlParameter("DateAssembleeText", dateAssemblee),
@@ -383,23 +377,24 @@ namespace EspaceSyndic.Impressions.Convocations
                 MessageBox.Show("L'heure de convocation n'est pas renseignée");
                 return;
             }
-            string OrdreJour = GetDocOrdreDuJour();
+            var OrdreJour = GetDocOrdreDuJour();
             if (String.IsNullOrWhiteSpace(OrdreJour))
                 return;
-            String FeuillePresence = BaseApplication.GetTempFileName("docx");
-            String ConvocWord = BaseApplication.GetTempFileName("docx");
+            var FeuillePresence = BaseApplication.GetTempFileName("docx");
+            var ConvocWord = BaseApplication.GetTempFileName("docx");
 
-            String ConvocHdr = BaseApplication.GetTempFileName("docx");
-            String ConvocCopro = BaseApplication.GetTempFileName("docx");
-            String PathConvoc = @"C:\Syndic_Modeles\Convocations\";
-            String LiasseConvoc = Path.Combine(PathConvoc, String.Format("convocations_{0}_{1}", immeuble.reference, dtDateAssemblee.Value.ToString("yyyyMMdd")));
-            string modeleConvocation = ParametresDB.getParam1("MODELES", "CONVOCATIONS");
-            string modelePresence = @"c:\syndic_modeles\feuillePresence.dotx";
-            string modeleConvocTexte = @"c:\syndic_modeles\convocation_texte.dotx";
+            var ConvocHdr = BaseApplication.GetTempFileName("docx");
+            var ConvocCopro = BaseApplication.GetTempFileName("docx");
+            var PathConvoc = @"C:\Syndic_Modeles\Convocations\";
+            var LiasseConvoc = Path.Combine(PathConvoc,
+                $"convocations_{immeuble.reference}_{dtDateAssemblee.Value.ToString("yyyyMMdd")}");
+            var modeleConvocation = ParametresDB.getParam1("MODELES", "CONVOCATIONS");
+            var modelePresence = @"c:\syndic_modeles\feuillePresence.dotx";
+            var modeleConvocTexte = @"c:\syndic_modeles\convocation_texte.dotx";
 
-            string hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
-            string hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>{
+            var hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
+            var hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
+            var parameters = new List<NpgsqlParameter>{
                 new NpgsqlParameter("DateEntete", dtDateEntete.Value.ToShortDateString()),
                 new NpgsqlParameter("DateAssemblee", dtDateAssemblee.Value.ToShortDateString()),
 //                new NpgsqlParameter("DateLimite", dtLimite.Value.ToShortDateString()),
@@ -413,8 +408,8 @@ namespace EspaceSyndic.Impressions.Convocations
 
             MajdateAssemblee();
 
-            DataTable tableCopro = CoproprietaireController.getController().CoproprietaireImmeubleDescriptionWord(immeuble.id, parameters.ToArray());
-            DataTable tableHdr = CoproprietaireController.getController().HeaderConvocationWord(immeuble.id, parameters.ToArray());
+            var tableCopro = CoproprietaireController.getController().CoproprietaireImmeubleDescriptionWord(immeuble.id, parameters.ToArray());
+            var tableHdr = CoproprietaireController.getController().HeaderConvocationWord(immeuble.id, parameters.ToArray());
 
             BaseApplication.GenerateDataSource(tableHdr, @"c:\syndic_modeles\csv\convoc_hdr.csv", Encoding.UTF8);
 
@@ -430,9 +425,9 @@ namespace EspaceSyndic.Impressions.Convocations
         private void label4_Click(object sender, EventArgs e)
         {
             if (immeuble == null ) return;
-            FicheAideImmeubleForm form = new FicheAideImmeubleForm(immeuble, "CONVOCATION");
+            var form = new FicheAideImmeubleForm(immeuble, "CONVOCATION");
             form.ShowDialog();
-            AideImmeubleEntite comment = AideImmeubleController.getController().getAideImmeuble(immeuble.id, "CONVOCATION");
+            var comment = AideImmeubleController.getController().getAideImmeuble(immeuble.id, "CONVOCATION");
             if (comment != null)
             {
                 tbText.Text = comment.libelle;
@@ -470,29 +465,29 @@ namespace EspaceSyndic.Impressions.Convocations
 
         private void btnPV_Click(object sender, EventArgs e)
         {
-            PvAssembleeForm form = new PvAssembleeForm();
+            var form = new PvAssembleeForm();
             form.ShowDialog();
         }
 
         private void btnExport_Click(object sender, EventArgs e)
         {
-            int posYear = dtDateAssemblee.Value.Year - 2014;
-            string anneeAssemblee = "DEUX MILLE ";
+            var posYear = dtDateAssemblee.Value.Year - 2014;
+            var anneeAssemblee = "DEUX MILLE ";
             
             //if (posYear >= 0 && posYear < yearText.Length)
             //    anneeAssemblee += yearText[posYear];
 
-            string yearAss = String.Format(" {0}", dtDateAssemblee.Value.Year);
-            string dateAssemblee = dtDateAssemblee.Value.ToLongDateString().Replace(yearAss, "");
+            var yearAss = $" {dtDateAssemblee.Value.Year}";
+            var dateAssemblee = dtDateAssemblee.Value.ToLongDateString().Replace(yearAss, "");
 
-            ReportParameter[] parameters = new ReportParameter[]{
+            var parameters = new ReportParameter[]{
                 new ReportParameter("DateEntete", dtDateEntete.Value.ToShortDateString()),
                 new ReportParameter("DateAssemblee", dtDateAssemblee.Value.ToShortDateString()),
 //                new ReportParameter("DateLimite", dtLimite.Value.ToShortDateString()),
                 new ReportParameter("HeureAssemblee", tbHeure.Text.Replace (":", " H ")),
                 new ReportParameter("OrdreDuJour", tbText.Text),
                 new ReportParameter("Convocation", "Convocation "+ cbConvoc.SelectedItem),
-                new ReportParameter("repart_immeuble", String.Format("{0}", repart.valeur)),
+                new ReportParameter("repart_immeuble", $"{repart.valeur}"),
                 new ReportParameter("paragraphe_decret", ParametresDB.getParam1("IMPRESSION", "PARAGRAPHE_DECRET")),
                 new ReportParameter("paragraphe_decret_contenu", ParametresDB.getParam1("IMPRESSION", "PARAMETRE_DECRET_CONTENU")),
                 new ReportParameter("LieuAssemblee", tbLieu.Text),
@@ -504,13 +499,13 @@ namespace EspaceSyndic.Impressions.Convocations
             string mimeType, encoding, extension;
             Cursor.Current = Cursors.WaitCursor;
 
-            DataTable table = CoproprietaireController.getController().CoproprietaireImmeubleDescription(immeuble.id);
-            BindingSource copros = new BindingSource();
+            var table = CoproprietaireController.getController().CoproprietaireImmeubleDescription(immeuble.id);
+            var copros = new BindingSource();
             copros.DataSource = table;
             
-            string pathFile = String.Format("C:\\export_syndic\\{0}", immeuble.reference);
-            string pathZip = String.Format("C:\\export_syndic\\zip_{0}", immeuble.reference);
-            string zipFile = string.Format("{0}\\convoc.zip", pathZip);
+            var pathFile = $"C:\\export_syndic\\{immeuble.reference}";
+            var pathZip = $"C:\\export_syndic\\zip_{immeuble.reference}";
+            var zipFile = $"{pathZip}\\convoc.zip";
             if (!Directory.Exists(pathFile))
                 Directory.CreateDirectory(pathFile);
 
@@ -521,9 +516,9 @@ namespace EspaceSyndic.Impressions.Convocations
             {
                 foreach ( DataRow row in table.Rows)
                 {
-                    ReportViewer lr = new ReportViewer();
-                    string reference = row["reference"].ToString();
-                    copros.Filter = String.Format("reference = '{0}'", reference);
+                    var lr = new ReportViewer();
+                    var reference = row["reference"].ToString();
+                    copros.Filter = $"reference = '{reference}'";
                     lr.LocalReport.DataSources.Add(new ReportDataSource("convocation", copros ));
                     lr.LocalReport.ReportEmbeddedResource = "EspaceSyndic.Impressions.Convocations.ConvocationReport.rdlc";
                     lr.LocalReport.SetParameters(parameters);
@@ -539,7 +534,7 @@ namespace EspaceSyndic.Impressions.Convocations
                             out streams,
                             out warnings
                         );
-                    string saveAs = String.Format("{0}\\convoc_{1}.pdf", pathFile, reference) ;
+                    var saveAs = $"{pathFile}\\convoc_{reference}.pdf";
 
                     using (var stream = new FileStream(saveAs, FileMode.Create, FileAccess.Write))
                     {
@@ -550,7 +545,7 @@ namespace EspaceSyndic.Impressions.Convocations
                 }
 
                 ZipFile.CreateFromDirectory(pathFile, zipFile);
-                foreach ( string fname  in Directory.GetFiles(pathFile, "*.*"))
+                foreach ( var fname  in Directory.GetFiles(pathFile, "*.*"))
                 {
                     File.Delete(fname);
                 }
@@ -566,7 +561,7 @@ namespace EspaceSyndic.Impressions.Convocations
 
         private void decret_Click(object sender, EventArgs e)
         {
-            ConfigParamForm form = new ConfigParamForm();
+            var form = new ConfigParamForm();
 
             form.groupe_selected = "IMPRESSION";
             form.param_selected = "PARAMETRE_DECRET_CONTENU";
@@ -586,21 +581,21 @@ namespace EspaceSyndic.Impressions.Convocations
         private void button1_Click(object sender, EventArgs e)
         {
             if (immeuble == null) return;
-            List<LotDescriptionEntite> lots = LotDescriptionController.getController().getListeLotDescription(immeuble.id);
-            RelevesIndividuels.ExportCopro dlg = new RelevesIndividuels.ExportCopro();
+            var lots = LotDescriptionController.getController().getListeLotDescription(immeuble.id);
+            var dlg = new RelevesIndividuels.ExportCopro();
             try
             {
                 dlg.Show(this);
                 dlg.Activate();
 
-                foreach (LotDescriptionEntite lot in lots)
+                foreach (var lot in lots)
                 {
                     if (lot != null && lot.Coproprietaire != null)
                     {
-                        CoproprietaireEntite copro = CoproprietaireController.getController().getEntiteById(lot.coproprietaire_id);
-                        string monthName = new DateTime(2010, 8, 1).ToString("MMM", System.Globalization.CultureInfo.InvariantCulture);
-                        string rapportName = "Convocation " + cbConvoc.SelectedItem + " " + dtDateEntete.Value.Year.ToString();
-                        dlg.textBox1.Text = string.Format("Export Convocation lot : {0}", lot.numero_lot);
+                        var copro = CoproprietaireController.getController().getEntiteById(lot.coproprietaire_id);
+                        var monthName = new DateTime(2010, 8, 1).ToString("MMM", System.Globalization.CultureInfo.InvariantCulture);
+                        var rapportName = "Convocation " + cbConvoc.SelectedItem + " " + dtDateEntete.Value.Year.ToString();
+                        dlg.textBox1.Text = $"Export Convocation lot : {lot.numero_lot}";
                         dlg.textBox1.Refresh();
                         CreateReport(lot.numero_lot.ToString());
                         UtilsApp.ServiceReferenceUtils.SendReportPDF(reportViewer1, rapportName, Guid.NewGuid().ToString(), lot.immeuble_id, lot.coproprietaire_id);

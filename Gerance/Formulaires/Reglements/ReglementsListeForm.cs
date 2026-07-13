@@ -20,7 +20,7 @@ namespace Gerance.Formulaires.Reglements
         }
         protected virtual DialogResult ShowFindForm(CommonFindForm form, Control tbResult)
         {
-            DialogResult res = form.ShowDialog();
+            var res = form.ShowDialog();
             if (res == DialogResult.OK)
                 tbResult.Text = form.reference;
             return res;
@@ -46,7 +46,7 @@ namespace Gerance.Formulaires.Reglements
 
             if (dataGridView.DataSource != null)
             {
-                DataGridViewColumnCollection cols = dataGridView.Columns;
+                var cols = dataGridView.Columns;
                 cols["locataire"].MinimumWidth = 120;
                 cols["libelle"].MinimumWidth = 120;
                 cols["ref_immeuble"].Width = 40;
@@ -60,8 +60,8 @@ namespace Gerance.Formulaires.Reglements
         }
         private void ReglementsListeForm_Load(object sender, EventArgs e)
         {
-            DateTime dtNow = DateTime.Now;
-            DateTime dt = new DateTime(dtNow.Year, dtNow.Month, 1);
+            var dtNow = DateTime.Now;
+            var dt = new DateTime(dtNow.Year, dtNow.Month, 1);
             dtDebut.Value = dt;
             dtFin.Value = dt.AddMonths(1).AddDays(-1);
             btnEnter.Width = 0;
@@ -80,31 +80,31 @@ namespace Gerance.Formulaires.Reglements
 
         private void btnDetail_Click(object sender, EventArgs e)
         {
-            string CurrentId = "";
+            var CurrentId = "";
             if (dataGridView.SelectedRows.Count > 0)
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
                 Console.WriteLine(row["id"]);
                 CurrentId = row["id"].ToString();
-                ReglementEntite reglement = ReglementsController.getController().getEntiteById(row["id"].ToString());
-                LocataireEntite locataire = LocataireController.getController().getEntiteFromField("reference", row["ref_locataire"].ToString());
+                var reglement = ReglementsController.getController().getEntiteById(row["id"].ToString());
+                var locataire = LocataireController.getController().getEntiteFromField("reference", row["ref_locataire"].ToString());
                 if (locataire == null)
                 {
                     MessageBox.Show("Locataire Invalide");
                     return;
                 }
-                Decimal oldTotal_du = reglement.credit;
+                var oldTotal_du = reglement.credit;
 
-                ReglementPartielForm form = new ReglementPartielForm(reglement);
+                var form = new ReglementPartielForm(reglement);
                 Enabled = false;
-                DialogResult result = form.ShowDialog();
+                var result = form.ShowDialog();
                 Enabled = true;
 
                 if (result != DialogResult.OK)
                     return ;
 
-                NpgsqlConnection cnx = Database.GetInstance();
-                NpgsqlTransaction trx = cnx.BeginTransaction(); 
+                var cnx = Database.GetInstance();
+                var trx = cnx.BeginTransaction(); 
 
                 try
                 {
@@ -137,7 +137,7 @@ namespace Gerance.Formulaires.Reglements
                 {
                     foreach (DataGridViewRow r in dataGridView.Rows)
                     {
-                        DataRowView dbRow = (DataRowView)r.DataBoundItem;
+                        var dbRow = (DataRowView)r.DataBoundItem;
                         if (dbRow != null)
                         {
                             if (dbRow["id"].ToString() == CurrentId)
@@ -155,7 +155,7 @@ namespace Gerance.Formulaires.Reglements
 
         private void btnExport_Click(object sender, EventArgs e)
         {
-            List<string> colsToHide = new List<string> { "id"};
+            var colsToHide = new List<string> { "id"};
             BaseApplication.DataGridToExcel(dataGridView, colsToHide);
         }
 
@@ -163,7 +163,7 @@ namespace Gerance.Formulaires.Reglements
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
                 ReglementsController.DeleteReglement(row["id"].ToString());
             }
             FillDataGrid();

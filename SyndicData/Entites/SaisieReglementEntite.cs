@@ -53,7 +53,7 @@ namespace SyndicData.Entites
         }
         public override void setValues(DataRow row)
         {
-            FieldInfo[] members = GetType().GetFields();
+            var members = GetType().GetFields();
 
             updatables.Clear();
 

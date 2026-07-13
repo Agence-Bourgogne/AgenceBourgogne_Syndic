@@ -23,7 +23,7 @@ namespace SyndicData.Controller
         }
         public DataTable getLiasseActives(GlobalConstantes.TypeOperation type_ecriture, bool bAddNew = true)
         {
-            String cmd = String.Format("select * from {0} ", getSchemaTable());
+            var cmd = $"select * from {getSchemaTable()} ";
             cmd += " where type_ecriture = @type_ecriture and statut = @statut";
                                         //getSchemaTable());
                                         //, (int)type, (int)GlobalConstantes.StatutOperation.Actif);
@@ -32,13 +32,13 @@ namespace SyndicData.Controller
             adapter.SelectCommand.Parameters.AddWithValue("@type_ecriture", type_ecriture.ToString());
             adapter.SelectCommand.Parameters.AddWithValue("@statut", (int)GlobalConstantes.StatutOperation.Brouillon);
 
-            DataTable table = new DataTable();
+            var table = new DataTable();
             try
             {
                 adapter.Fill(table);
                 if ( bAddNew)
                 {
-                    DataRow row = table.NewRow();
+                    var row = table.NewRow();
                     row["id"] = LiasseEntite.NOUVELLE_ID;
                     row["reference"] = LiasseEntite.NOUVELLE_DESI;
                     switch (type_ecriture)
@@ -66,7 +66,7 @@ namespace SyndicData.Controller
         }
         public DataTable GetLiassesValidees(GlobalConstantes.TypeOperation type_ecriture, string limit = "")
         {
-            String cmd = String.Format("select * from {0} ", getSchemaTable());
+            var cmd = $"select * from {getSchemaTable()} ";
             cmd += " where type_ecriture = @type_ecriture and statut = @statut";
             cmd += " order by audit_created desc ";
             if (limit != "")
@@ -78,7 +78,7 @@ namespace SyndicData.Controller
             adapter.SelectCommand.Parameters.AddWithValue("@type_ecriture", type_ecriture.ToString());
             adapter.SelectCommand.Parameters.AddWithValue("@statut", (int)GlobalConstantes.StatutOperation.Valide);
 
-            DataTable table = new DataTable();
+            var table = new DataTable();
             adapter.Fill(table);
             return table;
         }

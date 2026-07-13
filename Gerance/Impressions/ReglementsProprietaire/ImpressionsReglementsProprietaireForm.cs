@@ -22,10 +22,10 @@ namespace Gerance.Impressions.ReglementsProprietaire
             //label3.Visible = false;
             //dtDebut.Visible = false;
             //dtFin.Visible = false;
-            DateTime dt = DateTime.Now;
+            var dt = DateTime.Now;
             dtDebut.Value = new DateTime(dt.Year, dt.Month, 1);
             dtFin.Value = dtDebut.Value.AddMonths(1).AddDays(-1);
-            Point pos = label3.Location;
+            var pos = label3.Location;
             pos.X -= 20;
             label3.Location = pos;
             label3.Text = "Date écriture";
@@ -41,8 +41,8 @@ namespace Gerance.Impressions.ReglementsProprietaire
         private void FillRapport()
         {
             reportViewer1.LocalReport.DataSources.Clear();
-            DataTable virements = ProprietaireController.getController().getImpressionListePaiementsLoyers(1 , dtDebut.Value, dtFin.Value);
-            DataTable cheques = ProprietaireController.getController().getImpressionListePaiementsLoyers(0, dtDebut.Value, dtFin.Value);
+            var virements = ProprietaireController.getController().getImpressionListePaiementsLoyers(1 , dtDebut.Value, dtFin.Value);
+            var cheques = ProprietaireController.getController().getImpressionListePaiementsLoyers(0, dtDebut.Value, dtFin.Value);
             
             decimal totalVirement = 0;
             foreach (DataRow row in virements.Rows)
@@ -56,7 +56,7 @@ namespace Gerance.Impressions.ReglementsProprietaire
             }
 
 
-            ReportParameter[] parameters = new ReportParameter[]{
+            var parameters = new ReportParameter[]{
                     new ReportParameter("totalVirement", dtDebut.Value.ToShortDateString()),
                     new ReportParameter("totalCheque", dtDebut.Value.ToShortDateString()),
 
@@ -81,7 +81,7 @@ namespace Gerance.Impressions.ReglementsProprietaire
         }
         private void UpdateHonoraireProprio()
         {
-            UpdateHonoraireProprioForm form = new UpdateHonoraireProprioForm(dtDebut.Value, dtFin.Value, dtEdition.Value);
+            var form = new UpdateHonoraireProprioForm(dtDebut.Value, dtFin.Value, dtEdition.Value);
             form.ShowDialog();
         }
 

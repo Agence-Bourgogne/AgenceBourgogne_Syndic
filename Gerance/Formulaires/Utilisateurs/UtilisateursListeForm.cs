@@ -25,7 +25,7 @@ namespace Gerance.Formulaires.Utilisateurs
         }
         protected override void ShowFicheForm(string entite_id)
         {
-            UtilisateurFicheForm form = new UtilisateurFicheForm(entite_id);
+            var form = new UtilisateurFicheForm(entite_id);
             ShowForm(form);
         }
 

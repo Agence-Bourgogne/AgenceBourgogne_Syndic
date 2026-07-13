@@ -32,12 +32,13 @@ namespace Gerance.Impressions.ReglementsProprietaire
 
         private void UpdateHonoraireProprioForm_Load(object sender, EventArgs e)
         {
-            tbMessage.Text = String.Format("Enregistrements Honoraire en date du {0} pour la période du {1} au {2} ", dtPaiement.ToShortDateString(), dtDebut.ToShortDateString(), dtFin.ToShortDateString());
+            tbMessage.Text =
+                $"Enregistrements Honoraire en date du {dtPaiement.ToShortDateString()} pour la période du {dtDebut.ToShortDateString()} au {dtFin.ToShortDateString()} ";
         }
 
         private bool writeEcriture(CompteProprioController controller, string libelle, DateTime dtPaiement, ProprietaireEntite proprio)
         {
-            CompteProprioEntite compte = CompteProprioController.getController().getEcriture(proprio.id, dtPaiement);
+            var compte = CompteProprioController.getController().getEcriture(proprio.id, dtPaiement);
             if ( compte == null)
                 compte = new CompteProprioEntite();
 
@@ -52,31 +53,31 @@ namespace Gerance.Impressions.ReglementsProprietaire
         const int REFERENCE_TACHE = 6;
         private void WriteHonoraires()
         {
-            DataTable virements = ProprietaireController.getController().getListePaiementsLoyers(1, dtDebut, dtFin);
-            DataTable loyers = ProprietaireController.getController().getListePaiementsLoyers(0, dtDebut, dtFin);
-            CompteProprioController controller = CompteProprioController.getController();
-            ProprietaireController ctlProprio = ProprietaireController.getController();
-            DateTime dtServer = controller.setTimestampServer();
-            DateTime dtWorkflow = dtPaiement; //new DateTime(dtPaiement.Year, dtPaiement.Month, 1);
+            var virements = ProprietaireController.getController().getListePaiementsLoyers(1, dtDebut, dtFin);
+            var loyers = ProprietaireController.getController().getListePaiementsLoyers(0, dtDebut, dtFin);
+            var controller = CompteProprioController.getController();
+            var ctlProprio = ProprietaireController.getController();
+            var dtServer = controller.setTimestampServer();
+            var dtWorkflow = dtPaiement; //new DateTime(dtPaiement.Year, dtPaiement.Month, 1);
             ctlProprio.setTimestampServer(dtServer);
             WorkflowController.getController().setTimestampServer(dtServer);
             WorkflowDetailController.getController().setTimestampServer(dtServer);
 
-            NpgsqlTransaction trx = Database.BeginTransaction();
+            var trx = Database.BeginTransaction();
             tbMessage.TextAlign = HorizontalAlignment.Left;
             
             try
             {
-                WorkflowEntite workflow = WorkflowController.getController().WriteRecord(REFERENCE_TACHE, dtWorkflow);
+                var workflow = WorkflowController.getController().WriteRecord(REFERENCE_TACHE, dtWorkflow);
                 foreach (DataRow row in virements.Rows)
                 {
-                    String libelle = "Somme Payée par virement le " + dtPaiement.ToShortDateString();
-                    ProprietaireEntite proprio = ctlProprio.getEntiteById(row["id"].ToString());
+                    var libelle = "Somme Payée par virement le " + dtPaiement.ToShortDateString();
+                    var proprio = ctlProprio.getEntiteById(row["id"].ToString());
 
                     Console.WriteLine("{0} {1} ", proprio.id, proprio.credit);
 
-                    tbMessage.Text += String.Format("\r\n*** {0} ", proprio.NomPrenom);
-                    tbMessage.Text += String.Format("\r\n {0} {1} ", libelle, proprio.credit);
+                    tbMessage.Text += $"\r\n*** {proprio.NomPrenom} ";
+                    tbMessage.Text += $"\r\n {libelle} {proprio.credit} ";
                     tbMessage.Update();
                     if (!writeEcriture(controller, libelle, dtPaiement, proprio))
                         throw new Exception("Virement erreur " + row["reference"].ToString());
@@ -88,10 +89,10 @@ namespace Gerance.Impressions.ReglementsProprietaire
                 tbMessage.Text += "\r\n";
                 foreach (DataRow row in loyers.Rows)
                 {
-                    String libelle = "Règlement du " + dtPaiement.ToShortDateString();
-                    ProprietaireEntite proprio = ctlProprio.getEntiteById(row["id"].ToString());
-                    tbMessage.Text += String.Format("\r\n*** {0} ", proprio.NomPrenom);
-                    tbMessage.Text += String.Format("\r\n {0} {1} ", libelle, proprio.credit);
+                    var libelle = "Règlement du " + dtPaiement.ToShortDateString();
+                    var proprio = ctlProprio.getEntiteById(row["id"].ToString());
+                    tbMessage.Text += $"\r\n*** {proprio.NomPrenom} ";
+                    tbMessage.Text += $"\r\n {libelle} {proprio.credit} ";
                     tbMessage.Update();
                     if (!writeEcriture(controller, libelle, dtPaiement, proprio))
                         throw new Exception("Règlement erreur " + row["reference"].ToString());

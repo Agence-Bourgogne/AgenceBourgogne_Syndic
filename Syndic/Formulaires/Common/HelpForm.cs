@@ -38,15 +38,15 @@ namespace EspaceSyndic.Formulaires.Common
         }
         public void setLocation(int defPosX, int defPosY)
         {
-            int newPosX = (int) CommonRegistry.getRegistryValue(helpKey, "Location X", defPosX);
-            int newPosY = (int) CommonRegistry.getRegistryValue(helpKey, "Location Y", defPosY);
+            var newPosX = (int) CommonRegistry.getRegistryValue(helpKey, "Location X", defPosX);
+            var newPosY = (int) CommonRegistry.getRegistryValue(helpKey, "Location Y", defPosY);
             
             Location = new Point (newPosX, newPosY);
         }
 
         public void setVisibility(Form parent)
         {
-            bool visibility = ((int)CommonRegistry.getRegistryValue(helpKey, "Visible", 1) == 1) ? true : false;
+            var visibility = ((int)CommonRegistry.getRegistryValue(helpKey, "Visible", 1) == 1) ? true : false;
             if (tbHelp.Text.Replace("\n", "").Trim() == "")
                 visibility = false;
             Visible = false;
@@ -57,23 +57,23 @@ namespace EspaceSyndic.Formulaires.Common
 
         public virtual void DoFormText(Form parent, String text)
         {
-            String note = text.Replace("\n", "").Trim();
+            var note = text.Replace("\n", "").Trim();
 
             tbHelp.Text = text;
             if (!"".Equals(note))
             {
                 setVisibility(parent);
-                string[] lines = text.Split('\n');
-                int nbLines = lines.Count() +1;
+                var lines = text.Split('\n');
+                var nbLines = lines.Count() +1;
                 if (nbLines < 4)
                     nbLines = 4;
-                int height = nbLines * 15;
+                var height = nbLines * 15;
 
                 tbHelp.Height = height+10;
                 Height = height;
 
-                int posX = parent.Location.X + (parent.Width - Width) / 2;
-                int posY = parent.Location.Y + parent.Height - height;
+                var posX = parent.Location.X + (parent.Width - Width) / 2;
+                var posY = parent.Location.Y + parent.Height - height;
 
                 setLocation(posX, posY);                        
                 

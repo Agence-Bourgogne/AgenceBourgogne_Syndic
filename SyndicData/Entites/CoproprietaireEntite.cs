@@ -43,7 +43,7 @@ namespace SyndicData.Entites
         }
         public override void setValues(DataRow row)
         {
-            FieldInfo[] members = GetType().GetFields();
+            var members = GetType().GetFields();
 
             updatables.Clear();
 
@@ -100,9 +100,9 @@ namespace SyndicData.Entites
             get
             {
                 if (prenom == null || prenom == "")
-                    return string.Format("{0}", nom);
+                    return $"{nom}";
                 else
-                    return string.Format("{0} {1}", prenom, nom);
+                    return $"{prenom} {nom}";
             }
         }
     }

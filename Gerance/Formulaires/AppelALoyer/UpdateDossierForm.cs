@@ -21,7 +21,7 @@ namespace Gerance.Formulaires.AppelALoyer
         private void InitializeCombos()
         {
 
-            DateTime dt = new DateTime(DateTime.Now.Year, DateTime.Now.AddMonths(1).Month, 1);
+            var dt = new DateTime(DateTime.Now.Year, DateTime.Now.AddMonths(1).Month, 1);
             dateDebut.Value = dt;
 
             cbType.Items.Add("Mensuel");
@@ -38,57 +38,58 @@ namespace Gerance.Formulaires.AppelALoyer
         const int REFERENCE_TACHE = 0;
         private void btnSave_Click(object sender, EventArgs e)
         {
-            DataTable tb_biens = BienController.getController().GetTableList();
-            BindingSource biens = new BindingSource();
+            var tb_biens = BienController.getController().GetTableList();
+            var biens = new BindingSource();
             biens.DataSource = tb_biens;
             if (tbRefLocataire.Text != "")
             {
-                LocataireEntite locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
+                var locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
                 if (locataire == null)
                 {
                     MessageBox.Show("Référence locataire Invalide");
                     return;
                 }
                     
-                biens.Filter = String.Format("locataire_id = '{0}'", locataire.id);
+                biens.Filter = $"locataire_id = '{locataire.id}'";
             }            
             
             // TODO à Paramétrer
             decimal taux_tva = 20, taux_bail = (decimal) 0;
 
-            int type_maj = cbType.SelectedIndex;
+            var type_maj = cbType.SelectedIndex;
 
-            DateTime dtServer = QuittancesController.getController().setTimestampServer();
+            var dtServer = QuittancesController.getController().setTimestampServer();
             BienController.getController().setTimestampServer(dtServer);
             LocataireController.getController().setTimestampServer(dtServer);
             WorkflowController.getController().setTimestampServer(dtServer);
             WorkflowDetailController.getController().setTimestampServer(dtServer);
 
-            NpgsqlTransaction trx = Database.BeginTransaction();
+            var trx = Database.BeginTransaction();
             try
             {
                 tbMessage.BackColor = Color.White;
-                DateTime dtQuittance = new DateTime(dateDebut.Value.Year, dateDebut.Value.Month, 1);
-                WorkflowEntite workflow = WorkflowController.getController().WriteRecord(REFERENCE_TACHE, dtQuittance);
+                var dtQuittance = new DateTime(dateDebut.Value.Year, dateDebut.Value.Month, 1);
+                var workflow = WorkflowController.getController().WriteRecord(REFERENCE_TACHE, dtQuittance);
 
                 foreach (DataRowView rowView in biens.List)
                 {
-                    DataRow row = rowView.Row;
-                    BienEntite bien = new BienEntite(row);
+                    var row = rowView.Row;
+                    var bien = new BienEntite(row);
                     if (bien != null)
                         if (bien.Locataire != null)
                             if (bien.MontantDu > 0)
                                 if  (type_maj == 1 || (type_maj == 0 && bien.periodicite_loyer == 12) ) 
                                 {
-                                    string msg = String.Format("Mise à jour dossier de {0} : {1}\r\n\t\tImmeuble {2} : {3}\r\n\r\n", bien.Locataire.reference, bien.Locataire.NomPrenom, bien.reference, bien.nom);
-                                    QuittanceEntite quittance = QuittancesController.getController().GetQuittance(bien.Locataire, dtQuittance);
+                                    var msg =
+                                        $"Mise à jour dossier de {bien.Locataire.reference} : {bien.Locataire.NomPrenom}\r\n\t\tImmeuble {bien.reference} : {bien.nom}\r\n\r\n";
+                                    var quittance = QuittancesController.getController().GetQuittance(bien.Locataire, dtQuittance);
                                     if ( quittance.statut == (int) GlobalConstantes.StatutQuittance.Genere)
                                     {
-                                        decimal oldMontant = quittance.montant_quittance;
+                                        var oldMontant = quittance.montant_quittance;
                                         tbMessage.Text += msg;
                                         tbMessage.Update();
 
-                                        decimal newTaxe = Math.Round((bien.montant_loyer + bien.montant_augmentation) * ((bien.taxe == 1) ? taux_tva : taux_bail) / 100, 2);
+                                        var newTaxe = Math.Round((bien.montant_loyer + bien.montant_augmentation) * ((bien.taxe == 1) ? taux_tva : taux_bail) / 100, 2);
                                         bien.valeur_taxe = newTaxe;
                                         bien.montant_du = bien.MontantDu;
                                         bien.date_quittance = dtQuittance;
@@ -100,7 +101,7 @@ namespace Gerance.Formulaires.AppelALoyer
                                         if (!QuittancesController.getController().doInsertOrUpdate(quittance))
                                             throw new Exception("Update Quittance");
 
-                                        decimal totalDu = Math.Round(bien.MontantDu + bien.Locataire.total_du - oldMontant, 2);
+                                        var totalDu = Math.Round(bien.MontantDu + bien.Locataire.total_du - oldMontant, 2);
                                         bien.Locataire.total_du = totalDu;
 
                                         if (!LocataireController.getController().doInsertOrUpdate(bien.Locataire))
@@ -136,7 +137,7 @@ namespace Gerance.Formulaires.AppelALoyer
             tbRefLocataire.BackColor = Color.White;
             if (tbRefLocataire.Text != "")
             {
-                LocataireEntite locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
+                var locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
                 if (locataire != null)
                 {
                     tbNomLocataire.Text = locataire.NomPrenom;
@@ -148,7 +149,7 @@ namespace Gerance.Formulaires.AppelALoyer
         }
         protected virtual DialogResult ShowFindForm(CommonFindForm form, Control tbResult)
         {
-            DialogResult res = form.ShowDialog();
+            var res = form.ShowDialog();
             if (res == DialogResult.OK)
                 tbResult.Text = form.reference;
             return res;

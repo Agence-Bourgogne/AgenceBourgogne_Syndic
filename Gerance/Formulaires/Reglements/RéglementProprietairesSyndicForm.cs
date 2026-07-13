@@ -25,7 +25,7 @@ namespace Gerance.Formulaires.Reglements
         {
             if (e.ColumnIndex == 0)
             {
-                DataGridViewRow row = dataGridView.Rows[e.RowIndex];
+                var row = dataGridView.Rows[e.RowIndex];
                 if (row.Cells[e.ColumnIndex].Value == null)
                     row.Cells[e.ColumnIndex].Value = false;
                 row.Cells[e.ColumnIndex].Value = !((bool)row.Cells[e.ColumnIndex].Value);
@@ -34,12 +34,12 @@ namespace Gerance.Formulaires.Reglements
         }
         protected override void InitializeCombos()
         {
-            DateTime dt = DateTime.Parse("01/01/2000");
-            TextInfo textInfo = new CultureInfo("fr-FR", false).TextInfo;
+            var dt = DateTime.Parse("01/01/2000");
+            var textInfo = new CultureInfo("fr-FR", false).TextInfo;
 
-            for (int i = 0; i < 12; i++)
+            for (var i = 0; i < 12; i++)
             {
-                String[] lDate = dt.ToLongDateString().Split(' ');
+                var lDate = dt.ToLongDateString().Split(' ');
                 cbMonth.Items.Add(textInfo.ToTitleCase(lDate[2]));
                 dt = dt.AddMonths(1);
             }
@@ -53,7 +53,7 @@ namespace Gerance.Formulaires.Reglements
         }
         protected override DataTable getFormListe()
         {
-            DateTime dtDeb = new DateTime(DateTime.Now.Year, cbMonth.SelectedIndex+1, 1);
+            var dtDeb = new DateTime(DateTime.Now.Year, cbMonth.SelectedIndex+1, 1);
             return ReglementsController.getController().getListeReglements(dtDeb, locataires_id);
         }
         protected override void HideAndResizeColumns(DataGridViewColumnCollection cols)
@@ -76,7 +76,7 @@ namespace Gerance.Formulaires.Reglements
 
         private void btnExport_Click(object sender, EventArgs e)
         {
-            List<string> colsToHide = new List<string> { "id", "reglement" };
+            var colsToHide = new List<string> { "id", "reglement" };
             BaseApplication.DataGridToExcel(dataGridView, colsToHide);
 
         }

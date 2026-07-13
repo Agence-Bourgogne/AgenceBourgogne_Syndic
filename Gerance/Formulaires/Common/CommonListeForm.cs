@@ -45,7 +45,7 @@ namespace Gerance.Formulaires.Common
             dataGridView.DataSource = getFormListe();
             if (dataGridView.DataSource != null)
             {
-                DataGridViewColumnCollection cols = dataGridView.Columns;
+                var cols = dataGridView.Columns;
                 HideAndResizeColumns(cols);
 //                cols["numero_lot"].DisplayIndex = 2;
                 ControlsWindows.ToTitleCase(cols);
@@ -60,7 +60,7 @@ namespace Gerance.Formulaires.Common
                 return;
             foreach (DataGridViewColumn col in dataGridView.Columns)
             {              
-                int index = (int) CommonRegistry.getRegistryValue(regKey, col.Name, -1);
+                var index = (int) CommonRegistry.getRegistryValue(regKey, col.Name, -1);
                 if (index != -1)
                     col.DisplayIndex = index;
             }
@@ -92,7 +92,7 @@ namespace Gerance.Formulaires.Common
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                DataRowView row =  (DataRowView) dataGridView.SelectedRows[0].DataBoundItem;
+                var row =  (DataRowView) dataGridView.SelectedRows[0].DataBoundItem;
                 if (row != null)
                     ShowFicheForm(row["id"].ToString());
             }

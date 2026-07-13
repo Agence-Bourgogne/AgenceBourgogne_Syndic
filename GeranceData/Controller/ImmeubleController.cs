@@ -17,9 +17,9 @@ namespace GeranceData.Controller
 
         public DataTable getLots(string bien_reference)
         {
-            string cmd = String.Format(" select numero_lot from {0} where reference = @bien_reference order by 1", getSchemaTable());
+            var cmd = $" select numero_lot from {getSchemaTable()} where reference = @bien_reference order by 1";
 
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>{
+            var parameters = new List<NpgsqlParameter>{
                 new NpgsqlParameter("bien_reference", bien_reference),
             };
 
@@ -27,9 +27,10 @@ namespace GeranceData.Controller
         }
         public DataTable getReferencesLocataires(string bien_reference)
         {
-            string cmd = String.Format(" select l.reference from {0} b join {1}.locataire l on l.id = b.locataire_id where b.reference = @bien_reference order by 1", getSchemaTable(), getSchema());
+            var cmd =
+                $" select l.reference from {getSchemaTable()} b join {getSchema()}.locataire l on l.id = b.locataire_id where b.reference = @bien_reference order by 1";
 
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>{
+            var parameters = new List<NpgsqlParameter>{
                 new NpgsqlParameter("bien_reference", bien_reference),
             };
 
@@ -37,9 +38,10 @@ namespace GeranceData.Controller
         }
         public DataTable getFindLocatairesImmeuble(string bien_reference)
         {
-            string cmd = String.Format(" select l.id, l.reference, l.nom from {0} b join {1}.locataire l on l.id = b.locataire_id where b.reference = @bien_reference order by l.reference", getSchemaTable(), getSchema());
+            var cmd =
+                $" select l.id, l.reference, l.nom from {getSchemaTable()} b join {getSchema()}.locataire l on l.id = b.locataire_id where b.reference = @bien_reference order by l.reference";
             
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>{
+            var parameters = new List<NpgsqlParameter>{
                 new NpgsqlParameter("bien_reference", bien_reference),
             };
             return getResultSQL(cmd, parameters);

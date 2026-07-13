@@ -32,14 +32,14 @@ namespace Gerance.Formulaires.Locataires
             tbNom.Text = locataire.NomPrenom;
             tbAdresse.Text = locataire.adresse;
 
-            BienEntite bien = locataire.Bien;
+            var bien = locataire.Bien;
             if (bien != null)
                 tbDateEntree.Text = bien.date_entree.ToShortDateString();
             else
                 tbDateEntree.Text = "no bene";
             if (locataire.id != "")
             {
-                decimal charges_reglees = QuittancesController.getController().getChargesReglees(locataire.id, dateDeb.Value, dateFin.Value);
+                var charges_reglees = QuittancesController.getController().getChargesReglees(locataire.id, dateDeb.Value, dateFin.Value);
                 tbCharges.Text = charges_reglees.ToString();
 //                decimal charge_
             }
@@ -58,7 +58,7 @@ namespace Gerance.Formulaires.Locataires
             dataGridView.DataSource = NatureController.getController().getFromChargeLocative();
             if (dataGridView.DataSource != null)
             {
-                DataGridViewColumnCollection cols = dataGridView.Columns;
+                var cols = dataGridView.Columns;
                 cols["id"].Visible = false;
                 cols["reference"].Width = 40;
                 cols["credit"].Visible = false;
@@ -70,7 +70,7 @@ namespace Gerance.Formulaires.Locataires
                 cols["montant_charge"].Width = 60;
                 cols["nom"].MinimumWidth = 180;
 
-                DataGridViewCellStyle style = cols["montant_charge"].DefaultCellStyle;
+                var style = cols["montant_charge"].DefaultCellStyle;
                 style.Alignment = DataGridViewContentAlignment.MiddleRight;
                 cols["montant_charge"].DefaultCellStyle = style;
                 foreach (DataGridViewRow row in dataGridView.Rows)
@@ -80,14 +80,14 @@ namespace Gerance.Formulaires.Locataires
                 }
             }
 
-            DataTable table = RegulChargeController.getController().getDataFromRegul(locataire.id, dateDeb.Value, dateFin.Value);
+            var table = RegulChargeController.getController().getDataFromRegul(locataire.id, dateDeb.Value, dateFin.Value);
 
             foreach (DataRow row in table.Rows)
             {
-                string nature = row["nature_id"].ToString();
+                var nature = row["nature_id"].ToString();
                 foreach (DataGridViewRow rowGrid in dataGridView.Rows)
                 {
-                    string natureGrid = rowGrid.Cells["id"].Value.ToString();
+                    var natureGrid = rowGrid.Cells["id"].Value.ToString();
                     if ( nature == natureGrid )
                     {
                         Console.WriteLine("Bingo => {0}", rowGrid.Cells["reference"].ToString());
@@ -124,7 +124,7 @@ namespace Gerance.Formulaires.Locataires
 
         private void tbRefLocataire_Validating(object sender, CancelEventArgs e)
         {
-            LocataireEntite entite = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
+            var entite = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
             setFicheValues(entite);
         }
 
@@ -140,10 +140,10 @@ namespace Gerance.Formulaires.Locataires
         protected override bool saveValue()
         {
             Console.WriteLine("saveValue");
-            RegulChargeController controller = RegulChargeController.getController();
+            var controller = RegulChargeController.getController();
             controller.setTimestampServer(Database.GetTimestampServer());
-            NpgsqlConnection cnx = Database.GetInstance();
-            NpgsqlTransaction trx = cnx.BeginTransaction();
+            var cnx = Database.GetInstance();
+            var trx = cnx.BeginTransaction();
 
             // TODO Créer une Facture
 //            FactureEntite facture = FacturesController.getController().getFacture
@@ -152,11 +152,11 @@ namespace Gerance.Formulaires.Locataires
             {
                 foreach (DataGridViewRow row in dataGridView.Rows)
                 {
-                    DataRowView rowView = (DataRowView)row.DataBoundItem;
+                    var rowView = (DataRowView)row.DataBoundItem;
                     if (rowView.Row.RowState == DataRowState.Modified)
                     {
                         Console.WriteLine(rowView.Row.RowState);
-                        RegulChargeEntite entite = (RegulChargeEntite)row.Tag;
+                        var entite = (RegulChargeEntite)row.Tag;
                         if (entite == null)
                             entite = new RegulChargeEntite();
 
@@ -170,7 +170,7 @@ namespace Gerance.Formulaires.Locataires
                         entite.debit = Convertir.ToDecimal(row.Cells["montant_charge"].Value);
 
                         if (!controller.doInsertOrUpdate(entite))
-                            throw new Exception(String.Format("Enregistrement non effectué pour {0}", row.Cells["nom"].Value));
+                            throw new Exception($"Enregistrement non effectué pour {row.Cells["nom"].Value}");
                     }
 
                 }
@@ -201,7 +201,7 @@ namespace Gerance.Formulaires.Locataires
         {
             if (dataGridView.CurrentCell.ColumnIndex != 3)
             {
-                DataGridViewCell c = dataGridView.CurrentCell;
+                var c = dataGridView.CurrentCell;
                 dataGridView.CurrentCell = dataGridView.Rows[c.RowIndex].Cells[3];
             }
         }
@@ -244,10 +244,10 @@ namespace Gerance.Formulaires.Locataires
             reportViewer1.Height = gbList.Bottom - gbList.Top;
             reportViewer1.Visible = true;
             reportViewer1.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            string hdr_descr = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
-            string hdr_agence = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
+            var hdr_descr = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
+            var hdr_agence = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
 
-            ReportParameter[] parameters = new ReportParameter[]{
+            var parameters = new ReportParameter[]{
                     new ReportParameter("dateDeb", dateDeb.Value.ToShortDateString()),
                     new ReportParameter("dateFin", dateFin.Value.ToShortDateString()),
                     new ReportParameter("dateEdition", dateEcriture.Value.ToShortDateString()),
@@ -266,12 +266,12 @@ namespace Gerance.Formulaires.Locataires
         {
             if (e.Parameters.Count > 0)
             {
-                string locataire_id = e.Parameters["locataire_id"].Values[0];
+                var locataire_id = e.Parameters["locataire_id"].Values[0];
 
                 e.DataSources.Clear();
                 e.DataSources.Add(new ReportDataSource("hdrLocataireCharge", LocataireController.getController().getHdrLocataireCharge(locataire_id)));
 
-                BindingSource src = new BindingSource();
+                var src = new BindingSource();
                 src.DataSource = dataGridView.DataSource;
                 e.DataSources.Add(new ReportDataSource("listCharges", src));
             }

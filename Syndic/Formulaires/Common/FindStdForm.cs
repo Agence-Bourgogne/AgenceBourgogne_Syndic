@@ -28,7 +28,7 @@ namespace EspaceSyndic.Formulaires.Common
             if ( source != null)
             {
                 dataGridView.DataSource = source;
-                DataGridViewColumnCollection cols = dataGridView.Columns;
+                var cols = dataGridView.Columns;
                 cols["id"].Visible = false;
                 cols["nom"].Width = 250;
                 ControlsWindows.ToTitleCase(cols);
@@ -60,7 +60,7 @@ namespace EspaceSyndic.Formulaires.Common
 
         private void setReferenceFromRow(int index)
         {
-            DataRowView row = (DataRowView) dataGridView.Rows[index].DataBoundItem;
+            var row = (DataRowView) dataGridView.Rows[index].DataBoundItem;
             if (row != null)
             {
                 reference = row["reference"].ToString();
@@ -89,9 +89,9 @@ namespace EspaceSyndic.Formulaires.Common
         {
             filter = " 1=1 ";
             if (tbRef.Text != "")
-                filter += String.Format(" and reference like '{0}%' ", tbRef.Text);
+                filter += $" and reference like '{tbRef.Text}%' ";
             if (tbNom.Text != "")
-                filter += String.Format(" and LOWER(nom) like LOWER('{0}%') ", tbNom.Text);
+                filter += $" and LOWER(nom) like LOWER('{tbNom.Text}%') ";
             FillListFromFilter(filter);
         }
 

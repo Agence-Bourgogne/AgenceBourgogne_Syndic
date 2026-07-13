@@ -16,18 +16,15 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
         public CoproprietaireController controller = new CoproprietaireController();
         string regKey;
         bool bLoading;
-        //-----------------------------------------------------------------------
         public ListeCoproprietaireForm()
         {
             InitializeComponent();
             regKey = "listes\\coproprietaires";
         }
-        //-----------------------------------------------------------------------
         private void ListeCoproprietaireForm_Load(object sender, EventArgs e)
         {
             FillDataGrid();
         }
-        //-----------------------------------------------------------------------
         private void FillDataGrid()
         {
             bLoading = true;
@@ -37,7 +34,7 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
                 dataGridView.DataSource = controller.GetListCopro(false);
             if (dataGridView.DataSource != null)
             {
-                DataGridViewColumnCollection cols = dataGridView.Columns;
+                var cols = dataGridView.Columns;
                 cols["id"].Visible = false;
 
                 ParametresDB.bindGridComboColumn(cols, "CIVILITE", "codenvoi");
@@ -75,41 +72,41 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
             BtnSave.Enabled = false;
             bLoading = false;
         }
-        //-----------------------------------------------------------------------
+
         protected virtual void OrderColumns()
         {
             if (regKey == "")
                 return;
             foreach (DataGridViewColumn col in dataGridView.Columns)
             {
-                int index = (int)CommonRegistry.getRegistryValue(regKey, col.Name, -1);
+                var index = (int)CommonRegistry.getRegistryValue(regKey, col.Name, -1);
                 if (index != -1)
                     col.DisplayIndex = index;
             }
         }
-        //-----------------------------------------------------------------------
+        
         private void FormListClosing(object sender, FormClosingEventArgs e)
         {
             if (!controller.SaveList((DataTable)dataGridView.DataSource))
                 e.Cancel = true;
         }
-        //-----------------------------------------------------------------------
+        
         private void nouveauToolStripMenuItem_Click(object sender, EventArgs e)
         {
             edition(new CoproprietaireEntite());
         }
-        //-----------------------------------------------------------------------
+        
         private void BtnSave_Click(object sender, EventArgs e)
         {
             controller.SaveList((DataTable)dataGridView.DataSource, false);
             updateEditMode(false);
         }
-        //-----------------------------------------------------------------------
+        
         private void BtnEdit_Click(object sender, EventArgs e) 
         {
             updateEditMode(true);
         }
-        //-----------------------------------------------------------------------
+        
         private void updateEditMode(bool bEdit)
         {
             dataGridView.AllowUserToAddRows = bEdit;
@@ -123,7 +120,7 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
             ShowCopro(dataGridView.SelectedRows[0].Index);
 
         }
-        //-----------------------------------------------------------------------
+        
         private void ShowCopro(int index)
         {
             if (!dataGridView.ReadOnly)
@@ -133,17 +130,17 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
 
             if (controller.SaveList((DataTable)dataGridView.DataSource))
             {
-                DataRowView row = (DataRowView)dataGridView.Rows[index].DataBoundItem;
+                var row = (DataRowView)dataGridView.Rows[index].DataBoundItem;
                 if (row.Row.RowState != DataRowState.Detached)
                     edition(new CoproprietaireEntite(row.Row));
             }
         }
-        //-----------------------------------------------------------------------
+        
         private void edition(CoproprietaireEntite entite)
         {
             try
             {
-                FicheCoproprietaireForm form = new FicheCoproprietaireForm();
+                var form = new FicheCoproprietaireForm();
                 form.entite = entite;
                 if (!"".Equals(entite.id))
                     form.entite = controller.getEntiteById(entite.id);
@@ -162,7 +159,7 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
                 MessageBox.Show(ex.Message);
             }
         }
-        //-----------------------------------------------------------------------
+        
         private void dataGridView_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (Convert.ToInt16(e.KeyChar) == 32)
@@ -178,39 +175,39 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
             if (e.KeyChar == 0x0D && dataGridView.ReadOnly)
             {
                 e.Handled = true;
-                int index = dataGridView.SelectedRows[0].Index;
+                var index = dataGridView.SelectedRows[0].Index;
                 index = Math.Max(index - 1, 0);
                 ShowCopro(index);
             }
         }
-        //-----------------------------------------------------------------------
+        
         private void ListeCoproprietaireForm_Shown(object sender, EventArgs e)
         {
-            DataGridViewColumnCollection cols = dataGridView.Columns;
+            var cols = dataGridView.Columns;
             cols["codenvoi"].Width = 80;
             cols["codenvoi"].MinimumWidth = 80;
             dataGridView.Refresh();
         }
-        //-----------------------------------------------------------------------
+        
         private void btnExport_Click(object sender, EventArgs e)
         {
 
-            int type = (int) CommonRegistry.getRegistryValue("export_copro", "type", 0);
+            var type = (int) CommonRegistry.getRegistryValue("export_copro", "type", 0);
             
-            DataTable table = CoproprietaireController.getController().getListeCoproForExport(type == 1);
+            var table = CoproprietaireController.getController().getListeCoproForExport(type == 1);
 
             if ( type == 1 )
             {
-                List<string> colsToHide = new List<string> { };
+                var colsToHide = new List<string> { };
                 BaseApplication.DataTableToExcel(table, colsToHide); 
             }
             else
             {
-                string fileName = (string) CommonRegistry.getRegistryValue("export_copro", "fichier", (object) "c:\\syndic_modeles\\csv\\copro_export.csv");
+                var fileName = (string) CommonRegistry.getRegistryValue("export_copro", "fichier", (object) "c:\\syndic_modeles\\csv\\copro_export.csv");
                 try
                 {
                     BaseApplication.GenerateDataSource(table, fileName, Encoding.UTF8);
-                    MessageBox.Show(String.Format("Export Terminé\r\nLe Fichier {0} à été créé ", fileName));
+                    MessageBox.Show($"Export Terminé\r\nLe Fichier {fileName} à été créé ");
                 }
                 catch (Exception ex)
                 {
@@ -218,15 +215,15 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
                 }
             }
         }
-        //-----------------------------------------------------------------------
+        
         private void btnFiltre_Click(object sender, EventArgs e)
         {
-            FindCoproprietaireForm form = new FindCoproprietaireForm();
-            BindingSource source = new BindingSource();// (BindingSource)dataGridView.DataSource;
+            var form = new FindCoproprietaireForm();
+            var source = new BindingSource();// (BindingSource)dataGridView.DataSource;
             source.DataSource = dataGridView.DataSource;
             if (DialogResult.Cancel != form.ShowDialog())
             {
-                FicheCoproprietaireForm fiche = new FicheCoproprietaireForm();
+                var fiche = new FicheCoproprietaireForm();
                 fiche.entite = controller.getEntiteFromField("reference", form.reference);
                 fiche.ShowDialog();
 
@@ -243,7 +240,7 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
             else
                 source.Filter = "";
         }
-        //-----------------------------------------------------------------------
+        
         private void dataGridView_ColumnDisplayIndexChanged(object sender, DataGridViewColumnEventArgs e)
         {
             if (!bLoading)
@@ -253,7 +250,7 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
             }
 
         }
-        //-----------------------------------------------------------------------
+        
         private void ckActif_CheckedChanged(object sender, EventArgs e)
         {
             FillDataGrid();

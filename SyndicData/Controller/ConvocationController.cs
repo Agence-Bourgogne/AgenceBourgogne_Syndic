@@ -21,14 +21,14 @@ namespace SyndicData.Controller
         {
             List<ConvocationDescriptionEntite> list = null;
 
-            string cmd = string.Format(" select * from {0}.convocation_description where convocation_id = @convocation_id", getSchema());
+            var cmd = $" select * from {getSchema()}.convocation_description where convocation_id = @convocation_id";
 
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>
+            var parameters = new List<NpgsqlParameter>
             {
                 new NpgsqlParameter ("@convocation_id", convocation_id),
             };
 
-            DataTable table = getResultSQL(cmd, parameters);
+            var table = getResultSQL(cmd, parameters);
             if ( table != null)
                 if (table.Rows.Count > 0)
                 {

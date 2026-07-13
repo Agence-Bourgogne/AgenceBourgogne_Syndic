@@ -25,13 +25,14 @@ namespace SyndicData.Controller
         }
         public DataTable getListExerciceFromImmeuble(string immeuble_id)
         {
-            string cmd = String.Format("select e.id, e.reference, e.statut, b.id as budget_id, date_deb, date_fin, b.statut as statut_budget, sum(montant) as montant from {0} e", getSchemaTable());
-            cmd += String.Format(" left join {0}.budget b on e.id = b.exercice_id", getSchema());
-            cmd += String.Format(" left join {0}.budget_ligne bl on (b.id = bl.budget_id and bl.statut!= @statut_budget)", getSchema());
+            var cmd =
+                $"select e.id, e.reference, e.statut, b.id as budget_id, date_deb, date_fin, b.statut as statut_budget, sum(montant) as montant from {getSchemaTable()} e";
+            cmd += $" left join {getSchema()}.budget b on e.id = b.exercice_id";
+            cmd += $" left join {getSchema()}.budget_ligne bl on (b.id = bl.budget_id and bl.statut!= @statut_budget)";
             cmd += " where immeuble_id = @immeuble_id and e.statut != @statut ";
             cmd += " group by 1, 2, 3, 4, 5, 6, 7";
             cmd += " order by date_deb desc";
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
             {
                 new NpgsqlParameter("@immeuble_id", immeuble_id),
                 new NpgsqlParameter("@statut", (int) GlobalConstantes.StatutExercice.Supprime),
@@ -42,19 +43,20 @@ namespace SyndicData.Controller
         }
         public DateTime getNewDateDebutExercice(string immeuble_id)
         {
-            DateTime dt = DateTime.Now;
+            var dt = DateTime.Now;
             dt = dt.AddDays(1 - dt.DayOfYear);
 
-            string cmd = String.Format("select date_fin as date_last from {0} where immeuble_id = @immeuble_id order by date_fin desc limit 1", getSchemaTable());
+            var cmd =
+                $"select date_fin as date_last from {getSchemaTable()} where immeuble_id = @immeuble_id order by date_fin desc limit 1";
 
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
             {
                 new NpgsqlParameter("@immeuble_id", immeuble_id),
             };
-            DataTable table = getResultSQL(cmd, parameters);
+            var table = getResultSQL(cmd, parameters);
             if (table != null && table.Rows.Count > 0 )
             {
-                DataRow row = table.Rows[0];
+                var row = table.Rows[0];
                 if (row[0] != null)
                 {
                     dt = (DateTime)row[0];
@@ -65,13 +67,13 @@ namespace SyndicData.Controller
         }
         public ExerciceComptableEntite getExerciceFromDate(string immeuble_id, DateTime dtDeb)
         {
-            string cmd = " select * ";
+            var cmd = " select * ";
             ExerciceComptableEntite entite = null;
-            cmd += String.Format(" from {0} ", getSchemaTable());
+            cmd += $" from {getSchemaTable()} ";
             cmd += " where immeuble_id = @immeuble_id and date_deb >= @dtDeb and date_fin <= @dtFin ";
 //            cmd += " where immeuble_id = @immeuble_id and date_deb >= @dtDeb and date_fin <= @dtDeb ";
 
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
             {
                 new NpgsqlParameter("@immeuble_id", immeuble_id),
                 new NpgsqlParameter("@dtDeb", dtDeb),
@@ -79,7 +81,7 @@ namespace SyndicData.Controller
             };
 
 
-            DataTable table = getResultSQL(cmd, parameters);
+            var table = getResultSQL(cmd, parameters);
             if (table != null && table.Rows.Count > 0)
             {
                 entite = new ExerciceComptableEntite(table.Rows[0]);
@@ -90,18 +92,18 @@ namespace SyndicData.Controller
 
         public ExerciceComptableEntite getExerciceCourant(string immeuble_id)
         {
-            string cmd = " select * ";
+            var cmd = " select * ";
             ExerciceComptableEntite entite = null;
-            cmd += String.Format(" from {0} ", getSchemaTable());
+            cmd += $" from {getSchemaTable()} ";
             cmd += " where id = ";
-            cmd += String.Format(" (select id from {0} ", getSchemaTable());
+            cmd += $" (select id from {getSchemaTable()} ";
             cmd += " where immeuble_id = @immeuble_id and statut = @statut";
 //            cmd += " order by date_deb desc limit 1)";
             cmd += " order by date_deb limit 1)";
 
-            int statut = (int) GlobalConstantes.StatutExercice.Ouvert;
+            var statut = (int) GlobalConstantes.StatutExercice.Ouvert;
 
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
             {
                 new NpgsqlParameter("@immeuble_id", immeuble_id),
                 new NpgsqlParameter("@statut", statut),
@@ -109,7 +111,7 @@ namespace SyndicData.Controller
 
 //            Console.WriteLine(cmd.Replace("@immeuble_id", String.Format("{0}", immeuble_id)));
 
-            DataTable table = getResultSQL(cmd, parameters);
+            var table = getResultSQL(cmd, parameters);
             if (table != null && table.Rows.Count > 0)
             {
                 entite = new ExerciceComptableEntite(table.Rows[0]);
@@ -119,16 +121,16 @@ namespace SyndicData.Controller
 
         public DataTable getExercicePrecedent(string exercice_id)
         {
-            string schema = getSchema();
-            string cmd = " select * ";
-            cmd += String.Format(" from {0} ", getSchemaTable());
+            var schema = getSchema();
+            var cmd = " select * ";
+            cmd += $" from {getSchemaTable()} ";
             cmd += " where id = ";
-            cmd += String.Format(" (select id from {0} ", getSchemaTable() );
-            cmd += String.Format(" where date_deb < (select  date_deb from {0}.exercice_comptable where id = @exercice_id)", schema);
-            cmd += String.Format(" and immeuble_id = (select  immeuble_id from {0}.exercice_comptable where id = @exercice_id)", schema);
+            cmd += $" (select id from {getSchemaTable()} ";
+            cmd += $" where date_deb < (select  date_deb from {schema}.exercice_comptable where id = @exercice_id)";
+            cmd += $" and immeuble_id = (select  immeuble_id from {schema}.exercice_comptable where id = @exercice_id)";
             cmd += " order by date_deb desc limit 1)";
             
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
             {
                 new NpgsqlParameter("@exercice_id", exercice_id),
             };
@@ -137,18 +139,18 @@ namespace SyndicData.Controller
         }
         public DataTable getExerciceSuivant(string exercice_id)
         {
-            string schema = getSchema();
-            string cmd = " select * ";
-            cmd += String.Format(" from {0} ", getSchemaTable());
+            var schema = getSchema();
+            var cmd = " select * ";
+            cmd += $" from {getSchemaTable()} ";
             cmd += " where id = ";
-            cmd += String.Format(" (select id from {0} ", getSchemaTable());
-            cmd += String.Format(" where date_deb > (select  date_deb from {0}.exercice_comptable where id = @exercice_id)", schema);
-            cmd += String.Format(" and immeuble_id = (select  immeuble_id from {0}.exercice_comptable where id = @exercice_id)", schema);
+            cmd += $" (select id from {getSchemaTable()} ";
+            cmd += $" where date_deb > (select  date_deb from {schema}.exercice_comptable where id = @exercice_id)";
+            cmd += $" and immeuble_id = (select  immeuble_id from {schema}.exercice_comptable where id = @exercice_id)";
             cmd += " order by date_deb asc limit 1)";
             Console.WriteLine(cmd);
             Console.WriteLine(exercice_id);
 
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
             {
                 new NpgsqlParameter("@exercice_id", exercice_id),
             };
@@ -158,7 +160,7 @@ namespace SyndicData.Controller
         public ExerciceComptableEntite createExerciceSuivant(ExerciceComptableEntite exercice)
         {
             ExerciceComptableEntite exercice_suivant;
-            DataTable table = getExerciceSuivant(exercice.id);
+            var table = getExerciceSuivant(exercice.id);
             if (table != null && table.Rows.Count > 0)
                 exercice_suivant = new ExerciceComptableEntite(table.Rows[0]);
             else
@@ -166,7 +168,8 @@ namespace SyndicData.Controller
                 exercice_suivant = new ExerciceComptableEntite();
                 exercice_suivant.date_deb = exercice.date_fin.AddDays(1);
                 exercice_suivant.date_fin = exercice_suivant.date_deb.AddYears(1).AddDays(-1);
-                string reference = String.Format("{0}-{1} {2}-{3}", exercice_suivant.date_deb.Month.ToString("D2"), exercice_suivant.date_deb.Year, exercice_suivant.date_fin.Month.ToString("D2"), exercice_suivant.date_fin.Year);
+                var reference =
+                    $"{exercice_suivant.date_deb.Month.ToString("D2")}-{exercice_suivant.date_deb.Year} {exercice_suivant.date_fin.Month.ToString("D2")}-{exercice_suivant.date_fin.Year}";
                 exercice_suivant.reference = reference;
                 exercice_suivant.nom = reference;
                 exercice_suivant.immeuble_id = exercice.immeuble_id;

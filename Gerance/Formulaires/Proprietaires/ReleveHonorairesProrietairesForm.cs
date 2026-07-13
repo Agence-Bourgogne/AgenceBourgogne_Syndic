@@ -24,7 +24,7 @@ namespace Gerance.Formulaires.Proprietaires
             label3.Visible = dtEdition.Visible = false;
             reportViewer1.PrintingBegin += reportViewer1_PrintingBegin;
         
-            DateTime dt = DateTime.Now;
+            var dt = DateTime.Now;
             dtDebut.Value = dt.AddDays(1 - dt.Day);
         }
         bool bUpdateRequired = false;
@@ -41,10 +41,10 @@ namespace Gerance.Formulaires.Proprietaires
         }
         private void btnRapport_Click(object sender, EventArgs e)
         {
-            string proprietaire_id = "";
+            var proprietaire_id = "";
             if ( tbRefProprio.Text != "")
             {
-                ProprietaireEntite proprio = getProprietaire();
+                var proprio = getProprietaire();
                 if (proprio == null)
                 {
                     MessageBox.Show("Reference Proprietaire invalide");
@@ -55,14 +55,14 @@ namespace Gerance.Formulaires.Proprietaires
 
             reportViewer1.LocalReport.DataSources.Clear();
 
-            ReportParameter[] parameters = new ReportParameter[]{
+            var parameters = new ReportParameter[]{
                 new ReportParameter("dtDeb", dtDebut.Value.ToShortDateString()),
                 new ReportParameter("dtFin", dtFin.Value.ToShortDateString()),
             };
             reportViewer1.LocalReport.SetParameters(parameters);
 
 
-            DataTable releves = ReglementsController.getController().getReleveHonorairesProprietaires(dtDebut.Value, dtFin.Value, proprietaire_id);
+            var releves = ReglementsController.getController().getReleveHonorairesProprietaires(dtDebut.Value, dtFin.Value, proprietaire_id);
 
             if (releves.Rows.Count < 1)
             {
@@ -95,10 +95,10 @@ namespace Gerance.Formulaires.Proprietaires
 
         private void CreationFactureHono()
         {
-            string proprietaire_id = "";
+            var proprietaire_id = "";
             if (tbRefProprio.Text != "")
             {
-                ProprietaireEntite proprio = getProprietaire();
+                var proprio = getProprietaire();
                 if (proprio == null)
                 {
                     MessageBox.Show("Reference Proprietaire invalide");
@@ -107,7 +107,7 @@ namespace Gerance.Formulaires.Proprietaires
                 proprietaire_id = proprio.id;
             }
 
-            CreationFactureHonorairesFraisForm form = new CreationFactureHonorairesFraisForm(dtDebut.Value, dtFin.Value, proprietaire_id);
+            var form = new CreationFactureHonorairesFraisForm(dtDebut.Value, dtFin.Value, proprietaire_id);
             form.ShowDialog();
         }
 
@@ -116,7 +116,7 @@ namespace Gerance.Formulaires.Proprietaires
             tbRefProprio.BackColor = Color.White;
             if (tbRefProprio.Text != "")
             {
-                ProprietaireEntite proprio = ProprietaireController.getController().getEntiteFromField("reference", tbRefProprio.Text);
+                var proprio = ProprietaireController.getController().getEntiteFromField("reference", tbRefProprio.Text);
                 if (proprio == null)
                     tbRefProprio.BackColor = Color.Red;
             }

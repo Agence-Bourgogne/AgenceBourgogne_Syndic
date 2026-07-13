@@ -33,7 +33,7 @@ namespace CommonProjectsPartners.Common
         {
             get
             {
-                return string.Format("[{0}][{1}]", ComputerName, userConnected.reference);
+                return $"[{ComputerName}][{userConnected.reference}]";
             }
         }
         public static Word.Application GetWordInstance()
@@ -42,7 +42,7 @@ namespace CommonProjectsPartners.Common
                 wrdApp = new Word.Application();
             try
             {
-                int value = wrdApp.Creator;
+                var value = wrdApp.Creator;
             }
             catch (Exception )
             {
@@ -73,8 +73,8 @@ namespace CommonProjectsPartners.Common
         {
             Cursor.Current = Cursors.WaitCursor;
 
-            Microsoft.Office.Interop.Excel.Application xlApp = GetExcelInstance();
-            Workbook wb = xlApp.ActiveWorkbook;
+            var xlApp = GetExcelInstance();
+            var wb = xlApp.ActiveWorkbook;
             Worksheet ws;
             if (wb == null)
             {
@@ -87,27 +87,27 @@ namespace CommonProjectsPartners.Common
                 ws = wb.Sheets.Add(oMissing, last);
             }
 
-            BindingSource bind = new BindingSource();
+            var bind = new BindingSource();
             bind.DataSource = table;
             xlApp.Visible = false;
-            int iCol = 1;
+            var iCol = 1;
 
             foreach ( System.Data.DataColumn col in table.Columns)
             {
                 if (!colsToHide.Contains(col.ColumnName) )//&& colsToHide.Contains(col.ColumnName))
                     ws.Cells[1, iCol++] = col.ColumnName;
             }
-            int iRow = 2;
-            Range cells = ws.Cells;
-            DateTime dt = DateTime.Now;
-            TimeSpan t = DateTime.Now.TimeOfDay;
+            var iRow = 2;
+            var cells = ws.Cells;
+            var dt = DateTime.Now;
+            var t = DateTime.Now.TimeOfDay;
             foreach (System.Data.DataRow row in table.Rows)
             {
-                bool bShowRow = true;
+                var bShowRow = true;
                 if (bShowRow)
                 {
                     iCol = 1;
-                    int idxCol = 0;
+                    var idxCol = 0;
                     Range rowXls = cells[iRow];
                     foreach (System.Data.DataColumn col in table.Columns)
                     {
@@ -131,8 +131,8 @@ namespace CommonProjectsPartners.Common
                     iRow++;
                 }
             }
-            TimeSpan t2 = DateTime.Now.TimeOfDay;
-            TimeSpan ta = t2 - t;
+            var t2 = DateTime.Now.TimeOfDay;
+            var ta = t2 - t;
 
             Console.WriteLine(ta.TotalSeconds);
 
@@ -147,8 +147,8 @@ namespace CommonProjectsPartners.Common
         {
             Cursor.Current = Cursors.WaitCursor;
 
-            Microsoft.Office.Interop.Excel.Application xlApp = GetExcelInstance();
-            Workbook wb = xlApp.ActiveWorkbook;
+            var xlApp = GetExcelInstance();
+            var wb = xlApp.ActiveWorkbook;
             Worksheet ws;
             if (wb == null)
             {
@@ -162,7 +162,7 @@ namespace CommonProjectsPartners.Common
             }
 
             xlApp.Visible = false;
-            int iCol = 1;
+            var iCol = 1;
             foreach (DataGridViewColumn col in datagrid.Columns)
             {
                 if (!colsToHide.Contains(col.Name) && col.Visible)
@@ -170,11 +170,11 @@ namespace CommonProjectsPartners.Common
                     ws.Cells[1, iCol++] = col.HeaderText;
                 }
             }
-            int iRow = 2;
+            var iRow = 2;
 
             foreach (DataGridViewRow row in datagrid.Rows)
             {
-                bool bShowRow = true;
+                var bShowRow = true;
                 if (checkColumn != "")
                 {
                     if (row.Cells[checkColumn].Value == null)
@@ -186,10 +186,10 @@ namespace CommonProjectsPartners.Common
                 if ( bShowRow )
                 {
                     iCol = 1;
-                    int idxCol = 0;
+                    var idxCol = 0;
                     foreach (DataGridViewCell cell in row.Cells)
                     {
-                        DataGridViewColumn col = datagrid.Columns[idxCol];
+                        var col = datagrid.Columns[idxCol];
 
                         if (!colsToHide.Contains(col.Name) && col.Visible)
                         {
@@ -210,12 +210,12 @@ namespace CommonProjectsPartners.Common
 
             if (colToSum != null)
             {
-                foreach ( string colName in colToSum )
+                foreach ( var colName in colToSum )
                 {
-                    DataGridViewColumn col = datagrid.Columns[colName];
+                    var col = datagrid.Columns[colName];
                     if (col != null)
                     {
-                        char colChar = (char)((int)'A' + col.Index - 1);
+                        var colChar = (char)((int)'A' + col.Index - 1);
                         Range r = ws.Cells[iRow, col.Index];
                         r.Formula = String.Format("=SUM({0}2:{0}{1})", colChar, iRow - 1);
                     }
@@ -232,21 +232,21 @@ namespace CommonProjectsPartners.Common
         }
         public static void ColumnFormula(object wsObject, int colDesti , string colFormula, string colName, int colStop)
         {
-            _Worksheet ws = ((_Worksheet)wsObject);
+            var ws = ((_Worksheet)wsObject);
             try
             {
-                Range range = ws.Rows;
-                int nbRows = range.Rows.Count;
+                var range = ws.Rows;
+                var nbRows = range.Rows.Count;
 
                 ws.Cells[1, colDesti].Value = colName;
-                for (int iRow = 2; iRow < nbRows; iRow++)
+                for (var iRow = 2; iRow < nbRows; iRow++)
                 {
                     Range cell = ws.Cells[iRow, colStop];
                     if (cell.Value == null)
                         break;
-                    char colChar = (char)((int)'A' + colDesti);
+                    var colChar = (char)((int)'A' + colDesti);
                     cell = ws.Cells[iRow, colDesti];
-                    string formula = String.Format(colFormula, iRow, colChar );
+                    var formula = String.Format(colFormula, iRow, colChar );
                     cell.Formula = formula;
                 }
             }
@@ -257,11 +257,11 @@ namespace CommonProjectsPartners.Common
         }
         public static void OpenWordFile(string fileName)
         {
-            Word.Application wrdApp = GetWordInstance();
+            var wrdApp = GetWordInstance();
             try
             {
                 wrdApp.Visible = true;
-                Word.Document doc = wrdApp.Documents.Add(System.Reflection.Missing.Value);
+                var doc = wrdApp.Documents.Add(System.Reflection.Missing.Value);
                 wrdApp.Documents.Open(fileName);
                 wrdApp.Activate();
             }
@@ -282,7 +282,7 @@ namespace CommonProjectsPartners.Common
 
         public static void ActivateWord()
         {
-            Word.Application wrdApp = GetWordInstance();
+            var wrdApp = GetWordInstance();
             wrdApp.Visible = true;
             wrdApp.Activate();
         }
@@ -295,19 +295,19 @@ namespace CommonProjectsPartners.Common
 
         public static void MergeFiles(string outputFile, List<String> files, bool bDelete = true)
         {
-            Word.Application wrdApp = GetWordInstance();
+            var wrdApp = GetWordInstance();
             try
             {
-                Word.Document doc = wrdApp.Documents.Add();
-                Word.Selection sel = wrdApp.Selection;
-                bool bFirst = true;
+                var doc = wrdApp.Documents.Add();
+                var sel = wrdApp.Selection;
+                var bFirst = true;
 
-                foreach (String file in files)
+                foreach (var file in files)
                 {
                     if (File.Exists(file))
                     {
-                        Word.Document newDoc = wrdApp.Documents.Add(file);
-                        Word.Range wrdRange = doc.Content;
+                        var newDoc = wrdApp.Documents.Add(file);
+                        var wrdRange = doc.Content;
 
                         Word.Section sec;
                         if (bFirst)
@@ -332,7 +332,7 @@ namespace CommonProjectsPartners.Common
                             File.Delete(file);
                     }
                 }
-                string dir = Path.GetDirectoryName(outputFile);
+                var dir = Path.GetDirectoryName(outputFile);
                 if (!Directory.Exists(dir))
                     Directory.CreateDirectory(dir);
                 doc.SaveAs(outputFile);
@@ -345,20 +345,20 @@ namespace CommonProjectsPartners.Common
 
         public static void PublipostageLettreWordAndInsertFile(System.Data.DataTable source, string modele, String DocToInsert, String FieldName, String FileResult = "")
         {
-            Word.Application wrdApp = GetWordInstance();
+            var wrdApp = GetWordInstance();
 
             try
             {
-                Word.Document doc = wrdApp.Documents.Add(modele);
-                Word.MailMerge merge = doc.MailMerge;
+                var doc = wrdApp.Documents.Add(modele);
+                var merge = doc.MailMerge;
 
-                Word.Bookmark field = GetField(doc, FieldName);
+                var field = GetField(doc, FieldName);
                 if (field != null)
                 {
                     field.Range.InsertFile(DocToInsert);
                 }
 
-                string fileNameCsv = Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
+                var fileNameCsv = Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
                 GenerateDataSource(source, fileNameCsv);
                 merge.MainDocumentType = Word.WdMailMergeMainDocType.wdFormLetters;
                 merge.OpenDataSource(fileNameCsv, false);
@@ -381,14 +381,14 @@ namespace CommonProjectsPartners.Common
 
         public static void PublipostageLettreWordAndFillTable(System.Data.DataTable source, string modele, List<String[]> datas, int indexTable, String FileResult = "")
         {
-            Word.Application wrdApp = GetWordInstance();
+            var wrdApp = GetWordInstance();
 
             try
             {
-                Word.Document doc = wrdApp.Documents.Add(modele);
-                Word.MailMerge merge = doc.MailMerge;
+                var doc = wrdApp.Documents.Add(modele);
+                var merge = doc.MailMerge;
 
-                string fileName = Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
+                var fileName = Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
                 GenerateDataSource(source, fileName);
                 merge.MainDocumentType = Word.WdMailMergeMainDocType.wdFormLetters;
                 merge.OpenDataSource(fileName, false);
@@ -396,13 +396,13 @@ namespace CommonProjectsPartners.Common
                 merge.ViewMailMergeFieldCodes = 0;
                 ((Word._Document)doc).Close(oFalse);
                 File.Delete(fileName);
-                Word.Table table = wrdApp.ActiveDocument.Tables[indexTable];
-                int col = 1;
-                foreach (String[] dataColumns in datas)
+                var table = wrdApp.ActiveDocument.Tables[indexTable];
+                var col = 1;
+                foreach (var dataColumns in datas)
                 {
-                    Word.Row row = table.Rows.Add();
+                    var row = table.Rows.Add();
                     col = 1;
-                    foreach (String data in dataColumns)
+                    foreach (var data in dataColumns)
                     {
                         row.Cells[col].Range.Text = data;
                         col++;
@@ -410,9 +410,9 @@ namespace CommonProjectsPartners.Common
                 }
                 table.Rows[2].Delete();
                 {
-                    Word.Row row = table.Rows.Add();
-                    System.Data.DataRow dataRow = source.Rows[0];
-                    for (int i = 1; i < col - 1; i++)
+                    var row = table.Rows.Add();
+                    var dataRow = source.Rows[0];
+                    for (var i = 1; i < col - 1; i++)
                     {
                         row.Cells[i].Borders[Word.WdBorderType.wdBorderBottom].LineStyle = Word.WdLineStyle.wdLineStyleNone;
                         row.Cells[i].Borders[Word.WdBorderType.wdBorderLeft].LineStyle = Word.WdLineStyle.wdLineStyleNone;
@@ -434,15 +434,15 @@ namespace CommonProjectsPartners.Common
 
         public static void PublipostageLettreWord(System.Data.DataTable source, string modele)
         {
-            Word.Application wrdApp = GetWordInstance();
+            var wrdApp = GetWordInstance();
 
             try
             {
                 wrdApp.Visible = true;
-                Word.Document docMailing = wrdApp.Documents.Add(modele);
-                Word.MailMerge merge = docMailing.MailMerge;
+                var docMailing = wrdApp.Documents.Add(modele);
+                var merge = docMailing.MailMerge;
 
-                string fileName = Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
+                var fileName = Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
                 GenerateDataSource(source, fileName);
 
                 merge.MainDocumentType = Word.WdMailMergeMainDocType.wdFormLetters;
@@ -460,14 +460,14 @@ namespace CommonProjectsPartners.Common
         }
         public static void PublipostageEtiquetteWord( System.Data.DataTable source, string modele)
         {
-            Word.Application wrdApp = GetWordInstance();
+            var wrdApp = GetWordInstance();
             try
             {
-                string fileName = Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
+                var fileName = Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
                 wrdApp.Visible = true;
 
-                Word.Document docMailing = wrdApp.Documents.Add(modele);
-                Word.MailMerge merge = docMailing.MailMerge;
+                var docMailing = wrdApp.Documents.Add(modele);
+                var merge = docMailing.MailMerge;
 
             
                 //                string fileName = @"c:\syndic_modeles\csv\etiquettes.csv";
@@ -477,7 +477,7 @@ namespace CommonProjectsPartners.Common
                 merge.MainDocumentType = Word.WdMailMergeMainDocType.wdMailingLabels;
                 merge.OpenDataSource(fileName, false);
 
-                //-----------------------------------
+                //
                 //// Obtenir la source de données
               
                 // Obtenir la source de données
@@ -507,7 +507,7 @@ namespace CommonProjectsPartners.Common
                // docMailing.Save();
 
 
-                //------------------------------------
+                //-
 
 
                 merge.Execute();
@@ -523,7 +523,7 @@ namespace CommonProjectsPartners.Common
         }
         public static bool GenerateDataSource(System.Data.DataTable source, string fileName, Encoding encoding = null)
         {
-            bool retValue = false;
+            var retValue = false;
             try
             {
                 if (source != null)
@@ -561,7 +561,7 @@ namespace CommonProjectsPartners.Common
             {
                 if (excelApp != null)
                 {
-                    Workbook wb = excelApp.Application.ActiveWorkbook;
+                    var wb = excelApp.Application.ActiveWorkbook;
                     if (wb != null)
                         wb.Close(false);
                     excelApp.Application.Quit();
@@ -572,7 +572,7 @@ namespace CommonProjectsPartners.Common
             {
             }
 
-            foreach (string file in filesName)
+            foreach (var file in filesName)
             {
                 if ( File.Exists(file))
                     File.Delete(file);

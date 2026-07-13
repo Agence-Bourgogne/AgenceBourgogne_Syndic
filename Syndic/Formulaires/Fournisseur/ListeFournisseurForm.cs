@@ -33,7 +33,7 @@ namespace EspaceSyndic.Formulaires.Fournisseur
                 dataGridView.DataSource = controller.GetAllEntite();
             if (dataGridView.DataSource != null)
             {
-                DataGridViewColumnCollection cols = dataGridView.Columns;
+                var cols = dataGridView.Columns;
 
                 cols["id"].Visible = false;
                 cols["audit_created"].Visible = false;
@@ -63,7 +63,7 @@ namespace EspaceSyndic.Formulaires.Fournisseur
                 return;
             foreach (DataGridViewColumn col in dataGridView.Columns)
             {
-                int index = (int)CommonRegistry.getRegistryValue(regKey, col.Name, -1);
+                var index = (int)CommonRegistry.getRegistryValue(regKey, col.Name, -1);
                 if (index != -1)
                     col.DisplayIndex = index;
             }
@@ -112,7 +112,7 @@ namespace EspaceSyndic.Formulaires.Fournisseur
             if (controller.SaveList((DataTable)dataGridView.DataSource))
             {
                 updateEditMode(false);
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
                 if (row.Row.RowState != DataRowState.Detached)
                 {
                      edition(controller.getEntiteById(row.Row["id"].ToString()));
@@ -134,7 +134,7 @@ namespace EspaceSyndic.Formulaires.Fournisseur
             try
             {
                 updateEditMode(false);
-                FicheFournisseurForm form = new FicheFournisseurForm();
+                var form = new FicheFournisseurForm();
 
                 form.entite = entite;
                 if ( !"".Equals(entite.id))
@@ -170,23 +170,23 @@ namespace EspaceSyndic.Formulaires.Fournisseur
 
         private void btnExport_Click(object sender, EventArgs e)
         {
-            List<string> colsToHide = new List<string> { "id", "note", "declaration", "vente", "drapeau", "commerce", "audit_created_by", "audit_created", "audit_updated", "audit_updated_by" };
+            var colsToHide = new List<string> { "id", "note", "declaration", "vente", "drapeau", "commerce", "audit_created_by", "audit_created", "audit_updated", "audit_updated_by" };
             BaseApplication.DataGridToExcel(dataGridView, colsToHide);
         }
 
         private void btnFiltre_Click(object sender, EventArgs e)
         {
-            FindFournisseurForm form = new FindFournisseurForm();
-            BindingSource source = new BindingSource();// (BindingSource)dataGridView.DataSource;
+            var form = new FindFournisseurForm();
+            var source = new BindingSource();// (BindingSource)dataGridView.DataSource;
             source.DataSource = dataGridView.DataSource;
             if (DialogResult.Cancel != form.ShowDialog())
             {
-                int action = (int)CommonRegistry.getRegistryValue("Parametres", "ActionFiltre", 0);
+                var action = (int)CommonRegistry.getRegistryValue("Parametres", "ActionFiltre", 0);
                 if (action == 1)
-                    source.Filter = String.Format("reference = '{0}'", form.reference);
+                    source.Filter = $"reference = '{form.reference}'";
                 else
                 {
-                    FicheFournisseurForm fiche = new FicheFournisseurForm();
+                    var fiche = new FicheFournisseurForm();
                     fiche.entite = controller.getEntiteFromField("reference", form.reference);
                     fiche.ShowDialog();
                 }
@@ -202,7 +202,7 @@ namespace EspaceSyndic.Formulaires.Fournisseur
 
         private void dataGridView_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
         {
-            DataGridViewRow row = dataGridView.Rows[e.RowIndex];
+            var row = dataGridView.Rows[e.RowIndex];
             if ((int)row.Cells["statut"].Value == 9)
             {
                 dataGridView.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.OrangeRed;

@@ -39,7 +39,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
             dataGridView.DataSource = getFormListe();
             if (dataGridView.DataSource != null)
             {
-                DataGridViewColumnCollection cols = dataGridView.Columns;
+                var cols = dataGridView.Columns;
                 HideAndResizeColumns(cols);
                 ControlsWindows.ToTitleCase(cols);
                 OrderColumns();
@@ -52,7 +52,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
         }
         protected void ShowFicheForm(string entite_id)
         {
-            UtilisateurFicheForm form = new UtilisateurFicheForm(entite_id);
+            var form = new UtilisateurFicheForm(entite_id);
             ShowForm(form);
         }
         protected void OrderColumns()
@@ -61,7 +61,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
                 return;
             foreach (DataGridViewColumn col in dataGridView.Columns)
             {
-                int index = (int)CommonRegistry.getRegistryValue(regKey, col.Name, -1);
+                var index = (int)CommonRegistry.getRegistryValue(regKey, col.Name, -1);
                 if (index != -1)
                     col.DisplayIndex = index;
             }
@@ -88,7 +88,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
                 if (row != null)
                     ShowFicheForm(row["id"].ToString());
             }

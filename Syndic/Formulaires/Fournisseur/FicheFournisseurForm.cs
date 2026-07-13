@@ -56,7 +56,7 @@ namespace EspaceSyndic.Formulaires.Fournisseur
 
             try
             {
-                FournisseurEntite newEntite = controller.getEntite(where);
+                var newEntite = controller.getEntite(where);
                 if (newEntite != null)
                     setFicheValues(newEntite);
             }
@@ -77,7 +77,7 @@ namespace EspaceSyndic.Formulaires.Fournisseur
         {
             if (bShowMessage)
             {
-                DialogResult result = MessageBox.Show("Des modifications on été apportéees\nVoulez-vous les enregistrer",
+                var result = MessageBox.Show("Des modifications on été apportéees\nVoulez-vous les enregistrer",
                     "", MessageBoxButtons.YesNoCancel);
                 if (result == DialogResult.Cancel)
                     return false;
@@ -124,11 +124,11 @@ namespace EspaceSyndic.Formulaires.Fournisseur
 
         protected void btnPrev_Click(object sender, EventArgs e)
         {
-            getNewEntite(String.Format("where reference::integer < {0} order by reference::integer desc", entite.reference), "Début de liste atteint");
+            getNewEntite($"where reference::integer < {entite.reference} order by reference::integer desc", "Début de liste atteint");
         }
         protected void btnNext_Click(object sender, EventArgs e)
         {
-            getNewEntite(String.Format("where reference::integer > {0} order by reference::integer ", entite.reference), "Fin de liste atteinte");
+            getNewEntite($"where reference::integer > {entite.reference} order by reference::integer ", "Fin de liste atteinte");
         }
         protected void btnLast_Click(object sender, EventArgs e)
         {
@@ -155,7 +155,7 @@ namespace EspaceSyndic.Formulaires.Fournisseur
 
         private void lblRef_Click(object sender, EventArgs e)
         {
-            FindFournisseurForm form = new FindFournisseurForm(tbRef);
+            var form = new FindFournisseurForm(tbRef);
             if (DialogResult.Cancel != form.ShowDialog())
             {
                 entite = controller.getEntiteFromField("reference", tbRef.Text);

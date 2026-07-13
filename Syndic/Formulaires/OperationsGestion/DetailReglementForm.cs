@@ -36,7 +36,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             tbBase.Visible = false;
 
 
-            bool bEnabled = entite.statut <= (int)GlobalConstantes.StatutOperation.Valide;//&& !facture.liasse_id.StartsWith("Reprise");
+            var bEnabled = entite.statut <= (int)GlobalConstantes.StatutOperation.Valide;//&& !facture.liasse_id.StartsWith("Reprise");
             if (CommonProjectsPartners.Common.BaseApplication.userConnected.reference == "GVI")
             {
                 bEnabled = true;
@@ -56,7 +56,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         {
             immeuble = ImmeubleController.getController().getEntiteById(entite.immeuble_id);
             nature = NatureController.getController().getEntiteById(entite.nature_id);
-            LotDescriptionEntite lot = LotDescriptionController.getController().getLotFromCopro(entite.immeuble_id, entite.coproprietaire_id);
+            var lot = LotDescriptionController.getController().getLotFromCopro(entite.immeuble_id, entite.coproprietaire_id);
             if (lot != null)
             {
                 tbLot.Text = lot.numero_lot.ToString();
@@ -99,7 +99,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
                 dataGridView.MultiSelect = false;
             }
 
-            DataGridViewColumnCollection cols = dataGridView.Columns;
+            var cols = dataGridView.Columns;
             ControlsWindows.ToTitleCase(cols);
             cols["ref_nature"].Width = 40;
             cols["nature"].MinimumWidth = 140;
@@ -127,24 +127,24 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
 
         protected override void ValidModification()
         {
-            bool bRepartChanged = false;
-            decimal montant = Convertir.ToDecimal(tbMontant.Text);
-            string ref_nature = tbNature.Text;
-            string ref_fournisseur = tbFournisseur.Text;
-            DateTime date_reference = DateTime.Parse(tbDateCreation.Text);
-            string comment = tbComment.Text;
-            string comment_fournisseur = tbCommentaireFournisseur.Text;
-            string base_repart = tbBase.Text;
+            var bRepartChanged = false;
+            var montant = Convertir.ToDecimal(tbMontant.Text);
+            var ref_nature = tbNature.Text;
+            var ref_fournisseur = tbFournisseur.Text;
+            var date_reference = DateTime.Parse(tbDateCreation.Text);
+            var comment = tbComment.Text;
+            var comment_fournisseur = tbCommentaireFournisseur.Text;
+            var base_repart = tbBase.Text;
 
-            NatureEntite nature = NatureController.getController().getEntiteFromField("reference", ref_nature);
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> { new NpgsqlParameter("@immeuble_id", immeuble.id), new NpgsqlParameter("@numero_lot", Convertir.ToInt(tbLot.Text)) };
-            LotDescriptionEntite lot = LotDescriptionController.getController().getEntite(" where immeuble_id = @immeuble_id and numero_lot = @numero_lot", parameters);
+            var nature = NatureController.getController().getEntiteFromField("reference", ref_nature);
+            var parameters = new List<NpgsqlParameter> { new NpgsqlParameter("@immeuble_id", immeuble.id), new NpgsqlParameter("@numero_lot", Convertir.ToInt(tbLot.Text)) };
+            var lot = LotDescriptionController.getController().getEntite(" where immeuble_id = @immeuble_id and numero_lot = @numero_lot", parameters);
             if ( lot == null )
             {
                 MessageBox.Show("Numéro de lot Invalide");
                 return;
             }
-            CoproprietaireEntite coproprietaire = CoproprietaireController.getController().getEntiteById(lot.coproprietaire_id);
+            var coproprietaire = CoproprietaireController.getController().getEntiteById(lot.coproprietaire_id);
             if ( coproprietaire == null )
             {
                 MessageBox.Show("Coproprietaire Invalide");
@@ -155,8 +155,8 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
                 bRepartChanged = false;
             if (!bRepartChanged)
             {
-                NpgsqlConnection cnx = Database.GetInstance();
-                NpgsqlTransaction trx = cnx.BeginTransaction();
+                var cnx = Database.GetInstance();
+                var trx = cnx.BeginTransaction();
 
                 try
                 {
@@ -205,42 +205,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
 
                     if (!OperationController.getController().InsertOrUpdate(operation))
                         throw new Exception("Operation");
-                    //if (dataGridView.Rows.Count == 0)
-                    //{
-                    //    OperationEntite operation = new OperationEntite(entite);
-                    //    operation.debit = montant < 0 ? montant * (decimal)(-1.0) : (decimal)0.0;
-                    //    operation.credit = montant > 0 ? montant : (decimal)0.0;
-                    //    operation.lot_id = lot.id;
-                    //    operation.coproprietaire_id = coproprietaire.id;
-                    ////    if (!OperationController.getController().InsertOrUpdate(operation))
-                    ////        throw new Exception("Operation");
-                    //}
-                    //else
-                    //foreach (DataGridViewRow rowGrid in dataGridView.Rows)
-                    //{
-                    //    DataRowView row = (DataRowView)rowGrid.DataBoundItem;
-                    //    OperationEntite operation = OperationController.getController().getEntiteById(row["id"].ToString());
-                    //    operation.immeuble_id = immeuble.id;
-                    //    operation.lot_id = lot.id;
-                    //    operation.coproprietaire_id = coproprietaire.id;
-                    //    operation.nature_id = nature.id;
-                    //    operation.date_reference = date_reference;
-                    //    operation.libelle = comment;
-                    //    operation.saisie_id = entite.id;
-                    //    if (montant > 0)
-                    //        operation.credit = montant;
-                    //    else
-                    //        operation.debit = montant * -1;
-                    //    //                        operation.coproprietaire_id = coproprietaire.id;
-                    //    if (dataGridView.Rows.Count == 1)
-                    //    {
-                    //        operation.debit = montant < 0 ? montant * (decimal)(-1.0): (decimal)0.0;
-                    //        operation.credit = montant > 0 ? montant : (decimal)0.0;
-                    //        operation.global = montant;
-                    //    }
-                    //    if (!OperationController.getController().InsertOrUpdate(operation))
-                    //        throw new Exception("Operation");
-                    //}
+
                     trx.Commit();
                 }
                 catch (Exception ex)
@@ -249,10 +214,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
                     MessageBox.Show(ex.Message);
                 }
             }
-            else
-            {
-                MessageBox.Show("La modification de ces élements entraine une nouvelle repartition\rVous devez annulez cet élément et le recréer");
-            }
+
             entite = SaisieReglementController.getController().getEntiteById(entite.id);
             fillFormFromMaster();
             tbRefImmeuble_Validating(null, null);
@@ -260,23 +222,6 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
 
         private void tbCopro_Validating(object sender, CancelEventArgs e)
         {
-            //coproprietaire = CoproprietaireController.getController().getEntiteFromField("reference", tbCopro.Text);
-            //if ( coproprietaire != null )
-            //{
-            //    if (coproprietaire != null)
-            //    {
-            //        tbCopro.BackColor = Color.White;
-            //        tbLibCopro.Text = String.Format("{0} {1}", coproprietaire.nom.Trim(), coproprietaire.prenom);
-            //        //tbEmetteur.Text = coproprietaire.nomcomp.Trim();
-            //        //if (tbEmetteur.Text == "")
-            //        //    tbEmetteur.Text = coproprietaire.nom;
-            //    }
-            //    else
-            //    {
-            //        tbCopro.BackColor = Color.Red;
-            //        //tbEmetteur.Text = "";
-            //    }
-            //}
         }
         protected override void dataGridView_SelectionChanged(object sender, EventArgs e)
         {
@@ -284,13 +229,13 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             {
                 if ( dataGridView.SelectedRows.Count > 0)
                 {
-                    DataRowView row = (DataRowView) dataGridView.SelectedRows[0].DataBoundItem;
-                    OperationEntite operation = OperationController.getController().getEntiteById(row["id"].ToString());
-                    LotDescriptionEntite lot = LotDescriptionController.getController().getEntiteById(operation.lot_id);
-                    CoproprietaireEntite copro = CoproprietaireController.getController().getEntiteById(lot.coproprietaire_id);
+                    var row = (DataRowView) dataGridView.SelectedRows[0].DataBoundItem;
+                    var operation = OperationController.getController().getEntiteById(row["id"].ToString());
+                    var lot = LotDescriptionController.getController().getEntiteById(operation.lot_id);
+                    var copro = CoproprietaireController.getController().getEntiteById(lot.coproprietaire_id);
                     tbLot.Text = lot.numero_lot.ToString();
                     tbCopro.Text = copro.reference;
-                     tbLibCopro.Text = String.Format("{0} {1}", copro.nom.Trim(), copro.prenom);
+                     tbLibCopro.Text = $"{copro.nom.Trim()} {copro.prenom}";
                 }
                 //Console.WriteLine("dataGridView_SelectionChanged");
             }
@@ -298,14 +243,14 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
 
         private void tbLot_Validating(object sender, CancelEventArgs e)
         {
-            List<NpgsqlParameter>  parameters = new List<NpgsqlParameter> { new NpgsqlParameter("@immeuble_id", immeuble.id), new NpgsqlParameter("@numero_lot", Convertir.ToInt(tbLot.Text)) };
-            LotDescriptionEntite lot = LotDescriptionController.getController().getEntite(" where immeuble_id = @immeuble_id and numero_lot = @numero_lot", parameters);
+            var  parameters = new List<NpgsqlParameter> { new NpgsqlParameter("@immeuble_id", immeuble.id), new NpgsqlParameter("@numero_lot", Convertir.ToInt(tbLot.Text)) };
+            var lot = LotDescriptionController.getController().getEntite(" where immeuble_id = @immeuble_id and numero_lot = @numero_lot", parameters);
             if ( lot != null )
             {
-                    CoproprietaireEntite copro = CoproprietaireController.getController().getEntiteById(lot.coproprietaire_id);
+                    var copro = CoproprietaireController.getController().getEntiteById(lot.coproprietaire_id);
 //                    tbLot.Text = lot.numero_lot.ToString();
                     tbCopro.Text = copro.reference;
-                    tbLibCopro.Text = String.Format("{0} {1}", copro.nom.Trim(), copro.prenom);
+                    tbLibCopro.Text = $"{copro.nom.Trim()} {copro.prenom}";
             }
         }
 
@@ -330,7 +275,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
 
         private void tbNature_Validating(object sender, CancelEventArgs e)
         {
-            NatureEntite nature = NatureController.getController().getEntiteFromField("reference", tbNature.Text);
+            var nature = NatureController.getController().getEntiteFromField("reference", tbNature.Text);
             if (nature != null)
             {
                 tbLibNature.Text = nature.nom;
@@ -343,13 +288,13 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                NpgsqlTransaction trx = Database.BeginTransaction();
+                var trx = Database.BeginTransaction();
                 try
                 {
                     foreach (DataGridViewRow rowGrid in dataGridView.SelectedRows)
                     {
-                        DataRowView row = (DataRowView)rowGrid.DataBoundItem;
-                        OperationEntite operation = OperationController.getController().getEntiteById(row["id"].ToString());
+                        var row = (DataRowView)rowGrid.DataBoundItem;
+                        var operation = OperationController.getController().getEntiteById(row["id"].ToString());
                         if (operation != null)
                         {
                             operation.statut = (int)GlobalConstantes.StatutOperation.Supprime;
@@ -372,14 +317,14 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                NpgsqlTransaction trx = Database.BeginTransaction();
+                var trx = Database.BeginTransaction();
 
                 try
                 {
                     foreach (DataGridViewRow rowGrid in dataGridView.SelectedRows)
                     {
-                        DataRowView row = (DataRowView)rowGrid.DataBoundItem;
-                        OperationEntite operation = OperationController.getController().getEntiteById(row["id"].ToString());
+                        var row = (DataRowView)rowGrid.DataBoundItem;
+                        var operation = OperationController.getController().getEntiteById(row["id"].ToString());
                         if (operation != null)
                         {
                             operation.saisie_id = entite.id;

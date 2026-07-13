@@ -25,7 +25,7 @@ namespace Gerance.Formulaires.Natures
         }
         protected override void ShowFicheForm(string entite_id)
         {
-            NatureFicheForm form = new NatureFicheForm(entite_id);
+            var form = new NatureFicheForm(entite_id);
             ShowForm(form);
         }
 

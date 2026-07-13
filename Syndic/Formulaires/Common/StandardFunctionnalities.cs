@@ -9,8 +9,8 @@ namespace EspaceSyndic.Formulaires.Common
 
         public static string GetKeyPressText(string keyValue)
         {
-            string keyString = "";
-            DataRow row = ParametresDB.get("KEY_CODE", keyValue);
+            var keyString = "";
+            var row = ParametresDB.get("KEY_CODE", keyValue);
             if (row != null)
                 keyString = row["param_1"].ToString();
             return keyString;
@@ -19,10 +19,10 @@ namespace EspaceSyndic.Formulaires.Common
         {
             if (sender is TextBox)
             {
-                string keyText = GetKeyPressText(e.KeyCode.ToString());
+                var keyText = GetKeyPressText(e.KeyCode.ToString());
                 if (keyText != "")
                 {
-                    TextBox tb = ((TextBox)sender);
+                    var tb = ((TextBox)sender);
                     if ( bClear )
                         tb.Text = keyText;
                     else

@@ -24,8 +24,8 @@ namespace Gerance.Formulaires
         {
             Text = Text + " 1.0.0.47";
             btnCancel.Width = 0;
-            string lbl1 = ParametresDB.getParam1("PRESENTATION", "LABEL1", "AGENCE");
-            string lbl2 = ParametresDB.getParam1("PRESENTATION", "LABEL2", "BOURGOGNE");
+            var lbl1 = ParametresDB.getParam1("PRESENTATION", "LABEL1", "AGENCE");
+            var lbl2 = ParametresDB.getParam1("PRESENTATION", "LABEL2", "BOURGOGNE");
 
             label2.Text = lbl1;
             label3.Text = lbl2;
@@ -45,14 +45,14 @@ namespace Gerance.Formulaires
 
         private void GenericForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Form form = (Form)sender;
-            String className = sender.GetType().ToString();
+            var form = (Form)sender;
+            var className = sender.GetType().ToString();
             if (dicoForms.ContainsKey(className))
             {
                 dicoForms.Remove(className);
                 if (form is ICommonChangedListener)
                 {
-                    ICommonChangedListener f = (ICommonChangedListener)form;
+                    var f = (ICommonChangedListener)form;
                     syndicEvent.Changed -= f.ChangedReference;
                 }
             }
@@ -60,11 +60,11 @@ namespace Gerance.Formulaires
         }
         private void GenericBtnCancel_Click(object sender, EventArgs e)
         {
-            Button btn = (Button)sender;
+            var btn = (Button)sender;
 
             if (btn.Parent != null)
             {
-                Control parent = (Control)btn.Parent;
+                var parent = (Control)btn.Parent;
                 while (parent != null)
                 {
                     parent = parent.Parent;
@@ -81,13 +81,13 @@ namespace Gerance.Formulaires
                 Form form = null;
                 if (!dicoForms.ContainsKey(className))
                 {
-                    ObjectHandle obj = Activator.CreateInstance("Gerance", className);
+                    var obj = Activator.CreateInstance("Gerance", className);
                     form = (Form)obj.Unwrap();
                     dicoForms.Add(className, form);
                     form.FormClosed += new FormClosedEventHandler(GenericForm_FormClosed);
                     if (form is ICommonChangedListener)
                     {
-                        ICommonChangedListener f = (ICommonChangedListener)form;
+                        var f = (ICommonChangedListener)form;
                         syndicEvent.Changed += new CommonChangedEventHandler(f.ChangedReference);
                     }
                 }
@@ -104,7 +104,7 @@ namespace Gerance.Formulaires
                 form.ShowIcon = true;
                 if (form.CancelButton != null)
                 {
-                    Button btn = (Button)form.CancelButton;
+                    var btn = (Button)form.CancelButton;
                     btn.Click += new EventHandler(GenericBtnCancel_Click); ;
                 }
                 form.Show();
@@ -123,7 +123,7 @@ namespace Gerance.Formulaires
 
         private void parametresToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DatabaseConfigForm form = new DatabaseConfigForm(GeranceApplication.CURRENT_APPLICATION);
+            var form = new DatabaseConfigForm(GeranceApplication.CURRENT_APPLICATION);
             try
             {
                 form.ShowDialog();
@@ -135,7 +135,7 @@ namespace Gerance.Formulaires
         }
         private void paramètresDeConnexionSyndicToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DatabaseSyndicConfigForm form = new DatabaseSyndicConfigForm(GeranceApplication.SYNDIC_APPLICATION);
+            var form = new DatabaseSyndicConfigForm(GeranceApplication.SYNDIC_APPLICATION);
             try
             {
                 form.ShowDialog();
@@ -164,7 +164,7 @@ namespace Gerance.Formulaires
 
         private void parametresGenerauxToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ConfigParamForm form = new ConfigParamForm();
+            var form = new ConfigParamForm();
             try
             {
                 form.ShowDialog();
@@ -280,12 +280,12 @@ namespace Gerance.Formulaires
         {
             try
             {
-                foreach (KeyValuePair<String, Form> item in dicoForms)
+                foreach (var item in dicoForms)
                 {
                     item.Value.Hide();
                 }
                 Hide();
-                LogonForm logonForm = new LogonForm();
+                var logonForm = new LogonForm();
                 logonForm.ShowDialog();
                 if ( BaseApplication.userConnected != null)
                     Show();
@@ -311,7 +311,7 @@ namespace Gerance.Formulaires
 
         private void GeranceMainForm_Activated(object sender, EventArgs e)
         {
-            foreach (KeyValuePair<String, Form> item in dicoForms)
+            foreach (var item in dicoForms)
             {
                 item.Value.Show();
             }
@@ -349,7 +349,7 @@ namespace Gerance.Formulaires
 
         private void aideStripMenuItem1_Click(object sender, EventArgs e)
         {
-            AideForm form = new AideForm();
+            var form = new AideForm();
             form.ShowDialog();
         }
 

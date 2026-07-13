@@ -32,25 +32,25 @@ namespace Gerance.Formulaires.Locataires
         }
         protected override void ShowFicheForm(string entite_id)
         {
-            LocataireFicheForm form = new LocataireFicheForm(entite_id);
+            var form = new LocataireFicheForm(entite_id);
             ShowForm(form);
         }
 
         private void btnFiltre_Click(object sender, EventArgs e)
         {
-            LocataireFindForm form = new LocataireFindForm();
-            DialogResult res = form.ShowDialog();
+            var form = new LocataireFindForm();
+            var res = form.ShowDialog();
             if (res == DialogResult.OK)
             {
-                LocataireEntite proprio = LocataireController.getController().getEntiteFromField("reference", form.reference);
-                LocataireFicheForm fiche = new LocataireFicheForm(proprio.id);
+                var proprio = LocataireController.getController().getEntiteFromField("reference", form.reference);
+                var fiche = new LocataireFicheForm(proprio.id);
                 fiche.ShowDialog();
             }
         }
         protected override void dataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            DataGridView dgv = (DataGridView)sender;
-            DataGridViewColumn col = dgv.Columns[e.ColumnIndex];
+            var dgv = (DataGridView)sender;
+            var col = dgv.Columns[e.ColumnIndex];
 
             try
             {

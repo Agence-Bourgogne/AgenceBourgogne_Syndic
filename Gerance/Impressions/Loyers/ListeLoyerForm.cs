@@ -22,7 +22,7 @@ namespace Gerance.Impressions.Loyers
         {
             label3.Visible = false;
             dtEdition.Visible = false;
-            DateTime dt = DateTime.Now;
+            var dt = DateTime.Now;
             dtDebut.Value = new DateTime(dt.Year, dt.Month, 1);
             dtFin.Value = dtDebut.Value.AddMonths(1).AddDays(-1);
         }
@@ -49,7 +49,7 @@ namespace Gerance.Impressions.Loyers
         {
             if (tbRefLocataire.Text == "")
                 return;
-            LocataireEntite locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
+            var locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
             if (locataire != null)
             {
                 tbRefLocataire.BackColor = Color.White;
@@ -62,15 +62,15 @@ namespace Gerance.Impressions.Loyers
 
         private void btnRapport_Click(object sender, EventArgs e)
         {
-            LocataireEntite locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
+            var locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
             if (locataire != null)
             {
                 reportViewer1.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-                string hdr_descr = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
-                string hdr_agence = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
+                var hdr_descr = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
+                var hdr_agence = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
 
 
-                ReportParameter[] parameters = new ReportParameter[]{
+                var parameters = new ReportParameter[]{
                     new ReportParameter("dateDebut", dtDebut.Value.ToShortDateString()),
                     new ReportParameter("dateFin", dtFin.Value.ToShortDateString()),
                     new ReportParameter("dateEdition", DateTime.Now.ToShortDateString()),
@@ -95,10 +95,10 @@ namespace Gerance.Impressions.Loyers
         }
         private void btnExport_Click(object sender, EventArgs e)
         {
-            LocataireEntite locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
+            var locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
             if (locataire != null)
             {
-                DataTable table = ReglementsController.getController().getReglementLocataire(locataire.id, dtDebut.Value, dtFin.Value);
+                var table = ReglementsController.getController().getReglementLocataire(locataire.id, dtDebut.Value, dtFin.Value);
                 BaseApplication.DataTableToExcel(table, getExportColsToHide());
             }
         }

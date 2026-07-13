@@ -27,19 +27,19 @@ namespace Gerance.Formulaires.AppelALoyer
         {
             DataTable table;
             table = QuittancesController.getController().getDetailQuittanceForImpression(quittance.id);
-            BindingSource detailQuittance = new BindingSource();
+            var detailQuittance = new BindingSource();
 
-            DataRow row = table.Rows[0];
+            var row = table.Rows[0];
             row["imm_adress"] = row["imm_adress"].ToString().Replace("\n", " ");
             detailQuittance.DataSource = table;
 
             reportViewer1.LocalReport.DataSources.Clear();
             reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("QuittanceLoyerLocataire", detailQuittance));
-            DateTime dtFin = new DateTime(quittance.date_quittance.Year, quittance.date_quittance.Month, 1).AddMonths(1).AddDays(-1);
-            string hdr_descr = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
-            string hdr_agence = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
-            string hdr_description_small = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION_SMALL");
-            ReportParameter[] parameters = new ReportParameter[]{
+            var dtFin = new DateTime(quittance.date_quittance.Year, quittance.date_quittance.Month, 1).AddMonths(1).AddDays(-1);
+            var hdr_descr = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
+            var hdr_agence = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
+            var hdr_description_small = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION_SMALL");
+            var parameters = new ReportParameter[]{
                     new ReportParameter("typeReport", "1"),
                     new ReportParameter("dateEdition", DateTime.Now.ToShortDateString()),
                     new ReportParameter("dateDebut", quittance.date_quittance.ToShortDateString()),

@@ -62,7 +62,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
 
         private void btnValid_Click(object sender, EventArgs e)
         {
-            LotDescriptionEntite lot = LotDescriptionController.getController().getLotFromRefImmeubleNumLot(tbRefImmeuble.Text, Convertir.ToInt(tbLot.Text));
+            var lot = LotDescriptionController.getController().getLotFromRefImmeubleNumLot(tbRefImmeuble.Text, Convertir.ToInt(tbLot.Text));
             if (lot == null)
             {
                 MessageBox.Show("Lot Invalide");
@@ -87,7 +87,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
 
         private void tbLot_Validating(object sender, CancelEventArgs e)
         {
-            LotDescriptionEntite lot = LotDescriptionController.getController().getLotFromRefImmeubleNumLot(tbRefImmeuble.Text, Convertir.ToInt(tbLot.Text));
+            var lot = LotDescriptionController.getController().getLotFromRefImmeubleNumLot(tbRefImmeuble.Text, Convertir.ToInt(tbLot.Text));
             tbLot.BackColor = Color.White;
             if (lot != null)
             {

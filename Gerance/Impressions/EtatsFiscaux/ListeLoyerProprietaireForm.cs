@@ -41,7 +41,7 @@ namespace Gerance.Impressions.EtatsFiscaux
             label3.Visible = false;
             dtEdition.Visible = false;
             btnExport.Visible = false;
-            DateTime dt = DateTime.Now;
+            var dt = DateTime.Now;
             dtDebut.Value = new DateTime(dt.Year -1 , 1, 1);
 //            dtFin.Value = dtDebut.Value.AddMonths(1).AddDays(-1);
             dtFin.Value = dtDebut.Value.AddYears(1).AddDays(-1);
@@ -50,7 +50,7 @@ namespace Gerance.Impressions.EtatsFiscaux
 
         private void tbRefProprietaire_Validating(object sender, CancelEventArgs e)
         {
-            ProprietaireEntite proprietaire = ProprietaireController.getController().getEntiteFromField("reference", tbRefProprietaire.Text);
+            var proprietaire = ProprietaireController.getController().getEntiteFromField("reference", tbRefProprietaire.Text);
             if ( proprietaire != null )
             {
                 tbRefProprietaire.BackColor = Color.White;
@@ -61,21 +61,21 @@ namespace Gerance.Impressions.EtatsFiscaux
 
         private void btnRapport_Click(object sender, EventArgs e)
         {
-            ProprietaireEntite proprietaire = ProprietaireController.getController().getEntiteFromField("reference", tbRefProprietaire.Text);
+            var proprietaire = ProprietaireController.getController().getEntiteFromField("reference", tbRefProprietaire.Text);
             if ( proprietaire != null )
             {
-                String NumLoyer = ParametresDB.getParam1("FISCAL", "REF LOYER", "211");
+                var NumLoyer = ParametresDB.getParam1("FISCAL", "REF LOYER", "211");
                 ;
                 reportViewer1.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-                TexteReleveFiscalForm form = new TexteReleveFiscalForm();
+                var form = new TexteReleveFiscalForm();
 
                 form.ShowDialog();
                 if (form.DialogResult != DialogResult.OK)
                     return;
-                string hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
-                string hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
+                var hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
+                var hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
 
-                ReportParameter[] parameters = new ReportParameter[]{
+                var parameters = new ReportParameter[]{
                     new ReportParameter("dateEdition", DateTime.Now.ToShortDateString()),
                     new ReportParameter("dateDeb", dtDebut.Value.ToShortDateString()),
                     new ReportParameter("dateFin", dtFin.Value.ToShortDateString()),

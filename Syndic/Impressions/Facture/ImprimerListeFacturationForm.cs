@@ -56,28 +56,28 @@ namespace EspaceSyndic.Impressions.Facture
             {
                 liasses.Add(cbLiasse.SelectedValue.ToString());
             }
-            string hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
-            string hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
+            var hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
+            var hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
 
 
-            ReportParameter[] parameters = new ReportParameter[]{
+            var parameters = new ReportParameter[]{
                 new ReportParameter("Header_Description", hdr_descr),
                 new ReportParameter("Header_Agence", hdr_agence),
             };
 
             reportViewer1.LocalReport.SetParameters(parameters);
-            DataTable source = SaisieFactureController.getController().getMasterListeFacturation(liasses);
+            var source = SaisieFactureController.getController().getMasterListeFacturation(liasses);
             facturation_hdr_descrBindingSource.DataSource = source;
             reportViewer1.RefreshReport();
         }
 
         void SubreportProcessingEventHandler(object sender, SubreportProcessingEventArgs e)
         {
-            string codereg = e.Parameters[0].Values[0];
-            string nom_four = e.Parameters["nom_four"].Values[0];
-            string reference = e.Parameters["reference"].Values[0];
+            var codereg = e.Parameters[0].Values[0];
+            var nom_four = e.Parameters["nom_four"].Values[0];
+            var reference = e.Parameters["reference"].Values[0];
             Console.WriteLine(nom_four);
-            DataTable source = SaisieFactureController.getController().getListeFacturation(liasses, codereg, reference, nom_four);
+            var source = SaisieFactureController.getController().getListeFacturation(liasses, codereg, reference, nom_four);
             e.DataSources.Add(new ReportDataSource("facturation_descr", source));
         }
 

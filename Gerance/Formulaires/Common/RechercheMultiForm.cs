@@ -48,7 +48,7 @@ namespace Gerance.Formulaires.Common
             dataGridView.DataSource = BienController.getController().FindElement(tbReference.Text, tbRefProprio.Text, tbRefLocataire.Text, tbNomBien.Text, tbNomProprio.Text, tbNomLoca.Text);
             if (dataGridView.DataSource != null)
             {
-                DataGridViewColumnCollection cols = dataGridView.Columns;
+                var cols = dataGridView.Columns;
                 cols["b_id"].Visible = false;
                 cols["p_id"].Visible = false;
                 cols["l_id"].Visible = false;
@@ -63,12 +63,12 @@ namespace Gerance.Formulaires.Common
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                DataRowView row = (DataRowView) dataGridView.SelectedRows[0].DataBoundItem;
-                string reference = row["b_id"].ToString();
-                BienEntite bien = BienController.getController().getEntiteById(reference);
+                var row = (DataRowView) dataGridView.SelectedRows[0].DataBoundItem;
+                var reference = row["b_id"].ToString();
+                var bien = BienController.getController().getEntiteById(reference);
                 if (bien != null)
                 {
-                    BienFicheForm form = new BienFicheForm(bien.id);
+                    var form = new BienFicheForm(bien.id);
                     form.ShowDialog();
                 }
             }
@@ -78,12 +78,12 @@ namespace Gerance.Formulaires.Common
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
-                string reference = row["p_id"].ToString();
-                ProprietaireEntite proprio = ProprietaireController.getController().getEntiteById(reference);
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var reference = row["p_id"].ToString();
+                var proprio = ProprietaireController.getController().getEntiteById(reference);
                 if (proprio != null)
                 {
-                    ProprietaireFicheForm form = new ProprietaireFicheForm(proprio.id);
+                    var form = new ProprietaireFicheForm(proprio.id);
                     form.ShowDialog();
                 }
             }
@@ -93,12 +93,12 @@ namespace Gerance.Formulaires.Common
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
-                string reference = row["l_id"].ToString();
-                LocataireEntite locataire = LocataireController.getController().getEntiteById(reference);
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var reference = row["l_id"].ToString();
+                var locataire = LocataireController.getController().getEntiteById(reference);
                 if (locataire != null)
                 {
-                    LocataireFicheForm form = new LocataireFicheForm(locataire.id);
+                    var form = new LocataireFicheForm(locataire.id);
                     form.ShowDialog();
                 }
             }
@@ -111,7 +111,7 @@ namespace Gerance.Formulaires.Common
 
         protected DialogResult ShowFindForm(CommonFindForm form, Control tbResult)
         {
-            DialogResult res = form.ShowDialog();
+            var res = form.ShowDialog();
             if (res == DialogResult.OK)
                 tbResult.Text = form.reference;
             return res;

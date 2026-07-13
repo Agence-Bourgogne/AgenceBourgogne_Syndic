@@ -28,7 +28,7 @@ namespace EspaceSyndic.Impressions.Reglement
 
         private void btnRapport_Click(object sender, EventArgs e)
         {
-            string liasse_id = (string) cbLiasse.SelectedValue;
+            var liasse_id = (string) cbLiasse.SelectedValue;
             //string nature_id = "899BE15C5ABA4476BF9F29B9C3D0C595";
             // TODO Peux etre donner la possibilite d'imprimer des liasses Non Validees
             if (liasse_id == null || liasse_id == "")
@@ -40,11 +40,11 @@ namespace EspaceSyndic.Impressions.Reglement
 
         void SubreportProcessingEventHandler(object sender, SubreportProcessingEventArgs e)
         {
-            string liasse_id = e.Parameters[0].Values[0];
-            string nature_id = e.Parameters[1].Values[0];
-            string comptebanque = e.Parameters[2].Values[0];
+            var liasse_id = e.Parameters[0].Values[0];
+            var nature_id = e.Parameters[1].Values[0];
+            var comptebanque = e.Parameters[2].Values[0];
 
-            DataTable source = SaisieReglementController.getController().GetListeReglementValideFromCompteBanque(liasse_id, nature_id, comptebanque);
+            var source = SaisieReglementController.getController().GetListeReglementValideFromCompteBanque(liasse_id, nature_id, comptebanque);
             e.DataSources.Add(new ReportDataSource("detail_operation", source));
         }
 

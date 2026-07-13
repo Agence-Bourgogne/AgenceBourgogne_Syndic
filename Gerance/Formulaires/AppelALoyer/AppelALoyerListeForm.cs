@@ -21,11 +21,11 @@ namespace Gerance.Formulaires.AppelALoyer
         protected override void InitializeCombos()
         {
 
-            DateTime dt = DateTime.Parse("01/01/2000");
+            var dt = DateTime.Parse("01/01/2000");
 
-            for (int i = 0; i < 12; i++)
+            for (var i = 0; i < 12; i++)
             {
-                String[] lDate = dt.ToLongDateString().Split(' ');
+                var lDate = dt.ToLongDateString().Split(' ');
                 cbMonth.Items.Add(lDate[2]);
                 dt = dt.AddMonths(1);
             }
@@ -70,7 +70,7 @@ namespace Gerance.Formulaires.AppelALoyer
 
         protected override void FillDataGrid()
         {
-            int iMonth = -1;
+            var iMonth = -1;
             if (ckLoyer.Checked)
                 iMonth = cbMonth.SelectedIndex + 1;
 
@@ -78,7 +78,7 @@ namespace Gerance.Formulaires.AppelALoyer
             
             if (dataGridView.DataSource != null)
             {
-                DataGridViewColumnCollection cols = dataGridView.Columns;
+                var cols = dataGridView.Columns;
                 cols["locataire"].MinimumWidth = 120;
                 cols["proprietaire"].MinimumWidth = 120;
                 cols["ref_immeuble"].Width = 50;
@@ -101,7 +101,7 @@ namespace Gerance.Formulaires.AppelALoyer
 
         protected override void ShowFicheForm(string entite_id)
         {
-            AppelALoyerFicheForm form = new AppelALoyerFicheForm(entite_id, dataGridView);
+            var form = new AppelALoyerFicheForm(entite_id, dataGridView);
             form.ShowDialog();
             FillDataGrid();
         }
@@ -127,7 +127,7 @@ namespace Gerance.Formulaires.AppelALoyer
         List<string> appelPrinted = new List<string>();
         private void btnGrid_Click(object sender, EventArgs e)
         {
-            AppelALoyerImpressionForm form = new AppelALoyerImpressionForm();
+            var form = new AppelALoyerImpressionForm();
             if (DialogResult.OK == form.ShowDialog())
             {
                 dataGridView.Visible = false;
@@ -144,15 +144,15 @@ namespace Gerance.Formulaires.AppelALoyer
                     reportViewer1.LocalReport.ReportEmbeddedResource = "Gerance.Formulaires.AppelALoyer.QuittanceLoyerMasterReport.rdlc";
                 }
 
-                string hdr_descr = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
-                string hdr_agence = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
-                string hdr_description_small = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION_SMALL");
+                var hdr_descr = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
+                var hdr_agence = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
+                var hdr_description_small = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION_SMALL");
 
-                DateTime dtFin = dateFin.Value;
+                var dtFin = dateFin.Value;
                 if (cbType.SelectedIndex == 2)
                     dtFin = dateFinTrimestre.Value;
                 
-                ReportParameter[] parameters = new ReportParameter[]{
+                var parameters = new ReportParameter[]{
                     new ReportParameter("typeReport", typeReport),
                     new ReportParameter("dateEdition", DateTime.Now.ToShortDateString()),
                     new ReportParameter("dateDebut", dateDebut.Value.ToShortDateString()),
@@ -164,7 +164,7 @@ namespace Gerance.Formulaires.AppelALoyer
 
                 reportViewer1.LocalReport.SetParameters(parameters);
                 reportViewer1.LocalReport.DataSources.Clear();
-                BindingSource bind = new BindingSource();
+                var bind = new BindingSource();
                 bind.DataSource = dataGridView.DataSource;
                 reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("list_biens", bind));
                 try
@@ -182,14 +182,14 @@ namespace Gerance.Formulaires.AppelALoyer
         {
             if (e.Parameters.Count > 0)
             {
-                string bien_id = e.Parameters["bien_id"].Values[0];
-                string typeReport = e.Parameters["typeReport"].Values[0];
+                var bien_id = e.Parameters["bien_id"].Values[0];
+                var typeReport = e.Parameters["typeReport"].Values[0];
 
-                BindingSource detailQuittance = new BindingSource();
+                var detailQuittance = new BindingSource();
                 DataTable table;
                 if ( typeReport == "1")
                 {
-                    DateTime dtDeb = DateTime.Parse(e.Parameters["dateDebut"].Values[0]);
+                    var dtDeb = DateTime.Parse(e.Parameters["dateDebut"].Values[0]);
                     //e.Parameters["dateFin"].Values[0] = dtDeb.AddMonths(3).ToShortDateString();
                     
                     table = BienController.getController().getDetailQuittanceFromQuittance(bien_id, dtDeb);
@@ -200,14 +200,14 @@ namespace Gerance.Formulaires.AppelALoyer
                 }
                 else
                 {
-                    DateTime dtDeb = DateTime.Parse(e.Parameters["dateDebut"].Values[0]);
+                    var dtDeb = DateTime.Parse(e.Parameters["dateDebut"].Values[0]);
                     table = BienController.getController().getDetailAppelDeLoyer(bien_id, dtDeb);
                     if (!appelPrinted.Contains(bien_id))
                         appelPrinted.Add(bien_id);
                 }
 
 
-                DataRow row = table.Rows[0];
+                var row = table.Rows[0];
                 row["imm_adress"] = row["imm_adress"].ToString().Replace("\n", " ");
                 detailQuittance.DataSource = table; //BienController.getController().getDetailAppelDeLoyer(bien_id);
 
@@ -237,7 +237,7 @@ namespace Gerance.Formulaires.AppelALoyer
         }
         private void UpdateDossiers()
         {
-            UpdateDossierForm form = new UpdateDossierForm();
+            var form = new UpdateDossierForm();
             form.ShowDialog();
         }
 
@@ -268,8 +268,8 @@ namespace Gerance.Formulaires.AppelALoyer
 
         private void btnExport_Click(object sender, EventArgs e)
         {
-            List<string> colsToHide = new List<string> { "id" };
-            object obj = BaseApplication.DataGridToExcel(dataGridView, colsToHide);
+            var colsToHide = new List<string> { "id" };
+            var obj = BaseApplication.DataGridToExcel(dataGridView, colsToHide);
 
             BaseApplication.ColumnFormula(obj, 9, "=F{0}+G{0}+H{0}", "Total", 1);
             BaseApplication.ColumnFormula(obj, 10,"=I{0}*3/100", "GUL", 1);
@@ -289,8 +289,8 @@ namespace Gerance.Formulaires.AppelALoyer
             if ( bPrintedQuittance)
                 if (quittancePrinted.Count > 0)
                 {
-                    WorkflowEntite workflow = WorkflowController.getController().WriteRecord(REFERENCE_TACHE + 1, dateDebut.Value);
-                    foreach (string bien_id in quittancePrinted)
+                    var workflow = WorkflowController.getController().WriteRecord(REFERENCE_TACHE + 1, dateDebut.Value);
+                    foreach (var bien_id in quittancePrinted)
                     {
                         WorkflowDetailController.getController().WriteRecord(workflow, bien_id, "Impression");
                     }
@@ -299,8 +299,8 @@ namespace Gerance.Formulaires.AppelALoyer
             if ( bPrintedAppel)
                 if (appelPrinted.Count > 0)
                 {
-                    WorkflowEntite workflow = WorkflowController.getController().WriteRecord(REFERENCE_TACHE , dateDebut.Value);
-                    foreach (string bien_id in appelPrinted)
+                    var workflow = WorkflowController.getController().WriteRecord(REFERENCE_TACHE , dateDebut.Value);
+                    foreach (var bien_id in appelPrinted)
                     {
                         WorkflowDetailController.getController().WriteRecord(workflow, bien_id, "Impression");
                     }
@@ -315,7 +315,7 @@ namespace Gerance.Formulaires.AppelALoyer
 
         private void dateDebut_Validating(object sender, CancelEventArgs e)
         {
-            DateTime dt = dateDebut.Value;
+            var dt = dateDebut.Value;
             dateFin.Value = dt.AddMonths(1).AddDays(-1);
             dateFinTrimestre.Value = dt.AddMonths(3).AddDays(-1);
         }

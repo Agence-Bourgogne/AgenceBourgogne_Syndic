@@ -22,14 +22,14 @@ namespace SyndicData.Controller
 
         public AideImmeubleEntite getAideImmeuble ( string immeuble_id, string code) 
         {
-            string cmd = String.Format("select * from {0} where immeuble_id = @immeuble_id and code = @code", getSchemaTable());
+            var cmd = $"select * from {getSchemaTable()} where immeuble_id = @immeuble_id and code = @code";
 
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
             {
                 new NpgsqlParameter("@immeuble_id", immeuble_id),
                 new NpgsqlParameter("@code", code)
             };
-            DataTable table = getResultSQL(cmd, parameters);
+            var table = getResultSQL(cmd, parameters);
             if ( table != null)
                 if (table.Rows.Count > 0)
                     return new AideImmeubleEntite(table.Rows[0]);

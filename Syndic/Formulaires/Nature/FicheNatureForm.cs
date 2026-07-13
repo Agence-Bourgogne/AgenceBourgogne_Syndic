@@ -57,7 +57,7 @@ namespace EspaceSyndic.Formulaires.Nature
         {
             if (bShowMessage)
             {
-                DialogResult result = MessageBox.Show("Des modifications on été apportéees\nVoulez-vous les enregistrer",
+                var result = MessageBox.Show("Des modifications on été apportéees\nVoulez-vous les enregistrer",
                     "", MessageBoxButtons.YesNoCancel);
                 if (result == DialogResult.Cancel)
                     return false;
@@ -94,7 +94,7 @@ namespace EspaceSyndic.Formulaires.Nature
 
             try
             {
-                NatureEntite newEntite = controller.getEntite(where);
+                var newEntite = controller.getEntite(where);
                 if (newEntite != null)
                     setFicheValues(newEntite);
             }
@@ -111,11 +111,11 @@ namespace EspaceSyndic.Formulaires.Nature
 
         protected void btnPrev_Click(object sender, EventArgs e)
         {
-            getNewEntite(String.Format("where reference < '{0}' order by reference desc", entite.reference), "Début de liste atteint");
+            getNewEntite($"where reference < '{entite.reference}' order by reference desc", "Début de liste atteint");
         }
         protected void btnNext_Click(object sender, EventArgs e)
         {
-            getNewEntite(String.Format("where reference > '{0}' order by reference ", entite.reference), "Fin de liste atteinte");
+            getNewEntite($"where reference > '{entite.reference}' order by reference ", "Fin de liste atteinte");
         }
         protected void btnLast_Click(object sender, EventArgs e)
         {
@@ -151,7 +151,7 @@ namespace EspaceSyndic.Formulaires.Nature
 
         private void lblReference_Click(object sender, EventArgs e)
         {
-            FindNatureForm form = new FindNatureForm(tbRef);
+            var form = new FindNatureForm(tbRef);
             if (DialogResult.Cancel != form.ShowDialog())
             {
                 entite = controller.getEntiteFromField("reference", tbRef.Text);

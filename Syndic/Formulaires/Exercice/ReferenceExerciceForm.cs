@@ -58,7 +58,7 @@ namespace EspaceSyndic.Formulaires.Exercice
         {
             bLoading = true;
             dataGridView.DataSource = ExerciceComptableController.getController().getListExerciceFromImmeuble(exercice.immeuble_id);
-            DataGridViewColumnCollection cols = dataGridView.Columns;
+            var cols = dataGridView.Columns;
             cols["id"].Visible = false;
             cols["budget_id"].Visible = false;
             cols["statut"].Visible = false;
@@ -69,7 +69,7 @@ namespace EspaceSyndic.Formulaires.Exercice
             dataGridView.ClearSelection();
             foreach (DataGridViewRow rowGrid in dataGridView.Rows)
             {
-                DataRowView row = (DataRowView) rowGrid.DataBoundItem;
+                var row = (DataRowView) rowGrid.DataBoundItem;
                 if (row["id"].ToString() == exercice.id)
                 {
                     rowGrid.Selected = true;
@@ -98,7 +98,7 @@ namespace EspaceSyndic.Formulaires.Exercice
         }
         private bool UpdateExercice()
         {
-            bool bResult = false;
+            var bResult = false;
 
             if (exercice == null)
                 exercice = new ExerciceComptableEntite();
@@ -108,7 +108,7 @@ namespace EspaceSyndic.Formulaires.Exercice
             exercice.date_fin = dtFin.Value;
             bResult = ExerciceComptableController.getController().InsertOrUpdate(exercice);
 
-            ImmeubleEntite immeuble = ImmeubleController.getController().getEntiteById(exercice.immeuble_id);
+            var immeuble = ImmeubleController.getController().getEntiteById(exercice.immeuble_id);
             if (immeuble != null)
             {
                 immeuble.datecloture = exercice.date_fin;
@@ -119,12 +119,12 @@ namespace EspaceSyndic.Formulaires.Exercice
 
         private void supprimerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
-            ExerciceComptableEntite entite = ExerciceComptableController.getController().getEntiteById(row["id"].ToString());
+            var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+            var entite = ExerciceComptableController.getController().getEntiteById(row["id"].ToString());
 
             if ( entite != null )
             {
-                int statut = Convertir.ToInt(entite.statut);
+                var statut = Convertir.ToInt(entite.statut);
                 if (statut == (int) GlobalConstantes.StatutExercice.Clos)
                 {
                     MessageBox.Show("Exercice Cloturé impossible de le supprimer");
@@ -139,8 +139,8 @@ namespace EspaceSyndic.Formulaires.Exercice
         {
             if (!bLoading && dataGridView.SelectedRows.Count > 0 )
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
-                ExerciceComptableEntite entite = ExerciceComptableController.getController().getEntiteById(row["id"].ToString());
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var entite = ExerciceComptableController.getController().getEntiteById(row["id"].ToString());
                 tbReference.Text = entite.reference;
                 dtDeb.Value = entite.date_deb;
                 dtFin.Value = entite.date_fin;
@@ -151,7 +151,7 @@ namespace EspaceSyndic.Formulaires.Exercice
         {
             if (!bLoading && dataGridView.SelectedRows.Count > 0)
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
                 exercice = ExerciceComptableController.getController().getEntiteById(row["id"].ToString());
                 UpdateExercice();
                 fillDataGrid();

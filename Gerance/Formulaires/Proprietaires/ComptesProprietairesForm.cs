@@ -32,15 +32,15 @@ namespace Gerance.Formulaires.Proprietaires
         {
             decimal solde = 0;
 
-            DataView list = (DataView)source.List;
+            var list = (DataView)source.List;
             foreach (DataRowView rowView in list)
             {
-                DataRow row = rowView.Row;
+                var row = rowView.Row;
                 decimal montant = 0;
                 if ( type == 1)
                 {
-                    decimal credit = (decimal)row["credit"];
-                    decimal debit = (decimal)row["debit"];
+                    var credit = (decimal)row["credit"];
+                    var debit = (decimal)row["debit"];
 
                     montant = credit - debit;
 
@@ -68,35 +68,35 @@ namespace Gerance.Formulaires.Proprietaires
         {
             foreach (DataRow row in table.Rows)
             {
-                string reference = row["p_reference"].ToString();
+                var reference = row["p_reference"].ToString();
                 if (!list.Contains(reference))
                     list.Add(reference);
             }
         }
         private void btnRapport_Click(object sender, EventArgs e)
         {
-            TexteReleveForm form = new TexteReleveForm();
+            var form = new TexteReleveForm();
             DataTable hdr;
 
             form.ShowDialog();
             if (form.DialogResult != DialogResult.OK)
                 return;
-            string proprio_id = "";
+            var proprio_id = "";
 
             if (tbRefProprio.Text != "")
             {
-                ProprietaireEntite proprio = ProprietaireController.getController().getEntiteFromField("reference", tbRefProprio.Text);
+                var proprio = ProprietaireController.getController().getEntiteFromField("reference", tbRefProprio.Text);
                 if (proprio != null)
                     proprio_id = proprio.id;
             }
             
-            List<String> idsProprio = new List<string>();
+            var idsProprio = new List<string>();
 
             reportViewer1.LocalReport.DataSources.Clear();
-            DataTable reglements = ReglementsController.getController().getReleveCompteProprio(dtDebut.Value, dtFin.Value, proprio_id);
+            var reglements = ReglementsController.getController().getReleveCompteProprio(dtDebut.Value, dtFin.Value, proprio_id);
             releve_compte.DataSource = reglements;
-            DataTable factures = FacturesController.getController().getDeductionProprio(dtDebut.Value, dtFin.Value, proprio_id);
-            DataTable soldes = FacturesController.getController().getSoldeProprio(proprio_id);
+            var factures = FacturesController.getController().getDeductionProprio(dtDebut.Value, dtFin.Value, proprio_id);
+            var soldes = FacturesController.getController().getSoldeProprio(proprio_id);
 
             factures.Merge(soldes);
             //soldes.Merge(factures);
@@ -127,9 +127,9 @@ namespace Gerance.Formulaires.Proprietaires
             //    releve_compte.DataSource = reglements;
             //    hdr = ReglementsController.getController().getHdrReleveCompteProprioVide(dtDebut.Value, dtFin.Value, tbRefProprio.Text);
             //}
-            string hdr_descr = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
-            string hdr_agence = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
-            ReportParameter[] parameters = new ReportParameter[]{
+            var hdr_descr = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
+            var hdr_agence = GeranceData.Common.ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
+            var parameters = new ReportParameter[]{
                 new ReportParameter("texte_releve", form.tbText.Text),
                 new ReportParameter("dateEdition", dtEdition.Value.ToShortDateString()),
                 new ReportParameter("Header_Description", hdr_descr),
@@ -158,22 +158,22 @@ namespace Gerance.Formulaires.Proprietaires
             reportViewer1.LocalReport.SubreportProcessing += new SubreportProcessingEventHandler(SubreportProcessingEventHandler);
             reportViewer1.PrintingBegin += reportViewer1_PrintingBegin;
 
-            DateTime dt = DateTime.Now;
+            var dt = DateTime.Now;
             dtDebut.Value = dt.AddDays(1 - dt.Day); 
         }
         void SubreportProcessingEventHandler(object sender, SubreportProcessingEventArgs e)
         {
-            string refProprio = e.Parameters[0].Values[0];
+            var refProprio = e.Parameters[0].Values[0];
             e.DataSources.Clear();
-            releve_compte.Filter = String.Format("p_reference = '{0}'", refProprio);
-            facture_compte.Filter = String.Format("p_reference = '{0}'", refProprio);
+            releve_compte.Filter = $"p_reference = '{refProprio}'";
+            facture_compte.Filter = $"p_reference = '{refProprio}'";
             facture_compte.Sort = "date_facture";
-            hdr_proprio.Filter = String.Format("p_reference = '{0}'", refProprio);
+            hdr_proprio.Filter = $"p_reference = '{refProprio}'";
 
             Console.WriteLine(refProprio);
 
-            decimal loyers = getSomme(releve_compte, 0);
-            decimal deduction = getSomme(facture_compte, 1);
+            var loyers = getSomme(releve_compte, 0);
+            var deduction = getSomme(facture_compte, 1);
             soldes.Add(new SoldeProprio(refProprio, loyers, deduction));
             
             e.DataSources.Add(new ReportDataSource("hdr_compte_proprio", hdr_proprio));
@@ -187,7 +187,7 @@ namespace Gerance.Formulaires.Proprietaires
         }
         private void UpdateSoldeProprio()
         {
-            UpdateSoldeProprietairesForm form = new UpdateSoldeProprietairesForm(dtDebut.Value, dtFin.Value, tbRefProprio.Text);
+            var form = new UpdateSoldeProprietairesForm(dtDebut.Value, dtFin.Value, tbRefProprio.Text);
             form.ShowDialog();
         }
         private void tbRefProprio_KeyDown(object sender, KeyEventArgs e)
@@ -205,7 +205,7 @@ namespace Gerance.Formulaires.Proprietaires
             tbRefProprio.BackColor = Color.White;
             if (tbRefProprio.Text != "")
             {
-                ProprietaireEntite proprio = ProprietaireController.getController().getEntiteFromField("reference", tbRefProprio.Text);
+                var proprio = ProprietaireController.getController().getEntiteFromField("reference", tbRefProprio.Text);
                 if (proprio == null)
                     tbRefProprio.BackColor = Color.Red;
             }

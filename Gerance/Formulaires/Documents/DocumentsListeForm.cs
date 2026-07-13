@@ -45,10 +45,10 @@ namespace Gerance.Formulaires.Documents
 
         private void SavePictureOnDB(object sender, EventArgs e)
         {
-            string locataire_id = "";
-            string document_type = cbTypeDoc.SelectedValue.ToString();
+            var locataire_id = "";
+            var document_type = cbTypeDoc.SelectedValue.ToString();
 
-            LocataireEntite locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
+            var locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
             if (locataire == null)
             {
                 MessageBox.Show("reference Locataire Invalide");
@@ -56,10 +56,10 @@ namespace Gerance.Formulaires.Documents
 
             }
             locataire_id = locataire.id;
-            DocumentEntite document = new DocumentEntite();
+            var document = new DocumentEntite();
             if (dataGridView.SelectedRows.Count > 0)
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
                 if (row != null)
                     document = DocumentController.getController().getEntiteById(row["id"].ToString());
             }
@@ -76,7 +76,7 @@ namespace Gerance.Formulaires.Documents
             {
                 foreach (DataGridViewRow rowGrid in dataGridView.Rows)
                 {
-                    DataRowView row = (DataRowView)rowGrid.DataBoundItem;
+                    var row = (DataRowView)rowGrid.DataBoundItem;
                     if (row["id"].ToString() == document.id)
                     {
                         rowGrid.Selected = true;
@@ -93,7 +93,7 @@ namespace Gerance.Formulaires.Documents
         }
         protected virtual DialogResult ShowFindForm(CommonFindForm form, Control tbResult)
         {
-            DialogResult res = form.ShowDialog();
+            var res = form.ShowDialog();
             if (res == DialogResult.OK)
                 tbResult.Text = form.reference;
             return res;
@@ -120,7 +120,7 @@ namespace Gerance.Formulaires.Documents
             tbRefLocataire.BackColor = Color.White;
             if ( tbRefLocataire.Text != "")
             {
-                LocataireEntite locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
+                var locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
                 if (locataire == null)
                     tbRefLocataire.BackColor = Color.Red;
                 else
@@ -138,11 +138,11 @@ namespace Gerance.Formulaires.Documents
         private void FillDataGrid()
         {
             bLoading = true;
-            string locataire_id = "";
-            string document_type = cbTypeDoc.SelectedValue.ToString();
+            var locataire_id = "";
+            var document_type = cbTypeDoc.SelectedValue.ToString();
             if ( tbRefLocataire.Text != "")
             {
-                LocataireEntite locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
+                var locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
                 if (locataire != null)
                     locataire_id = locataire.id;
             }
@@ -150,7 +150,7 @@ namespace Gerance.Formulaires.Documents
             dataGridView.DataSource = DocumentController.getController().getDocumentsListe( locataire_id, document_type);
             if (dataGridView.DataSource != null)
             {
-                DataGridViewColumnCollection cols = dataGridView.Columns;
+                var cols = dataGridView.Columns;
                 HideAndResizeColumns(cols);
                 ControlsWindows.ToTitleCase(cols);
                 OrderColumns();
@@ -164,7 +164,7 @@ namespace Gerance.Formulaires.Documents
                 return;
             foreach (DataGridViewColumn col in dataGridView.Columns)
             {
-                int index = (int)CommonRegistry.getRegistryValue(regKey, col.Name, -1);
+                var index = (int)CommonRegistry.getRegistryValue(regKey, col.Name, -1);
                 if (index != -1)
                     col.DisplayIndex = index;
             }
@@ -178,7 +178,7 @@ namespace Gerance.Formulaires.Documents
                 DocumentEntite doc = null;
                 if (dataGridView.SelectedRows.Count > 0)
                 {
-                    DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                    var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
                     if (row != null)
                     {
                         doc = DocumentController.getController().getEntiteById(row["id"].ToString());

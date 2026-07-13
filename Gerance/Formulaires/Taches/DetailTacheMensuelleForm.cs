@@ -58,7 +58,7 @@ namespace Gerance.Formulaires.Taches
             dataGridView.DataSource = WorkflowDetailController.getController().getListeDetailFacturesProprietaires(entite_id);
             if (dataGridView.DataSource != null)
             {
-                DataGridViewColumnCollection cols = dataGridView.Columns;
+                var cols = dataGridView.Columns;
                 cols["id"].Visible = false;
                 cols["reference"].Width = 60;
                 cols["statut"].Width = 20;
@@ -81,7 +81,7 @@ namespace Gerance.Formulaires.Taches
             dataGridView.DataSource = WorkflowDetailController.getController().getListeDetailSoldesProprietaires(entite_id);
             if (dataGridView.DataSource != null)
             {
-                DataGridViewColumnCollection cols = dataGridView.Columns;
+                var cols = dataGridView.Columns;
                 cols["id"].Visible = false;
                 cols["reference"].Width = 60;
                 cols["utilisateur"].HeaderText = "par";
@@ -94,7 +94,7 @@ namespace Gerance.Formulaires.Taches
             dataGridView.DataSource = WorkflowDetailController.getController().getListeDetailImpressionQuittance(entite_id);
             if (dataGridView.DataSource != null)
             {
-                DataGridViewColumnCollection cols = dataGridView.Columns;
+                var cols = dataGridView.Columns;
                 cols["id"].Visible = false;
                 cols["reference"].Width = 60;
                 cols["utilisateur"].HeaderText = "par";
@@ -107,7 +107,7 @@ namespace Gerance.Formulaires.Taches
             dataGridView.DataSource = WorkflowDetailController.getController().getListeDetailSoldesLocataires(entite_id);
             if (dataGridView.DataSource != null)
             {
-                DataGridViewColumnCollection cols = dataGridView.Columns;
+                var cols = dataGridView.Columns;
                 cols["id"].Visible = false;
                 cols["reference"].Width = 60;
                 cols["total_du"].Width = 80;
@@ -121,7 +121,7 @@ namespace Gerance.Formulaires.Taches
             dataGridView.DataSource = WorkflowDetailController.getController().getListeDetailReglements(entite_id);
             if (dataGridView.DataSource != null)
             {
-                DataGridViewColumnCollection cols = dataGridView.Columns;
+                var cols = dataGridView.Columns;
                 cols["id"].Visible = false;
                 cols["reference"].Width = 60;
                 cols["credit"].Width = 80;
@@ -135,7 +135,7 @@ namespace Gerance.Formulaires.Taches
         {
             if (entite != null)
             {
-                DataGridViewColumn col = dataGridView.Columns[e.ColumnIndex];
+                var col = dataGridView.Columns[e.ColumnIndex];
                 if (col.Name == "utilisateur" )
                 {
                     e.Value = ControlsWindows.userComputer(e.Value.ToString());

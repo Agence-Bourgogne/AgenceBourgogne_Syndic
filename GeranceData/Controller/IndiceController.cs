@@ -23,8 +23,9 @@ namespace GeranceData.Controller
         }
         public DataTable getListIndices(string reference)
         {
-            string cmd = String.Format("select * from {0} where reference = @reference order by annee desc, trimestre desc", getSchemaTable());
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>
+            var cmd =
+                $"select * from {getSchemaTable()} where reference = @reference order by annee desc, trimestre desc";
+            var parameters = new List<NpgsqlParameter>
             {
                 new NpgsqlParameter ("@reference", reference),
             };
@@ -32,34 +33,34 @@ namespace GeranceData.Controller
         }
         public bool updateIndices ( string code, DataTable table)
         {
-            bool rc = false;
-            NpgsqlConnection cnx = Database.GetInstance();
-            NpgsqlTransaction trx = cnx.BeginTransaction();
+            var rc = false;
+            var cnx = Database.GetInstance();
+            var trx = cnx.BeginTransaction();
 
             try
             {
                 //foreach (DataRow row in table.Rows)
-                for (int index = 0; index < table.Rows.Count; index++ )
+                for (var index = 0; index < table.Rows.Count; index++ )
                 {
-                    DataRow row = table.Rows[index];
+                    var row = table.Rows[index];
 
                     int annee = Int16.Parse(row[0].ToString());
                     int trimestre = Int16.Parse(row[1].ToString());
-                    decimal valeur = Decimal.Parse(row[2].ToString());
+                    var valeur = Decimal.Parse(row[2].ToString());
                     decimal variation = 0;
                     if ( index < table.Rows.Count -4)
                     {
-                        DataRow rowAncien = table.Rows[index+4];
-                        decimal ancien = Decimal.Parse(rowAncien[2].ToString());
+                        var rowAncien = table.Rows[index+4];
+                        var ancien = Decimal.Parse(rowAncien[2].ToString());
                         variation = ((valeur / ancien) - 1) * 100;
                     }
 
-                    List<NpgsqlParameter> parameters = new List<NpgsqlParameter>{
+                    var parameters = new List<NpgsqlParameter>{
                         new NpgsqlParameter( "@reference", code),
                         new NpgsqlParameter( "@annee", annee),
                         new NpgsqlParameter( "@trimestre", trimestre),
                     };
-                    IndiceEntite indice = getEntite(" where reference = @reference and annee = @annee and trimestre = @trimestre", parameters);
+                    var indice = getEntite(" where reference = @reference and annee = @annee and trimestre = @trimestre", parameters);
                     if (indice == null)
                         indice = new IndiceEntite();
                     indice.reference = code;

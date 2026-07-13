@@ -26,11 +26,11 @@ namespace EspaceSyndic.Formulaires.Ecritures
 
         private void FillDataGrid()
         {
-            DataTable source = LiasseController.getController().getLiasseActives(GlobalConstantes.TypeOperation.Facture, false);
+            var source = LiasseController.getController().getLiasseActives(GlobalConstantes.TypeOperation.Facture, false);
             dataGridViewLiasse.DataSource = source;
             if (dataGridViewLiasse.DataSource != null)
             {
-                DataGridViewColumnCollection cols = dataGridViewLiasse.Columns;
+                var cols = dataGridViewLiasse.Columns;
                 cols["id"].Visible = false;
                 cols["audit_created"].Visible = false;
                 cols["audit_created_by"].Visible = false;
@@ -50,13 +50,13 @@ namespace EspaceSyndic.Formulaires.Ecritures
         {
             if (dataGridViewLiasse.SelectedRows.Count < 1)
                 return;
-            DataRowView rowGrid = (DataRowView) dataGridViewLiasse.SelectedRows[0].DataBoundItem;
-            string liasse_id = rowGrid["id"].ToString();
-            DataTable source = SaisieFactureController.getController().getListeFactures(liasse_id);
+            var rowGrid = (DataRowView) dataGridViewLiasse.SelectedRows[0].DataBoundItem;
+            var liasse_id = rowGrid["id"].ToString();
+            var source = SaisieFactureController.getController().getListeFactures(liasse_id);
             dataGridViewEcriture.DataSource = source;
             if (source != null)
             {
-                DataGridViewColumnCollection cols = dataGridViewEcriture.Columns;
+                var cols = dataGridViewEcriture.Columns;
                 cols["id"].Visible = false;
                 cols["immeuble_id"].Visible = false;
                 cols["fournisseur_id"].Visible = false;
@@ -79,7 +79,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
             //Console.WriteLine("{0}:{1}", e.RowIndex, e.ColumnIndex);
             if (e.ColumnIndex == 0)
             {
-                DataGridViewRow row = dataGridViewLiasse.Rows[e.RowIndex];
+                var row = dataGridViewLiasse.Rows[e.RowIndex];
                 if (row.Cells[e.ColumnIndex].Value == null)
                     row.Cells[e.ColumnIndex].Value = false;
                 row.Cells[e.ColumnIndex].Value = !((bool)row.Cells[e.ColumnIndex].Value);
@@ -88,22 +88,21 @@ namespace EspaceSyndic.Formulaires.Ecritures
         private void btnValid_Click(object sender, EventArgs e)
         {
 //            bool bAllValide = true;
-            List<string> liasses = new List<string>();
+            var liasses = new List<string>();
 
             foreach (DataGridViewRow rowGrid in dataGridViewLiasse.Rows)
             {
                 if (rowGrid.Cells["valider"].Value != null)
                     if (((bool)rowGrid.Cells["valider"].Value) == true)
                     {
-                        DataRowView row = (DataRowView)rowGrid.DataBoundItem;
-                        string liasse_id = row["id"].ToString();
+                        var row = (DataRowView)rowGrid.DataBoundItem;
+                        var liasse_id = row["id"].ToString();
                         //if (!OperationController.getController().ValidateFacture(liasse_id))
                         //{
                         //    bAllValide = false;
                         //    break;
                         //}
                         liasses.Add(liasse_id);
-//                        Console.WriteLine(row["id"]);
                     }
             }
             if ( liasses.Count < 1)
@@ -113,11 +112,10 @@ namespace EspaceSyndic.Formulaires.Ecritures
             else
                 if (OperationController.getController().ValidateFacture(liasses))
                 {
-    //                MessageBox.Show("Validation OK");
 
                     try
                     {
-                        ImprimerListeFacturationForm form = new ImprimerListeFacturationForm(liasses);
+                        var form = new ImprimerListeFacturationForm(liasses);
                         form.ShowDialog();
 
                     }
@@ -133,9 +131,9 @@ namespace EspaceSyndic.Formulaires.Ecritures
         {
             if (dataGridViewEcriture.SelectedRows.Count > 0)
             {
-                DataRowView row = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
+                var row = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
 //                Console.WriteLine(row["id"]);
-                DetailFactureForm form = new DetailFactureForm(row["id"].ToString());
+                var form = new DetailFactureForm(row["id"].ToString());
                 form.ShowDialog();
             }
         }

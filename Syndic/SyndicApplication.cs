@@ -24,7 +24,7 @@ namespace EspaceSyndic
             CommonRegistry.setCurrentApp(CURRENT_APPLICATION);
             try
             {
-                string str = Database.getConnexionString(CURRENT_APPLICATION);
+                var str = Database.getConnexionString(CURRENT_APPLICATION);
 
                 try
                 {
@@ -40,7 +40,7 @@ namespace EspaceSyndic
                 }
                 if (str == null || str == "")
                 {
-                    DatabaseConfigForm cfgForm = new DatabaseConfigForm(CURRENT_APPLICATION);
+                    var cfgForm = new DatabaseConfigForm(CURRENT_APPLICATION);
                     cfgForm.ShowDialog();
                 }
                 else

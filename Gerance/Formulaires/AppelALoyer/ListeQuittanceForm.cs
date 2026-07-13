@@ -34,7 +34,7 @@ namespace Gerance.Formulaires.AppelALoyer
             tbNomLocataire.Text = "";
             if ( tbRefLocataire.Text != "")
             {
-                LocataireEntite locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
+                var locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
                 if (locataire != null)
                 {
                     tbNomLocataire.Text = locataire.NomPrenom;
@@ -51,7 +51,7 @@ namespace Gerance.Formulaires.AppelALoyer
             tbNomProprio.Text = "";
             if (tbRefProprio.Text != "")
             {
-                ProprietaireEntite proprio = ProprietaireController.getController().getEntiteFromField("reference", tbRefProprio.Text);
+                var proprio = ProprietaireController.getController().getEntiteFromField("reference", tbRefProprio.Text);
                 if (proprio != null)
                 {
                     tbNomProprio.Text = proprio.NomPrenom;
@@ -81,7 +81,7 @@ namespace Gerance.Formulaires.AppelALoyer
         }
         protected override void ShowFicheForm(string entite_id)
         {
-            AnnulationQuittanceForm form = new AnnulationQuittanceForm(entite_id);//, dataGridView);
+            var form = new AnnulationQuittanceForm(entite_id);//, dataGridView);
             form.ShowDialog();
             FillDataGrid();
         }
@@ -90,15 +90,15 @@ namespace Gerance.Formulaires.AppelALoyer
         {
             if (DialogResult.Yes != MessageBox.Show("Opération irréversible\r\nVoulez-vous Continuer", "Attention", MessageBoxButtons.YesNo))
                 return;
-            NpgsqlTransaction trx = Database.BeginTransaction();
-            DateTime dt = QuittancesController.getController().setTimestampServer();
+            var trx = Database.BeginTransaction();
+            var dt = QuittancesController.getController().setTimestampServer();
             LocataireController.getController().setTimestampServer(dt);
             try
             {
                 foreach (DataGridViewRow rowGrid in dataGridView.SelectedRows)
                 {
-                    DataRowView row = (DataRowView)rowGrid.DataBoundItem;
-                    QuittanceEntite quittance = QuittancesController.getController().getEntiteById(row["id"].ToString());
+                    var row = (DataRowView)rowGrid.DataBoundItem;
+                    var quittance = QuittancesController.getController().getEntiteById(row["id"].ToString());
                     if (!QuittancesController.DeleteQuittance(quittance))
                         throw new Exception("");
                 }
@@ -115,9 +115,9 @@ namespace Gerance.Formulaires.AppelALoyer
         {
             if (dataGridView.SelectedRows.Count == 1)
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
-                QuittanceEntite quittance = QuittancesController.getController().getEntiteById(row["id"].ToString());
-                ImprimerQuittanceForm form = new ImprimerQuittanceForm(quittance);
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var quittance = QuittancesController.getController().getEntiteById(row["id"].ToString());
+                var form = new ImprimerQuittanceForm(quittance);
                 form.ShowDialog();
             }
         }

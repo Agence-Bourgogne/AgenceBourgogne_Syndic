@@ -7,8 +7,8 @@ namespace CommonProjectsPartners.Utils
     {
         public static bool DownLoadFile(string url, string file)
         {
-            WebClient obj = new WebClient();
-            bool rc = false;
+            var obj = new WebClient();
+            var rc = false;
             try
             {
                 obj.DownloadFile(url, file);

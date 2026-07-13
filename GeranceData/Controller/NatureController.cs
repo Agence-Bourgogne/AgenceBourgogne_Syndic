@@ -25,8 +25,8 @@ namespace GeranceData.Controller
         public DataTable getFromChargeLocative()
         {
             //String cmd = " select id, reference, nom, reference_comptabilite, charge_locative, 0 as montant_charge ";
-            String cmd = " select id, reference, nom, 0 as montant_charge, 0 as credit, reference_comptabilite";
-            cmd += String.Format(" from {0}", getSchemaTable());
+            var cmd = " select id, reference, nom, 0 as montant_charge, 0 as credit, reference_comptabilite";
+            cmd += $" from {getSchemaTable()}";
             cmd += " where charge_locative > 0";
             
             return getResultSQL(cmd);

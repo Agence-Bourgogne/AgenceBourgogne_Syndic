@@ -46,7 +46,7 @@ namespace Gerance.Formulaires.Reglements
 
         private void ShowFromModeReglement()
         {
-            bool bVisible = false;
+            var bVisible = false;
             if (cbReglement.SelectedValue is int)
             {
                 bVisible = (int)cbReglement.SelectedValue == 1;
@@ -78,7 +78,7 @@ namespace Gerance.Formulaires.Reglements
             tbRefImmeuble.Text = tbNomImmeuble.Text = tbNumLot.Text = "";
             if (tbRefLocataire.Text == "")
                 return;
-            LocataireEntite locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
+            var locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
             ShowDetailFromLocataire(locataire);
         }
         private void ClearSyndicCopro()
@@ -108,7 +108,7 @@ namespace Gerance.Formulaires.Reglements
                     tbRefImmeuble.Text = locataire.Bien.reference;
                     tbNomImmeuble.Text = locataire.Bien.nom;
                     tbNumLot.Text = locataire.Bien.numero_lot.ToString();
-                    decimal basehono = locataire.Bien.montant_loyer + locataire.Bien.montant_augmentation;
+                    var basehono = locataire.Bien.montant_loyer + locataire.Bien.montant_augmentation;
                     tbBaseHono.Text = basehono.ToString();
                     if (locataire.Bien.Proprietaire != null)
                     {
@@ -144,7 +144,7 @@ namespace Gerance.Formulaires.Reglements
             dataGridView.DataSource = ReglementsController.getController().getReglements30DerniersJours();
             if (dataGridView.DataSource != null)
             {
-                DataGridViewColumnCollection cols = dataGridView.Columns;
+                var cols = dataGridView.Columns;
                 cols["locataire"].MinimumWidth = 120;
                 cols["libelle"].MinimumWidth = 120;
                 cols["ref_immeuble"].Width = 40;
@@ -164,7 +164,7 @@ namespace Gerance.Formulaires.Reglements
             if (dataGridView.SelectedRows.Count > 0)
             {
                 Console.WriteLine("dataGridView_SelectionChanged");
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
                 if ( row != null )
                     ShowFicheValues(row["id"].ToString());
                 else
@@ -181,7 +181,7 @@ namespace Gerance.Formulaires.Reglements
                 entite = ReglementsController.getController().getEntiteById(entite_id);
             if ( entite != null )
             {
-                LocataireEntite locataire = entite.Locataire;
+                var locataire = entite.Locataire;
                 tbRefLocataire.Text = locataire.reference;
                 tbMontantDu.Text = locataire.total_du.ToString();
 
@@ -211,8 +211,8 @@ namespace Gerance.Formulaires.Reglements
         bool bForceDetail = false;
         protected override bool saveValue()
         {
-            String CurrentId = "";
-            LocataireEntite locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
+            var CurrentId = "";
+            var locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
             if (locataire == null)
             {
                 MessageBox.Show("reference locataire invalide");
@@ -220,7 +220,7 @@ namespace Gerance.Formulaires.Reglements
             }
             if (locataire.Bien == null)
             {
-                Biens.BienFindForm form = new Biens.BienFindForm();
+                var form = new Biens.BienFindForm();
                 form.Text = "Veuillez définir le bien";
                 if ( DialogResult.OK != form.ShowDialog() )
                     return false;
@@ -236,15 +236,15 @@ namespace Gerance.Formulaires.Reglements
                 bForceDetail = true;
             }
 
-            ReglementEntite reglement = new ReglementEntite();
+            var reglement = new ReglementEntite();
             Decimal oldTotal_du = 0;
-            decimal montant_du = Convertir.ToDecimal(tbMontantDu.Text);
-            decimal montant_reglement = Convertir.ToDecimal(tbMontant.Text);
-            decimal montant_loyer = locataire.Bien.MontantDu;
-            bool openPartiel = false;
+            var montant_du = Convertir.ToDecimal(tbMontantDu.Text);
+            var montant_reglement = Convertir.ToDecimal(tbMontant.Text);
+            var montant_loyer = locataire.Bien.MontantDu;
+            var openPartiel = false;
             if (dataGridView.SelectedRows.Count > 0)
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
                 reglement = ReglementsController.getController().getEntiteById(row["id"].ToString());
                 CurrentId = reglement.id;
                 oldTotal_du = reglement.credit;
@@ -274,7 +274,7 @@ namespace Gerance.Formulaires.Reglements
                     reglement.montant_divers5 = locataire.Bien.montant_divers5;
                 }
 
-            decimal total_du = locataire.total_du + oldTotal_du - montant_reglement;
+            var total_du = locataire.total_du + oldTotal_du - montant_reglement;
 
             reglement.bien_id = locataire.Bien.id;
             reglement.proprietaire_id = locataire.Bien.proprietaire_id;
@@ -291,16 +291,16 @@ namespace Gerance.Formulaires.Reglements
 
             if ( total_du != 0 || bForceDetail || openPartiel )
             {
-                ReglementPartielForm form = new ReglementPartielForm(reglement);
+                var form = new ReglementPartielForm(reglement);
                 Enabled = false;
-                DialogResult result = form.ShowDialog();
+                var result = form.ShowDialog();
                 Enabled = true;
                 if (result != DialogResult.OK)
                     return false;
             }
             
-            NpgsqlConnection cnx = Database.GetInstance();
-            NpgsqlTransaction trx = cnx.BeginTransaction();
+            var cnx = Database.GetInstance();
+            var trx = cnx.BeginTransaction();
 
             try
             {
@@ -312,7 +312,7 @@ namespace Gerance.Formulaires.Reglements
                 locataire.total_du = locataire.total_du + oldTotal_du - reglement.credit;
                 if (!LocataireController.getController().InsertOrUpdate(locataire))
                     throw new Exception("Erreur Locataire");
-                WorkflowEntite workflow = WorkflowController.getController().WriteRecord(REFERENCE_TACHE, dtReg.Value);
+                var workflow = WorkflowController.getController().WriteRecord(REFERENCE_TACHE, dtReg.Value);
                 WorkflowDetailController.getController().WriteRecord(workflow, reglement.id, "Reglement");
                 WorkflowController.FireWorkflowChanged();
 
@@ -325,7 +325,7 @@ namespace Gerance.Formulaires.Reglements
                 {
                     foreach (DataGridViewRow r in dataGridView.Rows)
                     {
-                        DataRowView dbRow = (DataRowView)r.DataBoundItem;
+                        var dbRow = (DataRowView)r.DataBoundItem;
                         if (dbRow != null)
                         {
                             if (dbRow["id"].ToString() == CurrentId)
@@ -372,7 +372,7 @@ namespace Gerance.Formulaires.Reglements
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
                 ReglementsController.DeleteReglement(row["id"].ToString());
             }
             FillDataGrid();
@@ -395,7 +395,7 @@ namespace Gerance.Formulaires.Reglements
 
         private void btnNext_Click_1(object sender, EventArgs e)
         {
-            ReglementPrintForm form = new ReglementPrintForm();
+            var form = new ReglementPrintForm();
             form.ShowDialog();
         }
 

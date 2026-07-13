@@ -16,10 +16,10 @@ namespace SyndicData.Common
 //            if ( tableParametres == null )
             {
                 tableParametres = new DataTable();
-                String cmd = "select * from parametres order by groupe, code";
+                var cmd = "select * from parametres order by groupe, code";
                 try 
 	            {
-                    NpgsqlDataAdapter adapter = new NpgsqlDataAdapter();
+                    var adapter = new NpgsqlDataAdapter();
                     adapter.SelectCommand = new NpgsqlCommand(cmd, Database.GetInstance());
                     adapter.Fill(tableParametres);
 	            }
@@ -44,23 +44,23 @@ namespace SyndicData.Common
         }
         public static string getParam1(string groupe, string code, string default_value = "")
         {
-            DataRow row = get(groupe, code);
+            var row = get(groupe, code);
             if (row != null)
                 return row["param_1"].ToString();
             return default_value;
         }
         public static DataTable getComboData(String groupe, string code = "") 
         {
-            DataTable table = new DataTable();
-            String cmd = "";
+            var table = new DataTable();
+            var cmd = "";
             if (code != "")
                 cmd = "select * from parametres where groupe = @groupe and code=@code order by groupe, iparam_1";
             else
                 cmd = "select * from parametres where groupe = @groupe order by groupe, iparam_1";
             try
             {
-                NpgsqlDataAdapter adapter = new NpgsqlDataAdapter();
-                NpgsqlCommand sqlCmd = new NpgsqlCommand(cmd, Database.GetInstance());
+                var adapter = new NpgsqlDataAdapter();
+                var sqlCmd = new NpgsqlCommand(cmd, Database.GetInstance());
                 adapter.SelectCommand = sqlCmd;
                 sqlCmd.Parameters.AddWithValue("@groupe", groupe);
                 sqlCmd.Parameters.AddWithValue("@code", code);
@@ -76,7 +76,7 @@ namespace SyndicData.Common
         {
             if ( cols[columnName + "_cb"] == null )
             {
-                DataGridViewComboBoxColumn cmb = new DataGridViewComboBoxColumn();
+                var cmb = new DataGridViewComboBoxColumn();
                 cmb.DataSource = getComboData(group);
                 cmb.DisplayMember = "code";
                 cmb.ValueMember = "iparam_1";
@@ -84,7 +84,7 @@ namespace SyndicData.Common
                 cmb.DataPropertyName = columnName;
                 cmb.Name = columnName + "_cb";
                 cmb.HeaderText = columnName;
-                int idx = cols[columnName].Index;
+                var idx = cols[columnName].Index;
                 cols.Insert(idx, cmb);
                 cols[columnName].Visible = false;
             }
@@ -98,11 +98,11 @@ namespace SyndicData.Common
 
         public static bool IsBaseCompteur(string baseToCheck)
         {
-            bool bCompteur = false;
-            string bases = getParam1("BASES", "COMPTEURS");
+            var bCompteur = false;
+            var bases = getParam1("BASES", "COMPTEURS");
             if (bases != null)
             {
-                String[] base_compteur = bases.Replace(" ", "").Split(',');
+                var base_compteur = bases.Replace(" ", "").Split(',');
                 if (base_compteur.Contains(baseToCheck))
                     bCompteur = true;
             }

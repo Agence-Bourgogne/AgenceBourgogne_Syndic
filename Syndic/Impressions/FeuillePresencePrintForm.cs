@@ -19,7 +19,7 @@ namespace EspaceSyndic.Impressions
 
         private void lblImmeuble_Click(object sender, EventArgs e)
         {
-            FindImmeubleForm form = new FindImmeubleForm();
+            var form = new FindImmeubleForm();
             form.ShowDialog();
             if (!"".Equals(form.reference))
             {
@@ -30,7 +30,7 @@ namespace EspaceSyndic.Impressions
 
         private void btnPrint_Click(object sender, EventArgs e)
         {
-            ReportParameter[] parameters = new ReportParameter[]{
+            var parameters = new ReportParameter[]{
                 new ReportParameter("TypeAssemblee", cbAssemblee.SelectedItem.ToString()),
                 new ReportParameter("DateAssemblee", dtAssemblee.Value.ToShortDateString())
             };

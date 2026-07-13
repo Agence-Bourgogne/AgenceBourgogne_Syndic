@@ -104,7 +104,7 @@ namespace Gerance.Formulaires.Factures
             if (tbRefImmeuble.Text == "")
                 return;
             
-            BienEntite bien = BienController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
+            var bien = BienController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
             if (bien != null)
             {
                 ControlsWindows.setAutoControle(tbNumLot, ImmeubleController.getImmeubleController().getLots(bien.reference));
@@ -122,7 +122,7 @@ namespace Gerance.Formulaires.Factures
                 tbNumLot.BackColor = Color.Red;
             else
             {
-                BienEntite bien = BienController.getController().getBien(tbRefImmeuble.Text, Convertir.ToInt(tbNumLot.Text));
+                var bien = BienController.getController().getBien(tbRefImmeuble.Text, Convertir.ToInt(tbNumLot.Text));
                 ShowInfoImmeuble(bien);
                 ShowInfoProprio(bien.Proprietaire);
                 ShowInfoLocataire(bien.Locataire);
@@ -140,10 +140,10 @@ namespace Gerance.Formulaires.Factures
             tbRefLocataire.BackColor = Color.White;
             if ( tbRefLocataire.Text != "" )
             {
-                LocataireEntite locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
+                var locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
                 if (locataire != null)
                 {
-                    BienEntite bien = locataire.Bien;
+                    var bien = locataire.Bien;
                     if (bien != null)
                     {
                         ShowInfoImmeuble(bien);
@@ -194,7 +194,7 @@ namespace Gerance.Formulaires.Factures
             if (tbNature.Text == "")
                 return;
 
-            NatureEntite entite = NatureController.getController().getEntiteFromField("reference", tbNature.Text);
+            var entite = NatureController.getController().getEntiteFromField("reference", tbNature.Text);
             if (entite != null)
             {
                 tbLibNature.Text = entite.nom;
@@ -224,7 +224,7 @@ namespace Gerance.Formulaires.Factures
             if (tbFournisseur.Text == "")
                 return;
 
-            FournisseurEntite entite = FournisseurController.getController().getEntiteFromField("reference", tbFournisseur.Text);
+            var entite = FournisseurController.getController().getEntiteFromField("reference", tbFournisseur.Text);
 
             if (entite != null)
             {
@@ -255,7 +255,7 @@ namespace Gerance.Formulaires.Factures
             dataGridView.DataSource = FacturesController.getController().getFactures30DerniersJours();
             if (dataGridView.DataSource != null)
             {
-                DataGridViewColumnCollection cols = dataGridView.Columns;
+                var cols = dataGridView.Columns;
                 cols["locataire"].MinimumWidth = 120;
                 cols["libelle"].MinimumWidth = 120;
                 cols["immeuble"].MinimumWidth = 120;
@@ -276,7 +276,7 @@ namespace Gerance.Formulaires.Factures
             if (dataGridView.SelectedRows.Count > 0)
             {
                 Console.WriteLine("dataGridView_SelectionChanged");
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
 
                 ShowFicheValues(row["id"].ToString());
                 btnDelete.Enabled = true;
@@ -291,7 +291,7 @@ namespace Gerance.Formulaires.Factures
                 entite = FacturesController.getController().getEntiteById(entite_id);
             if (entite != null)
             {
-                decimal montant = entite.debit == 0 ? entite.credit : entite.debit;
+                var montant = entite.debit == 0 ? entite.credit : entite.debit;
 //                decimal montant = entite.debit == 0 ? entite.credit * -1 : entite.debit;
                 tbMontant.Text = montant.ToString();
 
@@ -367,15 +367,15 @@ namespace Gerance.Formulaires.Factures
             if (!ValideDatas())
                 return false;
 
-            FactureEntite facture = new FactureEntite();
+            var facture = new FactureEntite();
 
             if (dataGridView.SelectedRows.Count > 0)
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
                 facture = FacturesController.getController().getEntiteById(row["id"].ToString());
             }
 
-            decimal montant = Convertir.ToDecimal(tbMontant.Text);
+            var montant = Convertir.ToDecimal(tbMontant.Text);
 
             facture.credit = facture.debit = 0;
             if (montant < 0)
@@ -432,7 +432,7 @@ namespace Gerance.Formulaires.Factures
         {
             if (tbRefImmeuble.Text != "")
             {
-                LocataireLotFindForm form = new LocataireLotFindForm();
+                var form = new LocataireLotFindForm();
                 form.ref_immeuble = tbRefImmeuble.Text;
                 if (ShowFindForm(form, tbNumLot) == DialogResult.OK)
                     tbNumLot_Validating(sender, null);
@@ -453,8 +453,8 @@ namespace Gerance.Formulaires.Factures
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
-                FactureEntite facture = FacturesController.getController().getEntiteById(row["id"].ToString());
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var facture = FacturesController.getController().getEntiteById(row["id"].ToString());
                 if (facture != null)
                 {
                     facture.statut = (int) GlobalConstantes.StatutOperation.Supprime;

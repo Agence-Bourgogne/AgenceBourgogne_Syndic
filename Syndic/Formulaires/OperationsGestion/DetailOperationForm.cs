@@ -44,7 +44,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         {
             if (!tbNature.Enabled)
                 return;
-            FindNatureForm form = new FindNatureForm();
+            var form = new FindNatureForm();
             form.ShowDialog();
             if (!"".Equals(form.reference))
             {
@@ -56,7 +56,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         {
             if (!tbFournisseur.Enabled)
                 return;
-            FindFournisseurForm form = new FindFournisseurForm();
+            var form = new FindFournisseurForm();
             form.ShowDialog();
             if (!"".Equals(form.reference))
             {
@@ -69,8 +69,8 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         {
             foreach (DataGridViewRow row in dataGridView.Rows)
             {
-                int statut = (int)row.Cells["statut"].Value;
-                Color color = Color.White;
+                var statut = (int)row.Cells["statut"].Value;
+                var color = Color.White;
                 switch (statut)
                 {
                     case 0: color = Color.Gray; break;
@@ -140,7 +140,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
 
         private void btnExport_Click(object sender, EventArgs e)
         {
-            List<string> colsToHide = new List<string> { "id" };
+            var colsToHide = new List<string> { "id" };
             BaseApplication.DataGridToExcel(dataGridView, colsToHide);
         }
 

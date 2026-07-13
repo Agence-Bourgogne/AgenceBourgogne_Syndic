@@ -21,13 +21,13 @@ namespace EspaceSyndic.Formulaires.Immeubles
 
         private void TitreRepartImmeubleForm_Load(object sender, EventArgs e)
         {
-            DataTable repartitions = ImmeubleRepartitionController.getController().getRepartitionImmeuble(immeuble_id);
+            var repartitions = ImmeubleRepartitionController.getController().getRepartitionImmeuble(immeuble_id);
             foreach ( DataRow row in repartitions.Rows)
             {
-                int idx = dataGridView.Rows.Add();
-                DataGridViewRow rowGrid = dataGridView.Rows[idx];
+                var idx = dataGridView.Rows.Add();
+                var rowGrid = dataGridView.Rows[idx];
                 rowGrid.Tag = row;
-                DataGridViewCellCollection cells = rowGrid.Cells;
+                var cells = rowGrid.Cells;
 
                 cells[0].Value = row["reference"];
 
@@ -55,8 +55,8 @@ namespace EspaceSyndic.Formulaires.Immeubles
         {
             if (!bInit)
                 return;
-            DataGridViewRow rowGrid = dataGridView.SelectedRows[0];
-            DataRow row = (DataRow) rowGrid.Tag;
+            var rowGrid = dataGridView.SelectedRows[0];
+            var row = (DataRow) rowGrid.Tag;
             bChangeInProgress = true;
             tbBase.Text = rowGrid.Cells["reference"].Value.ToString();
             tbTitre.Text = rowGrid.Cells["nom"].Value.ToString();
@@ -75,12 +75,12 @@ namespace EspaceSyndic.Formulaires.Immeubles
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            bool bOk = true;
-            ImmeubleRepartitionController controller = ImmeubleRepartitionController.getController();
+            var bOk = true;
+            var controller = ImmeubleRepartitionController.getController();
             foreach (DataGridViewRow rowGrid in dataGridView.Rows)
             {
-                DataRow row = (DataRow)rowGrid.Tag;
-                ImmeubleRepartitionEntite entite = new ImmeubleRepartitionEntite(row);
+                var row = (DataRow)rowGrid.Tag;
+                var entite = new ImmeubleRepartitionEntite(row);
 
                 if (row == null)
                 {
@@ -116,7 +116,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
             if (bChangeInProgress || !bInit)
                 return;
 
-            DataGridViewRow rowGrid = dataGridView.SelectedRows[0];
+            var rowGrid = dataGridView.SelectedRows[0];
             if (rowGrid == null)
                 return;
             rowGrid.Cells["repartition"].Tag = cbRepart.SelectedIndex;
@@ -128,8 +128,8 @@ namespace EspaceSyndic.Formulaires.Immeubles
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            int idx = dataGridView.Rows.Add();
-            DataGridViewRow row = dataGridView.Rows[idx];
+            var idx = dataGridView.Rows.Add();
+            var row = dataGridView.Rows[idx];
             row.Cells["reference"].Value = "";
             row.Cells["nom"].Value = "";
             row.Cells["ligne"].Value = "";
@@ -146,7 +146,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
             if (bChangeInProgress || !bInit)
                 return;
 
-            DataGridViewRow rowGrid = dataGridView.SelectedRows[0];
+            var rowGrid = dataGridView.SelectedRows[0];
 
             if (rowGrid != null)
             {
@@ -157,7 +157,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
         {
             if (bChangeInProgress || !bInit)
                 return;
-            DataGridViewRow rowGrid = dataGridView.SelectedRows[0];
+            var rowGrid = dataGridView.SelectedRows[0];
 
             if (rowGrid != null)
             {
@@ -170,7 +170,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
         {
             if (bChangeInProgress || !bInit)
                 return;
-            DataGridViewRow rowGrid = dataGridView.SelectedRows[0];
+            var rowGrid = dataGridView.SelectedRows[0];
 
             if (rowGrid != null)
             {
@@ -182,7 +182,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
         {
             if (bChangeInProgress || !bInit)
                 return;
-            DataGridViewRow rowGrid = dataGridView.SelectedRows[0];
+            var rowGrid = dataGridView.SelectedRows[0];
 
             if (rowGrid != null)
             {

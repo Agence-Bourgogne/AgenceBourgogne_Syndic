@@ -11,9 +11,9 @@ namespace EspaceSyndic.UtilsApp
     {
         public static void initGridRepartition(DataGridView grid,  int baseWidth = 50)
         {
-            DataTable baseCharge = ParametresDB.getComboData("CODECHARGE");
-            DataTable grpCharge = ParametresDB.getComboData("GROUPCHARGE");
-            int width = 0;
+            var baseCharge = ParametresDB.getComboData("CODECHARGE");
+            var grpCharge = ParametresDB.getComboData("GROUPCHARGE");
+            var width = 0;
 
             ControlsWindows.addColumn(grid, "Bases Charges", baseWidth);
 
@@ -25,8 +25,8 @@ namespace EspaceSyndic.UtilsApp
             grid.Columns[0].Width =  grid.Width - (width - 5); 
             foreach (DataRow row in baseCharge.Rows)
             {
-                DataGridViewRow rowGrid = new DataGridViewRow();
-                DataGridViewTextBoxCell cell = new DataGridViewTextBoxCell();
+                var rowGrid = new DataGridViewRow();
+                var cell = new DataGridViewTextBoxCell();
                 cell.Value = row["nom"];
                 cell.Style.BackColor = Color.LightGray;
                 rowGrid.Cells.AddRange(cell);
@@ -41,7 +41,7 @@ namespace EspaceSyndic.UtilsApp
         }
         public static AutoCompleteStringCollection ShowRepartitionImmeuble(DataGridView dataGridView, DataTable repartition)
         {
-            AutoCompleteStringCollection baseAuto = new AutoCompleteStringCollection();
+            var baseAuto = new AutoCompleteStringCollection();
             foreach (DataGridViewRow r in dataGridView.Rows)
                 foreach (DataGridViewCell c in r.Cells)
                 {
@@ -54,14 +54,14 @@ namespace EspaceSyndic.UtilsApp
             if ( repartition != null )
                 foreach (DataRow row in repartition.Rows)
                 {
-                    ImmeubleRepartitionEntite entite = new ImmeubleRepartitionEntite(row);
-                    int ligne = entite.ligne;
+                    var entite = new ImmeubleRepartitionEntite(row);
+                    var ligne = entite.ligne;
                     if (ligne < 1)
                         continue;
-                    int colonne = entite.colonne;
+                    var colonne = entite.colonne;
                     if (colonne + 1 > dataGridView.ColumnCount)
                         continue;
-                    int valeur = entite.valeur;
+                    var valeur = entite.valeur;
                     dataGridView.Rows[ligne - 1].Cells[colonne + 1].Tag = new ImmeubleRepartitionEntite(row);
                     if (valeur > 0 || entite.type_ventilation == (int) GlobalConstantes.TypeRepartition.Individuelle)
                     {

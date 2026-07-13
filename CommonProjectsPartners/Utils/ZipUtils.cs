@@ -8,14 +8,14 @@ namespace CommonProjectsPartners.Utils
     {
         public static bool ExtractFiles(string zipFile, string folder, string fileToFind = "")
         {
-            bool rc = false;
+            var rc = false;
             try
             {
-                ZipArchive zip = ZipFile.OpenRead(zipFile);
+                var zip = ZipFile.OpenRead(zipFile);
 
-                foreach (ZipArchiveEntry entry in zip.Entries)
+                foreach (var entry in zip.Entries)
                 {
-                    bool bExtract = fileToFind == "";
+                    var bExtract = fileToFind == "";
                     bExtract |= entry.Name.ToUpper() == fileToFind.ToUpper(); ;
                     if ( bExtract )
                         entry.ExtractToFile(folder + entry.Name, true);

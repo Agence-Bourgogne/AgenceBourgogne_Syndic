@@ -28,7 +28,7 @@ namespace CommonProjectsPartners.Formulaires.Logon
             userConnected = UsersController.getController().getEntiteFromField("reference", tbUser.Text);
             if (userConnected != null)
             {
-                string encryptPassword = tbPassword.Text;
+                var encryptPassword = tbPassword.Text;
                 if (userConnected.Password == encryptPassword )
                 {
                     BaseApplication.userConnected = userConnected;

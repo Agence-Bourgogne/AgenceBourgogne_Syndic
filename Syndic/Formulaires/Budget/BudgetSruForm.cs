@@ -33,11 +33,11 @@ namespace EspaceSyndic.Formulaires.Budget
         }
         private string getExerciceSelected()
         {
-            string exercice_id = "";
+            var exercice_id = "";
 
             if (cbExercice.SelectedIndex >= 0)
             {
-                DataRowView row = (DataRowView)cbExercice.SelectedItem;
+                var row = (DataRowView)cbExercice.SelectedItem;
                 Console.Write(cbExercice.SelectedItem);
                 exercice_id = row["id"].ToString();
             }
@@ -54,7 +54,7 @@ namespace EspaceSyndic.Formulaires.Budget
                 return;
             dataGridView.DataSource = BudgetController.getController().getViewBudgets(immeuble.id, getExerciceSelected());
 
-            DataGridViewColumnCollection cols = dataGridView.Columns;
+            var cols = dataGridView.Columns;
             cols["nature"].MinimumWidth = 160;
             if (cols["id"] != null)
                 cols["id"].Visible = false;
@@ -68,14 +68,14 @@ namespace EspaceSyndic.Formulaires.Budget
         {
             bLoaded = false;
 
-            DataTable exercices = ExerciceComptableController.getController().getListExerciceFromImmeuble(immeuble != null ? immeuble.id : "");
+            var exercices = ExerciceComptableController.getController().getListExerciceFromImmeuble(immeuble != null ? immeuble.id : "");
             cbExercice.DataSource = exercices;
             
             cbExercice.DisplayMember = "reference";
             cbExercice.ValueMember = "e.id";
             if (immeuble != null)
             {
-                ExerciceComptableEntite exercice = ExerciceComptableController.getController().getExerciceCourant(immeuble.id);
+                var exercice = ExerciceComptableController.getController().getExerciceCourant(immeuble.id);
                 cbExercice.SelectedValue = exercice.id;
             }
             bLoaded = true;
@@ -91,7 +91,7 @@ namespace EspaceSyndic.Formulaires.Budget
                 tbNom.Text = immeuble.nom;
                 tbAdresse.Text = immeuble.Adresse;
                 FillComboExercice();
-                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
             }
             else
             {
@@ -104,7 +104,7 @@ namespace EspaceSyndic.Formulaires.Budget
 
         private void lblImmeuble_Click(object sender, EventArgs e)
         {
-            FindImmeubleForm form = new FindImmeubleForm();
+            var form = new FindImmeubleForm();
             form.ShowDialog();
             if (!"".Equals(form.reference))
             {
@@ -115,7 +115,7 @@ namespace EspaceSyndic.Formulaires.Budget
 
         private void lblNature_Click(object sender, EventArgs e)
         {
-            FindNatureForm form = new FindNatureForm();
+            var form = new FindNatureForm();
             form.ShowDialog();
             if (!"".Equals(form.reference))
             {
@@ -165,8 +165,8 @@ namespace EspaceSyndic.Formulaires.Budget
         {
             if (e.ColumnIndex > 2)
             {
-                DataGridView dgv = (DataGridView)sender;
-                DataGridViewColumn col = dgv.Columns[e.ColumnIndex];
+                var dgv = (DataGridView)sender;
+                var col = dgv.Columns[e.ColumnIndex];
                 if (e.Value.ToString() == "0")
                     e.Value = "";
             }
@@ -176,7 +176,7 @@ namespace EspaceSyndic.Formulaires.Budget
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
                 tbBase.Text = row["base"].ToString();
                 tbNature.Text = row["compte"].ToString();
                 tbMontant.Text = row["prevu"].ToString();
@@ -196,13 +196,13 @@ namespace EspaceSyndic.Formulaires.Budget
 
         private string CreateBudget()
         {
-            String id = "";
+            var id = "";
 
-            string exercice_id = getExerciceSelected();
-            BudgetEntite budget = BudgetController.getController().getEntiteFromField("exercice_id", exercice_id);
+            var exercice_id = getExerciceSelected();
+            var budget = BudgetController.getController().getEntiteFromField("exercice_id", exercice_id);
             if (budget == null)
             {
-                ExerciceComptableEntite exercice = ExerciceComptableController.getController().getEntiteById(exercice_id);
+                var exercice = ExerciceComptableController.getController().getEntiteById(exercice_id);
                 if (exercice != null)
                 {
                     budget = new BudgetEntite();
@@ -219,11 +219,11 @@ namespace EspaceSyndic.Formulaires.Budget
         }
         private string getBudgetExerciceSelected()
         {
-            string budget_id = "";
+            var budget_id = "";
 
             if (cbExercice.SelectedIndex >= 0)
             {
-                DataRowView row = (DataRowView)cbExercice.SelectedItem;
+                var row = (DataRowView)cbExercice.SelectedItem;
                 budget_id = row["budget_id"].ToString();
             }
             return budget_id;
@@ -235,11 +235,11 @@ namespace EspaceSyndic.Formulaires.Budget
             if (tbNature.Text == "") return;
             if (tbMontant.Text == "") return;
 
-            BudgetLigneEntite budgetLine = new BudgetLigneEntite();
+            var budgetLine = new BudgetLigneEntite();
 
             if (dataGridView.SelectedRows.Count > 0)
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
                 if (row["id"].ToString() != "")
                     budgetLine = BudgetLigneController.getController().getEntiteById(row["id"].ToString());
             }
@@ -270,8 +270,8 @@ namespace EspaceSyndic.Formulaires.Budget
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
-                BudgetLigneEntite budgetLine = BudgetLigneController.getController().getEntiteById(row["id"].ToString());
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var budgetLine = BudgetLigneController.getController().getEntiteById(row["id"].ToString());
 
                 if (budgetLine != null)
                 {
@@ -287,25 +287,25 @@ namespace EspaceSyndic.Formulaires.Budget
                 return;
             if ( (int) CommonRegistry.getRegistryValue("", "", 0) == 0 )
             {
-                NouvelExerciceOnlyForm form = new NouvelExerciceOnlyForm(immeuble.id);
+                var form = new NouvelExerciceOnlyForm(immeuble.id);
                 form.ShowDialog();
             }
             else
             {
-                NouvelExerciceForm form = new NouvelExerciceForm(immeuble.id);
+                var form = new NouvelExerciceForm(immeuble.id);
                 form.ShowDialog();
             }
             FillComboExercice();
         }
         private void btnPrint_Click(object sender, EventArgs e)
         {
-            Impressions.Budget.ImprimerBudgetForm form = new Impressions.Budget.ImprimerBudgetForm(immeuble, getExerciceSelected());
+            var form = new Impressions.Budget.ImprimerBudgetForm(immeuble, getExerciceSelected());
             form.ShowDialog();
         }
 
         private void btnExport_Click(object sender, EventArgs e)
         {
-            List<string> colsToHide = new List<string> { "id"};
+            var colsToHide = new List<string> { "id"};
             BaseApplication.DataGridToExcel(dataGridView, colsToHide);
         }
     }

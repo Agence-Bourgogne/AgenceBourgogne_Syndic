@@ -46,7 +46,7 @@ namespace EspaceSyndic.Impressions.Additif
 
         private string GetLieuAssemblee()
         {
-            string lieu = "";
+            var lieu = "";
             if (immeuble != null)
                 lieu = immeuble.lieuconv;
             if ( lieu == "")
@@ -55,7 +55,7 @@ namespace EspaceSyndic.Impressions.Additif
         }
         private void lblImmeuble_Click(object sender, EventArgs e)
         {
-            FindImmeubleForm form = new FindImmeubleForm();
+            var form = new FindImmeubleForm();
             form.ShowDialog();
             if (!"".Equals(form.reference))
             {
@@ -89,7 +89,7 @@ namespace EspaceSyndic.Impressions.Additif
             immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
             if (immeuble != null)
             {
-                AideImmeubleEntite comment = AideImmeubleController.getController().getAideImmeuble(immeuble.id, TEXT_KEY);
+                var comment = AideImmeubleController.getController().getAideImmeuble(immeuble.id, TEXT_KEY);
                 repart = ImmeubleRepartitionController.getController().getRepartitionImmeubleEntite(immeuble.id);
                 if (comment != null)
                 {
@@ -98,7 +98,7 @@ namespace EspaceSyndic.Impressions.Additif
                 else
                     tbText.Text = "";
 
-                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
 
                 infoForm.DoFormText(this, immeuble.note);
                 try
@@ -127,10 +127,10 @@ namespace EspaceSyndic.Impressions.Additif
 
         void CreateReport(string num_lot = "")
         {
-            String repart_valeur = String.Format("{0}", repart.valeur);
-            string hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
-            string hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
-            ReportParameter[] parameters = new ReportParameter[]{
+            var repart_valeur = $"{repart.valeur}";
+            var hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
+            var hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
+            var parameters = new ReportParameter[]{
                 new ReportParameter("DateEntete", dtDateEntete.Value.ToShortDateString()),
                 new ReportParameter("DateAssemblee", dtDateAssemblee.Value.ToShortDateString()),
                 new ReportParameter("HeureAssemblee", tbHeure.Text.Replace (":", " H ")),
@@ -152,7 +152,7 @@ namespace EspaceSyndic.Impressions.Additif
         private void btnWord_Click(object sender, EventArgs e)
         {
 
-            NpgsqlParameter[] parameters = new NpgsqlParameter[]{
+            var parameters = new NpgsqlParameter[]{
                 new NpgsqlParameter("DateEntete", dtDateEntete.Value.ToShortDateString()),
                 new NpgsqlParameter("DateAssemblee", dtDateAssemblee.Value.ToShortDateString()),
                 new NpgsqlParameter("HeureAssemblee", tbHeure.Text.Replace (":", " H ")),
@@ -161,17 +161,17 @@ namespace EspaceSyndic.Impressions.Additif
                 new NpgsqlParameter("LieuAssemblee", tbLieu.Text)
             };
 
-            DataTable table = CoproprietaireController.getController().CoproprietaireImmeubleDescriptionWord(immeuble.id, parameters);
+            var table = CoproprietaireController.getController().CoproprietaireImmeubleDescriptionWord(immeuble.id, parameters);
 
-            String modele = ParametresDB.getParam1("MODELES", "ADDITIF");
+            var modele = ParametresDB.getParam1("MODELES", "ADDITIF");
             BaseApplication.PublipostageLettreWord(table, modele);
         }
 
         private void label4_Click(object sender, EventArgs e)
         {
-            FicheAideImmeubleForm form = new FicheAideImmeubleForm(immeuble, TEXT_KEY);
+            var form = new FicheAideImmeubleForm(immeuble, TEXT_KEY);
             form.ShowDialog();
-            AideImmeubleEntite comment = AideImmeubleController.getController().getAideImmeuble(immeuble.id, TEXT_KEY);
+            var comment = AideImmeubleController.getController().getAideImmeuble(immeuble.id, TEXT_KEY);
             if (comment != null)
             {
                 tbText.Text = comment.libelle;
@@ -191,20 +191,20 @@ namespace EspaceSyndic.Impressions.Additif
         private void button1_Click(object sender, EventArgs e)
         {
             if (immeuble == null) return;
-            List<LotDescriptionEntite> lots = LotDescriptionController.getController().getListeLotDescription(immeuble.id);
-            RelevesIndividuels.ExportCopro dlg = new RelevesIndividuels.ExportCopro();
+            var lots = LotDescriptionController.getController().getListeLotDescription(immeuble.id);
+            var dlg = new RelevesIndividuels.ExportCopro();
             try
             {
                 dlg.Show(this);
                 dlg.Activate();
-                foreach (LotDescriptionEntite lot in lots)
+                foreach (var lot in lots)
                 {
                     if (lot != null && lot.Coproprietaire != null)
                     {
-                        CoproprietaireEntite copro = CoproprietaireController.getController().getEntiteById(lot.coproprietaire_id);
-                        string monthName = new DateTime(2010, 8, 1).ToString("MMM", System.Globalization.CultureInfo.InvariantCulture);
-                        string rapportName = "Additif convocation " + cbConvoc.SelectedItem + " " + dtDateEntete.Value.Year.ToString();
-                        dlg.textBox1.Text = string.Format("Export Additif convocation lot : {0}", lot.numero_lot);
+                        var copro = CoproprietaireController.getController().getEntiteById(lot.coproprietaire_id);
+                        var monthName = new DateTime(2010, 8, 1).ToString("MMM", System.Globalization.CultureInfo.InvariantCulture);
+                        var rapportName = "Additif convocation " + cbConvoc.SelectedItem + " " + dtDateEntete.Value.Year.ToString();
+                        dlg.textBox1.Text = $"Export Additif convocation lot : {lot.numero_lot}";
                         dlg.textBox1.Refresh();
                         CreateReport(lot.numero_lot.ToString());
                         UtilsApp.ServiceReferenceUtils.SendReportPDF(reportViewer1, rapportName, Guid.NewGuid().ToString(), lot.immeuble_id, lot.coproprietaire_id);

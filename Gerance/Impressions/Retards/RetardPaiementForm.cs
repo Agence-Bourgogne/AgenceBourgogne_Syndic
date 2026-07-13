@@ -50,16 +50,16 @@ namespace Gerance.Impressions.Retards
         }
         private void FillDataGrid()
         {
-            decimal seuil = Convertir.ToDecimal(tbSeuil.Text );
-            BindingSource source = new BindingSource();// (BindingSource)dataGridView.DataSource;
+            var seuil = Convertir.ToDecimal(tbSeuil.Text );
+            var source = new BindingSource();// (BindingSource)dataGridView.DataSource;
             source.DataSource = LocataireController.getController().getListeRetardPaiements(seuil, tbRefLocataire.Text);
             if ( seuil != 0 )
-                source.Filter = String.Format(" total_du > {0}", seuil);
+                source.Filter = $" total_du > {seuil}";
 
             dataGridView.DataSource = source;//LocataireController.getController().getListeRetardPaiements(seuil, tbRefLocataire.Text);
             if (dataGridView.DataSource != null)
             {
-                DataGridViewColumnCollection cols = dataGridView.Columns;
+                var cols = dataGridView.Columns;
                 HideAndResizeColumns(cols);
                 ControlsWindows.ToTitleCase(cols);
                 OrderColumns();
@@ -69,7 +69,7 @@ namespace Gerance.Impressions.Retards
         protected virtual void HideAndResizeColumns(DataGridViewColumnCollection cols)
         {
             cols["id"].Visible = false;
-            DataGridViewCellStyle style = cols["total_du"].DefaultCellStyle;
+            var style = cols["total_du"].DefaultCellStyle;
             style.Alignment = DataGridViewContentAlignment.MiddleRight;
             style = cols["date_reglement"].DefaultCellStyle;
             style.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -80,7 +80,7 @@ namespace Gerance.Impressions.Retards
                 return;
             foreach (DataGridViewColumn col in dataGridView.Columns)
             {
-                int index = (int)CommonRegistry.getRegistryValue(regKey, col.Name, -1);
+                var index = (int)CommonRegistry.getRegistryValue(regKey, col.Name, -1);
                 if (index != -1)
                     col.DisplayIndex = index;
             }
@@ -94,14 +94,14 @@ namespace Gerance.Impressions.Retards
             reportViewer1.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             ckAll.Visible = false;
 
-            string montant_rappel = ParametresDB.getParam1("RETARD","MONTANT_RAPPEL");
+            var montant_rappel = ParametresDB.getParam1("RETARD","MONTANT_RAPPEL");
             if ( montant_rappel == "")
                 montant_rappel="5";
-	        string hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
-            string hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
+	        var hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
+            var hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
 
             reportViewer1.LocalReport.ReportEmbeddedResource = "Gerance.Impressions.Retards.RetardPaiementReport.rdlc";
-            ReportParameter[] parameters = new ReportParameter[]{
+            var parameters = new ReportParameter[]{
                     new ReportParameter("dateEdition", dateEcriture.Value.ToShortDateString()),
                     new ReportParameter("montant_rappel", montant_rappel),
                     new ReportParameter("Header_Description", hdr_descr),
@@ -110,8 +110,8 @@ namespace Gerance.Impressions.Retards
 
             reportViewer1.LocalReport.SetParameters(parameters);
             reportViewer1.LocalReport.DataSources.Clear();
-            BindingSource selected = new BindingSource();
-            bool bHaveRows = false;
+            var selected = new BindingSource();
+            var bHaveRows = false;
             foreach (DataGridViewRow row in dataGridView.Rows)
             {
                 if ( row.Cells["select"].Value != null ) 
@@ -167,13 +167,13 @@ namespace Gerance.Impressions.Retards
             reportViewer1.Visible = true;
             reportViewer1.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             ckAll.Visible = false;
-            string montant_rappel = ParametresDB.getParam1("RETARD", "MONTANT_DEMEURE");
+            var montant_rappel = ParametresDB.getParam1("RETARD", "MONTANT_DEMEURE");
             if (montant_rappel == "")
                 montant_rappel = "46";
-            string hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
-            string hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
+            var hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
+            var hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
 
-            ReportParameter[] parameters = new ReportParameter[]{
+            var parameters = new ReportParameter[]{
                     new ReportParameter("dateEdition", dateEcriture.Value.ToShortDateString()),
                     new ReportParameter("montant_rappel", montant_rappel),
                     new ReportParameter("Header_Description", hdr_descr),
@@ -183,8 +183,8 @@ namespace Gerance.Impressions.Retards
             reportViewer1.LocalReport.ReportEmbeddedResource = "Gerance.Impressions.Retards.MiseEnDemeureReport.rdlc";
             reportViewer1.LocalReport.SetParameters(parameters);
             reportViewer1.LocalReport.DataSources.Clear();
-            BindingSource selected = new BindingSource();
-            bool bHaveRows = false;
+            var selected = new BindingSource();
+            var bHaveRows = false;
             foreach (DataGridViewRow row in dataGridView.Rows)
             {
                 if (row.Cells["select"].Value != null)

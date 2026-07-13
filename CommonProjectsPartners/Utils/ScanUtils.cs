@@ -15,17 +15,17 @@ namespace CommonProjectsPartners.Utils
         public DataTransferredEventHandler DataTransferred;
         public bool WIAAcquire(bool bShowUI = true)
         {
-            bool rc = false;
-            WIA.CommonDialog cl = new WIA.CommonDialog();
+            var rc = false;
+            var cl = new WIA.CommonDialog();
             try
             {
-                Device d = cl.ShowSelectDevice(WiaDeviceType.ScannerDeviceType, true, true);
+                var d = cl.ShowSelectDevice(WiaDeviceType.ScannerDeviceType, true, true);
                 if (d != null)
                 {
                     object result = cl.ShowAcquireImage(WiaDeviceType.ScannerDeviceType, WiaImageIntent.GrayscaleIntent, WiaImageBias.MinimizeSize, FormatID.wiaFormatPNG);
                     if (result != null)
                     {
-                        ImageFile img = (ImageFile)result;
+                        var img = (ImageFile)result;
                         image = Image.FromStream(new MemoryStream((byte[])img.FileData.get_BinaryData()));
                         if (DataTransferred != null)
                             DataTransferred(this, new EventArgs());
@@ -48,7 +48,7 @@ namespace CommonProjectsPartners.Utils
 
         public bool TwainAcquire(IntPtr handle, bool bShowUI = true)
         {
-            bool rc = false;
+            var rc = false;
             DataSource src;
             ITwainSession session;
 
@@ -64,7 +64,7 @@ namespace CommonProjectsPartners.Utils
             };
             session.SourceDisabled += (s, ex) =>
             {
-                TwainSession sess = (TwainSession)s;
+                var sess = (TwainSession)s;
                 sess.CurrentSource.Close();
                 sess.Close();
             };

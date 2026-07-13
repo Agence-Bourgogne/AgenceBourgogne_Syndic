@@ -49,7 +49,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
             tbAppel.Text = immeuble.texte_date;
             //setText(tbNote, immeuble.note);
             //setText(tbNoteRepart, immeuble.note_repart);
-            DataTable repartition_immeuble = immeuble.getRepartitionImmeuble();
+            var repartition_immeuble = immeuble.getRepartitionImmeuble();
             RepartitionControlsWindows.ShowRepartitionImmeuble(dataGridView, repartition_immeuble);
             modifiedDataGrid = modified = false;
             setReadOnly(true);
@@ -62,10 +62,10 @@ namespace EspaceSyndic.Formulaires.Immeubles
 
         private int getCumulLotRepartition(ImmeubleRepartitionEntite repart, DataTable repartLot)
         {
-            int cumul = 0;
+            var cumul = 0;
             foreach (DataRow row in repartLot.Rows)
             {
-                LotRepartitionEntite lotRepart = new LotRepartitionEntite(row);
+                var lotRepart = new LotRepartitionEntite(row);
                 if (lotRepart.ligne == repart.ligne && lotRepart.colonne == repart.colonne && lotRepart.reference == repart.reference)
                 {
                     cumul += lotRepart.valeur;
@@ -76,14 +76,14 @@ namespace EspaceSyndic.Formulaires.Immeubles
 
         private bool verifLotRepart ()
         {
-            bool bHaveError = false;
-            DataTable repartImmeuble = ImmeubleRepartitionController.getController().getRepartitionImmeuble(immeuble.id);
-            DataTable repartLot = LotRepartitionController.getController().GetLotsRepartition(immeuble);
+            var bHaveError = false;
+            var repartImmeuble = ImmeubleRepartitionController.getController().getRepartitionImmeuble(immeuble.id);
+            var repartLot = LotRepartitionController.getController().GetLotsRepartition(immeuble);
 
             foreach (DataRow row in repartImmeuble.Rows)
             {
-                ImmeubleRepartitionEntite repart = new ImmeubleRepartitionEntite(row);
-                int cumul = getCumulLotRepartition(repart, repartLot);
+                var repart = new ImmeubleRepartitionEntite(row);
+                var cumul = getCumulLotRepartition(repart, repartLot);
                 if (cumul != repart.valeur)
                 {
                     //Console.WriteLine("Bad {0} {1} {2} {3}", repart.ligne, repart.colonne, cumul, repart.valeur);
@@ -96,7 +96,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
         }
         private bool SaveRepartitionImmeuble()
         {
-            bool bSaved = true;
+            var bSaved = true;
             if (modifiedDataGrid)
             {
                 if (ImmeubleRepartitionController.getController().SaveRepartitionImmeuble(immeuble, dataGridView))
@@ -119,7 +119,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
         {
             if (bShowMessage)
             {
-                DialogResult result = MessageBox.Show("Des modifications on été apportéees\nVoulez-vous les enregistrer",
+                var result = MessageBox.Show("Des modifications on été apportéees\nVoulez-vous les enregistrer",
                     "", MessageBoxButtons.YesNoCancel);
                 if (result == DialogResult.Cancel)
                     return false;
@@ -164,7 +164,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
 
             try
             {
-                ImmeubleEntite entite = controller.getEntite(where);
+                var entite = controller.getEntite(where);
                 if (entite != null)
                     setFicheValues(entite);
 
@@ -181,11 +181,11 @@ namespace EspaceSyndic.Formulaires.Immeubles
         }
         private void btnPrev_Click(object sender, EventArgs e)
         {
-            getNewEntite(String.Format("where reference < '{0}' order by reference desc", immeuble.reference), "Début de liste atteint");
+            getNewEntite($"where reference < '{immeuble.reference}' order by reference desc", "Début de liste atteint");
         }
         private void btnNext_Click(object sender, EventArgs e)
         {
-            getNewEntite(String.Format("where reference > '{0}' order by reference ", immeuble.reference), "Fin de liste atteinte");
+            getNewEntite($"where reference > '{immeuble.reference}' order by reference ", "Fin de liste atteinte");
         }
         private void btnLast_Click(object sender, EventArgs e)
         {
@@ -232,7 +232,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
             if (modified || modifiedDataGrid)
                 if (!saveForm(true, false))
                     return;
-            FicheRepartLot form = new FicheRepartLot();
+            var form = new FicheRepartLot();
             form.immeuble = immeuble;
             form.ShowDialog();
         }
@@ -246,10 +246,10 @@ namespace EspaceSyndic.Formulaires.Immeubles
         {
             if (immeuble != null)
             {
-                TitreRepartImmeubleForm form = new TitreRepartImmeubleForm();
+                var form = new TitreRepartImmeubleForm();
                 form.immeuble_id = immeuble.id;
                 form.ShowDialog();
-                DataTable repartition_immeuble = immeuble.getRepartitionImmeuble();
+                var repartition_immeuble = immeuble.getRepartitionImmeuble();
                 RepartitionControlsWindows.ShowRepartitionImmeuble(dataGridView, repartition_immeuble);
                 modifiedDataGrid = modified = false;
                 setReadOnly(true);
@@ -262,7 +262,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
         {
             if (immeuble != null)
             {
-                FicheAideImmeubleForm form = new FicheAideImmeubleForm(immeuble);
+                var form = new FicheAideImmeubleForm(immeuble);
                 form.ShowDialog();
 
             }
@@ -277,7 +277,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
 
         private void lblRef_Click(object sender, EventArgs e)
         {
-            FindImmeubleForm form = new FindImmeubleForm(tbNumero);
+            var form = new FindImmeubleForm(tbNumero);
             if (DialogResult.Cancel != form.ShowDialog())
             {
                 immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbNumero.Text);
@@ -289,7 +289,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
         {
             if ( immeuble != null )
             {
-                ReferenceExerciceForm form = new ReferenceExerciceForm(immeuble);
+                var form = new ReferenceExerciceForm(immeuble);
                 form.ShowDialog();
             }
         }

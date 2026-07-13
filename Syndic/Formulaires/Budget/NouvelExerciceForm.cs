@@ -23,13 +23,13 @@ namespace EspaceSyndic.Formulaires.Budget
             MinimumSize = MaximumSize = Size;
             if (exercice_id == "")
             {
-                DateTime dt = ExerciceComptableController.getController().getNewDateDebutExercice(immeuble_id);
+                var dt = ExerciceComptableController.getController().getNewDateDebutExercice(immeuble_id);
                 dtDeb.Value = dt;
                 dtFin.Value = dtDeb.Value.AddYears(1).AddDays(-1);
             }
             else
             {
-                ExerciceComptableEntite exercice = ExerciceComptableController.getController().getEntiteById(exercice_id);
+                var exercice = ExerciceComptableController.getController().getEntiteById(exercice_id);
                 dtDeb.Value = exercice.date_deb;
                 dtFin.Value = exercice.date_fin;
                 tbReference.Text = exercice.reference;
@@ -54,7 +54,7 @@ namespace EspaceSyndic.Formulaires.Budget
         private bool GenerateBudget()
         {
 //            NpgsqlConnection cnx= Database.Begin();
-            NpgsqlTransaction trx = Database.BeginTransaction();
+            var trx = Database.BeginTransaction();
             try
             {
                 ExerciceComptableEntite exercice = null;
@@ -77,7 +77,7 @@ namespace EspaceSyndic.Formulaires.Budget
                 }
                 exercice_id = exercice.id;
 
-                BudgetEntite budget = BudgetController.getController().getEntiteFromField("exercice_id", exercice.id);
+                var budget = BudgetController.getController().getEntiteFromField("exercice_id", exercice.id);
 
                 if (budget == null)
                 {
@@ -92,23 +92,23 @@ namespace EspaceSyndic.Formulaires.Budget
                 }
                 //this.exercice_id = budget.id;
 
-                BudgetLigneController controller = BudgetLigneController.getController();
+                var controller = BudgetLigneController.getController();
 
 
                 if (rdReel.Checked)
                 {
                     // TODO Revoir le calcul de n-1
 
-                    DataTable realise = SaisieFactureController.getController().getBudgetRealise(immeuble_id, dtDeb.Value.AddYears(-1), dtFin.Value.AddYears(-1));
+                    var realise = SaisieFactureController.getController().getBudgetRealise(immeuble_id, dtDeb.Value.AddYears(-1), dtFin.Value.AddYears(-1));
                     if ( realise.Rows.Count <= 0 )
                     {
                         throw new Exception("Aucune données pour le réalisé n-1");
                     }
-                    decimal coeff = Convertir.ToDecimal(tbCoeff.Text);
+                    var coeff = Convertir.ToDecimal(tbCoeff.Text);
                     foreach (DataRow row in realise.Rows)
                     {
-                        BudgetLigneEntite budgetLigne = new BudgetLigneEntite();
-                        decimal montant = (decimal) row["montant"];
+                        var budgetLigne = new BudgetLigneEntite();
+                        var montant = (decimal) row["montant"];
                         budgetLigne.budget_id = budget.id;
                         budgetLigne.nature_id = row["nature_id"].ToString();
                         budgetLigne.base_repart = row["base_repart"].ToString();
@@ -124,26 +124,26 @@ namespace EspaceSyndic.Formulaires.Budget
                 else
                     if (rdVote.Checked)
                     {
-                        DataTable tablePrevExercice = ExerciceComptableController.getController().getExercicePrecedent(exercice_id);
+                        var tablePrevExercice = ExerciceComptableController.getController().getExercicePrecedent(exercice_id);
                         if ( tablePrevExercice == null || tablePrevExercice.Rows.Count <= 0)
                         {
                             throw new Exception("Pas d'exercice précédent");
                         }
-                        string prev_exercice_id = tablePrevExercice.Rows[0]["id"].ToString();
+                        var prev_exercice_id = tablePrevExercice.Rows[0]["id"].ToString();
 
-                        DataTable prevu = BudgetLigneController.getController().getDescriptionLignesBudgetPrevu(prev_exercice_id);
+                        var prevu = BudgetLigneController.getController().getDescriptionLignesBudgetPrevu(prev_exercice_id);
                         
                         
                         if (prevu == null || prevu.Rows.Count <= 0)
                         {
                             throw new Exception("Aucune données pour le réalisé n-1");
                         }
-                        decimal coeff = Convertir.ToDecimal(tbCoeff.Text);
+                        var coeff = Convertir.ToDecimal(tbCoeff.Text);
                         foreach (DataRow row in prevu.Rows)
                         {
                             //                        SaisieFactureEntite facture = new SaisieFactureEntite(row);
-                            BudgetLigneEntite budgetLigne = new BudgetLigneEntite();
-                            decimal montant = (decimal)row["montant"];
+                            var budgetLigne = new BudgetLigneEntite();
+                            var montant = (decimal)row["montant"];
                             budgetLigne.budget_id = budget.id;
                             budgetLigne.nature_id = row["nature_id"].ToString();
                             budgetLigne.base_repart = row["base_repart"].ToString();

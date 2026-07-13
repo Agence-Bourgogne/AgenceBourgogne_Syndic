@@ -25,7 +25,7 @@ namespace CommonProjectsPartners.Controller
         }
         public DataTable GetComboRoles()
         {
-            string cmd = String.Format(" select id, nom from {0} ", getSchemaTable());
+            var cmd = $" select id, nom from {getSchemaTable()} ";
             return getResultSQL(cmd);
         }
     }

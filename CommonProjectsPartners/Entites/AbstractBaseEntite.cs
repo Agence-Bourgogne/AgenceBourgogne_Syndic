@@ -38,9 +38,9 @@ namespace CommonProjectsPartners.Entites
                     audit_updated_by = row["audit_updated_by"].ToString();
             }
             isNew = "".Equals(id);
-            foreach (UpdateField fieldupd in updatables)
+            foreach (var fieldupd in updatables)
             {
-                FieldInfo field = fieldupd.fieldinfo;
+                var field = fieldupd.fieldinfo;
                 try
                 {
                     if (row == null)
@@ -65,26 +65,26 @@ namespace CommonProjectsPartners.Entites
         }
         public virtual string GetInsertOrUdpateCommand(string schemaTable)
         {
-            string cmd = "";
+            var cmd = "";
 //            if (!"".Equals(id))
             if ( !isNew )
             {
-                cmd = String.Format("update {0} set ", schemaTable);
-                foreach (UpdateField fieldupd in updatables)
+                cmd = $"update {schemaTable} set ";
+                foreach (var fieldupd in updatables)
                 {
-                    FieldInfo field = fieldupd.fieldinfo;
-                    object curr_value = field.GetValue(this);
-                    object old_value = field.GetValue(old_entite);
+                    var field = fieldupd.fieldinfo;
+                    var curr_value = field.GetValue(this);
+                    var old_value = field.GetValue(old_entite);
 
                     if (curr_value == null)
                     {
                         if (curr_value!=old_value)
-                            cmd += String.Format("{0}=@{1}, ", field.Name, field.Name);
+                            cmd += $"{field.Name}=@{field.Name}, ";
 
                     }
                     else
                         if (!curr_value.Equals(old_value))
-                            cmd += String.Format("{0}=@{1}, ",  field.Name, field.Name );
+                            cmd += $"{field.Name}=@{field.Name}, ";
                 }
                 cmd += " audit_updated = @audit_updated, audit_updated_by= @audit_updated_by ";
                 cmd += " where id = @id";
@@ -93,20 +93,20 @@ namespace CommonProjectsPartners.Entites
             {
                 if ( id == null || id =="")
                     id = get_uuid();
-                cmd = String.Format("insert into {0} (", schemaTable);
+                cmd = $"insert into {schemaTable} (";
 
                 cmd += "id, ";
-                foreach (UpdateField fieldupd in updatables)
+                foreach (var fieldupd in updatables)
                 {
-                    FieldInfo field = fieldupd.fieldinfo;
+                    var field = fieldupd.fieldinfo;
                     cmd += field.Name + ", ";
                 }
                 cmd += " audit_created , audit_created_by ";
                 cmd += " ) values ( ";
                 cmd += "@id, ";
-                foreach (UpdateField fieldupd in updatables)
+                foreach (var fieldupd in updatables)
                 {
-                    FieldInfo field = fieldupd.fieldinfo;
+                    var field = fieldupd.fieldinfo;
                     cmd += "@" + field.Name + ", ";
                 }
                 cmd += " @audit_created , @audit_created_by "; 
@@ -116,22 +116,22 @@ namespace CommonProjectsPartners.Entites
         }
         public string get_uuid()
         {
-            string cmd = "select public.get_uuid()";
-            NpgsqlCommand sqlCmd = new NpgsqlCommand(cmd, Database.GetInstance());
-            string uuid = (string) sqlCmd.ExecuteScalar();
+            var cmd = "select public.get_uuid()";
+            var sqlCmd = new NpgsqlCommand(cmd, Database.GetInstance());
+            var uuid = (string) sqlCmd.ExecuteScalar();
             return uuid;
         }
 
         public virtual string ValidationError()
         {
-            String message = "";
+            var message = "";
             return message;
         }
         public virtual void SetInsertOrUpdateParameters(NpgsqlCommand sqlCmd)
         {
-            foreach (UpdateField fieldupd in updatables)
+            foreach (var fieldupd in updatables)
             {
-                FieldInfo field = fieldupd.fieldinfo;
+                var field = fieldupd.fieldinfo;
                 sqlCmd.Parameters.AddWithValue("@" + field.Name, field.GetValue(this));
             }
 
@@ -144,14 +144,14 @@ namespace CommonProjectsPartners.Entites
         }
         public virtual List<AuditChange> GetChanges()
         {
-            List<AuditChange> changes = new List<AuditChange>();
-            foreach (UpdateField fieldupd in updatables)
+            var changes = new List<AuditChange>();
+            foreach (var fieldupd in updatables)
             {
                 if (fieldupd.Auditable)
                 {
-                    FieldInfo field = fieldupd.fieldinfo;
-                    object curr_value = field.GetValue(this);
-                    object old_value = field.GetValue(old_entite);
+                    var field = fieldupd.fieldinfo;
+                    var curr_value = field.GetValue(this);
+                    var old_value = field.GetValue(old_entite);
                     if (curr_value == null)
                     {
                         if ( old_value != null )

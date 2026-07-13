@@ -17,11 +17,11 @@ namespace Gerance.Formulaires.Locataires
         }
         protected override void FillListFromTbFilter()
         {
-            string filter = " 1=1 ";
+            var filter = " 1=1 ";
             if (tbRef.Text != "")
-                filter += String.Format(" and reference like '{0}%' ", tbRef.Text);
+                filter += $" and reference like '{tbRef.Text}%' ";
             if (tbNom.Text != "")
-                filter += String.Format(" and nom like '{0}%' ", tbNom.Text);
+                filter += $" and nom like '{tbNom.Text}%' ";
             FillListFromFilter(filter);
         }
 

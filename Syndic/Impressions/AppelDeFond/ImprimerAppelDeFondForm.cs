@@ -33,7 +33,7 @@ namespace EspaceSyndic.Impressions.AppelDeFond
 
         private void ValidAppelDeFondForm_Load(object sender, EventArgs e)
         {
-            DateTime dt = DateTime.Now;
+            var dt = DateTime.Now;
             if (immeuble != null) 
             {
                 tbRefImmeuble.Text = immeuble.reference;
@@ -48,7 +48,7 @@ namespace EspaceSyndic.Impressions.AppelDeFond
 
         private string GetTextAppelFond()
         {
-            string txt = "";
+            var txt = "";
             if ( ckFerie.Checked)
                 txt = ParametresDB.getParam1("APPEL DE FOND", "FETES");
             else
@@ -65,10 +65,10 @@ namespace EspaceSyndic.Impressions.AppelDeFond
 
         void CreateReport(string num_lot = "")
         {
-            string saisie = saisie_id;
+            var saisie = saisie_id;
             if (dataGridView.SelectedRows.Count > 0)
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
                 if (!row["liasse_id"].ToString().StartsWith("Reprise"))
                     saisie = row["id"].ToString();
                 else
@@ -77,22 +77,22 @@ namespace EspaceSyndic.Impressions.AppelDeFond
             }
             dataGridView.Visible = false;
 
-            string commentaire = tbText.Text.ToString();
+            var commentaire = tbText.Text.ToString();
             if (commentaire == "")
                 commentaire = " ";
             if (num_lot != "")
             {
-                LotDescriptionEntite lot = LotDescriptionController.getController().getLotFromReference(immeuble.id, num_lot);
+                var lot = LotDescriptionController.getController().getLotFromReference(immeuble.id, num_lot);
                 if (lot == null)
                 {
                     MessageBox.Show("Lot Invalide");
                     return;
                 }
             }
-            string hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
-            string hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
+            var hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
+            var hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
 
-            ReportParameter[] parameters = new ReportParameter[]{
+            var parameters = new ReportParameter[]{
                 new ReportParameter("TexteAppel", commentaire),
                 new ReportParameter("DateAppel", dtEntete.Value.ToShortDateString()),
                 new ReportParameter("seuil", ParametresDB.getParam1("APPEL DE FOND", "SEUIL")),
@@ -112,17 +112,17 @@ namespace EspaceSyndic.Impressions.AppelDeFond
 
         void SubreportProcessingEventHandler(object sender, SubreportProcessingEventArgs e)
         {
-            string immeuble_id = e.Parameters[0].Values[0];
-            string coproprietaire_id = e.Parameters[3].Values[0];
-            DataTable source = OperationController.getController().getCoproprietaireOperation(immeuble_id, coproprietaire_id, dtDeb.Value, dtFin.Value);
+            var immeuble_id = e.Parameters[0].Values[0];
+            var coproprietaire_id = e.Parameters[3].Values[0];
+            var source = OperationController.getController().getCoproprietaireOperation(immeuble_id, coproprietaire_id, dtDeb.Value, dtFin.Value);
             e.DataSources.Clear();
             e.DataSources.Add(new ReportDataSource("operation", source));
-            immeubleSource.Filter = String.Format("copro_id = '{0}'", coproprietaire_id);
+            immeubleSource.Filter = $"copro_id = '{coproprietaire_id}'";
             e.DataSources.Add(new ReportDataSource("immeuble_copro", immeubleSource));
         }
         private void lblImmeuble_Click(object sender, EventArgs e)
         {
-            FindImmeubleForm form = new FindImmeubleForm();
+            var form = new FindImmeubleForm();
             form.ShowDialog();
             if (!"".Equals(form.reference))
             {
@@ -138,9 +138,9 @@ namespace EspaceSyndic.Impressions.AppelDeFond
             if (immeuble != null)
             {
                 tbRefImmeuble.BackColor = Color.White;
-                DataTable lots = LotDescriptionController.getController().getListeLot(immeuble.id);
+                var lots = LotDescriptionController.getController().getListeLot(immeuble.id);
 
-                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
 
                 if (immeuble.ExerciceCourant == null)
                     MessageBox.Show("Attention pas d'exercice comptable défini");
@@ -195,7 +195,7 @@ namespace EspaceSyndic.Impressions.AppelDeFond
 
         private void lblLot_Click(object sender, EventArgs e)
         {
-            FindLotCoproprietaireImmeubleForm form = new FindLotCoproprietaireImmeubleForm();
+            var form = new FindLotCoproprietaireImmeubleForm();
             form.immeuble = immeuble;
             form.ShowDialog();
             if (form.reference != "")
@@ -211,7 +211,7 @@ namespace EspaceSyndic.Impressions.AppelDeFond
             tbLot.BackColor = Color.White;
             if (tbLot.Text == "")
                 return;
-            LotDescriptionEntite lot = LotDescriptionController.getController().getLotFromReference(immeuble.id, tbLot.Text);
+            var lot = LotDescriptionController.getController().getLotFromReference(immeuble.id, tbLot.Text);
             if (lot == null)
                 tbLot.BackColor = Color.Red;
 
@@ -221,7 +221,7 @@ namespace EspaceSyndic.Impressions.AppelDeFond
         {
             if (immeuble == null)
                 return;
-            ReferenceExerciceForm form = new ReferenceExerciceForm(immeuble);
+            var form = new ReferenceExerciceForm(immeuble);
             form.ShowDialog();
             tbRefImmeuble_Validating(null, null);
         }
@@ -229,11 +229,11 @@ namespace EspaceSyndic.Impressions.AppelDeFond
         private void btnListe_Click(object sender, EventArgs e)
         {
             dataGridView.Visible = true;
-            DateTime dtDeb = DateTime.Parse("01/01/1970");
-            DateTime dtFin = DateTime.Parse("01/01/1970");
+            var dtDeb = DateTime.Parse("01/01/1970");
+            var dtFin = DateTime.Parse("01/01/1970");
 
             dataGridView.DataSource = SaisieAppelFondController.getController().getListeOperations(tbRefImmeuble.Text, dtDeb, dtFin, "", "", true, "");
-            DataGridViewColumnCollection cols = dataGridView.Columns;
+            var cols = dataGridView.Columns;
             ControlsWindows.ToTitleCase(cols);
             cols["statut"].Visible = false;
             cols["id"].Visible = false;
@@ -243,7 +243,7 @@ namespace EspaceSyndic.Impressions.AppelDeFond
 
         private void lbParametres_Click(object sender, EventArgs e)
         {
-            ConfigParamForm form = new ConfigParamForm();
+            var form = new ConfigParamForm();
            
             form.groupe_selected = "APPEL DE FOND";
             form.param_selected = "ENTETE";
@@ -259,11 +259,11 @@ namespace EspaceSyndic.Impressions.AppelDeFond
         private void button1_Click(object sender, EventArgs e)
         {
             if (immeuble == null) return;
-            List<LotDescriptionEntite> lots = LotDescriptionController.getController().getListeLotDescription(immeuble.id);
+            var lots = LotDescriptionController.getController().getListeLotDescription(immeuble.id);
             if (lots == null || lots.Count == 0) return;
 
             Enabled = false;
-            ExportCopro dlg = new ExportCopro();
+            var dlg = new ExportCopro();
             try
             {
                 //string serveur = SyndicData.Common.ParametresDB.getParam1("SERVEUR", "ADDRESSE");
@@ -272,13 +272,13 @@ namespace EspaceSyndic.Impressions.AppelDeFond
                 dlg.Activate();
                 if (!string.IsNullOrEmpty(tbLot.Text) && lots.Exists(x => x.numero_lot.ToString() == tbLot.Text))
                 {
-                    LotDescriptionEntite lot = lots.FirstOrDefault(x => x.numero_lot.ToString() == tbLot.Text);
+                    var lot = lots.FirstOrDefault(x => x.numero_lot.ToString() == tbLot.Text);
                     if (lot.Coproprietaire != null)
                     {
-                        CoproprietaireEntite copro = CoproprietaireController.getController().getEntiteById(lot.coproprietaire_id);
-                        string monthName = new DateTime(2010, 8, 1).ToString("MMM", System.Globalization.CultureInfo.CurrentCulture);
-                        string rapportName = "Appel de Fonds " + copro.nom + "_" + monthName + "-" + dtFin.Value.Year.ToString();
-                        dlg.textBox1.Text = string.Format("Export Appel de Fonds lot : {0}", lot.numero_lot);
+                        var copro = CoproprietaireController.getController().getEntiteById(lot.coproprietaire_id);
+                        var monthName = new DateTime(2010, 8, 1).ToString("MMM", System.Globalization.CultureInfo.CurrentCulture);
+                        var rapportName = "Appel de Fonds " + copro.nom + "_" + monthName + "-" + dtFin.Value.Year.ToString();
+                        dlg.textBox1.Text = $"Export Appel de Fonds lot : {lot.numero_lot}";
                         dlg.textBox1.Refresh();
                         CreateReport(lot.numero_lot.ToString());
                         UtilsApp.ServiceReferenceUtils.SendReportPDF(reportViewer1, rapportName, Guid.NewGuid().ToString(), lot.immeuble_id, lot.coproprietaire_id);
@@ -287,14 +287,14 @@ namespace EspaceSyndic.Impressions.AppelDeFond
                 else
                 {
                     //  CreateReport("");
-                    foreach (LotDescriptionEntite lot in lots)
+                    foreach (var lot in lots)
                     {
                         if (lot != null && lot.Coproprietaire != null)
                         {
-                            CoproprietaireEntite copro = CoproprietaireController.getController().getEntiteById(lot.coproprietaire_id);
-                            string monthName = new DateTime(2010, 8, 1).ToString("MMM", System.Globalization.CultureInfo.InvariantCulture);
-                            string rapportName = "Appel de Fonds " + copro.nom + "_" + monthName + "-" + dtFin.Value.Year.ToString();
-                            dlg.textBox1.Text = string.Format("Export Appel de Fonds lot : {0}", lot.numero_lot);
+                            var copro = CoproprietaireController.getController().getEntiteById(lot.coproprietaire_id);
+                            var monthName = new DateTime(2010, 8, 1).ToString("MMM", System.Globalization.CultureInfo.InvariantCulture);
+                            var rapportName = "Appel de Fonds " + copro.nom + "_" + monthName + "-" + dtFin.Value.Year.ToString();
+                            dlg.textBox1.Text = $"Export Appel de Fonds lot : {lot.numero_lot}";
                             dlg.textBox1.Refresh();
                             CreateReport(lot.numero_lot.ToString());
                             UtilsApp.ServiceReferenceUtils.SendReportPDF(reportViewer1, rapportName, Guid.NewGuid().ToString(), lot.immeuble_id, lot.coproprietaire_id);

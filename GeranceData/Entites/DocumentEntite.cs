@@ -23,13 +23,13 @@ namespace GeranceData.Entites
                 {
                     document_image = DocumentController.getController().getImage(id);
                 }
-                MemoryStream ms = new MemoryStream(document_image);
+                var ms = new MemoryStream(document_image);
                 return Image.FromStream(ms);
 //                return img;
             }
             set
             {
-                MemoryStream ms = new MemoryStream();
+                var ms = new MemoryStream();
                 value.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                 document_image = ms.ToArray();
             }
@@ -48,7 +48,7 @@ namespace GeranceData.Entites
 
         public override void setValues(DataRow row)
         {
-            FieldInfo[] members = GetType().GetFields();
+            var members = GetType().GetFields();
 
             updatables.Clear();
 

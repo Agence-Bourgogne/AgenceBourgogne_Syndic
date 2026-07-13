@@ -37,10 +37,10 @@ namespace Gerance.Formulaires.Reglements
                         ctl.TextChanged += new EventHandler(tbPaiementTextChanged);
             }
 
-            LocataireEntite locataire = reglement.Locataire;
+            var locataire = reglement.Locataire;
             if (locataire != null)
             {
-                BienEntite bien = locataire.Bien;
+                var bien = locataire.Bien;
                 if ( bien != null )
                 {
                     tbShowLoyer.Text = locataire.Bien.montant_loyer.ToString();
@@ -96,12 +96,12 @@ namespace Gerance.Formulaires.Reglements
         private void tbPaiementTextChanged(object sender, EventArgs e)
         {
             decimal total = 0;
-            decimal montantReg = Convertir.ToDecimal(tbReglement.Text);
+            var montantReg = Convertir.ToDecimal(tbReglement.Text);
             total += Convertir.ToDecimal(tbLoyer.Text);
             
             if ( sender == tbLoyer)
             {
-                decimal newTaxe = Math.Round(Convertir.ToDecimal(tbLoyer.Text) * ((reglement.Bien.taxe == 1) ? taux_tva : taux_bail) / 100, 2);
+                var newTaxe = Math.Round(Convertir.ToDecimal(tbLoyer.Text) * ((reglement.Bien.taxe == 1) ? taux_tva : taux_bail) / 100, 2);
                 tbTaxes.Text = newTaxe.ToString();
             }
             total += Convertir.ToDecimal(tbCharges.Text);
@@ -129,7 +129,7 @@ namespace Gerance.Formulaires.Reglements
         {
             if ( Convertir.ToDecimal(tbDiff.Text) != 0)
             {
-                DialogResult result = MessageBox.Show("Le montant du règlement ne correspond pas à la répartition\nVoulez vous Continuer", "Attention", MessageBoxButtons.YesNo);
+                var result = MessageBox.Show("Le montant du règlement ne correspond pas à la répartition\nVoulez vous Continuer", "Attention", MessageBoxButtons.YesNo);
                 if ( result == DialogResult.No)
                     return false;
             }

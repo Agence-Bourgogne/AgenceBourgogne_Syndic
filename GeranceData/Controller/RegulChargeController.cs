@@ -20,9 +20,10 @@ namespace GeranceData.Controller
         }
         public DataTable getDataFromRegul(string locataire_id, DateTime dtDeb, DateTime dtFin)
         {
-            string cmd = String.Format("select * from {0} where locataire_id =@locataire_id and date_saisie >= @dtdeb and date_saisie <= @dtFin", getSchemaTable());
+            var cmd =
+                $"select * from {getSchemaTable()} where locataire_id =@locataire_id and date_saisie >= @dtdeb and date_saisie <= @dtFin";
 
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>
+            var parameters = new List<NpgsqlParameter>
             {
                 new NpgsqlParameter("dtDeb", dtDeb),
                 new NpgsqlParameter("dtFin", dtFin),

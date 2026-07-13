@@ -32,7 +32,7 @@ namespace GeranceData.Entites
         }
         public override void setValues(DataRow row)
         {
-            FieldInfo[] members = GetType().GetFields();
+            var members = GetType().GetFields();
             updatables.Clear();
             updatables.Add(new UpdateField("reference", true, members));
             updatables.Add(new UpdateField("nom", true, members));

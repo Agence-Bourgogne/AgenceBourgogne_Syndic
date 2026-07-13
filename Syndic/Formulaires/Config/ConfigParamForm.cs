@@ -29,11 +29,11 @@ namespace EspaceSyndic.Formulaires.Config
             //Console.WriteLine(cbGroupe.SelectedValue);
             if (!initialized)
                 return;
-            DataRow row = ((DataRowView)cbGroupe.SelectedItem).Row;
+            var row = ((DataRowView)cbGroupe.SelectedItem).Row;
             ParametreController.controller.SaveList((DataTable)dataGridView.DataSource, true);
             groupe = new ParametreEntite(row);
             dataGridView.DataSource = ParametreController.controller.getListFromEntiteGroupe(groupe);
-            DataGridViewColumnCollection cols = dataGridView.Columns;
+            var cols = dataGridView.Columns;
             cols["id"].Visible = false;
             cols["groupe"].Visible = false;
             cols["code"].Visible = false;
@@ -48,11 +48,11 @@ namespace EspaceSyndic.Formulaires.Config
             cols["audit_created_by"].Visible = false;
             cols["audit_updated"].Visible = false;
             cols["audit_updated_by"].Visible = false;
-            string[] columnsDef = groupe.param_1.Split(',');
-            foreach (string coldef in columnsDef)
+            var columnsDef = groupe.param_1.Split(',');
+            foreach (var coldef in columnsDef)
             {
-                string[] paramCol = coldef.Replace(" as ", ":").Split(':');
-                string colName = paramCol[0].ToLower().Trim();
+                var paramCol = coldef.Replace(" as ", ":").Split(':');
+                var colName = paramCol[0].ToLower().Trim();
                 if (cols[colName] == null) continue;
                 cols[colName].Visible = true;
                 if (paramCol.Length > 1)
@@ -66,7 +66,7 @@ namespace EspaceSyndic.Formulaires.Config
             {
                 foreach (DataGridViewRow rowGrid in dataGridView.Rows)
                 {
-                    DataRowView data_row = (DataRowView)rowGrid.DataBoundItem;
+                    var data_row = (DataRowView)rowGrid.DataBoundItem;
                     if (data_row != null)
                     {
                         if (data_row["code"].ToString() == param_selected)
@@ -110,15 +110,15 @@ namespace EspaceSyndic.Formulaires.Config
         private void dataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             Console.WriteLine(e.ColumnIndex);
-            DataGridViewRow row = dataGridView.Rows[e.RowIndex];
+            var row = dataGridView.Rows[e.RowIndex];
             if ( row != null )
             {
-                ZoomParamForm form = new ZoomParamForm();
+                var form = new ZoomParamForm();
                 form.txtParam = row.Cells[e.ColumnIndex].Value.ToString();
                 if ( form.ShowDialog() == DialogResult.OK )
                 {
                     row.Cells[e.ColumnIndex].Value = form.txtParam;
-                    DataGridViewDataErrorContexts ctx = new DataGridViewDataErrorContexts();
+                    var ctx = new DataGridViewDataErrorContexts();
                     dataGridView.CommitEdit(ctx);
                     if ( ((DataTable)dataGridView.DataSource).GetChanges() != null )
                         Console.WriteLine(((DataTable)dataGridView.DataSource).GetChanges().Rows.Count);
@@ -128,7 +128,7 @@ namespace EspaceSyndic.Formulaires.Config
 
         private void dataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            DataGridViewRow row = dataGridView.Rows[e.RowIndex];
+            var row = dataGridView.Rows[e.RowIndex];
             if (row != null)
                 Console.WriteLine(row.Cells[e.ColumnIndex].Value);
             if (((DataTable)dataGridView.DataSource).GetChanges() != null)

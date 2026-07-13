@@ -36,7 +36,7 @@ namespace EspaceSyndic.Impressions.RelevesComptes
         }
         private void tbRefImmeuble_DoubleClick(object sender, EventArgs e)
         {
-            FindImmeubleForm form = new FindImmeubleForm();
+            var form = new FindImmeubleForm();
             form.ShowDialog();
             if (!"".Equals(form.reference))
             {
@@ -72,7 +72,7 @@ namespace EspaceSyndic.Impressions.RelevesComptes
             if ( immeuble != null)
             {
                 btnRapport.Enabled = true;
-                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
                 fillRapport();
             }
         }
@@ -82,24 +82,24 @@ namespace EspaceSyndic.Impressions.RelevesComptes
         }
         private void fillRapport()
         {
-            string type_ope = GlobalConstantes.TypeMouvement.Recette.ToString();
-            int statut = (int) GlobalConstantes.StatutOperation.Valide;
-            string refLot = cbLot.SelectedValue.ToString();
-            string Huissier = "";
-            string Gerant = "";
+            var type_ope = nameof(GlobalConstantes.TypeMouvement.Recette);
+            var statut = (int) GlobalConstantes.StatutOperation.Valide;
+            var refLot = cbLot.SelectedValue.ToString();
+            var Huissier = "";
+            var Gerant = "";
 
-            DataTable table = OperationController.getController().getListeOperations(immeuble.id, refLot, type_ope, statut);
+            var table = OperationController.getController().getListeOperations(immeuble.id, refLot, type_ope, statut);
             if (sourceData != null && table.Rows.Count > 0 )
             {
                 sourceData.DataSource = table;
-                DataRow row = table.Rows[0];
-                CoproprietaireEntite copro = CoproprietaireController.getController().getEntiteFromField("reference", row["ref_copro"].ToString());
+                var row = table.Rows[0];
+                var copro = CoproprietaireController.getController().getEntiteFromField("reference", row["ref_copro"].ToString());
                 if (copro != null)
                 {
                     Huissier = copro.huissier ? "Dossier remis à l'huissier" : "";
                     Gerant = copro.nomcomp;
                 }
-                ReportParameter[] parameters = new ReportParameter[]{
+                var parameters = new ReportParameter[]{
                     new ReportParameter("ref_immeuble", tbRefImmeuble.Text),
                     new ReportParameter("nom_copro", row["coproprietaire"].ToString()),
                     new ReportParameter("ref_copro", row["ref_copro"].ToString()),
@@ -142,7 +142,7 @@ namespace EspaceSyndic.Impressions.RelevesComptes
 
         private void btnRetard_Click(object sender, EventArgs e)
         {
-            RetardsPaiementsForm form = new RetardsPaiementsForm();
+            var form = new RetardsPaiementsForm();
             form.immeuble_ref = tbRefImmeuble.Text;
             form.ShowDialog();
         }

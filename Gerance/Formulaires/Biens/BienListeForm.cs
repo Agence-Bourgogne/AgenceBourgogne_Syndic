@@ -34,25 +34,25 @@ namespace Gerance.Formulaires.Biens
         }
         protected override void ShowFicheForm(string entite_id)
         {
-            BienFicheForm form = new BienFicheForm(entite_id);
+            var form = new BienFicheForm(entite_id);
             ShowForm(form);
         }
 
         private void btnFiltre_Click(object sender, EventArgs e)
         {
-            BienFindForm form = new BienFindForm();
-            DialogResult res = form.ShowDialog();
+            var form = new BienFindForm();
+            var res = form.ShowDialog();
             if (res == DialogResult.OK)
             {
-                BienEntite bien = BienController.getController().getEntiteFromField("reference", form.reference);
-                BienFicheForm fiche = new BienFicheForm(bien.id);
+                var bien = BienController.getController().getEntiteFromField("reference", form.reference);
+                var fiche = new BienFicheForm(bien.id);
                 fiche.ShowDialog();
             }
         }
         protected override void dataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            DataGridView dgv = (DataGridView)sender;
-            DataGridViewColumn col = dgv.Columns[e.ColumnIndex];
+            var dgv = (DataGridView)sender;
+            var col = dgv.Columns[e.ColumnIndex];
 
             try
             {

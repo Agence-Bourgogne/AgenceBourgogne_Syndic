@@ -18,17 +18,17 @@ namespace EspaceSyndic.Formulaires.Common
         }
         public void DoFormText(Form parent)
         {
-            DataTable table = ParametresDB.getComboData("KEY_CODE");
-            string note = "";
+            var table = ParametresDB.getComboData("KEY_CODE");
+            var note = "";
             foreach (DataRow row in table.Rows)
             {
-                string str = String.Format("{0}\t{1}", row["code"], row["param_1"]);
+                var str = $"{row["code"]}\t{row["param_1"]}";
                 note += (note == "" ? "": "\n") + str;
             }
             if (!"".Equals(note))
             {
                 base.DoFormText(parent, note);
-                int height = 13 * 15;
+                var height = 13 * 15;
                 tbHelp.Height = height + 10;
                 Height = height;
                 parent.Activate();
@@ -48,7 +48,7 @@ namespace EspaceSyndic.Formulaires.Common
             if (!"".Equals(note))
             {
                 base.DoFormText(parent, note);
-                int height = 13 * 15;
+                var height = 13 * 15;
                 tbHelp.Height = height + 10;
                 Height = height;
                 parent.Activate();

@@ -39,7 +39,7 @@ namespace Gerance.Formulaires.Factures
             if (entite != null)
             {
 //                decimal montant = entite.debit == 0 ? entite.credit * -1 : entite.debit;
-                decimal montant = entite.debit == 0 ? entite.credit : entite.debit;
+                var montant = entite.debit == 0 ? entite.credit : entite.debit;
                 tbMontant.Text = montant.ToString();
 
                 dtEcriture.Value = entite.date_facture;
@@ -66,7 +66,7 @@ namespace Gerance.Formulaires.Factures
             if (tbNature.Text == "")
                 return;
 
-            NatureEntite entite = NatureController.getController().getEntiteFromField("reference", tbNature.Text);
+            var entite = NatureController.getController().getEntiteFromField("reference", tbNature.Text);
             if (entite != null)
             {
                 tbLibNature.Text = entite.nom;
@@ -163,10 +163,10 @@ namespace Gerance.Formulaires.Factures
         {
             if (!ValideDatas())
                 return false;
-            FactureEntite facture = FacturesController.getController().getEntiteById(facture_id);
-            LocataireEntite locataire = facture.Locataire;
+            var facture = FacturesController.getController().getEntiteById(facture_id);
+            var locataire = facture.Locataire;
 
-            decimal montant = Convertir.ToDecimal(tbMontant.Text);
+            var montant = Convertir.ToDecimal(tbMontant.Text);
 
             facture.credit = facture.debit = 0;
             if (montant < 0)

@@ -41,8 +41,8 @@ namespace Gerance.Formulaires.Syndic
             var iCnxSyndic =  CommonRegistry.getRegistryValue(GeranceApplication.SYNDIC_APPLICATION, "Database", "ConnexionSyndic", 0);
             if ((int) iCnxSyndic == 1)
             {
-                BackgroundWorker worker = new BackgroundWorker();
-                Thread threadSyndic = new Thread(LoadSyndicCopro);
+                var worker = new BackgroundWorker();
+                var threadSyndic = new Thread(LoadSyndicCopro);
                 threadSyndic.Start();
             }
         }
@@ -52,14 +52,14 @@ namespace Gerance.Formulaires.Syndic
             if (!ConnexionValide())
                 return;
 
-            DataTable table = BienController.getController().getListeBienLocatif();
+            var table = BienController.getController().getListeBienLocatif();
 
             LotDescriptionController.cnx = CoproprietaireController.cnx = GetInstance();
             
             foreach (DataRow row in table.Rows)
             {
-                BienEntite bien = new BienEntite(row);
-                LotDescriptionEntite lot = LotDescriptionController.getController().getLotFromRefImmeubleNumLot(bien.reference, bien.numero_lot);
+                var bien = new BienEntite(row);
+                var lot = LotDescriptionController.getController().getLotFromRefImmeubleNumLot(bien.reference, bien.numero_lot);
                 if (lot != null)
                 {
                     //Console.WriteLine("{0} : {1:000} {2,-30} => {3,-30} : {4, -30} {5} {6} {7}", bien.reference, bien.numero_lot, bien.Proprietaire.NomPrenom+ " ("+bien.Proprietaire.reference +")", bien.Locataire.NomPrenom, lot.Coproprietaire.NomPrenom, bien.Locataire.id, bien.Locataire.reference, lot.Coproprietaire.reference);
@@ -75,8 +75,8 @@ namespace Gerance.Formulaires.Syndic
                 connection.Close();
                 connection = null;
             }
-            NpgsqlConnection cnx = GetInstance();
-            DateTime dt = Database.GetTimestampServer(cnx);
+            var cnx = GetInstance();
+            var dt = Database.GetTimestampServer(cnx);
             return (cnx != null);
         }
         public static LotDescriptionEntite getSyndicCoproLot(string locataire_id)
@@ -87,8 +87,8 @@ namespace Gerance.Formulaires.Syndic
         }
         public static String getListLocatairesId()
         {
-            List<String> ids = SyndicProprio.Keys.ToList();
-            string strIds = Database.ToQuotedString(ids);
+            var ids = SyndicProprio.Keys.ToList();
+            var strIds = Database.ToQuotedString(ids);
             return strIds;
         }
     }

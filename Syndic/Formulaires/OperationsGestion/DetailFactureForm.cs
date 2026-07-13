@@ -35,12 +35,12 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
 
             if (entite.lot_id != null)
             {
-                LotDescriptionEntite lot = LotDescriptionController.getController().getEntiteById(entite.lot_id);
+                var lot = LotDescriptionController.getController().getEntiteById(entite.lot_id);
                 if (lot != null)
                     tbLot.Text = lot.numero_lot.ToString();
             }
 
-            bool bEnabled = entite.statut <= (int)GlobalConstantes.StatutOperation.Valide;//&& !facture.liasse_id.StartsWith("Reprise");
+            var bEnabled = entite.statut <= (int)GlobalConstantes.StatutOperation.Valide;//&& !facture.liasse_id.StartsWith("Reprise");
             if (CommonProjectsPartners.Common.BaseApplication.userConnected.IsAdmin)
             {
                 dataGridView.ContextMenuStrip = contextMenuStrip1;
@@ -80,7 +80,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
 
             dataGridView.DataSource = table;
 
-            DataGridViewColumnCollection cols = dataGridView.Columns;
+            var cols = dataGridView.Columns;
             ControlsWindows.ToTitleCase(cols);
             //cols["base_repart"].Width = 40;
             cols["ref_nature"].Width = 40;
@@ -95,8 +95,8 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             decimal total = 0;
             foreach (DataRow row in table.Rows)
             {
-                decimal credit = Convertir.ToDecimal(row["credit"]);
-                decimal debit = Convertir.ToDecimal(row["debit"]);
+                var credit = Convertir.ToDecimal(row["credit"]);
+                var debit = Convertir.ToDecimal(row["debit"]);
                 total += credit - debit;
             }
             tbTotal.Text = Math.Abs(total).ToString();
@@ -112,7 +112,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
 
         protected virtual void fillFormFromMaster()
         {
-            ImmeubleEntite immeuble = ImmeubleController.getController().getEntiteById(entite.immeuble_id);
+            var immeuble = ImmeubleController.getController().getEntiteById(entite.immeuble_id);
             nature = NatureController.getController().getEntiteById(entite.nature_id);
             fournisseur = FournisseurController.getController().getEntiteById(entite.fournisseur_id);
 
@@ -155,19 +155,19 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         }
         protected override void ValidModification()
         {
-            bool bRepartChanged = false;
-            decimal montant = Convertir.ToDecimal(tbMontant.Text);
-            string ref_nature = tbNature.Text;
-            string ref_fournisseur = tbFournisseur.Text;
-            DateTime date_reference = DateTime.Parse(tbDateCreation.Text);
-            string comment = tbComment.Text;
-            string comment_fournisseur = tbCommentaireFournisseur.Text;
-            string base_repart = tbBase.Text.Trim();
+            var bRepartChanged = false;
+            var montant = Convertir.ToDecimal(tbMontant.Text);
+            var ref_nature = tbNature.Text;
+            var ref_fournisseur = tbFournisseur.Text;
+            var date_reference = DateTime.Parse(tbDateCreation.Text);
+            var comment = tbComment.Text;
+            var comment_fournisseur = tbCommentaireFournisseur.Text;
+            var base_repart = tbBase.Text.Trim();
 
-            NatureEntite old_nature = NatureController.getController().getEntiteById(entite.nature_id);
+            var old_nature = NatureController.getController().getEntiteById(entite.nature_id);
 
-            NatureEntite nature = NatureController.getController().getEntiteFromField("reference", ref_nature);
-            FournisseurEntite fournisseur = FournisseurController.getController().getEntiteFromField("reference", ref_fournisseur);
+            var nature = NatureController.getController().getEntiteFromField("reference", ref_nature);
+            var fournisseur = FournisseurController.getController().getEntiteFromField("reference", ref_fournisseur);
             LotDescriptionEntite lot = null;
             if ( base_repart == "80" && bCheckLot)
             {
@@ -191,8 +191,8 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
                 bRepartChanged = false;
             if (!bRepartChanged)
             {
-                NpgsqlConnection cnx = Database.GetInstance();
-                NpgsqlTransaction trx = cnx.BeginTransaction();
+                var cnx = Database.GetInstance();
+                var trx = cnx.BeginTransaction();
 
                 try
                 {
@@ -206,7 +206,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
                     
                     if (lot != null)
                         entite.lot_id = lot.id;
-                    int statut = entite.statut;
+                    var statut = entite.statut;
                     if (CommonProjectsPartners.Common.BaseApplication.userConnected.IsAdmin)
                         if (entite.statut >= (int) GlobalConstantes.StatutOperation.Valide)
                         {
@@ -225,7 +225,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
                     
                     if (dataGridView.Rows.Count == 0 && base_repart == "80")
                     {
-                        OperationEntite operation = new OperationEntite();
+                        var operation = new OperationEntite();
                         operation.statut = statut;
                         operation.setValue(entite);
                         operation.debit = montant > 0 ? montant : (decimal)0.0;
@@ -241,8 +241,8 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
                     else
                         foreach (DataGridViewRow rowGrid in dataGridView.Rows)
                         {
-                            DataRowView row = (DataRowView)rowGrid.DataBoundItem;
-                            OperationEntite operation = OperationController.getController().getEntiteById(row["id"].ToString());
+                            var row = (DataRowView)rowGrid.DataBoundItem;
+                            var operation = OperationController.getController().getEntiteById(row["id"].ToString());
                             operation.statut = statut;
                             operation.nature_id = nature.id;
                             operation.date_reference = operation.date_operation = date_reference;
@@ -296,13 +296,13 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                NpgsqlTransaction trx = Database.BeginTransaction();
+                var trx = Database.BeginTransaction();
                 try
                 {
                     foreach (DataGridViewRow rowGrid in dataGridView.SelectedRows)
                     {
-                        DataRowView row = (DataRowView)rowGrid.DataBoundItem;
-                        OperationEntite operation = OperationController.getController().getEntiteById(row["id"].ToString());
+                        var row = (DataRowView)rowGrid.DataBoundItem;
+                        var operation = OperationController.getController().getEntiteById(row["id"].ToString());
                         if (operation != null)
                         {
                             operation.statut = (int)GlobalConstantes.StatutOperation.Supprime;
@@ -325,14 +325,14 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                NpgsqlTransaction trx = Database.BeginTransaction();
+                var trx = Database.BeginTransaction();
 
                 try
                 {
                     foreach (DataGridViewRow rowGrid in dataGridView.SelectedRows)
                     {
-                        DataRowView row = (DataRowView)rowGrid.DataBoundItem;
-                        OperationEntite operation = OperationController.getController().getEntiteById(row["id"].ToString());
+                        var row = (DataRowView)rowGrid.DataBoundItem;
+                        var operation = OperationController.getController().getEntiteById(row["id"].ToString());
                         if (operation != null)
                         {
                             operation.saisie_id = entite.id;
@@ -361,8 +361,8 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
-                DetailElementOperationForm form = new DetailElementOperationForm(row["id"].ToString());
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var form = new DetailElementOperationForm(row["id"].ToString());
                 form.ShowDialog();
                 FillDataGridView();
             }

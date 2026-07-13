@@ -45,9 +45,9 @@ namespace EspaceSyndic.Formulaires.Immeubles
         {
             if (immeuble == null)
                 return;
-            string code = cbTypeComment.SelectedValue.ToString();
+            var code = cbTypeComment.SelectedValue.ToString();
 
-            AideImmeubleEntite comment = AideImmeubleController.getController().getAideImmeuble(immeuble.id, code);
+            var comment = AideImmeubleController.getController().getAideImmeuble(immeuble.id, code);
             if (comment == null)
             {
                 comment = new AideImmeubleEntite();
@@ -69,15 +69,15 @@ namespace EspaceSyndic.Formulaires.Immeubles
             tbComment.Text = "";
             if (immeuble == null)
                 return;
-            string code = cbTypeComment.SelectedValue.ToString();
-            AideImmeubleEntite comment = AideImmeubleController.getController().getAideImmeuble(immeuble.id, code);
+            var code = cbTypeComment.SelectedValue.ToString();
+            var comment = AideImmeubleController.getController().getAideImmeuble(immeuble.id, code);
             if (comment != null)
                 tbComment.Text = comment.libelle;
         }
 
         private void lblImmeuble_Click(object sender, EventArgs e)
         {
-            FindImmeubleForm form = new FindImmeubleForm();
+            var form = new FindImmeubleForm();
             form.ShowDialog();
             if (!"".Equals(form.reference))
             {

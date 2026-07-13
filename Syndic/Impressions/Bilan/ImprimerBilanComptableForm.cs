@@ -37,7 +37,7 @@ namespace EspaceSyndic.Impressions.Bilan
 
         private void lblImmeuble_Click(object sender, EventArgs e)
         {
-            FindImmeubleForm form = new FindImmeubleForm();
+            var form = new FindImmeubleForm();
             form.ShowDialog();
             if (!"".Equals(form.reference))
             {
@@ -60,7 +60,7 @@ namespace EspaceSyndic.Impressions.Bilan
 
         private NatureEntite getNatureCloture()
         {
-            string reference = ParametresDB.getParam1("CLOTURE", "NATURE");
+            var reference = ParametresDB.getParam1("CLOTURE", "NATURE");
             return NatureController.getController().getEntiteFromField("reference", reference);
         }
 
@@ -68,34 +68,34 @@ namespace EspaceSyndic.Impressions.Bilan
         {
             btnRapport.Enabled = false;
             btnExport.Enabled = false;
-            DateTime dt = DateTime.Now;
+            var dt = DateTime.Now;
             dt = dt.AddDays(-dt.DayOfYear +1);
             dtDebut.Value = dt;
             reportViewer1.LocalReport.SubreportProcessing += new SubreportProcessingEventHandler(SubreportProcessingEventHandler);
             btnEnter.Width = 0;
-            List<NatureEntite> natures = NatureController.getController().GetListEntite();
+            var natures = NatureController.getController().GetListEntite();
             natTravaux = natures.FindAll(x=> (x.type_charge & 2) == 2);
 //            natSolde = natures.FindAll(x=> (x.type_charge & 5) == 5);
             natSolde = new List<NatureEntite> { getNatureCloture() };
-            String excl = ParametresDB.getParam1("NATURE", "PAS PRIVATIVES");
+            var excl = ParametresDB.getParam1("NATURE", "PAS PRIVATIVES");
             if ( !String.IsNullOrEmpty(excl))
             {
                 excl = excl.Replace(", ", ",").Replace(" ,",",");
-                string[] lExcl = excl.Split(',');
+                var lExcl = excl.Split(',');
                 excludeNature.Clear();
                 excludeNature.AddRange(lExcl);
             }
         }
         private bool isRepartIndividuelle(string base_repart, string refNature)
         {
-            bool isIndividuelle = false;
+            var isIndividuelle = false;
             if (!excludeNature.Contains(refNature))
                 isIndividuelle = baseIndividuelle.Contains(base_repart);
             return isIndividuelle;
         }
         private bool isNatureTravaux(string nature)
         {
-            bool isTravaux = false;
+            var isTravaux = false;
             isTravaux = natTravaux.Find(x=>x.reference == nature)  != null;
             return isTravaux;
         }
@@ -107,9 +107,9 @@ namespace EspaceSyndic.Impressions.Bilan
             soldeExercice = totalDebit = totalCredit = 0;
             foreach (DataRow row in CompteGestionGeneral.Rows)
             {
-                bool isIndividuelle = isRepartIndividuelle(row["base_repart"].ToString(), row["reference"].ToString());
-                bool isTravaux = isNatureTravaux(row["reference"].ToString());
-                decimal charges = (decimal)row["debit"] - (decimal)row["credit"];
+                var isIndividuelle = isRepartIndividuelle(row["base_repart"].ToString(), row["reference"].ToString());
+                var isTravaux = isNatureTravaux(row["reference"].ToString());
+                var charges = (decimal)row["debit"] - (decimal)row["credit"];
                 depenses += charges;
                 if (!isTravaux && !isIndividuelle)
                 {
@@ -126,12 +126,12 @@ namespace EspaceSyndic.Impressions.Bilan
 
             foreach (DataRow row in BilanOperationsCoproprietairesSoldes.Rows)
             {
-                decimal charges = (decimal)row["credit"] - (decimal)row["debit"];
+                var charges = (decimal)row["credit"] - (decimal)row["debit"];
                 soldeBilan += charges;
             }
             foreach (DataRow row in BilanOperationsCoproprietairesPaiements.Rows)
             {
-                decimal charges = (decimal)row["credit"] - (decimal)row["debit"];
+                var charges = (decimal)row["credit"] - (decimal)row["debit"];
                 Console.WriteLine("{1} {0} {2} {3} {4} ", row["libelle"], row["reference"], (decimal)row["credit"] , (decimal)row["debit"], charges);
                 reglements += charges;
             }
@@ -148,7 +148,7 @@ namespace EspaceSyndic.Impressions.Bilan
         }
         void CreateReport()
         {
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> { new NpgsqlParameter("@reference", tbRefImmeuble.Text) };
+            var parameters = new List<NpgsqlParameter> { new NpgsqlParameter("@reference", tbRefImmeuble.Text) };
             immeubleBindingSource.DataSource = ImmeubleController.getController().getDataTable(" where reference = @reference", parameters);
             if (immeubleBindingSource.DataSource != null)
             {
@@ -167,10 +167,10 @@ namespace EspaceSyndic.Impressions.Bilan
 
 
                 Cumuls();
-                string hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
-                string hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
+                var hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
+                var hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
 
-                ReportParameter[] reportParams = new ReportParameter[]{
+                var reportParams = new ReportParameter[]{
                     new ReportParameter("DateEdition", dtEdition.Value.ToShortDateString()),
                     new ReportParameter("DateDebut", dtDebut.Value.ToShortDateString()),
                     new ReportParameter("DateFin", dtFin.Value.ToShortDateString()),
@@ -199,11 +199,11 @@ namespace EspaceSyndic.Impressions.Bilan
         void SubreportProcessingEventHandler(object sender, SubreportProcessingEventArgs e)
         {
             //Console.WriteLine(sender.ToString());
-            LocalReport rpt = (LocalReport)sender;
+            var rpt = (LocalReport)sender;
 //            Console.WriteLine(rpt.DisplayName);
 
-            string immeuble_id = immeuble.id;
-            string rapport = e.Parameters[0].Values[0];
+            var immeuble_id = immeuble.id;
+            var rapport = e.Parameters[0].Values[0];
 
             e.DataSources.Clear();
             if (rapport == "1")
@@ -227,8 +227,8 @@ namespace EspaceSyndic.Impressions.Bilan
             immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
             if (immeuble != null)
             {
-                ExerciceComptableEntite exercice = ExerciceComptableController.getController().getExerciceCourant(immeuble.id);
-                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                var exercice = ExerciceComptableController.getController().getExerciceCourant(immeuble.id);
+                Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
                 if (exercice != null)
                 {
                     dtDebut.Value = exercice.date_deb;
@@ -258,7 +258,7 @@ namespace EspaceSyndic.Impressions.Bilan
         {
             if (immeuble == null)
                 return;
-            ReferenceExerciceForm form = new ReferenceExerciceForm(immeuble);
+            var form = new ReferenceExerciceForm(immeuble);
             form.ShowDialog();
             tbRefImmeuble_Validating(null, null);
         }

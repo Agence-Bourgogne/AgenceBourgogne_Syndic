@@ -19,10 +19,10 @@ namespace GeranceData.Common
             if ( tableParametres == null )
             {
                 tableParametres = new DataTable();
-                String cmd = "select * from parametres order by groupe, code";
+                var cmd = "select * from parametres order by groupe, code";
                 try 
 	            {
-                    NpgsqlDataAdapter adapter = new NpgsqlDataAdapter();
+                    var adapter = new NpgsqlDataAdapter();
                     adapter.SelectCommand = new NpgsqlCommand(cmd, Database.GetInstance());
                     adapter.Fill(tableParametres);
 	            }
@@ -47,20 +47,20 @@ namespace GeranceData.Common
         }
         public static string getParam1(string groupe, string code, string default_value = "")
         {
-            DataRow row = get(groupe, code);
+            var row = get(groupe, code);
             if (row != null)
                 return row["param_1"].ToString();
             return default_value;
         }
         public static bool setParam1(string groupe, string code, string value)
         {
-            String where = " where groupe = @groupe and code = @code";
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>
+            var where = " where groupe = @groupe and code = @code";
+            var parameters = new List<NpgsqlParameter>
             {
                 new NpgsqlParameter ("groupe", groupe),
                 new NpgsqlParameter ("code", code),
             };
-            ParametreEntite param = ParametreController.controller.getEntite(where, parameters);
+            var param = ParametreController.controller.getEntite(where, parameters);
             try
             {
                 if (param == null)
@@ -82,16 +82,16 @@ namespace GeranceData.Common
         }
         public static DataTable getComboData(String groupe, string code = "") 
         {
-            DataTable table = new DataTable();
-            String cmd = "";
+            var table = new DataTable();
+            var cmd = "";
             if (code != "")
                 cmd = "select * from parametres where groupe = @groupe and code=@code order by groupe, iparam_1";
             else
                 cmd = "select * from parametres where groupe = @groupe order by groupe, iparam_1";
             try
             {
-                NpgsqlDataAdapter adapter = new NpgsqlDataAdapter();
-                NpgsqlCommand sqlCmd = new NpgsqlCommand(cmd, Database.GetInstance());
+                var adapter = new NpgsqlDataAdapter();
+                var sqlCmd = new NpgsqlCommand(cmd, Database.GetInstance());
                 adapter.SelectCommand = sqlCmd;
                 sqlCmd.Parameters.AddWithValue("@groupe", groupe);
                 sqlCmd.Parameters.AddWithValue("@code", code);

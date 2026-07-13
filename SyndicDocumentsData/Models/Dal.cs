@@ -18,10 +18,10 @@ namespace SyndicDocumentsData.Models
 
         public string UpdateUser(string Guid, string CodeUser, String password = "")
         {
-            String msg = "";
+            var msg = "";
             if (password == "")
                 password = "ChangeIt";
-            UserEntitie user = GetUserFromGuid(Guid);
+            var user = GetUserFromGuid(Guid);
             if (user != null)
             {
                 try
@@ -45,10 +45,10 @@ namespace SyndicDocumentsData.Models
         }
         public string CreateUser(string CodeUser, String password = "")
         {
-            String msg = "";
+            var msg = "";
             if (password == "")
                 password = "ChangeIt";
-            UserEntitie user = GetUserFromCode(CodeUser);
+            var user = GetUserFromCode(CodeUser);
             if ( user == null)
             {
                 try 
@@ -70,13 +70,13 @@ namespace SyndicDocumentsData.Models
 
         public string DeleteUser(String Guid)
         {
-            String msg = "";
-            UserEntitie user = GetUserFromGuid(Guid);
+            var msg = "";
+            var user = GetUserFromGuid(Guid);
             if (user != null)
             {
                 try
                 {
-                    List<ChildrenEntitie> childrens = GetUserChildrens(user.Guid);
+                    var childrens = GetUserChildrens(user.Guid);
                     if ( childrens.Count > 0 )
                         bdd.Childrens.RemoveRange(childrens);
 
@@ -96,14 +96,14 @@ namespace SyndicDocumentsData.Models
 
         public String DeleteCopro(String Guid)
         {
-            String msg = "";
-            CoproprietaireEntitie copro = GetCoproFromGuid(Guid);
+            var msg = "";
+            var copro = GetCoproFromGuid(Guid);
             if ( copro != null )
             {
-                List<DocumentEntitie> docs = GetDocumentsFromCopro(Guid);
+                var docs = GetDocumentsFromCopro(Guid);
                 if ( docs.Count > 0)
                     bdd.Documents.RemoveRange(docs);
-                List<ChildrenEntitie> childrens = GetCoproChildrens(Guid);
+                var childrens = GetCoproChildrens(Guid);
                 if (childrens.Count > 0)
                     bdd.Childrens.RemoveRange(childrens);
                 bdd.Coproprietaires.Remove(copro);
@@ -136,7 +136,7 @@ namespace SyndicDocumentsData.Models
             var list = (from d in bdd.Documents where (d.text == text && d.immeuble_id == immeuble_id && d.copro_id == copro_id) select d);
             if (list.Count() > 0)
             {
-                DocumentEntitie doc = list.First();
+                var doc = list.First();
                 if (doc != null )
                 {
                     doc.content = content;
@@ -182,7 +182,7 @@ namespace SyndicDocumentsData.Models
         }
         public string AddCopro(string user_id, string immeuble_id, String copro_id, string reference_imm, string adresse_imm, string reference_copro, string nom )
         {
-            string res = "0";
+            var res = "0";
             var cop = (from c in bdd.Childrens where (c.User_id == user_id && c.Copro_id == copro_id) select c).Count();
             if ( cop == 0 )
             {
@@ -217,7 +217,7 @@ namespace SyndicDocumentsData.Models
 
         public List<DocumentEntitie> GetDocumentsFromCopro(string copro_id)
         {
-            List<DocumentEntitie> docs = new List<DocumentEntitie>();
+            var docs = new List<DocumentEntitie>();
             var sqlDocs = (from d in bdd.Documents where d.copro_id == copro_id select d);
             if (sqlDocs.Count() > 0)
                 docs.AddRange(sqlDocs.ToList());
@@ -233,16 +233,16 @@ namespace SyndicDocumentsData.Models
 
         public string DeleteDocument(String Guid)
         {
-            String msg = "";
-            System.IO.DirectoryInfo rootDir = System.IO.Directory.GetParent(apPath).Parent;
-            string rootPath = rootDir.FullName;
-            DocumentEntitie doc = GetDocumentFromGuid(Guid);
+            var msg = "";
+            var rootDir = System.IO.Directory.GetParent(apPath).Parent;
+            var rootPath = rootDir.FullName;
+            var doc = GetDocumentFromGuid(Guid);
             if (doc != null)
             {
-                string docName = doc.text;
+                var docName = doc.text;
                 try
                 {
-                    string filename = System.IO.Path.Combine(rootPath, "SyndicDocuments", "pdf", doc.Guid + ".pdf");
+                    var filename = System.IO.Path.Combine(rootPath, "SyndicDocuments", "pdf", doc.Guid + ".pdf");
                    
                     if (System.IO.File.Exists(filename))
                     {

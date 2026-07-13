@@ -27,18 +27,19 @@ namespace SyndicData.Controller
 
         static public string keyRepart(int ligne, int colonne)
         {
-            return String.Format("{0}{1}", ligne , colonne);
+            return $"{ligne}{colonne}";
         }
         public DataTable getRepartitionImmeuble(string immeuble_id/*, string immeuble_reference*/)
         {
-            adapter.SelectCommand = new NpgsqlCommand(String.Format("select * from {0} where immeuble_id=@immeuble_id and statut=@statut order by ligne, colonne", getSchemaTable()), Database.GetInstance());
-            DataTable table = new DataTable();
+            adapter.SelectCommand = new NpgsqlCommand(
+                $"select * from {getSchemaTable()} where immeuble_id=@immeuble_id and statut=@statut order by ligne, colonne", Database.GetInstance());
+            var table = new DataTable();
             adapter.SelectCommand.Parameters.AddWithValue("@immeuble_id", immeuble_id);
             adapter.SelectCommand.Parameters.AddWithValue("@statut", (int) GlobalConstantes.StatutData.Actif);
 
             try
             {
-                DataTable immeuble_repart = new DataTable();
+                var immeuble_repart = new DataTable();
                 adapter.Fill(table);
                 return table;
             }
@@ -51,7 +52,7 @@ namespace SyndicData.Controller
 
         public ImmeubleRepartitionEntite getRepartitionImmeubleEntite(string immeuble_id)
         {
-            DataTable repart = getRepartitionImmeuble(immeuble_id);
+            var repart = getRepartitionImmeuble(immeuble_id);
             return new ImmeubleRepartitionEntite(repart.Rows[0]);
         }
 
@@ -63,11 +64,11 @@ namespace SyndicData.Controller
 
         public bool HaveRepartitionIndividuelle(string immeuble_id)
         {
-            int valeur = 0;
-            string cmd = String.Format("select coalesce(count(*),0)::integer as valeur  from {0} ", getSchemaTable());
+            var valeur = 0;
+            var cmd = $"select coalesce(count(*),0)::integer as valeur  from {getSchemaTable()} ";
             cmd += " where immeuble_id = @immeuble_id and ligne = 8 ";
 
-            DataTable table = getResultSQL(cmd, new List<NpgsqlParameter> { new NpgsqlParameter("@immeuble_id", immeuble_id) });
+            var table = getResultSQL(cmd, new List<NpgsqlParameter> { new NpgsqlParameter("@immeuble_id", immeuble_id) });
             if (table != null)
             {
                 valeur = (int)table.Rows[0]["valeur"] ;
@@ -76,23 +77,23 @@ namespace SyndicData.Controller
         } 
         public bool SaveRepartitionImmeuble(ImmeubleEntite immeuble_entite, DataGridView grid)
         {
-            bool rc = false;
+            var rc = false;
             specific_schema = immeuble_entite.reference;
             TimestampServer = Database.GetTimestampServer();
-            NpgsqlConnection cnx = Database.GetInstance();
-            NpgsqlTransaction trx = cnx.BeginTransaction();
+            var cnx = Database.GetInstance();
+            var trx = cnx.BeginTransaction();
 
             try
             {
-                bool bIndiv = HaveRepartitionIndividuelle(immeuble_entite.id);
+                var bIndiv = HaveRepartitionIndividuelle(immeuble_entite.id);
                 foreach (DataGridViewRow rowGrid in grid.Rows)
                 {
                     foreach (DataGridViewTextBoxCell cell in rowGrid.Cells)
                     {
                         if (cell.ColumnIndex == 0)
                             continue;
-                        ImmeubleRepartitionEntite entite_repart = (ImmeubleRepartitionEntite)cell.Tag;
-                        int value = 0;
+                        var entite_repart = (ImmeubleRepartitionEntite)cell.Tag;
+                        var value = 0;
                         if (cell.Value.ToString() != "" && cell.Value.ToString() != "*")
                             value = Convert.ToInt32(cell.Value);
                         if (entite_repart == null)
@@ -120,9 +121,9 @@ namespace SyndicData.Controller
                     }
                 }
                 if ( !bIndiv )
-                    for (int i = 0; i < 8; i++)
+                    for (var i = 0; i < 8; i++)
                     {
-                        ImmeubleRepartitionEntite entite_repart = new ImmeubleRepartitionEntite();
+                        var entite_repart = new ImmeubleRepartitionEntite();
                         entite_repart.immeuble_id = immeuble_entite.id;
                         entite_repart.nom = "";
                         entite_repart.reference = keyRepart(8, i);
@@ -145,30 +146,32 @@ namespace SyndicData.Controller
         }
         public bool ExistRepartitionReference(string immeuble_id, string reference )
         {
-            bool bExist = false;
-            string cmd = String.Format("select immeuble_id, reference from {0} where immeuble_id=@immeuble_id and reference = @reference", getSchemaTable());
+            var bExist = false;
+            var cmd =
+                $"select immeuble_id, reference from {getSchemaTable()} where immeuble_id=@immeuble_id and reference = @reference";
 
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
             {
                 new NpgsqlParameter("@immeuble_id", immeuble_id),
                 new NpgsqlParameter("@reference", reference)
             };
 
-            DataTable table = getResultSQL(cmd, parameters);
+            var table = getResultSQL(cmd, parameters);
             if (table.Rows.Count > 0)
                 bExist = true;
             return bExist;
         }
         public ImmeubleRepartitionEntite getRepartFromImmeubleBase(string immeuble_id, string base_ref)
         {
-            adapter.SelectCommand = new NpgsqlCommand(String.Format("select * from {0} where immeuble_id=@immeuble_id and reference = @reference", getSchemaTable()), Database.GetInstance());
-            DataTable table = new DataTable();
+            adapter.SelectCommand = new NpgsqlCommand(
+                $"select * from {getSchemaTable()} where immeuble_id=@immeuble_id and reference = @reference", Database.GetInstance());
+            var table = new DataTable();
             adapter.SelectCommand.Parameters.AddWithValue("@immeuble_id", immeuble_id);
             adapter.SelectCommand.Parameters.AddWithValue("@reference", base_ref);
 
             try
             {
-                DataTable immeuble_repart = new DataTable();
+                var immeuble_repart = new DataTable();
                 adapter.Fill(table);
 
                 if ( table.Rows.Count > 0 )

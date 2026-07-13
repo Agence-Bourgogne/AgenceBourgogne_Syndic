@@ -58,11 +58,11 @@ namespace Gerance.Formulaires.Fournisseurs
         }
         protected override void btnPrev_Click(object sender, EventArgs e)
         {
-            getNewEntite(String.Format("where reference::integer < {0} order by reference::integer desc", currentReference), "Début de liste atteint");
+            getNewEntite($"where reference::integer < {currentReference} order by reference::integer desc", "Début de liste atteint");
         }
         protected override void btnNext_Click(object sender, EventArgs e)
         {
-            getNewEntite(String.Format("where reference::integer > {0} order by reference::integer ", currentReference), "Fin de liste atteinte");
+            getNewEntite($"where reference::integer > {currentReference} order by reference::integer ", "Fin de liste atteinte");
         }
         protected override void btnLast_Click(object sender, EventArgs e)
         {

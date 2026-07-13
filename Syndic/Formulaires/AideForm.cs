@@ -17,8 +17,8 @@ namespace EspaceSyndic.Formulaires
             var assembly = Assembly.GetExecutingAssembly();
             var resourceName = "EspaceSyndic.Formulaires.roadmap.txt";
 
-            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
-            using (StreamReader reader = new StreamReader(stream))
+            using (var stream = assembly.GetManifestResourceStream(resourceName))
+            using (var reader = new StreamReader(stream))
             {
                 tbAide.Text = reader.ReadToEnd();
             }            

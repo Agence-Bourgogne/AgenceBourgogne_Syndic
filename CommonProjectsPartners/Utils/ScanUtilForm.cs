@@ -29,7 +29,7 @@ namespace CommonProjectsPartners.Utils
                 SavePicture(this, e);
             else
             {
-                SaveFileDialog fd = new SaveFileDialog();
+                var fd = new SaveFileDialog();
                 if (fd.ShowDialog() == DialogResult.OK)
                     pictureBox1.Image.Save(fd.FileName);
             }
@@ -41,7 +41,7 @@ namespace CommonProjectsPartners.Utils
                 LoadPicture(this, e);
             else
             {
-                OpenFileDialog fd = new OpenFileDialog();
+                var fd = new OpenFileDialog();
 
                 if (fd.ShowDialog() == DialogResult.OK)
                     pictureBox1.ImageLocation = fd.FileName;
@@ -49,13 +49,13 @@ namespace CommonProjectsPartners.Utils
         }
         private void DataTransferred(object sender, EventArgs e)
         {
-            ScanUtils sc = (ScanUtils)sender;
+            var sc = (ScanUtils)sender;
             pictureBox1.Image = sc.image;
         }
 
         private void btnAcquire_Click(object sender, EventArgs e)
         {
-            ScanUtils sc = new ScanUtils();
+            var sc = new ScanUtils();
             sc.DataTransferred += DataTransferred;
             if (scanMethod == ScanMethod.WIA)
                 sc.WIAAcquire();
@@ -64,7 +64,7 @@ namespace CommonProjectsPartners.Utils
         }
         private void RotateImage(RotateFlipType rotate)
         {
-            Image img = pictureBox1.Image;
+            var img = pictureBox1.Image;
             img.RotateFlip(rotate);
             pictureBox1.Image = img;
         }
@@ -108,10 +108,10 @@ namespace CommonProjectsPartners.Utils
 
         private void imprimerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PrintDialog pForm = new PrintDialog();
+            var pForm = new PrintDialog();
             if ( pForm.ShowDialog() == DialogResult.OK)
             {
-                PrintDocument pd = new PrintDocument();
+                var pd = new PrintDocument();
                 pd.PrinterSettings.PrinterName = pForm.PrinterSettings.PrinterName;
                 pd.PrinterSettings.Copies = pForm.PrinterSettings.Copies;
                 pd.PrintPage += pd_PrintPage;
@@ -120,7 +120,7 @@ namespace CommonProjectsPartners.Utils
         }
         void pd_PrintPage(object sender, PrintPageEventArgs e)
         {
-            Point loc = new Point(10, 10);
+            var loc = new Point(10, 10);
             e.Graphics.DrawImage(pictureBox1.Image, loc);
         }
     }

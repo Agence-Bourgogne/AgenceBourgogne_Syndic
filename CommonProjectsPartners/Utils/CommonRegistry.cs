@@ -3,7 +3,7 @@ using Microsoft.Win32;
 
 namespace CommonProjectsPartners.Utils
 {
-    public class CommonRegistry
+    public static class CommonRegistry
     {
         private static string currentApp = "";
 
@@ -17,38 +17,38 @@ namespace CommonProjectsPartners.Utils
         }
         public static object getRegistryValue(string application, string folder, string keyName, object defaultValue = null)
         {
-            string strKey = String.Format("HKEY_CURRENT_USER\\SOFTWARE\\ProjectsPartners\\{0}\\{1}", application, folder);
-            object obj = Registry.GetValue(strKey, keyName, defaultValue);
+            var strKey = $"HKEY_CURRENT_USER\\SOFTWARE\\ProjectsPartners\\{application}\\{folder}";
+            var obj = Registry.GetValue(strKey, keyName, defaultValue);
             return obj == null ? defaultValue : obj;
         }
 
         public static object getRegistryValue( string folder, string keyName, object defaultValue = null)
         {
-            string strKey = String.Format("HKEY_CURRENT_USER\\SOFTWARE\\ProjectsPartners\\{0}\\{1}", currentApp, folder);
-            object obj =  Registry.GetValue(strKey, keyName, defaultValue);
+            var strKey = $"HKEY_CURRENT_USER\\SOFTWARE\\ProjectsPartners\\{currentApp}\\{folder}";
+            var obj =  Registry.GetValue(strKey, keyName, defaultValue);
             return obj == null ? defaultValue : obj;
         }
         public static object getAppRegistryValue(string folder, string keyName, object defaultValue = null)
         {
-            string strKey = String.Format("HKEY_CURRENT_USER\\SOFTWARE\\ProjectsPartners\\{0}\\{1}", currentApp, folder);
-            object obj = Registry.GetValue(strKey, keyName, defaultValue);
+            var strKey = $"HKEY_CURRENT_USER\\SOFTWARE\\ProjectsPartners\\{currentApp}\\{folder}";
+            var obj = Registry.GetValue(strKey, keyName, defaultValue);
             return obj == null ? defaultValue : obj;
         }
         public static void setRegistryValue(string folder, string keyName, object value)
         {
-            string strKey = String.Format("HKEY_CURRENT_USER\\SOFTWARE\\ProjectsPartners\\{0}\\{1}", currentApp, folder);
+            var strKey = $"HKEY_CURRENT_USER\\SOFTWARE\\ProjectsPartners\\{currentApp}\\{folder}";
             Registry.SetValue(strKey, keyName, value);
         }
         public static void setRegistryValue(string application, string folder, string keyName, object value)
         {
-            string strKey = String.Format("HKEY_CURRENT_USER\\SOFTWARE\\ProjectsPartners\\{0}\\{1}", application, folder);
+            var strKey = $"HKEY_CURRENT_USER\\SOFTWARE\\ProjectsPartners\\{application}\\{folder}";
             Registry.SetValue(strKey, keyName, value);
         }
 
         public static void deleteRegistry(String folder)
         {
-            string strKey = String.Format("SOFTWARE\\ProjectsPartners\\{0}", currentApp);
-            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(strKey, true))
+            var strKey = $"SOFTWARE\\ProjectsPartners\\{currentApp}";
+            using (var key = Registry.CurrentUser.OpenSubKey(strKey, true))
             {
                 if (key != null)
                     key.DeleteSubKeyTree(folder);

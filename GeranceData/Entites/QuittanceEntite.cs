@@ -46,7 +46,7 @@ namespace GeranceData.Entites
         }
         public override void setValues(DataRow row)
         {
-            FieldInfo[] members = GetType().GetFields();
+            var members = GetType().GetFields();
 
             updatables.Clear();
 
@@ -143,7 +143,7 @@ namespace GeranceData.Entites
 
         public void SetValueFromQuittance()
         {
-            BienEntite bien = Bien;
+            var bien = Bien;
             if (bien != null)
             {
                 bien.montant_du = montant_quittance;
@@ -171,7 +171,7 @@ namespace GeranceData.Entites
 
         public decimal SumMontant()
         {
-            decimal montant = montant_loyer;
+            var montant = montant_loyer;
             montant += montant_augmentation;
             montant += montant_charge;
             montant += frais_bail;

@@ -6,7 +6,7 @@ using CommonProjectsPartners.Utils;
 
 namespace CommonProjectsPartners.Common
 {
-    public class AuditDB
+    public static class AuditDB
     {
         public enum Operation
         {
@@ -16,20 +16,20 @@ namespace CommonProjectsPartners.Common
         }
         public static void Log(Operation operation, IAuditable entite, string schema, DateTime audit_date, string audit_user)
         {
-            List<AuditChange> changes = new List<AuditChange>();
+            var changes = new List<AuditChange>();
             if (operation == Operation.Update) 
             {
                 changes.AddRange(entite.GetChanges());
             }
             if (operation == Operation.Insert)
             {
-                AuditChange change = new AuditChange();
+                var change = new AuditChange();
                 changes.Add(change);
             }
 
-            foreach (AuditChange change in changes)
+            foreach (var change in changes)
             {
-                string cmd = "insert into audit ( ";
+                var cmd = "insert into audit ( ";
                 cmd += " schema_entite, name_entite, entite_id, operation_entite, propertie_entite, propertie_type, ";
                 cmd += " old_value, new_value, audit_date, audit_user";
                 cmd += " ) values (";
@@ -39,7 +39,7 @@ namespace CommonProjectsPartners.Common
 
                 try
                 {
-                    NpgsqlCommand sqlCmd = new NpgsqlCommand(cmd, Database.GetInstance());
+                    var sqlCmd = new NpgsqlCommand(cmd, Database.GetInstance());
                     sqlCmd.Parameters.AddWithValue("@schema_entite", schema);
                     sqlCmd.Parameters.AddWithValue("@name_entite", entite.GetType().Name);
                     sqlCmd.Parameters.AddWithValue("@entite_id", entite.getId());
@@ -50,7 +50,7 @@ namespace CommonProjectsPartners.Common
                     sqlCmd.Parameters.AddWithValue("@new_value", change.new_value);
                     sqlCmd.Parameters.AddWithValue("@audit_date", audit_date);
                     sqlCmd.Parameters.AddWithValue("@audit_user", audit_user);
-                    int result = sqlCmd.ExecuteNonQuery();
+                    var result = sqlCmd.ExecuteNonQuery();
                 }
                 catch (Exception ex)
                 {

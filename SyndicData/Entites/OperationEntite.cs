@@ -44,7 +44,7 @@ namespace SyndicData.Entites
         }
         public override void setValues(DataRow row)
         {
-            FieldInfo[] members = GetType().GetFields();
+            var members = GetType().GetFields();
 
             updatables.Clear();
             updatables.Add(new UpdateField("type_mouvement", true, members));
@@ -76,8 +76,8 @@ namespace SyndicData.Entites
         }
         public void setValue ( SaisieAppelFondEntite saisie)
         {
-            type_mouvement = GlobalConstantes.TypeMouvement.Recette.ToString();
-            type_operation = GlobalConstantes.TypeOperation.AppelDeFond.ToString();
+            type_mouvement = nameof(GlobalConstantes.TypeMouvement.Recette);
+            type_operation = nameof(GlobalConstantes.TypeOperation.AppelDeFond);
             date_operation = date_reference = saisie.date_reference;
             numero_operation = saisie.numero_operation;
             liasse_id = saisie.liasse_id;
@@ -100,8 +100,8 @@ namespace SyndicData.Entites
         }
         public void setValue(SaisieFactureEntite saisie)
         {
-            type_mouvement = GlobalConstantes.TypeMouvement.Depense.ToString();
-            type_operation = GlobalConstantes.TypeOperation.Facture.ToString();
+            type_mouvement = nameof(GlobalConstantes.TypeMouvement.Depense);
+            type_operation = nameof(GlobalConstantes.TypeOperation.Facture);
             date_operation = date_reference = saisie.date_reference;
             numero_operation = saisie.numero_operation;
             base_repart = saisie.base_repart;
@@ -126,8 +126,8 @@ namespace SyndicData.Entites
         }
         public void setValue(SaisieReglementEntite saisie)
         {
-            type_mouvement = GlobalConstantes.TypeMouvement.Recette.ToString();
-            type_operation = GlobalConstantes.TypeOperation.Tresorerie.ToString();
+            type_mouvement = nameof(GlobalConstantes.TypeMouvement.Recette);
+            type_operation = nameof(GlobalConstantes.TypeOperation.Tresorerie);
             date_operation = date_reference = saisie.date_reference;
             numero_operation = saisie.numero_operation;
             liasse_id = saisie.liasse_id;

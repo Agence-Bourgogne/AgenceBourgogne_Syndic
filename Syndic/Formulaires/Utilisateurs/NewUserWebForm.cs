@@ -8,12 +8,12 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
     public partial class NewUserWebForm : Form
     {
         ServiceReference.UserEntitie usr = null;
-        //-------------------------------------------------------------
+        //-----
         public NewUserWebForm()
         {
             InitializeComponent();
         }
-        //--------------------------------------------------------------
+        //------
         public NewUserWebForm(ServiceReference.UserEntitie usr, string title = "")
         {
             InitializeComponent();
@@ -23,7 +23,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
             tbCode.Text = usr.Code;
             tbPassword.Text = usr.Password;
         }
-        //--------------------------------------------------------------
+        //------
         private void btnOK_Click(object sender, EventArgs e)
         {
             if (!RegexUtils.IsValidEmail(tbCode.Text))
@@ -32,7 +32,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
             {
                 if (usr != null)
                 {
-                    string msg = ServiceReferenceUtils.UpdateUser(usr.Guid, tbCode.Text, tbPassword.Text);
+                    var msg = ServiceReferenceUtils.UpdateUser(usr.Guid, tbCode.Text, tbPassword.Text);
                     if(msg == "0")
                     {
                         if (ckSendMail.Checked)
@@ -52,12 +52,12 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
                 DialogResult = DialogResult.OK;
             }
         }
-        //--------------------------------------------------------------
+        //------
         private void btnGenerate_Click(object sender, EventArgs e)
         {
             tbPassword.Text = CryptoUtils.CreatePassword(8);
         }
-        //--------------------------------------------------------------
+        //------
         //private void btnSearch_Click(object sender, EventArgs e)
         //{
         //    FindUser searchUserForm = new FindUser();

@@ -23,8 +23,8 @@ namespace SyndicData.Controller
         }
         public DataTable getRepartFromSaisie(string saisie_id)
         {
-            string cmd = string.Format("select * from {0} where saisie_id = @saisie_id and statut!= @statut", getSchemaTable());
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var cmd = $"select * from {getSchemaTable()} where saisie_id = @saisie_id and statut!= @statut";
+            var parameters = new List<NpgsqlParameter> 
             {
                 new NpgsqlParameter("@saisie_id", saisie_id),
                 new NpgsqlParameter("@statut", (int) GlobalConstantes.StatutOperation.Supprime),
@@ -34,8 +34,9 @@ namespace SyndicData.Controller
 
         public DataTable getFactureRepartFromAppel(String immeuble_id, string reference, DateTime date_reference) 
         {
-            string cmd = string.Format("select * from {0} where immeuble_id = @immeuble_id and type_saisie = {1} and reference = @reference and date_reference = @date_reference and statut!= @statut", getSchemaTable(), (int) GlobalConstantes.TypeSaisie.AppelDeFond);
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var cmd =
+                $"select * from {getSchemaTable()} where immeuble_id = @immeuble_id and type_saisie = {(int)GlobalConstantes.TypeSaisie.AppelDeFond} and reference = @reference and date_reference = @date_reference and statut!= @statut";
+            var parameters = new List<NpgsqlParameter> 
             {
                 new NpgsqlParameter("@immeuble_id", immeuble_id),
                 new NpgsqlParameter("@reference", reference),
@@ -47,9 +48,10 @@ namespace SyndicData.Controller
 
         public DataTable getLastRepartFromSaisie(string immeuble_id, string base_repart, GlobalConstantes.TypeSaisie saisie)
         {
-            string where = string.Format("select saisie_id from {0} where immeuble_id = @immeuble_id and reference = @base_repart and type_saisie = @saisie order by audit_created desc limit 1", getSchemaTable());
-            string cmd = string.Format("select * from {0} where statut != @statut and saisie_id = ({1})", getSchemaTable(), where);
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var where =
+                $"select saisie_id from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and type_saisie = @saisie order by audit_created desc limit 1";
+            var cmd = $"select * from {getSchemaTable()} where statut != @statut and saisie_id = ({where})";
+            var parameters = new List<NpgsqlParameter> 
             {
                 new NpgsqlParameter("@immeuble_id", immeuble_id),
                 new NpgsqlParameter("@base_repart", base_repart),
@@ -61,10 +63,10 @@ namespace SyndicData.Controller
 
         public bool InsertRepartIndividuelleFromSaisie(OperationEntite operation, RepartIndividuelleEntite oldRepart, decimal index, decimal ancien, decimal nouveau, decimal global, GlobalConstantes.TypeSaisie type, int ref_cpt = 1)
         {
-            bool rc = false;
+            var rc = false;
 
-            RepartIndividuelleEntite repart = RepartIndividuelleEntite.setData(operation, oldRepart, type);
-            decimal montant = operation.debit;
+            var repart = RepartIndividuelleEntite.setData(operation, oldRepart, type);
+            var montant = operation.debit;
             repart.global = operation.global;
             repart.global = global;
             repart.ref_cpt = ref_cpt;
@@ -97,7 +99,7 @@ namespace SyndicData.Controller
         {
             foreach (DataRow row in table.Rows)
             {
-                RepartIndividuelleEntite ope = new RepartIndividuelleEntite(row);
+                var ope = new RepartIndividuelleEntite(row);
                 ope.statut = (int)GlobalConstantes.StatutOperation.Supprime;
                 if (!doInsertOrUpdate(ope))
                     throw new Exception("Annulation Repartition");

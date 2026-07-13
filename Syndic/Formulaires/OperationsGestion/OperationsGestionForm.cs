@@ -37,8 +37,8 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         {
             if (regKey == "")
                 return;
-            int widthForm = (int)CommonRegistry.getRegistryValue(regKey, "width", -1);
-            int heightForm = (int)CommonRegistry.getRegistryValue(regKey, "height", -1);
+            var widthForm = (int)CommonRegistry.getRegistryValue(regKey, "width", -1);
+            var heightForm = (int)CommonRegistry.getRegistryValue(regKey, "height", -1);
             if (widthForm != -1)
                 Width = widthForm;
             else
@@ -50,21 +50,21 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             CenterToScreen();
             foreach (DataGridViewColumn col in dataGridView.Columns)
             {
-                int index = (int)CommonRegistry.getRegistryValue(regKey, col.Name, -1);
+                var index = (int)CommonRegistry.getRegistryValue(regKey, col.Name, -1);
                 if (index != -1)
                     col.DisplayIndex = index;
-                int width = (int)CommonRegistry.getRegistryValue(regKey + "\\width", col.Name, -1);
+                var width = (int)CommonRegistry.getRegistryValue(regKey + "\\width", col.Name, -1);
                 if (width != -1)
                     col.Width = width;
             }
             //System.Windows.Forms.SortOrder sortOrder = dataGridView.SortOrder;
             //if (sortOrder == System.Windows.Forms.SortOrder.None)
             {
-                SortOrder newOrder = (SortOrder)CommonRegistry.getRegistryValue(regKey, "SortOrder", 0);
-                String SortedColumn = (String) CommonRegistry.getAppRegistryValue(regKey, "SortedColumn", "");
+                var newOrder = (SortOrder)CommonRegistry.getRegistryValue(regKey, "SortOrder", 0);
+                var SortedColumn = (String) CommonRegistry.getAppRegistryValue(regKey, "SortedColumn", "");
                 if (newOrder != SortOrder.None && !String.IsNullOrEmpty(SortedColumn))
                 {
-                    DataGridViewColumnCollection cols = dataGridView.Columns;
+                    var cols = dataGridView.Columns;
                     if (newOrder == SortOrder.Ascending)
                         dataGridView.Sort(cols[SortedColumn], ListSortDirection.Ascending);
                     if (newOrder == SortOrder.Descending)
@@ -89,16 +89,16 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             stdWidth = Width;
             stdHeight = Height;
 
-            int width = (int)CommonRegistry.getRegistryValue(regKey, "width", -1);
+            var width = (int)CommonRegistry.getRegistryValue(regKey, "width", -1);
             if (width != -1)
                 Width = width;
-            int height = (int)CommonRegistry.getRegistryValue(regKey, "height", -1);
+            var height = (int)CommonRegistry.getRegistryValue(regKey, "height", -1);
             if (height != -1)
                 Height = height;
         }
         private void tbRefImmeuble_DoubleClick(object sender, EventArgs e)
         {
-            FindImmeubleForm form = new FindImmeubleForm();
+            var form = new FindImmeubleForm();
             form.ShowDialog();
             if (!"".Equals(form.reference))
             {
@@ -116,14 +116,14 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         {
             bLoading = true;
             dataGridView.MultiSelect = false;
-            DateTime dtDeb = ckDebut.Checked ? dateDebut.Value : DateTime.Parse("01/01/1970");
-            DateTime dtFin = ckFin.Checked ? dateFin.Value : DateTime.Parse("01/01/1970");
+            var dtDeb = ckDebut.Checked ? dateDebut.Value : DateTime.Parse("01/01/1970");
+            var dtFin = ckFin.Checked ? dateFin.Value : DateTime.Parse("01/01/1970");
             
-            DataGridViewColumn sortedCol = dataGridView.SortedColumn;
-            SortOrder sortOrder = dataGridView.SortOrder;
+            var sortedCol = dataGridView.SortedColumn;
+            var sortOrder = dataGridView.SortOrder;
 
             dataGridView.DataSource = SaisieFactureController.getController().getListeOperations(tbRefImmeuble.Text, tbNature.Text, dtDeb, dtFin, tbFournisseur.Text, tbLibelle.Text, tbMontant.Text, ckValid.Checked, tbBase.Text);
-            DataGridViewColumnCollection cols = dataGridView.Columns;
+            var cols = dataGridView.Columns;
             ControlsWindows.ToTitleCase(cols);
 
             cols["base_repart"].Width = 40;
@@ -149,14 +149,14 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         {
             bLoading = true;
             dataGridView.MultiSelect = false;
-            DateTime dtDeb = ckDebut.Checked ? dateDebut.Value : DateTime.Parse("01/01/1970");
-            DateTime dtFin = ckFin.Checked ? dateFin.Value : DateTime.Parse("01/01/1970");
+            var dtDeb = ckDebut.Checked ? dateDebut.Value : DateTime.Parse("01/01/1970");
+            var dtFin = ckFin.Checked ? dateFin.Value : DateTime.Parse("01/01/1970");
 
-            DataGridViewColumn sortedCol = dataGridView.SortedColumn;
-            SortOrder sortOrder = dataGridView.SortOrder;
+            var sortedCol = dataGridView.SortedColumn;
+            var sortOrder = dataGridView.SortOrder;
 
             dataGridView.DataSource = SaisieAppelFondController.getController().getListeViewOperations(tbRefImmeuble.Text, dtDeb, dtFin, tbLibelle.Text, tbMontant.Text, ckValid.Checked, tbBase.Text);
-            DataGridViewColumnCollection cols = dataGridView.Columns;
+            var cols = dataGridView.Columns;
             ControlsWindows.ToTitleCase(cols);
             cols["statut"].Visible = false;
             cols["id"].Visible = false;
@@ -175,14 +175,14 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         {
             bLoading = true;
             dataGridView.MultiSelect = false;
-            DateTime dtDeb = ckDebut.Checked ? dateDebut.Value : DateTime.Parse("01/01/1970");
-            DateTime dtFin = ckFin.Checked ? dateFin.Value : DateTime.Parse("01/01/1970");
+            var dtDeb = ckDebut.Checked ? dateDebut.Value : DateTime.Parse("01/01/1970");
+            var dtFin = ckFin.Checked ? dateFin.Value : DateTime.Parse("01/01/1970");
 
-            DataGridViewColumn sortedCol = dataGridView.SortedColumn;
-            SortOrder sortOrder = dataGridView.SortOrder;
+            var sortedCol = dataGridView.SortedColumn;
+            var sortOrder = dataGridView.SortOrder;
 
             dataGridView.DataSource = SaisieReglementController.getController().getListeOperations(tbRefImmeuble.Text, tbLot.Text, dtDeb, dtFin, tbNature.Text, tbLibelle.Text, tbMontant.Text, ckValid.Checked);
-            DataGridViewColumnCollection cols = dataGridView.Columns;
+            var cols = dataGridView.Columns;
             ControlsWindows.ToTitleCase(cols);
             cols["statut"].Visible = false;
             cols["id"].Visible = false;
@@ -202,14 +202,14 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             bLoading = true;
 
             dataGridView.MultiSelect = true;
-            DateTime dtDeb = ckDebut.Checked ? dateDebut.Value : DateTime.Parse("01/01/1970");
-            DateTime dtFin = ckFin.Checked ? dateFin.Value : DateTime.Parse("01/01/1970");
+            var dtDeb = ckDebut.Checked ? dateDebut.Value : DateTime.Parse("01/01/1970");
+            var dtFin = ckFin.Checked ? dateFin.Value : DateTime.Parse("01/01/1970");
 
-            DataGridViewColumn sortedCol = dataGridView.SortedColumn;
-            SortOrder sortOrder = dataGridView.SortOrder;
+            var sortedCol = dataGridView.SortedColumn;
+            var sortOrder = dataGridView.SortOrder;
 
             dataGridView.DataSource = OperationController.getController().getListeOperations(immeuble.id, tbLot.Text, type, ckValid.Checked ? (int) GlobalConstantes.StatutOperation.Valide :-1, dtDeb, dtFin, tbNature.Text, tbBase.Text, tbLibelle.Text, tbMontant.Text);
-            DataGridViewColumnCollection cols = dataGridView.Columns;
+            var cols = dataGridView.Columns;
             ControlsWindows.ToTitleCase(cols);
             cols["statut"].Visible = false;
             cols["id"].Visible = false;
@@ -235,8 +235,8 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         {
             foreach (DataGridViewRow row in dataGridView.Rows)
             {
-                int statut = (int) row.Cells["statut"].Value;
-                Color color = Color.White;
+                var statut = (int) row.Cells["statut"].Value;
+                var color = Color.White;
                 switch (statut )
                 {
                     case 0: color = Color.Gray; break;
@@ -252,16 +252,16 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             {
                 immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
                 if (immeuble != null)
-                    Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                    Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
 //                this.Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.ExerciceCourant.date_deb.ToShortDateString());
             }
             else
                 Text = TitreForm;
-            string selected_id = "";
+            var selected_id = "";
 
             if (dataGridView.SelectedRows.Count > 0)
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
                 if (row != null)
                     selected_id = row["id"].ToString();
             }
@@ -312,7 +312,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
                         btnDetail.Enabled = false;
                         if (immeuble != null)
                         {
-                            FillFromOperations(GlobalConstantes.TypeMouvement.Depense.ToString());
+                            FillFromOperations(nameof(GlobalConstantes.TypeMouvement.Depense));
                         }
                         else
                             dataGridView.DataSource = null;
@@ -325,7 +325,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
                         btnDetail.Enabled = false;
                         if (immeuble != null)
                         {
-                            FillFromOperations(GlobalConstantes.TypeMouvement.Recette.ToString());
+                            FillFromOperations(nameof(GlobalConstantes.TypeMouvement.Recette));
                         }
                         else
                             dataGridView.DataSource = null;
@@ -337,7 +337,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             {
                 foreach (DataGridViewRow rowGrid in dataGridView.Rows)
                 {
-                    DataRowView row = (DataRowView)rowGrid.DataBoundItem;
+                    var row = (DataRowView)rowGrid.DataBoundItem;
                     if (row["id"].ToString() == selected_id)
                     {
                         rowGrid.Selected = true;
@@ -365,7 +365,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
 
         private void btnExport_Click(object sender, EventArgs e)
         {
-            List<string> colsToHide = new List<string>{"id"};
+            var colsToHide = new List<string>{"id"};
             BaseApplication.DataGridToExcel( dataGridView, colsToHide, "", new string[] {"montant", "debit", "credit" });
         }
 
@@ -373,8 +373,8 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
-                int index = dataGridView.SelectedRows[0].Index;
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var index = dataGridView.SelectedRows[0].Index;
                 Form form = null;
                 switch (cbTypeOpe.SelectedIndex)
                 {
@@ -410,7 +410,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         }
         private void lblFournisseur_Click(object sender, EventArgs e)
         {
-            FindFournisseurForm form = new FindFournisseurForm();
+            var form = new FindFournisseurForm();
             form.ShowDialog();
             if (!"".Equals(form.reference))
             {
@@ -422,7 +422,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
 
         private void lblNature_Click(object sender, EventArgs e)
         {
-            FindNatureForm form = new FindNatureForm();
+            var form = new FindNatureForm();
             form.ShowDialog();
             if (!"".Equals(form.reference))
             {
@@ -493,16 +493,16 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             {
                 if (cbTypeOpe.SelectedIndex == 1)
                 {
-                    DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
-                    SaisieAppelFondEntite appel = SaisieAppelFondController.getController().getEntiteById(row["id"].ToString());
-                    ModificationLotForm form = new ModificationLotForm(appel);
+                    var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                    var appel = SaisieAppelFondController.getController().getEntiteById(row["id"].ToString());
+                    var form = new ModificationLotForm(appel);
                     form.ShowDialog();
                 }
                 if (cbTypeOpe.SelectedIndex == 0)
                 {
-                    DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
-                    SaisieFactureEntite facture = SaisieFactureController.getController().getEntiteById(row["id"].ToString());
-                    ModificationLotForm form = new ModificationLotForm(facture);
+                    var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                    var facture = SaisieFactureController.getController().getEntiteById(row["id"].ToString());
+                    var form = new ModificationLotForm(facture);
                     form.ShowDialog();
                 }
             }
@@ -521,7 +521,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             {
                 if (cbTypeOpe.SelectedIndex <= 1)
                 {
-                    DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                    var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
                     if (row["base_repart"].ToString() == "80")
                         modifierNumeroLotToolStripMenuItem.Enabled = true;
                 }
@@ -540,9 +540,9 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
-                OperationEntite operation = OperationController.getController().getEntiteById(row["id"].ToString());
-                CreateFacturefromOperationForm form = new CreateFacturefromOperationForm(operation);
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var operation = OperationController.getController().getEntiteById(row["id"].ToString());
+                var form = new CreateFacturefromOperationForm(operation);
                 form.ShowDialog();
                 commonValidating();
             }
@@ -552,9 +552,9 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
-                OperationEntite operation = OperationController.getController().getEntiteById(row["id"].ToString());
-                SaisieReglementEntite reglement = new SaisieReglementEntite(operation);
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var operation = OperationController.getController().getEntiteById(row["id"].ToString());
+                var reglement = new SaisieReglementEntite(operation);
                 SaisieReglementController.getController().InsertOrUpdate(reglement);
                 commonValidating();
             }
@@ -564,14 +564,14 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                Npgsql.NpgsqlTransaction trx = Database.BeginTransaction();
+                var trx = Database.BeginTransaction();
                 OperationController.getController().setTimestampServer();
                 try
                 {
                     foreach (DataGridViewRow rowGrid in dataGridView.SelectedRows)
                     {
-                        DataRowView row = (DataRowView)rowGrid.DataBoundItem;
-                        OperationEntite operation = OperationController.getController().getEntiteById(row["id"].ToString());
+                        var row = (DataRowView)rowGrid.DataBoundItem;
+                        var operation = OperationController.getController().getEntiteById(row["id"].ToString());
                         if (operation != null)
                         {
                             operation.statut = (int)GlobalConstantes.StatutOperation.Supprime;

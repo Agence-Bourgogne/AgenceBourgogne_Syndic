@@ -127,7 +127,7 @@ namespace Gerance.Formulaires.AppelALoyer
             tbRefLocataire.BackColor = Color.White;
             if (tbRefLocataire.Text != "")
             {
-                LocataireEntite locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
+                var locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
                 if (locataire != null)
                 {
                     bien = locataire.Bien;
@@ -186,7 +186,7 @@ namespace Gerance.Formulaires.AppelALoyer
             if ( quittance != null )
             {
                 dtQuittance.Value = quittance.date_quittance;
-                tbHdrQuittance.Text = String.Format("Quittance du {0}", quittance.date_quittance.ToShortDateString());
+                tbHdrQuittance.Text = $"Quittance du {quittance.date_quittance.ToShortDateString()}";
 
                 tbLoyer.Text = quittance.montant_loyer.ToString();
                 tbCharges.Text = quittance.montant_charge.ToString();
@@ -220,7 +220,7 @@ namespace Gerance.Formulaires.AppelALoyer
         {
             if (quittance != null)
             {
-                decimal old_montant = quittance.montant_quittance;
+                var old_montant = quittance.montant_quittance;
                 
                 quittance.date_quittance = dtQuittance.Value;
 
@@ -244,21 +244,21 @@ namespace Gerance.Formulaires.AppelALoyer
                 quittance.divers4 = tbPresta4.Text;
                 quittance.divers5 = tbPresta5.Text;
                 quittance.statut = (int)GlobalConstantes.StatutQuittance.Modifie;
-                decimal new_montant = quittance.SumMontant();
+                var new_montant = quittance.SumMontant();
                 quittance.montant_quittance = new_montant;
 
-                NpgsqlTransaction trx = Database.BeginTransaction();
+                var trx = Database.BeginTransaction();
                 try
                 {
                     if (!QuittancesController.getController().InsertOrUpdate(quittance))
                         throw new Exception("Mise à jour Quittance");
 
-                    BienEntite bien = quittance.Bien;
+                    var bien = quittance.Bien;
                     quittance.SetValueFromQuittance();
 
                     BienController.getController().InsertOrUpdate(bien);
 
-                    LocataireEntite locataire = LocataireController.getController().getEntiteById(quittance.locataire_id);
+                    var locataire = LocataireController.getController().getEntiteById(quittance.locataire_id);
                     if ( locataire == null )
                         throw new Exception ("Locataire Inconnu");
                     locataire.total_du = locataire.total_du - old_montant + new_montant;
@@ -282,8 +282,8 @@ namespace Gerance.Formulaires.AppelALoyer
         {
             if (bien != null)
             {
-                decimal loyer = Convertir.ToDecimal(tbLoyer.Text);
-                decimal tva = Math.Round((loyer) * ((bien.taxe == 1) ? taux_tva : taux_bail) / 100, 2);
+                var loyer = Convertir.ToDecimal(tbLoyer.Text);
+                var tva = Math.Round((loyer) * ((bien.taxe == 1) ? taux_tva : taux_bail) / 100, 2);
                 if (Convertir.ToDecimal(tbTVA.Text) != tva)
                     tbTVA.Text = tva.ToString();
             }
@@ -327,7 +327,7 @@ namespace Gerance.Formulaires.AppelALoyer
             {
                 if (DialogResult.Yes != MessageBox.Show("Opération irréversible\r\nVoulez-vous Continuer", "Attention", MessageBoxButtons.YesNo))
                     return;
-                NpgsqlTransaction trx = Database.BeginTransaction();
+                var trx = Database.BeginTransaction();
 
                 if ( QuittancesController.DeleteQuittance(quittance))
                 {
@@ -347,7 +347,7 @@ namespace Gerance.Formulaires.AppelALoyer
         {
             if (tbRefImmeuble.Text != "")
             {
-                LocataireLotFindForm form = new LocataireLotFindForm();
+                var form = new LocataireLotFindForm();
                 form.ref_immeuble = tbRefImmeuble.Text;
                 if (ShowFindForm(form, tbNumLot) == DialogResult.OK)
                     tbNumLot_Validating(sender, null);
@@ -356,7 +356,7 @@ namespace Gerance.Formulaires.AppelALoyer
 
         private void lblPresta5_Click(object sender, EventArgs e)
         {
-            Label lbl = (Label)sender;
+            var lbl = (Label)sender;
             switch (lbl.Name)
             {
                 case "lblPresta1":
@@ -380,7 +380,7 @@ namespace Gerance.Formulaires.AppelALoyer
         // Impression
         private void btnPrev_Click_1(object sender, EventArgs e)
         {
-            ImprimerQuittanceForm form = new ImprimerQuittanceForm(quittance);
+            var form = new ImprimerQuittanceForm(quittance);
             form.ShowDialog();
         }
 

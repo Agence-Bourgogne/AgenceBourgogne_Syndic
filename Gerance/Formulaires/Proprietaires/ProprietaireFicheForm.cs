@@ -70,7 +70,7 @@ namespace Gerance.Formulaires.Proprietaires
         {
             if (tbRefComptable.Text != proprietaire.Comptable.reference)
             {
-                ComptableEntite comptable = ComptableController.getController().getEntiteFromField("reference", tbRefComptable.Text);
+                var comptable = ComptableController.getController().getEntiteFromField("reference", tbRefComptable.Text);
                 proprietaire.Comptable = comptable;
             }
             tbNomComptable.Text = proprietaire.Comptable.nom;
@@ -103,7 +103,7 @@ namespace Gerance.Formulaires.Proprietaires
             proprietaire.statut = ckActif.Checked ? 1 : 9;
 
             proprietaire.taux_honoraire = Convertir.ToInt(tbHono.Text);
-            Decimal solde = Convertir.ToDecimal(tbSolde.Text);
+            var solde = Convertir.ToDecimal(tbSolde.Text);
             if (solde < 0)
                 proprietaire.debit = Math.Abs(solde);
             else

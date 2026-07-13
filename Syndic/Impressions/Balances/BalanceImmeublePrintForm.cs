@@ -42,7 +42,7 @@ namespace EspaceSyndic.Impressions.Balances
         }
         private void lblImmeuble_Click(object sender, EventArgs e)
         {
-            FindImmeubleForm form = new FindImmeubleForm();
+            var form = new FindImmeubleForm();
             form.ShowDialog();
             if (!"".Equals(form.reference))
             {
@@ -55,7 +55,7 @@ namespace EspaceSyndic.Impressions.Balances
             immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
             if (immeuble != null & cbBalance.SelectedIndex >= 0)
             {
-                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
                 loadData();
             }
             else
@@ -87,11 +87,11 @@ namespace EspaceSyndic.Impressions.Balances
             reportViewer1.Visible = true;
             dataGridView.Visible = false;
 
-            string titre = "Balance Règlements Factures";
+            var titre = "Balance Règlements Factures";
             if (cbBalance.SelectedIndex == 1)
                 titre = "Balance Règlements Appels de Fond";
 
-            ReportParameter[] reportParams = new ReportParameter[]{
+            var reportParams = new ReportParameter[]{
                     new ReportParameter("Titre", titre),
                     new ReportParameter("RefImmeuble", immeuble.reference)
                 };
@@ -108,7 +108,7 @@ namespace EspaceSyndic.Impressions.Balances
             reportViewer1.Visible = false;
             dataGridView.Visible = true;
             dataGridView.DataSource = sourceData;
-            DataGridViewColumnCollection cols = dataGridView.Columns;
+            var cols = dataGridView.Columns;
             cols["type"].Visible = false;
             cols["debit"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             cols["credit"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
@@ -122,13 +122,13 @@ namespace EspaceSyndic.Impressions.Balances
         private void btnExport_Click(object sender, EventArgs e)
         {
             dataGridView.DataSource = sourceData;
-            List<string> cols = new List<string>{"type"};
+            var cols = new List<string>{"type"};
             BaseApplication.DataGridToExcel(dataGridView, cols, "", new string[] {"debit", "credit"});
         }
 
         private void btnCompte_Click(object sender, EventArgs e)
         {
-            ReleveCompteCoproPrintForm form = (ReleveCompteCoproPrintForm) MainForm.getInstance().ShowForm("EspaceSyndic.Impressions.RelevesComptes.ReleveCompteCoproPrintForm");
+            var form = (ReleveCompteCoproPrintForm) MainForm.getInstance().ShowForm("EspaceSyndic.Impressions.RelevesComptes.ReleveCompteCoproPrintForm");
             form.RefreshImmeuble(immeuble.reference);
             form.Activate();
         }

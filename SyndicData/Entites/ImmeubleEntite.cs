@@ -38,7 +38,7 @@ namespace SyndicData.Entites
         }
         public override void setValues( DataRow row)
         {
-            FieldInfo[] members = GetType().GetFields();
+            var members = GetType().GetFields();
             updatables.Clear();
 
             updatables.Add(new UpdateField("reference", true, members));
@@ -63,7 +63,7 @@ namespace SyndicData.Entites
         {
             //if (immeuble_repart == null)
             {
-                ImmeubleRepartitionController controller = new ImmeubleRepartitionController();
+                var controller = new ImmeubleRepartitionController();
                 if ( ! isNew )
                     immeuble_repart = controller.getRepartitionImmeuble(id/*, reference*/);
             }
@@ -73,7 +73,7 @@ namespace SyndicData.Entites
         {
             //if (listeLots == null)
             {
-                LotDescriptionController controller = new LotDescriptionController();
+                var controller = new LotDescriptionController();
                 listeLots = controller.getDataGridListeLotDescription(this);
             }
             return listeLots;
@@ -111,7 +111,7 @@ namespace SyndicData.Entites
         {
             get
             {
-                string strDate = "  /  /    ";
+                var strDate = "  /  /    ";
                 if ( ExerciceCourant != null )
                     strDate = ExerciceCourant.date_deb.ToShortDateString();
                 return strDate;

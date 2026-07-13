@@ -29,7 +29,7 @@ namespace Gerance.Impressions.CompteLocataire
             cols["reference"].Width = 60;
             cols["locataire"].Width = 180;
             cols["adresse"].Width = 180;
-            DataGridViewCellStyle style = cols["debit"].DefaultCellStyle;
+            var style = cols["debit"].DefaultCellStyle;
             style.Alignment = DataGridViewContentAlignment.MiddleRight;
             style.Format = "n2";
             style = cols["credit"].DefaultCellStyle;
@@ -65,7 +65,7 @@ namespace Gerance.Impressions.CompteLocataire
             tbRefLocataire.BackColor = Color.White;
             if (tbRefLocataire.Text != "")
             {
-                LocataireEntite locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
+                var locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
                 if (locataire == null)
                     tbRefLocataire.BackColor = Color.Red;
                 else
@@ -80,11 +80,11 @@ namespace Gerance.Impressions.CompteLocataire
 
         private void btnPrint_Click(object sender, EventArgs e)
         {
-            string ref_locataire = "";
+            var ref_locataire = "";
 
             if ( dataGridView.SelectedRows.Count > 0 )
             {
-                DataGridViewRow row = dataGridView.SelectedRows[0];
+                var row = dataGridView.SelectedRows[0];
                 ref_locataire = row.Cells["reference"].Value.ToString();
 
                 reportViewer1.Location = new Point(0, 0);

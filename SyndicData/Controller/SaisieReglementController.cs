@@ -26,7 +26,7 @@ namespace SyndicData.Controller
 
         public DataTable GetAllElements(string immeuble_id , DateTime dtDeb, DateTime dtFin)
         {
-            string cmd = String.Format("select r.*, c.reference as ref_copro, i.reference as ref_imm from {0} r ", getSchemaTable());
+            var cmd = $"select r.*, c.reference as ref_copro, i.reference as ref_imm from {getSchemaTable()} r ";
             cmd += " join agence.coproprietaire c on c.id = r.coproprietaire_id ";
             cmd += " join agence.immeuble i on i.id = r.immeuble_id ";
             cmd += " where r.statut!=@statut";
@@ -40,7 +40,7 @@ namespace SyndicData.Controller
                 cmd += " and date_reference <= @dtFin";
             
             cmd += " order by i.reference";
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
             {
                 new NpgsqlParameter("@immeuble_id", immeuble_id),
                 new NpgsqlParameter("@statut", (int) GlobalConstantes.StatutOperation.Supprime),
@@ -52,8 +52,8 @@ namespace SyndicData.Controller
         }
         public DataTable getGridRowSaisieReglement(string liasse_id)
         {
-            String schema = getSchema();
-            String cmd = " Select ";
+            var schema = getSchema();
+            var cmd = " Select ";
             cmd += " concat(c.reference, ':',  c.nom, ' ', c.prenom) as \"Coproprietaire\", ";
             cmd += " concat(i.reference, ':',  i.nom) as \"Immeuble\", ";
             cmd += " concat ( n.reference, ':', n.nom) as \"Nature\", ";
@@ -67,18 +67,18 @@ namespace SyndicData.Controller
             cmd += " e.emetteur, e.banque, ";
             cmd += " e.liasse_id, e.immeuble_id, e.nature_id, e.coproprietaire_id, ";
             cmd += "  e.id";
-            cmd += String.Format(" from {0} e ", getSchemaTable());
-            cmd += String.Format(" left join {0}.immeuble i on i.id = e.immeuble_id", schema);
-            cmd += String.Format(" left join {0}.coproprietaire c on c.id = e.coproprietaire_id", schema);
+            cmd += $" from {getSchemaTable()} e ";
+            cmd += $" left join {schema}.immeuble i on i.id = e.immeuble_id";
+            cmd += $" left join {schema}.coproprietaire c on c.id = e.coproprietaire_id";
             //cmd += String.Format(" left join {0}.lot_description l on l.id = e.lot_id", schema);
-            cmd += String.Format(" left join {0}.nature n on n.id = e.nature_id", schema);
+            cmd += $" left join {schema}.nature n on n.id = e.nature_id";
 
             cmd += " where liasse_id = @liasse_id and e.statut = @statut ";
 
             adapter.SelectCommand = new NpgsqlCommand(cmd, Database.GetInstance());
             adapter.SelectCommand.Parameters.AddWithValue("@liasse_id", liasse_id);
             adapter.SelectCommand.Parameters.AddWithValue("@statut", (int)GlobalConstantes.StatutOperation.Brouillon);
-            DataTable table = new DataTable();
+            var table = new DataTable();
             try
             {
                 adapter.Fill(table);
@@ -92,10 +92,10 @@ namespace SyndicData.Controller
         }
         public DataTable GetListeReglementValideFromNature(string liasse_id, String ref_nature)
         {
-            string cmd = String.Format(" select * from {0} r", getSchemaTable());
+            var cmd = $" select * from {getSchemaTable()} r";
             if (ref_nature != "" && ref_nature != "0")
             {
-                cmd += String.Format(" join {0}.nature n on n.id = nature_id ", getSchema());
+                cmd += $" join {getSchema()}.nature n on n.id = nature_id ";
             }
             cmd += " where liasse_id = @liasse_id and r.statut = @statut ";
             if (ref_nature != "" && ref_nature != "0")
@@ -107,7 +107,7 @@ namespace SyndicData.Controller
             adapter.SelectCommand.Parameters.AddWithValue("@liasse_id", liasse_id);
             adapter.SelectCommand.Parameters.AddWithValue("@nature_ref", ref_nature);
             adapter.SelectCommand.Parameters.AddWithValue("@statut", (int)GlobalConstantes.StatutOperation.Valide);
-            DataTable table = new DataTable();
+            var table = new DataTable();
             try
             {
                 adapter.Fill(table);
@@ -121,9 +121,9 @@ namespace SyndicData.Controller
         }
         public DataTable GetListeReglementValideFromCompteBanque(string liasse_id, string nature_id, string comptebanque)
         {
-            string cmd = "SELECT date_reference, montant, emetteur, banque, reference ";
-            cmd += String.Format(" FROM {0} f", getSchemaTable());
-            cmd += String.Format(" join {0}.coproprietaire c ON f.coproprietaire_id = c.id", getSchema());
+            var cmd = "SELECT date_reference, montant, emetteur, banque, reference ";
+            cmd += $" FROM {getSchemaTable()} f";
+            cmd += $" join {getSchema()}.coproprietaire c ON f.coproprietaire_id = c.id";
             cmd += " where liasse_id = @liasse_id and nature_id = @nature_id and comptebanque = @comptebanque and f.statut = @statut";
 
             adapter.SelectCommand = new NpgsqlCommand(cmd, Database.GetInstance());
@@ -131,7 +131,7 @@ namespace SyndicData.Controller
             adapter.SelectCommand.Parameters.AddWithValue("@nature_id", nature_id);
             adapter.SelectCommand.Parameters.AddWithValue("@comptebanque", comptebanque);
             adapter.SelectCommand.Parameters.AddWithValue("@statut", (int)GlobalConstantes.StatutOperation.Valide);
-            DataTable table = new DataTable();
+            var table = new DataTable();
             try
             {
                 adapter.Fill(table);
@@ -145,16 +145,16 @@ namespace SyndicData.Controller
         }
         public DataTable getListeOperations(string immeuble, string lot_reference, DateTime dtDeb, DateTime dtFin, string ref_nature = "", string libelle = "", string montant="", bool bValidOnly = true)
         {
-            String schema = getSchema();
-            string cmd = "Select ";
-            int numlot = 0;
+            var schema = getSchema();
+            var cmd = "Select ";
+            var numlot = 0;
 
             cmd += " sf.id, i.reference as ref_immeuble, date_reference, n.reference as ref_nature, libelle, montant, c.reference as ref_copro, concat(c.prenom, ' ',c .nom) as coproprietaire, banque, sf.statut ";
-            cmd += String.Format(" from {0} sf", getSchemaTable());
-            cmd += String.Format(" join {0}.immeuble i on i.id = immeuble_id ", schema);
-            cmd += String.Format(" left join {0}.nature n on n.id = nature_id ", schema);
-            cmd += String.Format(" left join {0}.coproprietaire c on c.id = coproprietaire_id ", schema);
-            cmd += String.Format(" left join {0}.lot_description l on l.coproprietaire_id = sf.coproprietaire_id", schema);
+            cmd += $" from {getSchemaTable()} sf";
+            cmd += $" join {schema}.immeuble i on i.id = immeuble_id ";
+            cmd += $" left join {schema}.nature n on n.id = nature_id ";
+            cmd += $" left join {schema}.coproprietaire c on c.id = coproprietaire_id ";
+            cmd += $" left join {schema}.lot_description l on l.coproprietaire_id = sf.coproprietaire_id";
 
 
             cmd += String.Format(" where 1=1" );
@@ -182,7 +182,7 @@ namespace SyndicData.Controller
             if (bValidOnly)
                 cmd += " and sf.statut = @statut";
 
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
             {
                 new NpgsqlParameter("@immeuble", immeuble),
                 new NpgsqlParameter("@numlot", numlot),
@@ -200,11 +200,11 @@ namespace SyndicData.Controller
         public decimal getSumReglements(string immeuble_id, DateTime dtDeb, DateTime dtFin)
         {
             decimal sum = 0;
-            string cmd = String.Format("Select sum(montant) as montant from {0}", getSchemaTable());
+            var cmd = $"Select sum(montant) as montant from {getSchemaTable()}";
             cmd += " where immeuble_id = @immeuble_id and date_reference >= @dtDeb and date_reference <= @dtFin ";
             cmd += " and statut != @statut";
 
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
             {
                 new NpgsqlParameter("@immeuble_id", immeuble_id),
                 new NpgsqlParameter("@dtDeb", dtDeb),
@@ -212,12 +212,12 @@ namespace SyndicData.Controller
                 new NpgsqlParameter("@statut", (int) GlobalConstantes.StatutOperation.Supprime),
             };
 
-            DataTable table = getResultSQL(cmd, parameters);
+            var table = getResultSQL(cmd, parameters);
 
             if (table != null)
                 if (table.Rows.Count > 0)
                 {
-                    DataRow row = table.Rows[0];
+                    var row = table.Rows[0];
                     sum = Convertir.ToDecimal(row["montant"]);
                 }
 
@@ -227,9 +227,9 @@ namespace SyndicData.Controller
         public decimal getTotalOperationWithoutSolde(string immeuble_id, DateTime dtDeb, DateTime dtFin, string copro_id = "")
         {
             decimal sum = 0;
-            string nature = "140";
+            var nature = "140";
 
-            string cmd = string.Format("select coalesce(sum(credit)-sum(debit),0) as montant from {0}.operation f", getSchema());
+            var cmd = $"select coalesce(sum(credit)-sum(debit),0) as montant from {getSchema()}.operation f";
             cmd += string.Format(" left join agence.nature n on n.id = f.nature_id ", getSchema());
             cmd += " where immeuble_id = @immeuble_id and date_reference >= @dtDeb and date_reference <= @dtFin";
             cmd += " and type_mouvement=@type_mouvement and type_operation = @type_operation";
@@ -238,7 +238,7 @@ namespace SyndicData.Controller
             if ( copro_id != "")
                 cmd += " and coproprietaire_id=@copro_id";
 
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
             {
                 new NpgsqlParameter("@immeuble_id", immeuble_id),
                 new NpgsqlParameter("@nature", nature),
@@ -246,16 +246,16 @@ namespace SyndicData.Controller
                 new NpgsqlParameter("@dtFin", dtFin),
                 new NpgsqlParameter("@copro_id", copro_id),
                 new NpgsqlParameter("@statut", (int) GlobalConstantes.StatutOperation.Supprime),
-                new NpgsqlParameter("@type_mouvement",  GlobalConstantes.TypeMouvement.Recette.ToString()),
-                new NpgsqlParameter("@type_operation",  GlobalConstantes.TypeOperation.Tresorerie.ToString()),
+                new NpgsqlParameter("@type_mouvement",  nameof(GlobalConstantes.TypeMouvement.Recette)),
+                new NpgsqlParameter("@type_operation",  nameof(GlobalConstantes.TypeOperation.Tresorerie)),
             };
 
-            DataTable table = getResultSQL(cmd, parameters);
+            var table = getResultSQL(cmd, parameters);
 
             if (table != null)
                 if (table.Rows.Count > 0)
                 {
-                    DataRow row = table.Rows[0];
+                    var row = table.Rows[0];
                     sum = Convertir.ToDecimal(row["montant"]);
                 }
 
@@ -263,20 +263,20 @@ namespace SyndicData.Controller
         }
         public bool AnnuleElement(SaisieReglementEntite entite, DataTable table)
         {
-            bool rc = false;
-            NpgsqlConnection cnx = Database.GetInstance();
-            NpgsqlTransaction trx = cnx.BeginTransaction();
+            var rc = false;
+            var cnx = Database.GetInstance();
+            var trx = cnx.BeginTransaction();
             try
             {
                 TimestampServer = Database.GetTimestampServer();
 
-                OperationController ctl = OperationController.getController();
+                var ctl = OperationController.getController();
                 ctl.setTimestampServer(TimestampServer);
                 if (table != null)
                 {
                     foreach (DataRow row in table.Rows)
                     {
-                        OperationEntite operation = new OperationEntite(row);
+                        var operation = new OperationEntite(row);
                         operation.statut = (int)GlobalConstantes.StatutOperation.Supprime;
                         if (!ctl.doInsertOrUpdate(operation))
                             throw new Exception("Annulation Operation");
@@ -298,7 +298,7 @@ namespace SyndicData.Controller
 
         public bool AnnuleElement(string element_id)
         {
-            SaisieReglementEntite entite = getController().getEntiteById(element_id);
+            var entite = getController().getEntiteById(element_id);
             if ( entite != null )
                 return AnnuleElement(entite);
             return false;
@@ -306,27 +306,27 @@ namespace SyndicData.Controller
 
         public bool AnnuleElement(SaisieReglementEntite entite)
         {
-            string cmd = String.Format("Select * from {0}.operation where saisie_id = @saisie_id", getSchema());
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var cmd = $"Select * from {getSchema()}.operation where saisie_id = @saisie_id";
+            var parameters = new List<NpgsqlParameter> 
                 {
                     new NpgsqlParameter("@saisie_id", entite.id),
                 };
 
-            DataTable table = getResultSQL(cmd, parameters);
+            var table = getResultSQL(cmd, parameters);
             return AnnuleElement(entite, table);
         }
         public DataTable getSaisieReglement(OperationEntite operation)
         {
-            String cmd = String.Format("select o.*, c.reference as ref_copro from {0} o", getSchemaTable());
+            var cmd = $"select o.*, c.reference as ref_copro from {getSchemaTable()} o";
             cmd += " join agence.coproprietaire c on c.id = o.coproprietaire_id ";
             cmd += " where immeuble_id = @immeuble_id and coproprietaire_id =@coproprietaire_id and date_reference = @date_reference and nature_id = @nature_id and trim(libelle) = trim(@libelle)";
             cmd += " and montant = @montant";
-            decimal montant = operation.credit;
+            var montant = operation.credit;
 
             if (operation.debit != 0)
                 montant = operation.debit;
 
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
                 {
                     new NpgsqlParameter("@immeuble_id", operation.immeuble_id),
                     new NpgsqlParameter("@coproprietaire_id", operation.coproprietaire_id),

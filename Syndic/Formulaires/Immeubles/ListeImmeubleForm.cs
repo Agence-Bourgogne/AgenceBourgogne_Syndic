@@ -35,7 +35,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
             
             if (dataGridView.DataSource != null)
             {
-                DataGridViewColumnCollection cols = dataGridView.Columns;
+                var cols = dataGridView.Columns;
                 cols["id"].Visible = false;
 //                cols["agence"].Visible = false;
                 cols["audit_created"].Visible = false;
@@ -78,7 +78,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
                 return;
             foreach (DataGridViewColumn col in dataGridView.Columns)
             {
-                int index = (int)CommonRegistry.getRegistryValue(regKey, col.Name, -1);
+                var index = (int)CommonRegistry.getRegistryValue(regKey, col.Name, -1);
                 if (index != -1)
                     col.DisplayIndex = index;
             }
@@ -123,7 +123,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
             }
             if (controller.SaveList((DataTable)dataGridView.DataSource))
             {
-                DataRowView row = (DataRowView)dataGridView.Rows[index].DataBoundItem;
+                var row = (DataRowView)dataGridView.Rows[index].DataBoundItem;
                 if ( row.Row.RowState != DataRowState.Detached )
                     edition(new ImmeubleEntite(row.Row));
             }
@@ -137,7 +137,7 @@ namespace EspaceSyndic.Formulaires.Immeubles
         {
             try
             {
-                FicheImmeubleForm form = new FicheImmeubleForm();
+                var form = new FicheImmeubleForm();
                 form.immeuble = entite;
                 if (!"".Equals(entite.id))
                     form.immeuble = controller.getEntiteById(entite.id);
@@ -171,30 +171,30 @@ namespace EspaceSyndic.Formulaires.Immeubles
             if (e.KeyChar == 0x0D && dataGridView.ReadOnly )
             {
                 e.Handled = true;
-                int index = dataGridView.SelectedRows[0].Index;
+                var index = dataGridView.SelectedRows[0].Index;
                 index = Math.Max(index - 1, 0);
                 ShowImmeuble(index);
             }
         }
         private void btnExport_Click(object sender, EventArgs e)
         {
-            List<string> colsToHide = new List<string> { "id", "note", "codenvoi","codenvcomp", "declaration","note_repart", "audit_created", "audit_created_by", "audit_updated", "audit_updated_by" };
+            var colsToHide = new List<string> { "id", "note", "codenvoi","codenvcomp", "declaration","note_repart", "audit_created", "audit_created_by", "audit_updated", "audit_updated_by" };
             BaseApplication.DataGridToExcel(dataGridView, colsToHide);
         }
 
         private void btnFiltre_Click(object sender, EventArgs e)
         {
-            FindImmeubleForm form = new FindImmeubleForm();
-            BindingSource source = new BindingSource();// (BindingSource)dataGridView.DataSource;
+            var form = new FindImmeubleForm();
+            var source = new BindingSource();// (BindingSource)dataGridView.DataSource;
             source.DataSource = dataGridView.DataSource;
             if (DialogResult.Cancel != form.ShowDialog())
             {
-                int action = (int)CommonRegistry.getRegistryValue("Parametres", "ActionFiltre", 0);
+                var action = (int)CommonRegistry.getRegistryValue("Parametres", "ActionFiltre", 0);
                 if (action == 1)
-                    source.Filter = String.Format("reference = '{0}'", form.reference);
+                    source.Filter = $"reference = '{form.reference}'";
                 else
                 {
-                    FicheImmeubleForm fiche = new FicheImmeubleForm();
+                    var fiche = new FicheImmeubleForm();
                     fiche.immeuble = controller.getEntiteFromField("reference", form.reference);
                     fiche.ShowDialog();
                 }

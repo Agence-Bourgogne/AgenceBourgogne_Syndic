@@ -28,13 +28,13 @@ namespace GeranceData.Controller
         {
             if (groupe.param_1 == "" || groupe.param_1 == null )
                 return null;
-            string cmd = String.Format(" select * from {0} ", getSchemaTable());
+            var cmd = $" select * from {getSchemaTable()} ";
 
             cmd += " where groupe = @code ";
             if ( groupe.param_2 != null)
                 if ( groupe.param_2.Trim() != "")
                     cmd += " order by "+ groupe.param_2;
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>
+            var parameters = new List<NpgsqlParameter>
             {
                 new NpgsqlParameter ("@code", groupe.code),
             };

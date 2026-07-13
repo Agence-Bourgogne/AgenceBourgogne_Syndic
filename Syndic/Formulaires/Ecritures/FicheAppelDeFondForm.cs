@@ -38,7 +38,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
         {
             RepartitionControlsWindows.initGridRepartition(dataGridView);
             //            EnableSaisieEcriture(false);
-            DateTime dt = DateTime.Now;
+            var dt = DateTime.Now;
             tbDateCreation.Text = dt.ToShortDateString();
 
             ControlsWindows.setAutoControle(tbRefImmeuble, ImmeubleController.getController().getAutoComplete("reference"));
@@ -67,7 +67,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
         }
         protected void EnableSaveAction()
         {
-            bool enable = true;
+            var enable = true;
 
             enable &= (immeuble != null);
             enable &= (nature != null);
@@ -80,18 +80,18 @@ namespace EspaceSyndic.Formulaires.Ecritures
         protected void cbLiasse_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!cbLiasse.Enabled) return;
-            DataRowView row = (DataRowView)cbLiasse.SelectedItem;
+            var row = (DataRowView)cbLiasse.SelectedItem;
             tbTotal.Text = row["montant"].ToString();
             tbTotal_TextChanged(null, null);
 
             FillDatagridEcritures();
 
-            DataTable source = (DataTable) dataGridViewEcriture.DataSource;
+            var source = (DataTable) dataGridViewEcriture.DataSource;
             ImmeubleEntite immeuble = null;
 
             if (source.Rows.Count > 0)
             {
-                DataRow rowEcriture = source.Rows[0];
+                var rowEcriture = source.Rows[0];
                 immeuble =ImmeubleController.getController().getEntiteById(rowEcriture["immeuble_id"].ToString());
             }
             if (immeuble != null)
@@ -111,7 +111,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
 
         protected void tbTotal_TextChanged(object sender, EventArgs e)
         {
-            float total = Convertir.ToFloat(tbTotal.Text);
+            var total = Convertir.ToFloat(tbTotal.Text);
             EnableSaisieEcriture(total != 0);
         }
         protected virtual void EnableSaisieEcriture(bool saisie)
@@ -129,13 +129,13 @@ namespace EspaceSyndic.Formulaires.Ecritures
         protected void FillDatagridEcritures()
         {
             bLoadEcriture = true;
-            string liasse_id = cbLiasse.SelectedValue.ToString();
-            DataTable source = SaisieAppelFondController.getController().getGridRowSaisieAppelFond(liasse_id);
+            var liasse_id = cbLiasse.SelectedValue.ToString();
+            var source = SaisieAppelFondController.getController().getGridRowSaisieAppelFond(liasse_id);
             dataGridViewEcriture.DataSource = source;
             dataGridViewEcriture.ClearSelection();
             if (source != null)
             {
-                DataGridViewColumnCollection cols = dataGridViewEcriture.Columns;
+                var cols = dataGridViewEcriture.Columns;
                 dataGridViewEcriture.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                 ControlsWindows.ToTitleCase(cols);
                 cols["id"].Visible = false;
@@ -170,7 +170,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
                 double total = Convertir.ToFloat(tbTotal.Text);
                 tbDiff.Text = (total - current).ToString();
             }
-            Boolean bVisibilite = false;
+            var bVisibilite = false;
             if (!LiasseEntite.NOUVELLE_ID.Equals(liasse_id))
             {
                 if (dataGridViewEcriture.Rows.Count <= 0)
@@ -185,7 +185,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
         }
         private void ClearFicheSaisie()
         {
-            string liasse_id = cbLiasse.SelectedValue.ToString();
+            var liasse_id = cbLiasse.SelectedValue.ToString();
 
             tbMontant.Text = "";
             tbBase.Text = "";
@@ -199,7 +199,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
 
         private void lblImmeuble_Click(object sender, EventArgs e)
         {
-            FindImmeubleForm form = new FindImmeubleForm();
+            var form = new FindImmeubleForm();
             form.ShowDialog();
             if (!"".Equals(form.reference))
             {
@@ -210,7 +210,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
 
         private void ShowFromRepartitionImmeuble(ImmeubleEntite immeuble)
         {
-            DataTable repartitionImmeuble = immeuble.getRepartitionImmeuble();
+            var repartitionImmeuble = immeuble.getRepartitionImmeuble();
 
             baseAuto = RepartitionControlsWindows.ShowRepartitionImmeuble(dataGridView, repartitionImmeuble);
             ControlsWindows.setAutoControle(tbBase, baseAuto);
@@ -227,7 +227,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
                 tbRefImmeuble.BackColor = Color.White;
                 ShowFromRepartitionImmeuble(immeuble);
                 tbBase.Enabled = true;
-                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
                 infoForm.DoFormText(this, immeuble.note_repart);
             }
             else
@@ -245,7 +245,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
 
         private void lblNature_Click(object sender, EventArgs e)
         {
-            FindNatureForm form = new FindNatureForm();
+            var form = new FindNatureForm();
             form.ShowDialog();
             if (!"".Equals(form.reference))
             {
@@ -256,7 +256,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
 
         private void btnNatureAdd_Click(object sender, EventArgs e)
         {
-            FicheNatureForm form = new FicheNatureForm(false);
+            var form = new FicheNatureForm(false);
             form.entite = new NatureEntite();
             form.ShowDialog();
             if (!form.entite.id.Equals(""))
@@ -321,7 +321,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
 
         private void selectComboLiasse(string liasse_id)
         {
-            DataTable source = LiasseController.getController().getLiasseActives(GlobalConstantes.TypeOperation.AppelDeFond);
+            var source = LiasseController.getController().getLiasseActives(GlobalConstantes.TypeOperation.AppelDeFond);
             cbLiasse.DataSource = source;
             foreach (DataRow row in source.Rows)
             {
@@ -353,7 +353,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
 
         private bool ValidateForm()
         {
-            string msg = "";
+            var msg = "";
 
             if (immeuble == null) msg += "Immeuble invalide\r\n";
             if (nature == null) msg += "Nature invalide\r\n";
@@ -366,14 +366,14 @@ namespace EspaceSyndic.Formulaires.Ecritures
                 return false;
             }
 
-            DateTime dtFac = Convert.ToDateTime(tbDateCreation.Text);
-            ExerciceComptableEntite exercice = ExerciceComptableController.getController().getExerciceFromDate(immeuble.id, dtFac);
+            var dtFac = Convert.ToDateTime(tbDateCreation.Text);
+            var exercice = ExerciceComptableController.getController().getExerciceFromDate(immeuble.id, dtFac);
 
             if ( exercice != null )
             {
                 if ( exercice.statut != (int) GlobalConstantes.StatutExercice.Ouvert)
                 {
-                    DialogResult dr = MessageBox.Show("La date de l'opération correspond à un exercice Cloturé\r\nVoulez vous continuer", "Attention", MessageBoxButtons.YesNo);
+                    var dr = MessageBox.Show("La date de l'opération correspond à un exercice Cloturé\r\nVoulez vous continuer", "Attention", MessageBoxButtons.YesNo);
                     if (dr != DialogResult.Yes)
                         return false;
                 }
@@ -387,24 +387,24 @@ namespace EspaceSyndic.Formulaires.Ecritures
             if (!ValidateForm())
                 return;
 
-            DataRowView rowGrid = (DataRowView) dataGridViewEcriture.SelectedRows[0].DataBoundItem;
+            var rowGrid = (DataRowView) dataGridViewEcriture.SelectedRows[0].DataBoundItem;
             if (rowGrid != null)
             {
-                DataRow row = rowGrid.Row;
+                var row = rowGrid.Row;
                 try
                 {
-                    SaisieAppelFondEntite saisie = SaisieAppelFondController.getController().getEntiteById(row["id"].ToString());
+                    var saisie = SaisieAppelFondController.getController().getEntiteById(row["id"].ToString());
                     if (saisie != null)
                     {
                         saisie_id = saisie.id;
-                        ImmeubleRepartitionEntite immeuble_repart = ImmeubleRepartitionController.getController().getRepartFromImmeubleBase(immeuble.id, tbBase.Text);
+                        var immeuble_repart = ImmeubleRepartitionController.getController().getRepartFromImmeubleBase(immeuble.id, tbBase.Text);
                         if (immeuble_repart == null) return;
                         
-                        string oldBase = saisie.base_repart;
+                        var oldBase = saisie.base_repart;
 
                         if (tbBase.Text != oldBase)
                         {
-                            ImmeubleRepartitionEntite old_repart = ImmeubleRepartitionController.getController().getRepartFromImmeubleBase(immeuble.id, saisie.base_repart);
+                            var old_repart = ImmeubleRepartitionController.getController().getRepartFromImmeubleBase(immeuble.id, saisie.base_repart);
                             if ( old_repart.type_ventilation != immeuble_repart.type_ventilation)
                             {
                                 MessageBox.Show("Vous ne pouvez pas changer de base si le type de répartition change \r\nVous devez supprimer l'écriture");
@@ -421,10 +421,10 @@ namespace EspaceSyndic.Formulaires.Ecritures
                             }
                             else
                             {
-                                FicheAppelDeFondRepartitionIndividuelle form = new FicheAppelDeFondRepartitionIndividuelle();
+                                var form = new FicheAppelDeFondRepartitionIndividuelle();
                                 form.saisie = saisie;
                                 form.immeuble = immeuble;
-                                DialogResult rc = form.ShowDialog();
+                                var rc = form.ShowDialog();
                             }
                         }
                         else
@@ -444,12 +444,12 @@ namespace EspaceSyndic.Formulaires.Ecritures
         }
         private void btnValid_Click(object sender, EventArgs e)
         {
-            String msg  = "Voulez-vous valider cet appel de fond\n";
+            var msg  = "Voulez-vous valider cet appel de fond\n";
             msg+= "Cette opération est irréversible\n";
             msg+= "Si vous répondez Oui\n";
             msg+= "Seule l'impression (Réimpression) sera accessible";
 
-            DialogResult res = MessageBox.Show( msg, "Attention", MessageBoxButtons.YesNoCancel);
+            var res = MessageBox.Show( msg, "Attention", MessageBoxButtons.YesNoCancel);
             if (res == DialogResult.Cancel)
                 return;
             
@@ -458,10 +458,10 @@ namespace EspaceSyndic.Formulaires.Ecritures
 
             if ( res == DialogResult.Yes)
             {
-                string liasse_id = cbLiasse.SelectedValue.ToString();
+                var liasse_id = cbLiasse.SelectedValue.ToString();
                 OperationController.getController().ValidateAppelDeFond(liasse_id);
                 cbLiasse.DataSource = LiasseController.getController().getLiasseActives(getTypeEcriture());
-                ImprimerAppelDeFondForm form = new ImprimerAppelDeFondForm();
+                var form = new ImprimerAppelDeFondForm();
                 form.immeuble = immeuble;
                 form.saisie_id = saisie_id;
                 form.ShowDialog();
@@ -472,9 +472,9 @@ namespace EspaceSyndic.Formulaires.Ecritures
             if (!ValidateForm())
                 return;
 
-            bool bNewLiasse = false;
-            int numero_operation = 1;
-            string liasse_id = cbLiasse.SelectedValue.ToString();
+            var bNewLiasse = false;
+            var numero_operation = 1;
+            var liasse_id = cbLiasse.SelectedValue.ToString();
             LiasseEntite liasse = null;
             if (LiasseEntite.NOUVELLE_ID.Equals(liasse_id))
             {
@@ -484,7 +484,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
                 liasse.montant = Convertir.ToDecimal(tbTotal.Text);
                 liasse.type_ecriture = getTypeEcriture().ToString();
                 liasse.statut = (int)GlobalConstantes.StatutOperation.Brouillon;
-                liasse.reference = String.Format("{0} pour {1} du {2}", BaseApplication.ComputerName, immeuble.reference, DateTime.Now);
+                liasse.reference = $"{BaseApplication.ComputerName} pour {immeuble.reference} du {DateTime.Now}";
                 //LiasseController.getController().InsertOrUpdate(liasse);
                 liasse_id = liasse.id = liasse.get_uuid();
                 bNewLiasse = true;
@@ -492,7 +492,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
 
             numero_operation = SaisieAppelFondController.getController().getNextNumeroOperation(Convert.ToDateTime(tbDateCreation.Text));
 
-            SaisieAppelFondEntite saisie = new SaisieAppelFondEntite();
+            var saisie = new SaisieAppelFondEntite();
             saisie.liasse_id = liasse_id;
             saisie.date_operation = saisie.date_reference = Convert.ToDateTime(tbDateCreation.Text);
             saisie.numero_operation = numero_operation;
@@ -500,7 +500,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
             saisie.statut = (int)GlobalConstantes.StatutOperation.Brouillon;
             try
             {
-                ImmeubleRepartitionEntite immeuble_repart = ImmeubleRepartitionController.getController().getEntiteFromField("reference", tbBase.Text);
+                var immeuble_repart = ImmeubleRepartitionController.getController().getEntiteFromField("reference", tbBase.Text);
                 if (immeuble_repart == null) return;
                 if (immeuble_repart.type_ventilation == (int)GlobalConstantes.TypeRepartition.Individuelle)
                 {
@@ -510,7 +510,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
                     }
                     else
                     {
-                        FicheAppelDeFondRepartitionIndividuelle form = new FicheAppelDeFondRepartitionIndividuelle();
+                        var form = new FicheAppelDeFondRepartitionIndividuelle();
                         form.saisie = saisie;
                         form.immeuble = immeuble;
                         if (DialogResult.Cancel == form.ShowDialog())
@@ -568,10 +568,10 @@ namespace EspaceSyndic.Formulaires.Ecritures
         {
             if (dataGridViewEcriture.SelectedRows.Count > 0)
             {
-                DataRowView rowGrid = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
+                var rowGrid = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
                 if (rowGrid != null)
                 {
-                    DataRow row = rowGrid.Row;
+                    var row = rowGrid.Row;
                     if (tbBase.Text == "80")
                     {
                         tbLot.Text = OperationController.getController().getNumeroLotFromSaisie(row["id"].ToString());
@@ -584,10 +584,10 @@ namespace EspaceSyndic.Formulaires.Ecritures
             if (!bLoadEcriture)
                 if (dataGridViewEcriture.SelectedRows.Count > 0)
                 {
-                    DataRowView rowGrid = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
+                    var rowGrid = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
                     if (rowGrid != null)
                     {
-                        DataRow row = rowGrid.Row;
+                        var row = rowGrid.Row;
                         tbRefImmeuble.Text = row["immeuble_ref"].ToString();
                         tbBase.Text = row["base"].ToString();
                         tbNature.Text = row["nature_ref"].ToString();
@@ -639,11 +639,11 @@ namespace EspaceSyndic.Formulaires.Ecritures
         {
             if (dataGridViewEcriture.SelectedRows.Count > 0)
             {
-                DataRowView rowGrid = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
+                var rowGrid = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
                 if (rowGrid != null)
                 {
-                    DataRow row = rowGrid.Row;
-                    SaisieAppelFondEntite saisie = SaisieAppelFondController.getController().getEntiteById(row["id"].ToString());
+                    var row = rowGrid.Row;
+                    var saisie = SaisieAppelFondController.getController().getEntiteById(row["id"].ToString());
                     if (saisie != null)
                     {
                         SaisieAppelFondController.getController().DeleteEntite(saisie);
@@ -669,11 +669,11 @@ namespace EspaceSyndic.Formulaires.Ecritures
         {
             if (dataGridViewEcriture.SelectedRows.Count > 0)
             {
-                int numbase = Convertir.ToInt(tbBase.Text);
+                var numbase = Convertir.ToInt(tbBase.Text);
                 if (numbase >= 81 && numbase <= 88)
                 {
-                    DataRowView row = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
-                    FicheAppelDeFondRepartitionIndividuelle form = new FicheAppelDeFondRepartitionIndividuelle();
+                    var row = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
+                    var form = new FicheAppelDeFondRepartitionIndividuelle();
                     form.saisie = SaisieAppelFondController.getController().getEntiteById(row["id"].ToString());
                     form.immeuble = ImmeubleController.getController().getEntiteById(row["immeuble_id"].ToString());
                     form.ShowDialog();
@@ -692,7 +692,7 @@ namespace EspaceSyndic.Formulaires.Ecritures
 
         private void lblLot_Click(object sender, EventArgs e)
         {
-            FindLotCoproprietaireImmeubleForm form = new FindLotCoproprietaireImmeubleForm();
+            var form = new FindLotCoproprietaireImmeubleForm();
             form.immeuble = immeuble;
             form.ShowDialog();
             if (form.reference != "")
@@ -703,8 +703,8 @@ namespace EspaceSyndic.Formulaires.Ecritures
 
         private void btnDelLiasse_Click(object sender, EventArgs e)
         {
-            string liasse_id = cbLiasse.SelectedValue.ToString();
-            LiasseEntite liasse = LiasseController.getController().getEntiteById(liasse_id);
+            var liasse_id = cbLiasse.SelectedValue.ToString();
+            var liasse = LiasseController.getController().getEntiteById(liasse_id);
             if (liasse != null)
             {
                 liasse.statut = (int)GlobalConstantes.StatutData.Supprime;

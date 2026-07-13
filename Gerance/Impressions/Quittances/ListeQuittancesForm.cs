@@ -12,7 +12,7 @@ namespace Gerance.Impressions.Quittances
 
         private void ListeQuittancesForm_Load(object sender, EventArgs e)
         {
-            int h = gbHeader.Height;
+            var h = gbHeader.Height;
             gbHeader.Visible = false;
             reportViewer1.Location = gbHeader.Location;
             reportViewer1.Height += h;

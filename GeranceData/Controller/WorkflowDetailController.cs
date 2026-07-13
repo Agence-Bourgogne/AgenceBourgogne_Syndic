@@ -24,8 +24,8 @@ namespace GeranceData.Controller
         }
         public WorkflowDetailEntite getDetail(string workflow_id, string item_id)
         {
-            String cmd = " where workflow_id = @workflow_id and item_id = @item_id";
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var cmd = " where workflow_id = @workflow_id and item_id = @item_id";
+            var parameters = new List<NpgsqlParameter> 
             { 
                 new NpgsqlParameter("@workflow_id", workflow_id), 
                 new NpgsqlParameter("@item_id", item_id), 
@@ -34,7 +34,7 @@ namespace GeranceData.Controller
         }
         public bool WriteRecord(WorkflowEntite workflow, string item_id, string error_msg)
         {
-            WorkflowDetailEntite detail = getDetail(workflow.id, item_id);
+            var detail = getDetail(workflow.id, item_id);
 
             if (detail == null)
                 detail = new WorkflowDetailEntite(workflow, item_id);
@@ -47,17 +47,17 @@ namespace GeranceData.Controller
 
         public DataTable getListeDetailReglements(string workflow_id)
         {
-            string cmd = "select ";
+            var cmd = "select ";
             cmd += " l.reference, concat ( l.prenom, ' ', l.nom) as locataire, r.credit, ";
             cmd += " coalesce(d.audit_updated, d.audit_created) as date_reference, coalesce( d.audit_updated_by,d.audit_created_by) as utilisateur,";
             cmd += " d.id";
-            cmd += String.Format(" from {0} d ", getSchemaTable());
-            cmd += String.Format(" join {0}.reglements r on r.id = item_id", getSchema() );
-            cmd += String.Format(" join {0}.locataire l on l.id = r.locataire_id", getSchema());
+            cmd += $" from {getSchemaTable()} d ";
+            cmd += $" join {getSchema()}.reglements r on r.id = item_id";
+            cmd += $" join {getSchema()}.locataire l on l.id = r.locataire_id";
 
             cmd +=  " where workflow_id = @workflow_id";
 
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
             { 
                 new NpgsqlParameter("@workflow_id", workflow_id), 
             };
@@ -65,16 +65,16 @@ namespace GeranceData.Controller
         }
         public DataTable getListeDetailSoldesLocataires(string workflow_id)
         {
-            string cmd = "select ";
+            var cmd = "select ";
             cmd += " l.reference, concat ( l.prenom, ' ', l.nom) as locataire, l.total_du, ";
             cmd += " coalesce(d.audit_updated, d.audit_created) as date_reference, coalesce( d.audit_updated_by,d.audit_created_by) as utilisateur,";
             cmd += " d.id";
-            cmd += String.Format(" from {0} d ", getSchemaTable());
-            cmd += String.Format(" join {0}.locataire l on l.id = d.item_id", getSchema());
+            cmd += $" from {getSchemaTable()} d ";
+            cmd += $" join {getSchema()}.locataire l on l.id = d.item_id";
 
             cmd += " where workflow_id = @workflow_id";
 
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
             { 
                 new NpgsqlParameter("@workflow_id", workflow_id), 
             };
@@ -82,16 +82,16 @@ namespace GeranceData.Controller
         }
         public DataTable getListeDetailImpressionQuittance(string workflow_id)
         {
-            string cmd = "select ";
+            var cmd = "select ";
             cmd += " l.reference, l.nom, l.adresse,";
             cmd += " coalesce(d.audit_updated, d.audit_created) as date_reference, coalesce( d.audit_updated_by,d.audit_created_by) as utilisateur,";
             cmd += " d.id";
-            cmd += String.Format(" from {0} d ", getSchemaTable());
-            cmd += String.Format(" join {0}.biens l on l.id = d.item_id", getSchema());
+            cmd += $" from {getSchemaTable()} d ";
+            cmd += $" join {getSchema()}.biens l on l.id = d.item_id";
 
             cmd += " where workflow_id = @workflow_id";
 
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
             { 
                 new NpgsqlParameter("@workflow_id", workflow_id), 
             };
@@ -99,17 +99,17 @@ namespace GeranceData.Controller
         }
         public DataTable getListeDetailSoldesProprietaires(string workflow_id)
         {
-            string cmd = "select ";
+            var cmd = "select ";
             cmd += " l.reference, trim(concat ( pa.code , ' ', l.prenom, ' ', l.nom)) as proprietaire, ";
             cmd += " coalesce(d.audit_updated, d.audit_created) as date_reference, coalesce( d.audit_updated_by,d.audit_created_by) as utilisateur,";
             cmd += " d.id";
-            cmd += String.Format(" from {0} d ", getSchemaTable());
-            cmd += String.Format(" join {0}.proprietaire l on l.id = d.item_id", getSchema());
+            cmd += $" from {getSchemaTable()} d ";
+            cmd += $" join {getSchema()}.proprietaire l on l.id = d.item_id";
             cmd += " left join (SELECT groupe, code, iparam_1 FROM  parametres WHERE (groupe = 'CIVILITE')) pa on pa.iparam_1 = l.civilite";
 
             cmd += " where workflow_id = @workflow_id";
 
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
             { 
                 new NpgsqlParameter("@workflow_id", workflow_id), 
             };
@@ -117,17 +117,17 @@ namespace GeranceData.Controller
         }
         public DataTable getListeDetailFacturesProprietaires(string workflow_id)
         {
-            string cmd = "select ";
+            var cmd = "select ";
             cmd += " p.reference, trim(concat ( pa.code, ' ', p.nom, ' ', p.prenom)) as proprietaire, f.debit, f.credit, f.statut, ";
             cmd += " coalesce(d.audit_updated, d.audit_created) as date_reference, coalesce( d.audit_updated_by,d.audit_created_by) as utilisateur,";
             cmd += " d.id";
-            cmd += String.Format(" from {0} d ", getSchemaTable());
-            cmd += String.Format(" join {0}.factures f on f.id = d.item_id", getSchema());
-            cmd += String.Format(" join {0}.proprietaire p on p.id= f.proprietaire_id", getSchema());
+            cmd += $" from {getSchemaTable()} d ";
+            cmd += $" join {getSchema()}.factures f on f.id = d.item_id";
+            cmd += $" join {getSchema()}.proprietaire p on p.id= f.proprietaire_id";
             cmd += " left join (SELECT groupe, code, iparam_1 FROM  parametres WHERE (groupe = 'CIVILITE')) pa on pa.iparam_1 = p.civilite";
             cmd += " where workflow_id = @workflow_id";
 
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
             { 
                 new NpgsqlParameter("@workflow_id", workflow_id), 
             };

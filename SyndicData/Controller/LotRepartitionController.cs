@@ -29,7 +29,7 @@ namespace SyndicData.Controller
 
         public DataTable GetLotRepartitionHaveMultiCompteur(string immeuble_id, string base_repart)
         {
-            string cmd = String.Format("select * from {0} ", getSchemaTable());
+            var cmd = $"select * from {getSchemaTable()} ";
             cmd += " where immeuble_id = @immeuble_id ";
             cmd += "and reference = @reference and valeur > 1 ";
             cmd += "order by ligne, colonne";
@@ -38,7 +38,7 @@ namespace SyndicData.Controller
             adapter.SelectCommand.Parameters.AddWithValue("@reference", base_repart);
             //            adapter.SelectCommand.Parameters.AddWithValue("@lot_id", lot_id);
 
-            DataTable table = new DataTable();
+            var table = new DataTable();
             try
             {
                 adapter.Fill(table);
@@ -54,14 +54,14 @@ namespace SyndicData.Controller
 
         public DataTable GetLotsRepartition(string immeuble_id)
         {
-            string cmd = String.Format("select * from {0} ", getSchemaTable());
+            var cmd = $"select * from {getSchemaTable()} ";
             cmd += " where immeuble_id = @immeuble_id order by ligne, colonne";
 
             adapter.SelectCommand = new NpgsqlCommand(cmd, Database.GetInstance());
             adapter.SelectCommand.Parameters.AddWithValue("@immeuble_id", immeuble_id);
 //            adapter.SelectCommand.Parameters.AddWithValue("@lot_id", lot_id);
 
-            DataTable table = new DataTable();
+            var table = new DataTable();
             try
             {
                 adapter.Fill(table);
@@ -75,13 +75,13 @@ namespace SyndicData.Controller
         }
         public DataTable GetLotsRepartitionFromBase(string immeuble_id, string base_repart)
         {
-            string cmd = String.Format("select lr.*, ld.coproprietaire_id as copro_id from {0} lr", getSchemaTable());
+            var cmd = $"select lr.*, ld.coproprietaire_id as copro_id from {getSchemaTable()} lr";
 
-            cmd += String.Format(" join {0}.immeuble i on i.id = lr.immeuble_id ", getSchema());
-            cmd += String.Format(" join {0}.lot_description ld on ld.id = lr.lot_id ", getSchema());
+            cmd += $" join {getSchema()}.immeuble i on i.id = lr.immeuble_id ";
+            cmd += $" join {getSchema()}.lot_description ld on ld.id = lr.lot_id ";
             cmd += " where lr.immeuble_id = @immeuble_id and lr.reference = @base_repart ";
 
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>
+            var parameters = new List<NpgsqlParameter>
             {
                 new NpgsqlParameter("@immeuble_id", immeuble_id),
                 new NpgsqlParameter("@base_repart", base_repart),
@@ -91,30 +91,45 @@ namespace SyndicData.Controller
         }
         public DataTable GetListLotsDescription(string immeuble_id, string base_repart)
         {
-            string cmd = "select s.cpt as Compteur, ref_cpt, null as ancien, null as nouveau, null as index, null as montant, l.id , c.id as coproprietaire_id, l.numero_lot, c.reference as coproprietaire, c.nom, c.prenom from ";
+            var cmd = "select s.cpt as Compteur, ref_cpt, null as ancien, null as nouveau, null as index, null as montant, l.id , c.id as coproprietaire_id, l.numero_lot, c.reference as coproprietaire, c.nom, c.prenom from ";
             cmd += "( \n";
 
-            cmd += String.Format("select 'cpt 5' as cpt, 5 as ref_cpt, * from {0} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 5 union \n", getSchemaTable());
-            cmd += String.Format("select 'cpt 4' as cpt, 4 as ref_cpt, * from {0} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 5 union \n", getSchemaTable());
-            cmd += String.Format("select 'cpt 3' as cpt, 3 as ref_cpt, * from {0} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 5 union \n", getSchemaTable());
-            cmd += String.Format("select 'cpt 2' as cpt, 2 as ref_cpt, * from {0} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 5 union \n", getSchemaTable());
-            cmd += String.Format("select 'cpt 1' as cpt, 1 as ref_cpt, * from {0} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 5 union \n", getSchemaTable());
+            cmd +=
+                $"select 'cpt 5' as cpt, 5 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 5 union \n";
+            cmd +=
+                $"select 'cpt 4' as cpt, 4 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 5 union \n";
+            cmd +=
+                $"select 'cpt 3' as cpt, 3 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 5 union \n";
+            cmd +=
+                $"select 'cpt 2' as cpt, 2 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 5 union \n";
+            cmd +=
+                $"select 'cpt 1' as cpt, 1 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 5 union \n";
 
-            cmd += String.Format("select 'cpt 4' as cpt, 4 as ref_cpt, * from {0} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 4 union \n", getSchemaTable());
-            cmd += String.Format("select 'cpt 3' as cpt, 3 as ref_cpt, * from {0} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 4 union \n", getSchemaTable());
-            cmd += String.Format("select 'cpt 2' as cpt, 2 as ref_cpt, * from {0} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 4 union \n", getSchemaTable());
-            cmd += String.Format("select 'cpt 1' as cpt, 1 as ref_cpt, * from {0} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 4 union \n", getSchemaTable());
+            cmd +=
+                $"select 'cpt 4' as cpt, 4 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 4 union \n";
+            cmd +=
+                $"select 'cpt 3' as cpt, 3 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 4 union \n";
+            cmd +=
+                $"select 'cpt 2' as cpt, 2 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 4 union \n";
+            cmd +=
+                $"select 'cpt 1' as cpt, 1 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 4 union \n";
 
-            cmd += String.Format("select 'cpt 3' as cpt, 3 as ref_cpt, * from {0} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 3 union \n", getSchemaTable());
-            cmd += String.Format("select 'cpt 2' as cpt, 2 as ref_cpt, * from {0} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 3 union \n", getSchemaTable());
-            cmd += String.Format("select 'cpt 1' as cpt, 1 as ref_cpt, * from {0} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 3 union \n", getSchemaTable());
+            cmd +=
+                $"select 'cpt 3' as cpt, 3 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 3 union \n";
+            cmd +=
+                $"select 'cpt 2' as cpt, 2 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 3 union \n";
+            cmd +=
+                $"select 'cpt 1' as cpt, 1 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 3 union \n";
 
-            cmd += String.Format("select 'cpt 2' as cpt, 2 as ref_cpt, * from {0} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 2 union \n", getSchemaTable());
-            cmd += String.Format("select 'cpt 1' as cpt, 1 as ref_cpt, * from {0} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 2 union \n", getSchemaTable());
+            cmd +=
+                $"select 'cpt 2' as cpt, 2 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 2 union \n";
+            cmd +=
+                $"select 'cpt 1' as cpt, 1 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 2 union \n";
             
 //            cmd += String.Format("select 'cpt 1' as cpt, 1 as ref_cpt, * from {0} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 1 union \n", getSchemaTable());
 
-            cmd += String.Format("select '' as cpt, 1 as ref_cpt, * from {0} where immeuble_id = @immeuble_id and reference = @base_repart and valeur <= 1 \n", getSchemaTable());
+            cmd +=
+                $"select '' as cpt, 1 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur <= 1 \n";
 
             cmd += " ) s ";
             cmd += "join agence.lot_description l on l.id = lot_id ";
@@ -123,7 +138,7 @@ namespace SyndicData.Controller
 
             Console.WriteLine(cmd);
             
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>
+            var parameters = new List<NpgsqlParameter>
             {
                 new NpgsqlParameter("@immeuble_id", immeuble_id),
                 new NpgsqlParameter("@base_repart", base_repart),

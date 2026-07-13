@@ -20,7 +20,7 @@ namespace Gerance.Formulaires.Common
             if ( source != null)
             {
                 dataGridView.DataSource = source;
-                DataGridViewColumnCollection cols = dataGridView.Columns;
+                var cols = dataGridView.Columns;
                 cols["id"].Visible = false;
                 cols["nom"].Width = 250;
                 ControlsWindows.ToTitleCase(cols);
@@ -44,7 +44,7 @@ namespace Gerance.Formulaires.Common
         }
         private void setReferenceFromRow(int index)
         {
-            DataRowView row = (DataRowView) dataGridView.Rows[index].DataBoundItem;
+            var row = (DataRowView) dataGridView.Rows[index].DataBoundItem;
             reference = row["reference"].ToString();
             DialogResult = DialogResult.OK;
             Close();
@@ -59,11 +59,11 @@ namespace Gerance.Formulaires.Common
         }
         protected virtual void FillListFromTbFilter()
         {
-            string filter = " 1=1 ";
+            var filter = " 1=1 ";
             if (tbRef.Text != "")
-                filter += String.Format(" and reference like '{0}%' ", tbRef.Text);
+                filter += $" and reference like '{tbRef.Text}%' ";
             if (tbNom.Text != "")
-                filter += String.Format(" and nom like '{0}%' ", tbNom.Text);
+                filter += $" and nom like '{tbNom.Text}%' ";
             FillListFromFilter(filter);
         }
 

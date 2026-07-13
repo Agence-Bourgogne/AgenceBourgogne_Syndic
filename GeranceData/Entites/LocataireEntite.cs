@@ -33,7 +33,7 @@ namespace GeranceData.Entites
         }
         public override void setValues(DataRow row)
         {
-            FieldInfo[] members = GetType().GetFields();
+            var members = GetType().GetFields();
 
             updatables.Clear();
 
@@ -80,9 +80,9 @@ namespace GeranceData.Entites
             get
             {
                 if (prenom == null || prenom == "")
-                    return string.Format("{0}", nom);
+                    return $"{nom}";
                 else
-                    return string.Format("{0} {1}", nom, prenom);
+                    return $"{nom} {prenom}";
             }
         }
         private BienEntite _Bien = null;

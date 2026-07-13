@@ -39,7 +39,7 @@ namespace EspaceSyndic.Impressions.RetardsPaiements
             {
                 sourceData.Filter = getFiltre();
                 dataGridView.DataSource = sourceData;
-                DataGridViewColumnCollection cols = dataGridView.Columns;
+                var cols = dataGridView.Columns;
                 dataGridView.Sort(cols["solde"], ListSortDirection.Ascending);
                 cols["immeuble_id"].Visible = false;
                 cols["lot_id"].Visible = false;
@@ -65,18 +65,18 @@ namespace EspaceSyndic.Impressions.RetardsPaiements
 
         private string getFiltre()
         {
-            string filtre = "1=1";
+            var filtre = "1=1";
             if (tbRefImmeuble.Text != "")
-                filtre += String.Format(" and ref_immeuble = '{0}'", tbRefImmeuble.Text);
+                filtre += $" and ref_immeuble = '{tbRefImmeuble.Text}'";
             if ( tbSeuil.Text != "" )
-                filtre += String.Format(" and solde < -{0}", tbSeuil.Text);
+                filtre += $" and solde < -{tbSeuil.Text}";
             if (cbFiltre.SelectedIndex > 0)
-                filtre += String.Format(" and type_relance = {0}", cbFiltre.SelectedIndex);
+                filtre += $" and type_relance = {cbFiltre.SelectedIndex}";
             return filtre;
         }
         private void tbRefImmeuble_DoubleClick(object sender, EventArgs e)
         {
-            FindImmeubleForm form = new FindImmeubleForm();
+            var form = new FindImmeubleForm();
             form.ShowDialog();
             if (!"".Equals(form.reference))
             {
@@ -99,7 +99,7 @@ namespace EspaceSyndic.Impressions.RetardsPaiements
         {
             if (e.ColumnIndex == 0)
             {
-                DataGridViewRow row = dataGridView.Rows[e.RowIndex];
+                var row = dataGridView.Rows[e.RowIndex];
                 if (row.Cells[e.ColumnIndex].Value == null)
                     row.Cells[e.ColumnIndex].Value = false;
                 row.Cells[e.ColumnIndex].Value = !((bool)row.Cells[e.ColumnIndex].Value);
@@ -108,7 +108,7 @@ namespace EspaceSyndic.Impressions.RetardsPaiements
         }
         private void btnList_Click(object sender, EventArgs e)
         {
-            ReportParameter[] reportParams = new ReportParameter[]{
+            var reportParams = new ReportParameter[]{
                     new ReportParameter("DateEdition", dtEdition.Value.ToShortDateString()),
                     new ReportParameter("Immeuble", tbRefImmeuble.Text),
                     new ReportParameter("Seuil", tbSeuil.Text),
@@ -150,15 +150,15 @@ namespace EspaceSyndic.Impressions.RetardsPaiements
         {
             try
             {
-                string sortedCol = dataGridView.SortedColumn.Name ;
-                DataGridViewColumn col = dataGridView.SortedColumn;
-                string sortOrder = dataGridView.SortOrder.ToString();
-                DataGridViewColumnCollection cols = dataGridView.Columns;
+                var sortedCol = dataGridView.SortedColumn.Name ;
+                var col = dataGridView.SortedColumn;
+                var sortOrder = dataGridView.SortOrder.ToString();
+                var cols = dataGridView.Columns;
                 sourceData.DataSource = OperationController.getController().getListSoldeCoproprietaires(ckActif.Checked);
                 sourceData.Filter = getFiltre();
                 dataGridView.DataSource = sourceData;
 
-                if (sortOrder == ListSortDirection.Ascending.ToString())
+                if (sortOrder == nameof(ListSortDirection.Ascending))
                     dataGridView.Sort(cols[sortedCol], ListSortDirection.Ascending);
                 else
                     dataGridView.Sort(cols[sortedCol], ListSortDirection.Descending);
@@ -175,15 +175,15 @@ namespace EspaceSyndic.Impressions.RetardsPaiements
 
         private void dataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            DataGridView dgv = (DataGridView)sender;
-            DataGridViewColumn col = dgv.Columns[e.ColumnIndex];
+            var dgv = (DataGridView)sender;
+            var col = dgv.Columns[e.ColumnIndex];
 
             try
             {
                 if (col.Name == "mise_en_demeure")
                     if (dgv["type_relance", e.RowIndex].Value.ToString() != "")
                     {
-                        int type_retard = (int)dgv["type_relance", e.RowIndex].Value;
+                        var type_retard = (int)dgv["type_relance", e.RowIndex].Value;
                         //if (type_retard == 1)
                         //    dgv.Rows[e.RowIndex].DefaultCellStyle.BackColor = lblRel1.BackColor;
                         //if (type_retard == 2)
@@ -212,7 +212,7 @@ namespace EspaceSyndic.Impressions.RetardsPaiements
         }
         private void btnExport_Click(object sender, EventArgs e)
         {
-            List<string> colsToHide = new List<string> { "immeuble_id", "lot_id", "relance"};
+            var colsToHide = new List<string> { "immeuble_id", "lot_id", "relance"};
             BaseApplication.DataGridToExcel(dataGridView, colsToHide, "relance");
         }
 
@@ -225,23 +225,23 @@ namespace EspaceSyndic.Impressions.RetardsPaiements
         //}
         private void btnRelance_Click(object sender, EventArgs e)
         {
-            string modele = ParametresDB.getParam1("MODELES", "RELANCE1");
+            var modele = ParametresDB.getParam1("MODELES", "RELANCE1");
 
-            List<RelanceEntite> [] relances = new List<RelanceEntite>[] {new List<RelanceEntite>(), new List<RelanceEntite>(), new List<RelanceEntite>(), new List<RelanceEntite>()} ;
-            List<RelanceEntite>[] relancesRetard = new List<RelanceEntite>[] { new List<RelanceEntite>(), new List<RelanceEntite>(), new List<RelanceEntite>(), new List<RelanceEntite>() };
+            var relances = new List<RelanceEntite>[] {new List<RelanceEntite>(), new List<RelanceEntite>(), new List<RelanceEntite>(), new List<RelanceEntite>()} ;
+            var relancesRetard = new List<RelanceEntite>[] { new List<RelanceEntite>(), new List<RelanceEntite>(), new List<RelanceEntite>(), new List<RelanceEntite>() };
             
             try
             {
-                bool bHaveSelection = false;
-                List<String> duplicatas = new List<string>();
+                var bHaveSelection = false;
+                var duplicatas = new List<string>();
                 foreach (DataGridViewRow rowGrid in dataGridView.Rows)
                 {
                     if (rowGrid.Cells["relance"].Value != null)
                         if (true == (bool)rowGrid.Cells["relance"].Value)
                         {
-                            DataRowView row = (DataRowView)rowGrid.DataBoundItem;
+                            var row = (DataRowView)rowGrid.DataBoundItem;
 
-                            int type_retard = 0;
+                            var type_retard = 0;
                             if (rowGrid.Tag != null)
                                 type_retard = (int) rowGrid.Tag;
                             else
@@ -256,9 +256,9 @@ namespace EspaceSyndic.Impressions.RetardsPaiements
                         }
                 }
 
-                int type = 0;
+                var type = 0;
 
-                DateTime dt = DateTime.Parse(dtEdition.Value.ToShortDateString());
+                var dt = DateTime.Parse(dtEdition.Value.ToShortDateString());
 
                 if (!bHaveSelection)
                 {
@@ -272,9 +272,9 @@ namespace EspaceSyndic.Impressions.RetardsPaiements
                     btnGrid_Click(null, null);
                 }
 
-                foreach ( List <RelanceEntite> relance in relances )
+                foreach ( var relance in relances )
                 {
-                    string copros_ids = RelanceController.getQuotedCoproprietaireId(relance);
+                    var copros_ids = RelanceController.getQuotedCoproprietaireId(relance);
                     if (copros_ids != "")
                     {  
                         DataTable table = null;
@@ -291,7 +291,7 @@ namespace EspaceSyndic.Impressions.RetardsPaiements
                 }
                 if (duplicatas.Count > 0)
                 {
-                    string copros_ids = RelanceController.getQuotedCoproprietaireId(duplicatas);
+                    var copros_ids = RelanceController.getQuotedCoproprietaireId(duplicatas);
                     if (copros_ids != "")
                     {
                         DataTable table = null;
@@ -313,10 +313,10 @@ namespace EspaceSyndic.Impressions.RetardsPaiements
 
         private void dataGridView_DoubleClick(object sender, EventArgs e)
         {
-            MainForm frm = new MainForm();
+            var frm = new MainForm();
             frm.ShowForm("EspaceSyndic.Impressions.RelevesComptes.ReleveCompteCoproPrintForm");
            
-            DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+            var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
             MainForm.syndicEvent.FireChanged(this, new CommonEventArgs(row["ref_immeuble"].ToString(), row["numero_lot"].ToString()));
         }
 

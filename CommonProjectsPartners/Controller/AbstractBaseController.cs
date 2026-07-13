@@ -25,21 +25,19 @@ namespace CommonProjectsPartners.Controller
 
         public virtual string getSchemaTable()
         {
-            return String.Format(String.Format("{0}.{1}", getSchema(), getTable()));
+            return String.Format($"{getSchema()}.{getTable()}");
         }
         protected virtual void setListSelectCommand()
         {
-            String order = DefaultOrder;
+            var order = DefaultOrder;
             if ( cnx == null)
                 cnx = Database.GetInstance();
-            adapter.SelectCommand = new NpgsqlCommand(String.Format("select * from {0} where statut = 1 order by {1}", getSchemaTable(), order), cnx);
+            adapter.SelectCommand = new NpgsqlCommand(
+                $"select * from {getSchemaTable()} where statut = 1 order by {order}", cnx);
         }
         public void setTimestampServer(DateTime time)
         {
-            if (time == null)
-                setTimestampServer();
-            else
-                TimestampServer = time;
+            TimestampServer = time;
         }
         public DateTime getTimestampServer()
         {
@@ -52,11 +50,12 @@ namespace CommonProjectsPartners.Controller
         }
         public DataTable GetTableList()
             {
-            String order = DefaultOrder;
+            var order = DefaultOrder;
             if (cnx == null)
                 cnx = Database.GetInstance();
-            adapter.SelectCommand = new NpgsqlCommand(String.Format("select * from {0} where statut = 1 order by {1}", getSchemaTable(), order), cnx);
-            DataTable table = new DataTable();
+            adapter.SelectCommand = new NpgsqlCommand(
+                $"select * from {getSchemaTable()} where statut = 1 order by {order}", cnx);
+            var table = new DataTable();
             try
             {
                 adapter.Fill(table);
@@ -73,12 +72,12 @@ namespace CommonProjectsPartners.Controller
         {
 
 //            setListSelectCommand();
-            String order = DefaultOrder;
+            var order = DefaultOrder;
             if (cnx == null)
                 cnx = Database.GetInstance();
-            adapter.SelectCommand = new NpgsqlCommand(String.Format("select * from {0} order by {1}", getSchemaTable(), order), cnx);
+            adapter.SelectCommand = new NpgsqlCommand($"select * from {getSchemaTable()} order by {order}", cnx);
 
-            DataTable table = new DataTable();
+            var table = new DataTable();
             try
             {
                 adapter.Fill(table);
@@ -93,7 +92,7 @@ namespace CommonProjectsPartners.Controller
         public DataTable GetList()
         {
             setListSelectCommand();
-            DataTable table = new DataTable();
+            var table = new DataTable();
             try
             {
                 adapter.Fill(table);
@@ -107,12 +106,12 @@ namespace CommonProjectsPartners.Controller
         }
         public List<TENTITE> GetListEntite()
         {
-            DataTable table = GetList();
-            List<TENTITE> list = new List<TENTITE>();
+            var table = GetList();
+            var list = new List<TENTITE>();
 
             foreach (DataRow row in table.Rows)
             {
-                TENTITE entite = new TENTITE();
+                var entite = new TENTITE();
                 entite.setValues(row);
                 list.Add(entite);
             }
@@ -120,15 +119,15 @@ namespace CommonProjectsPartners.Controller
         }
         public virtual DataTable GetFindList(string filter)
         {
-            String order = DefaultOrder;
-            string cmd = String.Format("Select id, reference, nom from {0} ", getSchemaTable());
+            var order = DefaultOrder;
+            var cmd = $"Select id, reference, nom from {getSchemaTable()} ";
             cmd += " where statut != @statut_del";
 
             if (filter != "")
                 cmd += " and "+filter;
-            cmd += String.Format(" order by {0}", order);
+            cmd += $" order by {order}";
 
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
             {
                 new NpgsqlParameter("@statut_del", (int) AbstractBaseEntite.StatutEntite.Supprime),
             };
@@ -140,12 +139,12 @@ namespace CommonProjectsPartners.Controller
             if (datas == null)
                 return true;
 
-            DataTable changes = datas.GetChanges();
+            var changes = datas.GetChanges();
             if (changes != null)
             {
                 if (bShowMessage)
                 {
-                    DialogResult result = MessageBox.Show("Des modifications on été apportéees\nVoulez-vous les enregistrer",
+                    var result = MessageBox.Show("Des modifications on été apportéees\nVoulez-vous les enregistrer",
                         "", MessageBoxButtons.YesNoCancel);
                     if (result == DialogResult.Cancel)
                         return false;
@@ -160,7 +159,7 @@ namespace CommonProjectsPartners.Controller
                     TimestampServer = Database.GetTimestampServer();
                     foreach (DataRow row in changes.Rows)
                     {
-                        TENTITE entite = new TENTITE();
+                        var entite = new TENTITE();
                         if ( row.RowState == DataRowState.Added || row.RowState == DataRowState.Modified )
                         {
                             entite.setValues(row);
@@ -190,33 +189,33 @@ namespace CommonProjectsPartners.Controller
         }
         public TENTITE getEntiteFromField(string field, string value)
         {
-            return getEntite(String.Format(" where {0} = @value", field),
+            return getEntite($" where {field} = @value",
                         new List<NpgsqlParameter> { new NpgsqlParameter("@value", value) });
         }
 
         public TENTITE getEntite(string where, List<NpgsqlParameter> parameters = null)
         {
-            TENTITE entite = default(TENTITE);
-            String cmd = String.Format("select * from {0} {1} limit 1", getSchemaTable(), where);
-            NpgsqlDataAdapter adapter = new NpgsqlDataAdapter();
+            var entite = default(TENTITE);
+            var cmd = $"select * from {getSchemaTable()} {where} limit 1";
+            var adapter = new NpgsqlDataAdapter();
             if (cnx == null)
                 cnx = Database.GetInstance();
 
             adapter.SelectCommand = new NpgsqlCommand(cmd, cnx);
             if (parameters != null)
             {
-                foreach (NpgsqlParameter parameter in parameters)
+                foreach (var parameter in parameters)
                 {
                     adapter.SelectCommand.Parameters.AddWithValue(parameter.ParameterName, parameter.NpgsqlValue);
                 }
             }
-            DataTable table = new DataTable();
+            var table = new DataTable();
             try
             {
                 adapter.Fill(table);
                 if ( table.Rows.Count > 0 )
                 {
-                    DataRow row = table.Rows[0];
+                    var row = table.Rows[0];
                     entite = new TENTITE();
                     entite.setValues(row);
                     return entite;
@@ -231,20 +230,20 @@ namespace CommonProjectsPartners.Controller
         }
         public DataTable getDataTable(string where, List<NpgsqlParameter> parameters = null)
         {
-            String cmd = String.Format("select * from {0} {1} limit 1", getSchemaTable(), where);
-            NpgsqlDataAdapter adapter = new NpgsqlDataAdapter();
+            var cmd = $"select * from {getSchemaTable()} {where} limit 1";
+            var adapter = new NpgsqlDataAdapter();
             if (cnx == null)
                 cnx = Database.GetInstance();
 
             adapter.SelectCommand = new NpgsqlCommand(cmd, cnx);
             if (parameters != null)
             {
-                foreach (NpgsqlParameter parameter in parameters)
+                foreach (var parameter in parameters)
                 {
                     adapter.SelectCommand.Parameters.AddWithValue(parameter.ParameterName, parameter.NpgsqlValue);
                 }
             }
-            DataTable table = new DataTable();
+            var table = new DataTable();
             try
             {
                 adapter.Fill(table);
@@ -274,17 +273,17 @@ namespace CommonProjectsPartners.Controller
         public bool doInsertOrUpdate(TENTITE entite )
         {
             string cmd;
-            bool rc = false;
+            var rc = false;
 
             if (cnx == null)
                 cnx = Database.GetInstance();
-            String msgError = entite.ValidationError();
+            var msgError = entite.ValidationError();
             if ( msgError!="")
             {
                 MessageBox.Show(msgError);
                 return rc;
             }
-            AuditDB.Operation operation = AuditDB.Operation.Update;
+            var operation = AuditDB.Operation.Update;
             if (entite.isNew)
             {
                 if (!doBeforeInsert( entite))
@@ -295,17 +294,17 @@ namespace CommonProjectsPartners.Controller
             entite.audit_updated_by = entite.audit_created_by = BaseApplication.AuditString;
             
 // Verifier Changes
-            List<AuditChange> changes = entite.GetChanges();
+            var changes = entite.GetChanges();
             if (!entite.isNew && changes.Count < 1)
                 return true;
 
             cmd = entite.GetInsertOrUdpateCommand(getSchemaTable());
-            NpgsqlCommand sqlCmd = new NpgsqlCommand(cmd, cnx);
+            var sqlCmd = new NpgsqlCommand(cmd, cnx);
             entite.SetInsertOrUpdateParameters(sqlCmd);
 
             try
             {
-                int nbRow = sqlCmd.ExecuteNonQuery();
+                var nbRow = sqlCmd.ExecuteNonQuery();
                 doAfterInsert();
                 AuditDB.Log(operation, entite , getSchema(), TimestampServer, BaseApplication.AuditString);
                 entite.isNew = false;
@@ -321,12 +320,12 @@ namespace CommonProjectsPartners.Controller
         {
             var source = new AutoCompleteStringCollection();
 
-            string cmd = String.Format("Select {0} from {1} order by reference", field, getSchemaTable());
+            var cmd = $"Select {field} from {getSchemaTable()} order by reference";
             if (cnx == null)
                 cnx = Database.GetInstance();
 
             adapter.SelectCommand = new NpgsqlCommand(cmd, cnx);
-            DataTable table = new DataTable();
+            var table = new DataTable();
             try
             {
                 adapter.Fill(table);
@@ -344,15 +343,15 @@ namespace CommonProjectsPartners.Controller
         }
         public bool deleteEntite(AbstractBaseEntite entite)
         {
-            bool rc = false;
-            string cmd = String.Format("delete from {0} where id = @id", getSchemaTable());
+            var rc = false;
+            var cmd = $"delete from {getSchemaTable()} where id = @id";
             if (cnx == null)
                 cnx = Database.GetInstance();
-            NpgsqlCommand sqlCmd = new NpgsqlCommand(cmd, cnx);
+            var sqlCmd = new NpgsqlCommand(cmd, cnx);
             try
             {
                 sqlCmd.Parameters.AddWithValue("@id", entite.id);
-                int nb = sqlCmd.ExecuteNonQuery();
+                var nb = sqlCmd.ExecuteNonQuery();
                 AuditDB.Log(AuditDB.Operation.Delete, entite, getSchema(), TimestampServer, BaseApplication.AuditString);
                 rc = (nb > 0);
             }
@@ -365,20 +364,20 @@ namespace CommonProjectsPartners.Controller
 
         public bool ExecuteNonQuery(string cmd, List<NpgsqlParameter> parameters = null)
         {
-            bool rc = false;
+            var rc = false;
             if (cnx == null)
                 cnx = Database.GetInstance();
-            NpgsqlCommand sqlCmd = new NpgsqlCommand(cmd, cnx);
+            var sqlCmd = new NpgsqlCommand(cmd, cnx);
             try
             {
                 if (parameters != null)
                 {
-                    foreach (NpgsqlParameter parameter in parameters)
+                    foreach (var parameter in parameters)
                     {
                         sqlCmd.Parameters.AddWithValue(parameter.ParameterName, parameter.NpgsqlValue);
                     }
                 }
-                int nb = sqlCmd.ExecuteNonQuery();
+                var nb = sqlCmd.ExecuteNonQuery();
                 rc = (nb > 0);
             }
             catch (Exception e)
@@ -389,18 +388,18 @@ namespace CommonProjectsPartners.Controller
         }
         public DataTable getResultSQL(string cmd, List<NpgsqlParameter> parameters = null )
         {
-            NpgsqlDataAdapter adapter = new NpgsqlDataAdapter();
+            var adapter = new NpgsqlDataAdapter();
             if ( cnx == null )
                 cnx = Database.GetInstance();
             adapter.SelectCommand = new NpgsqlCommand(cmd, cnx);
             if (parameters != null)
             {
-                foreach (NpgsqlParameter parameter in parameters)
+                foreach (var parameter in parameters)
                 {
                     adapter.SelectCommand.Parameters.AddWithValue(parameter.ParameterName, parameter.NpgsqlValue);
                 }
             }
-            DataTable table = new DataTable();
+            var table = new DataTable();
             int c;
             try
             {
@@ -415,9 +414,10 @@ namespace CommonProjectsPartners.Controller
         }
         public virtual int getNextNumeroOperation(DateTime dateRef)
         {
-            int valeur = 0;
-            string cmd = String.Format("select coalesce(max(numero_operation), 0 ) as valeur from {0} where date_reference = @date_reference", getSchemaTable());
-            DataTable table = getResultSQL(cmd, new List<NpgsqlParameter> { new NpgsqlParameter("@date_reference", dateRef) });
+            var valeur = 0;
+            var cmd =
+                $"select coalesce(max(numero_operation), 0 ) as valeur from {getSchemaTable()} where date_reference = @date_reference";
+            var table = getResultSQL(cmd, new List<NpgsqlParameter> { new NpgsqlParameter("@date_reference", dateRef) });
             if (table != null)
             {
                 valeur = (int)table.Rows[0]["valeur"] + 1;
@@ -428,7 +428,7 @@ namespace CommonProjectsPartners.Controller
 
         public DataTable getListeSaisiesNonValidees(string liasse_id, int statutOperation)
         {
-            string cmd = String.Format("select * from {0} ", getSchemaTable());
+            var cmd = $"select * from {getSchemaTable()} ";
             cmd += " where liasse_id = @liasse_id and statut = @statut ";
 
             if (cnx == null)
@@ -438,7 +438,7 @@ namespace CommonProjectsPartners.Controller
             adapter.SelectCommand.Parameters.AddWithValue("@liasse_id", liasse_id);
             adapter.SelectCommand.Parameters.AddWithValue("@statut", statutOperation);//(int)GlobalConstantes.StatutOperation.Brouillon);
 
-            DataTable table = new DataTable();
+            var table = new DataTable();
             try
             {
                 adapter.Fill(table);
@@ -453,10 +453,10 @@ namespace CommonProjectsPartners.Controller
         //public bool ChangeEtat(ExerciceComptableEntite exercice, GlobalConstantes.StatutOperation statut)
         public bool ChangeEtat(string immeuble_id, DateTime date_deb, DateTime date_fin, int statut, int statut_del)
         {
-            string cmd = String.Format(" update {0} set statut = @statut ", getSchemaTable());
+            var cmd = $" update {getSchemaTable()} set statut = @statut ";
             cmd += "  where immeuble_id= @immeuble_id and date_reference >= @dtDeb and date_reference <= @dtFin ";
             cmd += " and statut != @statut_del";
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
             {
                 new NpgsqlParameter("@immeuble_id", immeuble_id),
                 new NpgsqlParameter("@statut", (int) statut),

@@ -48,7 +48,7 @@ namespace Gerance.Formulaires.Common
             dataGridView.DataSource = getFormListe();
             if (dataGridView.DataSource != null)
             {
-                DataGridViewColumnCollection cols = dataGridView.Columns;
+                var cols = dataGridView.Columns;
                 HideAndResizeColumns(cols);
                 //                cols["numero_lot"].DisplayIndex = 2;
                 ControlsWindows.ToTitleCase(cols);
@@ -62,7 +62,7 @@ namespace Gerance.Formulaires.Common
                 return;
             foreach (DataGridViewColumn col in dataGridView.Columns)
             {
-                int index = (int)CommonRegistry.getRegistryValue(regKey, col.Name, -1);
+                var index = (int)CommonRegistry.getRegistryValue(regKey, col.Name, -1);
                 if (index != -1)
                     col.DisplayIndex = index;
             }
@@ -76,7 +76,7 @@ namespace Gerance.Formulaires.Common
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
                 if (row != null)
                     ShowFicheForm(row["id"].ToString());
             }
@@ -93,7 +93,7 @@ namespace Gerance.Formulaires.Common
 
         private void btnExport_Click(object sender, EventArgs e)
         {
-            List<string> colsToHide = new List<string> { "id" };
+            var colsToHide = new List<string> { "id" };
             BaseApplication.DataGridToExcel(dataGridView, colsToHide);
 
         }
@@ -119,7 +119,7 @@ namespace Gerance.Formulaires.Common
         }
         protected virtual DialogResult ShowFindForm(CommonFindForm form, Control tbResult)
         {
-            DialogResult res = form.ShowDialog();
+            var res = form.ShowDialog();
             if (res == DialogResult.OK)
                 tbResult.Text = form.reference;
             return res;

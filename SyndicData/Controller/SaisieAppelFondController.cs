@@ -24,7 +24,7 @@ namespace SyndicData.Controller
         }
         public DataTable GetAllElements(string immeuble_id, DateTime dtDeb, DateTime dtFin)
         {
-            string cmd = String.Format("select r.*, i.reference as ref_imm from {0} r ", getSchemaTable());
+            var cmd = $"select r.*, i.reference as ref_imm from {getSchemaTable()} r ";
             cmd += " join agence.immeuble i on i.id = r.immeuble_id ";
             cmd += " where r.statut!=@statut";
 
@@ -37,7 +37,7 @@ namespace SyndicData.Controller
                 cmd += " and date_reference <= @dtFin";
 
             cmd += " order by i.reference";
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
             {
                 new NpgsqlParameter("@immeuble_id", immeuble_id),
                 new NpgsqlParameter("@statut", (int) GlobalConstantes.StatutOperation.Supprime),
@@ -50,8 +50,8 @@ namespace SyndicData.Controller
 
         public DataTable getGridRowSaisieAppelFond(string liasse_id)
         {
-            String schema = getSchema();
-            String cmd = " Select concat(i.reference, ':',  i.nom) as \"Immeuble\", ";
+            var schema = getSchema();
+            var cmd = " Select concat(i.reference, ':',  i.nom) as \"Immeuble\", ";
 
 //            cmd += " concat ( n.reference, ':', n.nom) as \"Nature\", ";
             cmd += " n.reference as \"Nature\", ";
@@ -66,18 +66,18 @@ namespace SyndicData.Controller
 //            cmd += " when e.base = '80' then ld.numero_lot::character else '' end as lot, ";
             //TODO Gerer le lot
             cmd += " e.id";
-            cmd += String.Format(" from {0} e ", getSchemaTable());
-            cmd += String.Format(" left join {0}.immeuble i on i.id = e.immeuble_id", schema);
-            cmd += String.Format(" left join {0}.nature n on n.id = e.nature_id", schema);
-            cmd += String.Format(" left Join {0}.operation o on e.id = o.saisie_id and e.base_repart='80' ", schema);
-            cmd += String.Format(" left join {0}.lot_description l on o.lot_id = l.id and e.base_repart ='80'", schema);
+            cmd += $" from {getSchemaTable()} e ";
+            cmd += $" left join {schema}.immeuble i on i.id = e.immeuble_id";
+            cmd += $" left join {schema}.nature n on n.id = e.nature_id";
+            cmd += $" left Join {schema}.operation o on e.id = o.saisie_id and e.base_repart='80' ";
+            cmd += $" left join {schema}.lot_description l on o.lot_id = l.id and e.base_repart ='80'";
 
             cmd += " where e.liasse_id = @liasse_id and e.statut = @statut ";
             cmd += " order by e.date_reference, e.numero_operation";
             adapter.SelectCommand = new NpgsqlCommand(cmd, Database.GetInstance());
             adapter.SelectCommand.Parameters.AddWithValue("@liasse_id", liasse_id);
             adapter.SelectCommand.Parameters.AddWithValue("@statut", (int)GlobalConstantes.StatutOperation.Brouillon);
-            DataTable table = new DataTable();
+            var table = new DataTable();
             try
             {
                 adapter.Fill(table);
@@ -91,14 +91,14 @@ namespace SyndicData.Controller
         }
         public DataTable getListeOperations(string immeuble, DateTime dtDeb , DateTime dtFin, string libelle = "", string montant="", bool bValidOnly = true, string base_repart="")
         {
-            String schema = getSchema();
-            string cmd = "Select ";
+            var schema = getSchema();
+            var cmd = "Select ";
 
 //            cmd += " sf.id, i.reference as ref_immeuble, n.reference as ref_nature, n.nom as nature, date_reference, libelle, montant, base_repart, sf.statut ";
             cmd += " sf.id, i.reference as ref_immeuble, date_reference, n.reference as ref_nature, base_repart, libelle, montant, sf.statut, sf.liasse_id ";
-            cmd += String.Format(" from {0} sf", getSchemaTable());
-            cmd += String.Format(" left join {0}.nature n on n.id = nature_id ", schema);
-            cmd += String.Format(" join {0}.immeuble i on i.id = immeuble_id ", schema);
+            cmd += $" from {getSchemaTable()} sf";
+            cmd += $" left join {schema}.nature n on n.id = nature_id ";
+            cmd += $" join {schema}.immeuble i on i.id = immeuble_id ";
 
             cmd += String.Format(" where 1=1");
 
@@ -123,7 +123,7 @@ namespace SyndicData.Controller
                 cmd += " and sf.statut = @statut";
             if (base_repart != "")
                 cmd += " and base_repart = @base_repart";
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
             {
                 new NpgsqlParameter("@immeuble", immeuble),
                 new NpgsqlParameter("@dtDeb", dtDeb),
@@ -138,16 +138,16 @@ namespace SyndicData.Controller
         }
         public DataTable getListeViewOperations(string immeuble, DateTime dtDeb, DateTime dtFin, string libelle = "", string montant = "", bool bValidOnly = true, string base_repart = "")
         {
-            String schema = getSchema();
-            string cmd = "Select ";
+            var schema = getSchema();
+            var cmd = "Select ";
 
             //            cmd += " sf.id, i.reference as ref_immeuble, n.reference as ref_nature, n.nom as nature, date_reference, libelle, montant, base_repart, sf.statut ";
             cmd += " sf.id, i.reference as ref_immeuble, date_reference, n.reference as ref_nature, base_repart, ";
             cmd += " case when base_repart = '80' then (select numero_lot::character varying from agence.lot_description where id in (select lot_id from agence.operation where saisie_id = sf.id)) else '' end as lot, ";
             cmd += " libelle, montant, sf.statut, sf.liasse_id ";
-            cmd += String.Format(" from {0} sf", getSchemaTable());
-            cmd += String.Format(" left join {0}.nature n on n.id = nature_id ", schema);
-            cmd += String.Format(" join {0}.immeuble i on i.id = immeuble_id ", schema);
+            cmd += $" from {getSchemaTable()} sf";
+            cmd += $" left join {schema}.nature n on n.id = nature_id ";
+            cmd += $" join {schema}.immeuble i on i.id = immeuble_id ";
 
             cmd += String.Format(" where 1=1");
 
@@ -172,7 +172,7 @@ namespace SyndicData.Controller
                 cmd += " and sf.statut = @statut";
             if (base_repart != "")
                 cmd += " and base_repart = @base_repart";
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
             {
                 new NpgsqlParameter("@immeuble", immeuble),
                 new NpgsqlParameter("@dtDeb", dtDeb),
@@ -189,14 +189,14 @@ namespace SyndicData.Controller
         public decimal getTotalOperationWithoutSolde(string immeuble_id, DateTime dtDeb, DateTime dtFin)
         {
             decimal sum = 0;
-            string nature = "140";
+            var nature = "140";
 
-            string cmd = string.Format("select sum(montant) as montant from {0} f", getSchemaTable());
+            var cmd = $"select sum(montant) as montant from {getSchemaTable()} f";
             cmd += string.Format(" join agence.nature n on n.id = f.nature_id ", getSchema());
             cmd += " where immeuble_id = @immeuble_id and date_reference >= @dtDeb and date_reference <= @dtFin";
             cmd += " and n.reference <> @nature and f.statut != @statut";
 
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
             {
                 new NpgsqlParameter("@immeuble_id", immeuble_id),
                 new NpgsqlParameter("@nature", nature),
@@ -205,12 +205,12 @@ namespace SyndicData.Controller
                 new NpgsqlParameter("@statut", (int) GlobalConstantes.StatutOperation.Supprime),
             };
 
-            DataTable table = getResultSQL(cmd, parameters);
+            var table = getResultSQL(cmd, parameters);
 
             if (table != null)
                 if (table.Rows.Count > 0)
                 {
-                    DataRow row = table.Rows[0];
+                    var row = table.Rows[0];
                     sum = Convertir.ToDecimal(row["montant"]);
                 }
 
@@ -219,26 +219,27 @@ namespace SyndicData.Controller
 
         public DataTable GetAllElements()
         {
-            string cmd = String.Format("select a.*, i.reference as ref_imm from {0} a join agence.immeuble i on i.id = immeuble_id where a.statut = 1 order by i.reference", getSchemaTable());
+            var cmd =
+                $"select a.*, i.reference as ref_imm from {getSchemaTable()} a join agence.immeuble i on i.id = immeuble_id where a.statut = 1 order by i.reference";
             return getResultSQL(cmd);
         }
 
         public bool DeleteEntite(SaisieAppelFondEntite saisie)
         {
-            bool rc = false;
+            var rc = false;
 
-            NpgsqlTransaction trx = Database.BeginTransaction();
+            var trx = Database.BeginTransaction();
             try
             {
-                OperationController opeCtl = OperationController.getController();
-                RepartIndividuelleController repartCtl = RepartIndividuelleController.getController();
+                var opeCtl = OperationController.getController();
+                var repartCtl = RepartIndividuelleController.getController();
                 TimestampServer = Database.GetTimestampServer();
 
                 repartCtl.setTimestampServer(TimestampServer);
                 opeCtl.setTimestampServer(TimestampServer);
 
-                DataTable tbOpe = opeCtl.getOperationFromSaisie(saisie.id);
-                DataTable tbRepart = repartCtl.getRepartFromSaisie(saisie.id);
+                var tbOpe = opeCtl.getOperationFromSaisie(saisie.id);
+                var tbRepart = repartCtl.getRepartFromSaisie(saisie.id);
 
                 opeCtl.DeleteElements(tbOpe);
                 repartCtl.DeleteElements(tbRepart);
@@ -259,25 +260,25 @@ namespace SyndicData.Controller
         }
         public bool UpdateSaisieAndLot( SaisieAppelFondEntite saisie, string immeuble_id, string refLot, decimal montant)
         {
-            bool rc=false;
-            string oldRefLot = OperationController.getController().getNumeroLotFromSaisie(saisie.id);
-            LotDescriptionEntite lot = LotDescriptionController.getController().getLotFromReference(immeuble_id, refLot);
+            var rc=false;
+            var oldRefLot = OperationController.getController().getNumeroLotFromSaisie(saisie.id);
+            var lot = LotDescriptionController.getController().getLotFromReference(immeuble_id, refLot);
             if (lot == null)
                 MessageBox.Show("Lot Invalide");
             else
             {
-                NpgsqlTransaction trx = Database.BeginTransaction();
+                var trx = Database.BeginTransaction();
                 try
                 {
-                    OperationController opeCtl = OperationController.getController();
-                    RepartIndividuelleController repartCtl = RepartIndividuelleController.getController();
+                    var opeCtl = OperationController.getController();
+                    var repartCtl = RepartIndividuelleController.getController();
                     TimestampServer = Database.GetTimestampServer();
 
                     repartCtl.setTimestampServer(TimestampServer);
                     opeCtl.setTimestampServer(TimestampServer);
 
-                    DataTable tbOpe = opeCtl.getOperationFromSaisie(saisie.id);
-                    DataTable tbRepart = repartCtl.getRepartFromSaisie(saisie.id);
+                    var tbOpe = opeCtl.getOperationFromSaisie(saisie.id);
+                    var tbRepart = repartCtl.getRepartFromSaisie(saisie.id);
 
                     OperationEntite operation = null;
                     RepartIndividuelleEntite repartition = null;
@@ -318,10 +319,10 @@ namespace SyndicData.Controller
         }
         public bool RecalcRepartition(SaisieAppelFondEntite entite, bool bUseTransaction)
         {
-            bool rc = false;
+            var rc = false;
 
-            ImmeubleRepartitionEntite repartImm = ImmeubleRepartitionController.getController().getRepartFromImmeubleBase(entite.immeuble_id, entite.base_repart);
-            DataTable repart = LotRepartitionController.getController().GetLotsRepartitionFromBase(entite.immeuble_id, entite.base_repart);
+            var repartImm = ImmeubleRepartitionController.getController().getRepartFromImmeubleBase(entite.immeuble_id, entite.base_repart);
+            var repart = LotRepartitionController.getController().GetLotsRepartitionFromBase(entite.immeuble_id, entite.base_repart);
             DataTable operations;
 
             //if (entite.liasse_id.StartsWith("Reprise"))
@@ -336,7 +337,7 @@ namespace SyndicData.Controller
             decimal valeur_imm = repartImm.valeur;
             if (valeur_imm == 0)
                 return false ;
-            decimal montant = entite.montant;
+            var montant = entite.montant;
 
             NpgsqlTransaction trx  = null; 
             if ( bUseTransaction ) 
@@ -345,17 +346,17 @@ namespace SyndicData.Controller
             {
                 foreach (DataRow rowOpe in operations.Rows)
                 {
-                    OperationEntite ope = OperationController.getController().getEntiteById(rowOpe["id"].ToString() );
+                    var ope = OperationController.getController().getEntiteById(rowOpe["id"].ToString() );
                     ope.statut = (int)GlobalConstantes.StatutOperation.Supprime;
                     if (!OperationController.getController().doInsertOrUpdate(ope))
                         throw new Exception("Operation Delete");
                 }
                 foreach (DataRow row in repart.Rows)
                 {
-                    LotRepartitionEntite lotRepart = new LotRepartitionEntite(row);
-                    string copro_id = row["copro_id"].ToString();
+                    var lotRepart = new LotRepartitionEntite(row);
+                    var copro_id = row["copro_id"].ToString();
                     OperationEntite operation = null;
-                    decimal montant_ope = montant * lotRepart.valeur / valeur_imm;
+                    var montant_ope = montant * lotRepart.valeur / valeur_imm;
 
                     operation = new OperationEntite(entite);
                     operation.lot_id = lotRepart.lot_id;
@@ -392,16 +393,16 @@ namespace SyndicData.Controller
         }
         public DataTable getSaisieAppel(OperationEntite operation)
         {
-            String cmd = String.Format("select o.* from {0} o", getSchemaTable());
+            var cmd = $"select o.* from {getSchemaTable()} o";
             //cmd += " join agence.coproprietaire c on c.id = o.coproprietaire_id ";
             cmd += " where immeuble_id = @immeuble_id and date_reference = @date_reference and nature_id = @nature_id and trim(libelle) = trim(@libelle)";
             //cmd += " and montant = @montant";
-            decimal montant = operation.credit;
+            var montant = operation.credit;
 
             if (operation.debit != 0)
                 montant = operation.debit;
 
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
                 {
                     new NpgsqlParameter("@immeuble_id", operation.immeuble_id),
                     new NpgsqlParameter("@coproprietaire_id", operation.coproprietaire_id),

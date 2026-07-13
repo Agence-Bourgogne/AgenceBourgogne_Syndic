@@ -20,7 +20,7 @@ namespace EspaceSyndic.Impressions
         }
         private void lblImmeuble_Click(object sender, EventArgs e)
         {
-            FindImmeubleForm form = new FindImmeubleForm();
+            var form = new FindImmeubleForm();
             form.ShowDialog();
             if (!"".Equals(form.reference))
             {
@@ -34,7 +34,7 @@ namespace EspaceSyndic.Impressions
             immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
             if (immeuble != null)
             {
-                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
                 btnRapport.Enabled = true;
             }
             else
@@ -55,7 +55,7 @@ namespace EspaceSyndic.Impressions
             //    CoproprietaireController.getController().CoproprietaireImmeubleDescription(immeuble.id);
 
             // reportViewer1.RefreshReport();
-            String modele = ParametresDB.getParam1("MODELES", "ETIQUETTES");
+            var modele = ParametresDB.getParam1("MODELES", "ETIQUETTES");
             BaseApplication.PublipostageEtiquetteWord(CoproprietaireController.getController().CoproprietaireImmeubleDescriptionEtiquettes(immeuble.id), modele);
         }
 

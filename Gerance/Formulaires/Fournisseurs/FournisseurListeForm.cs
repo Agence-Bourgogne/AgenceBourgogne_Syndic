@@ -26,7 +26,7 @@ namespace Gerance.Formulaires.Fournisseurs
         }
         protected override void ShowFicheForm(string entite_id)
         {
-            FournisseurFicheForm form = new FournisseurFicheForm(entite_id);
+            var form = new FournisseurFicheForm(entite_id);
             ShowForm(form);
         }
     }

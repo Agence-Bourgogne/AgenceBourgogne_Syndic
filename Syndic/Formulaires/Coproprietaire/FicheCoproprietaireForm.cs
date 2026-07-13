@@ -14,20 +14,20 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
         public CoproprietaireEntite entite = new CoproprietaireEntite();
         public CoproprietaireController controller = new CoproprietaireController();
         bool modified = false;
-        //------------------------------------------------
+        //------
         public FicheCoproprietaireForm()
         {
             InitializeComponent();
             ParametresDB.FillComboFromParams(cbCivilite, "CIVILITE");
             ParametresDB.FillComboFromParams(cbCodeEnvoiCompte, "CODEENVOICOMPTE");
         }
-        //------------------------------------------------
+        //------
         private void FicheCoproprietaireForm_Load(object sender, EventArgs e)
         {
             setFicheValues(null);
             btnEnter.Width = 0;
         }
-        //------------------------------------------------
+        //------
         private void setFicheValues(CoproprietaireEntite newEntite)
         {
             if (newEntite != null)
@@ -59,17 +59,17 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
             ckDesactiv.Checked = entite.statut == (int)AbstractBaseEntite.StatutEntite.Supprime;
             modified = false;
         }
-        //------------------------------------------------
+        //------
         private void btnSave_Click(object sender, EventArgs e)
         {
             saveForm(false);
         }
-        //------------------------------------------------
+        //------
         private bool saveForm(bool bShowMessage = false, bool bShowResult = true)
         {
             if (bShowMessage)
             {
-                DialogResult result = MessageBox.Show("Des modifications on été apportéees\nVoulez-vous les enregistrer",
+                var result = MessageBox.Show("Des modifications on été apportéees\nVoulez-vous les enregistrer",
                     "", MessageBoxButtons.YesNoCancel);
                 if (result == DialogResult.Cancel)
                     return false;
@@ -114,12 +114,12 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
             }
             return false;
         }
-        //------------------------------------------------
+        //------
         private void btnQuit_Click(object sender, EventArgs e)
         {
             Close();
         }
-        //------------------------------------------------
+        //------
         private void getNewEntite(String where, String message)
         {
             if (modified)
@@ -127,7 +127,7 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
                     return;
             try
             {
-                CoproprietaireEntite entite = controller.getEntite(where);
+                var entite = controller.getEntite(where);
                 if (entite != null)
                     setFicheValues(entite);
 
@@ -137,46 +137,46 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
                 MessageBox.Show(message);
             }
         }
-        //------------------------------------------------
+        //------
         protected void btnFirst_Click(object sender, EventArgs e)
         {
             getNewEntite("order by reference", "Début de liste atteint");
         }
-        //------------------------------------------------
+        //------
         protected void btnPrev_Click(object sender, EventArgs e)
         {
-            getNewEntite(String.Format("where reference < '{0}' order by reference desc", entite.reference), "Début de liste atteint");
+            getNewEntite($"where reference < '{entite.reference}' order by reference desc", "Début de liste atteint");
         }
-        //------------------------------------------------
+        //------
         protected void btnNext_Click(object sender, EventArgs e)
         {
-            getNewEntite(String.Format("where reference > '{0}' order by reference ", entite.reference), "Fin de liste atteinte");
+            getNewEntite($"where reference > '{entite.reference}' order by reference ", "Fin de liste atteinte");
         }
-        //------------------------------------------------
+        //------
         protected void btnLast_Click(object sender, EventArgs e)
         {
             getNewEntite("order by reference desc", "Fin de liste atteinte");
         }
-        //------------------------------------------------
+        //------
         private void FicheCoproprietaireForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (modified)
                 saveForm(true);
         }
-        //------------------------------------------------
+        //------
         private void tbTextChanged(object sender, EventArgs e)
         {
             modified = true;
         }
-        //------------------------------------------------
+        //------
         private void btnEnter_Click(object sender, EventArgs e)
         {
             ControlsWindows.FocusNextTabbedControl(this);
         }
-        //------------------------------------------------
+        //------
         private void lblRef_Click(object sender, EventArgs e)
         {
-            FindCoproprietaireForm form = new FindCoproprietaireForm(tbRef);
+            var form = new FindCoproprietaireForm(tbRef);
             if (DialogResult.Cancel != form.ShowDialog())
             {
                 entite = controller.getEntiteFromField("reference", tbRef.Text);

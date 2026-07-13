@@ -75,7 +75,7 @@ namespace Gerance.Formulaires.Common
         }
         private void btnSave_Click(object sender, EventArgs e)
         {
-            DialogResult rc = saveForm(false);
+            var rc = saveForm(false);
             if (rc != DialogResult.Cancel)
                 DialogResult = rc;
         }
@@ -91,7 +91,7 @@ namespace Gerance.Formulaires.Common
                 return DialogResult.OK;
             if (bShowMessage)
             {
-                DialogResult result = MessageBox.Show("Des modifications on été apportéees\nVoulez-vous les enregistrer",
+                var result = MessageBox.Show("Des modifications on été apportéees\nVoulez-vous les enregistrer",
                     "", MessageBoxButtons.YesNoCancel);
                 if (result == DialogResult.Cancel)
                     return result;
@@ -100,7 +100,7 @@ namespace Gerance.Formulaires.Common
                     return result;
                 }
             }
-            bool rc = saveValue();
+            var rc = saveValue();
             if (rc && !bShowResult)
             {
                 modified = false;
@@ -131,7 +131,7 @@ namespace Gerance.Formulaires.Common
 
             try
             {
-                AbstractBaseEntite entite = getEntite(where);
+                var entite = getEntite(where);
                 if (entite != null)
                     setFicheValues(entite);
 
@@ -148,11 +148,11 @@ namespace Gerance.Formulaires.Common
         }
         protected virtual void btnPrev_Click(object sender, EventArgs e)
         {
-            getNewEntite(String.Format("where reference < '{0}' order by reference desc", currentReference), "Début de liste atteint");
+            getNewEntite($"where reference < '{currentReference}' order by reference desc", "Début de liste atteint");
         }
         protected virtual void btnNext_Click(object sender, EventArgs e)
         {
-            getNewEntite(String.Format("where reference > '{0}' order by reference ", currentReference), "Fin de liste atteinte");
+            getNewEntite($"where reference > '{currentReference}' order by reference ", "Fin de liste atteinte");
         }
         protected virtual void btnLast_Click(object sender, EventArgs e)
         {
@@ -174,7 +174,7 @@ namespace Gerance.Formulaires.Common
         }
         protected virtual DialogResult ShowFindForm(CommonFindForm form, Control tbResult)
         {
-            DialogResult res = form.ShowDialog();
+            var res = form.ShowDialog();
             if (res == DialogResult.OK)
                 tbResult.Text = form.reference;
             return res;

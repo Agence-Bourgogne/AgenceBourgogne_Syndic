@@ -23,8 +23,9 @@ namespace SyndicData.Controller
         }
         public DataTable getDataGridListeLotDescription(ImmeubleEntite immeuble, bool bAddMontant = true, bool bAddValeur = true, bool bAddindex = false)
         {
-            string cmd = String.Format("select @fields from {0} l  @join1 where l.immeuble_id = @immeuble_id order by numero_lot", getSchemaTable());
-            string fields = "";
+            var cmd =
+                $"select @fields from {getSchemaTable()} l  @join1 where l.immeuble_id = @immeuble_id order by numero_lot";
+            var fields = "";
 
             if (bAddindex)
             {
@@ -40,14 +41,14 @@ namespace SyndicData.Controller
 
             fields += "l.id, numero_lot, l.coproprietaire_id, c.reference as coproprietaire, c.nom, c.prenom, ";
             fields += " numero_batiment, numero_escalier, numero_etage, avance, l.statut";
-            string join1 = String.Format(" left join {0}.coproprietaire  C on (c.id = l.coproprietaire_id)", getSchema());
+            var join1 = $" left join {getSchema()}.coproprietaire  C on (c.id = l.coproprietaire_id)";
 
             cmd = cmd.Replace("@fields", fields);
             cmd = cmd.Replace("@join1", join1);
             Console.WriteLine(cmd);
 
             adapter.SelectCommand = new NpgsqlCommand(cmd, Database.GetInstance());
-            DataTable table = new DataTable();
+            var table = new DataTable();
             adapter.SelectCommand.Parameters.AddWithValue("@immeuble_id", immeuble.id);
             try
             {
@@ -65,23 +66,24 @@ namespace SyndicData.Controller
         {
             TimestampServer = Database.GetTimestampServer();
 
-            string cmd = String.Format("select coalesce(max(numero_lot),0) as valeur from {0} where immeuble_id = @immeuble_id", getSchemaTable());
-            int numero_lot = 0;
+            var cmd =
+                $"select coalesce(max(numero_lot),0) as valeur from {getSchemaTable()} where immeuble_id = @immeuble_id";
+            var numero_lot = 0;
 
-            DataTable table = getResultSQL(cmd, new List<NpgsqlParameter> { new NpgsqlParameter("@immeuble_id", immeuble.id) });
+            var table = getResultSQL(cmd, new List<NpgsqlParameter> { new NpgsqlParameter("@immeuble_id", immeuble.id) });
             if (table.Rows.Count > 0)
                 if (table.Rows[0] != null)
                     numero_lot = (int)table.Rows[0]["valeur"];
 
-            NpgsqlConnection cnx = Database.GetInstance();
-            NpgsqlTransaction trx = cnx.BeginTransaction();
-            LotRepartitionController ctl = LotRepartitionController.getController();
+            var cnx = Database.GetInstance();
+            var trx = cnx.BeginTransaction();
+            var ctl = LotRepartitionController.getController();
             ctl.setTimestampServer(TimestampServer);
             try
             {
-                for (int i = 0; i < nblot; i++)
+                for (var i = 0; i < nblot; i++)
                 {
-                    LotDescriptionEntite lot_entite = new LotDescriptionEntite();
+                    var lot_entite = new LotDescriptionEntite();
                     lot_entite.numero_lot = ++numero_lot;
                     lot_entite.immeuble_id = immeuble.id;
                     lot_entite.coproprietaire_id = "";
@@ -99,12 +101,12 @@ namespace SyndicData.Controller
                     // createLotRepartition Individuelle
 
                     // TODO creer la colonne statut en DB
-                    for (int b = 0; b < 8; b++)
+                    for (var b = 0; b < 8; b++)
                     {
-                        LotRepartitionEntite rep_entite = new LotRepartitionEntite();
+                        var rep_entite = new LotRepartitionEntite();
                         rep_entite.colonne = b;
                         rep_entite.ligne = 8;
-                        rep_entite.reference = String.Format("{0}{1}", 8, b);
+                        rep_entite.reference = $"{8}{b}";
                         rep_entite.immeuble_id = immeuble.id;
                         rep_entite.lot_id = lot_entite.id;
                         rep_entite.type_ventilation = 1;
@@ -125,8 +127,9 @@ namespace SyndicData.Controller
         }
         public DataTable getImmeublesCoproprietaire(string coproprietaire_id)
         {
-            string cmd = String.Format("select id, reference, nom from {0}.immeuble i ", getSchema());
-            cmd += String.Format(" where i.id in (select immeuble_id from {0}.lot_description where coproprietaire_id = @coproprietaire_id ) ", getSchema());
+            var cmd = $"select id, reference, nom from {getSchema()}.immeuble i ";
+            cmd +=
+                $" where i.id in (select immeuble_id from {getSchema()}.lot_description where coproprietaire_id = @coproprietaire_id ) ";
             return getResultSQL(cmd, new List<NpgsqlParameter> { new NpgsqlParameter("@coproprietaire_id", coproprietaire_id) });
         }
 
@@ -134,23 +137,23 @@ namespace SyndicData.Controller
         {
             if (immeuble == null)
                 return null;
-            string cmd = String.Format("select id, reference, concat(nom, ' ', prenom) as nom from {0}.coproprietaire c ", getSchema());
-            cmd += String.Format(" where c.id in (select coproprietaire_id from {0}.lot_description ) ", getSchema());
+            var cmd = $"select id, reference, concat(nom, ' ', prenom) as nom from {getSchema()}.coproprietaire c ";
+            cmd += $" where c.id in (select coproprietaire_id from {getSchema()}.lot_description ) ";
             return getResultSQL(cmd);
         }
         public DataTable getListeLotCoproprietaires(ImmeubleEntite immeuble, CoproprietaireEntite copro = null)
         {
             if (immeuble == null) // || copro == null)
                 return null;
-            string cmd = "select l.id, l.numero_lot as reference, concat(c.nom, ' ', c.prenom ) as nom ";
-            cmd += String.Format(" from {0}.lot_description l", getSchema());
-            cmd += String.Format(" join  {0}.coproprietaire c on c.id = l.coproprietaire_id ", getSchema());
+            var cmd = "select l.id, l.numero_lot as reference, concat(c.nom, ' ', c.prenom ) as nom ";
+            cmd += $" from {getSchema()}.lot_description l";
+            cmd += $" join  {getSchema()}.coproprietaire c on c.id = l.coproprietaire_id ";
             //            cmd += String.Format(" ";
             cmd += " where l.immeuble_id = @immeuble_id ";
             cmd += " and l.statut = 1";
             cmd += " order by 2";
             if (copro != null)
-                cmd += String.Format(" and and c.id = '{0}'", copro.id);
+                cmd += $" and and c.id = '{copro.id}'";
             return getResultSQL(cmd, new List<NpgsqlParameter> { new NpgsqlParameter("@immeuble_id", immeuble.id) });
         }
 
@@ -158,16 +161,16 @@ namespace SyndicData.Controller
         {
             if (immeuble == null) // || copro == null)
                 return null;
-            string cmd = "select l.id, l.numero_lot as reference, concat(l.numero_lot, ' - ', c.nom, ' ', c.prenom ) as nom ";
-            cmd += String.Format(" from {0}.lot_description l", getSchema());
-            cmd += String.Format(" join  {0}.coproprietaire c on c.id = l.coproprietaire_id ", getSchema());
+            var cmd = "select l.id, l.numero_lot as reference, concat(l.numero_lot, ' - ', c.nom, ' ', c.prenom ) as nom ";
+            cmd += $" from {getSchema()}.lot_description l";
+            cmd += $" join  {getSchema()}.coproprietaire c on c.id = l.coproprietaire_id ";
             //            cmd += String.Format(" ";
             cmd += " where l.immeuble_id = @immeuble_id and c.statut = @statut_actif";
             if (copro != null)
-                cmd += String.Format(" and and c.id = '{0}'", copro.id);
+                cmd += $" and and c.id = '{copro.id}'";
 
             cmd += " order by 2";
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
             { 
                 new NpgsqlParameter("@immeuble_id", immeuble.id) ,
                 new NpgsqlParameter("@statut_actif", (int) GlobalConstantes.StatutData.Actif),
@@ -178,19 +181,20 @@ namespace SyndicData.Controller
 
         public DataTable getListeLot(string immeuble_id)
         {
-            string cmd = String.Format("select * from {0} where immeuble_id = @immeuble_id", getSchemaTable());
+            var cmd = $"select * from {getSchemaTable()} where immeuble_id = @immeuble_id";
             return getResultSQL(cmd, new List<NpgsqlParameter> { new NpgsqlParameter("@immeuble_id", immeuble_id) });
         }
         public DataTable getListeLotFiscaux(string immeuble_id)
         {
-            string cmd = String.Format("select * from {0} l join {1}.coproprietaire c on c.id = l.coproprietaire_id where l.immeuble_id = @immeuble_id and c.declaration=true", getSchemaTable(), getSchema());
+            var cmd =
+                $"select * from {getSchemaTable()} l join {getSchema()}.coproprietaire c on c.id = l.coproprietaire_id where l.immeuble_id = @immeuble_id and c.declaration=true";
             return getResultSQL(cmd, new List<NpgsqlParameter> { new NpgsqlParameter("@immeuble_id", immeuble_id) });
         }
         public List<LotDescriptionEntite> getListeLotDescription(string immeuble_id)
         {
-            string cmd = String.Format("select * from {0} where immeuble_id = @immeuble_id", getSchemaTable());
-            DataTable table = getResultSQL(cmd, new List<NpgsqlParameter> { new NpgsqlParameter("@immeuble_id", immeuble_id) });
-            List<LotDescriptionEntite> liste = new List<LotDescriptionEntite>();
+            var cmd = $"select * from {getSchemaTable()} where immeuble_id = @immeuble_id";
+            var table = getResultSQL(cmd, new List<NpgsqlParameter> { new NpgsqlParameter("@immeuble_id", immeuble_id) });
+            var liste = new List<LotDescriptionEntite>();
             if (table != null)
                 foreach (DataRow row in table.Rows)
                     liste.Add(new LotDescriptionEntite(row));
@@ -199,9 +203,10 @@ namespace SyndicData.Controller
         }
         public List<LotDescriptionEntite> getListeLotDescriptionFiscaux(string immeuble_id)
         {
-            string cmd = String.Format("select * from {0} l join {1}.coproprietaire c on c.id = l.coproprietaire_id where immeuble_id = @immeuble_id and c.declaration=true", getSchemaTable(), getSchema());
-            DataTable table = getResultSQL(cmd, new List<NpgsqlParameter> { new NpgsqlParameter("@immeuble_id", immeuble_id) });
-            List<LotDescriptionEntite> liste = new List<LotDescriptionEntite>();
+            var cmd =
+                $"select * from {getSchemaTable()} l join {getSchema()}.coproprietaire c on c.id = l.coproprietaire_id where immeuble_id = @immeuble_id and c.declaration=true";
+            var table = getResultSQL(cmd, new List<NpgsqlParameter> { new NpgsqlParameter("@immeuble_id", immeuble_id) });
+            var liste = new List<LotDescriptionEntite>();
             if (table != null)
                 foreach (DataRow row in table.Rows)
                     liste.Add(new LotDescriptionEntite(row));
@@ -212,11 +217,12 @@ namespace SyndicData.Controller
         public LotDescriptionEntite getLotFromReference(string immeuble_id, string numLot)
         {
             LotDescriptionEntite lot = null;
-            int numlot = Convertir.ToInt(numLot);
+            var numlot = Convertir.ToInt(numLot);
 
-            string cmd = String.Format("select * from {0} where immeuble_id = @immeuble_id and numero_lot = @numero_lot ", getSchemaTable());
+            var cmd =
+                $"select * from {getSchemaTable()} where immeuble_id = @immeuble_id and numero_lot = @numero_lot ";
 
-            DataTable table = getResultSQL(cmd, new List<NpgsqlParameter> { new NpgsqlParameter("@immeuble_id", immeuble_id), new NpgsqlParameter("@numero_lot", numlot) });
+            var table = getResultSQL(cmd, new List<NpgsqlParameter> { new NpgsqlParameter("@immeuble_id", immeuble_id), new NpgsqlParameter("@numero_lot", numlot) });
 
             if (table != null)
                 if (table.Rows.Count > 0)
@@ -228,9 +234,9 @@ namespace SyndicData.Controller
         {
             LotDescriptionEntite lot = null;
 
-            string cmd = String.Format("select * from {0} where coproprietaire_id = @coproprietaire_id ", getSchemaTable());
+            var cmd = $"select * from {getSchemaTable()} where coproprietaire_id = @coproprietaire_id ";
 
-            DataTable table = getResultSQL(cmd, new List<NpgsqlParameter> { new NpgsqlParameter("@coproprietaire_id", coproprietaire_id) });
+            var table = getResultSQL(cmd, new List<NpgsqlParameter> { new NpgsqlParameter("@coproprietaire_id", coproprietaire_id) });
 
             if (table != null)
                 if (table.Rows.Count > 0)
@@ -241,9 +247,10 @@ namespace SyndicData.Controller
         {
             LotDescriptionEntite lot = null;
 
-            string cmd = String.Format("select * from {0} where immeuble_id = @immeuble_id and coproprietaire_id = @coproprietaire_id ", getSchemaTable());
+            var cmd =
+                $"select * from {getSchemaTable()} where immeuble_id = @immeuble_id and coproprietaire_id = @coproprietaire_id ";
 
-            DataTable table = getResultSQL(cmd, new List<NpgsqlParameter> 
+            var table = getResultSQL(cmd, new List<NpgsqlParameter> 
             { 
                 new NpgsqlParameter("@immeuble_id", immeuble_id),
                 new NpgsqlParameter("@coproprietaire_id", coproprietaire_id) 
@@ -257,8 +264,8 @@ namespace SyndicData.Controller
         public decimal getAvanceImmeuble(string immeuble_id)
         {
             decimal avance = 0;
-            string cmd = String.Format(" select sum(avance) as avance from {0} where immeuble_id = @immeuble_id", getSchemaTable());
-            DataTable table = getResultSQL(cmd, new List<NpgsqlParameter> 
+            var cmd = $" select sum(avance) as avance from {getSchemaTable()} where immeuble_id = @immeuble_id";
+            var table = getResultSQL(cmd, new List<NpgsqlParameter> 
             { 
                 new NpgsqlParameter("@immeuble_id", immeuble_id),
             });
@@ -272,15 +279,15 @@ namespace SyndicData.Controller
         {
             LotDescriptionEntite lot = null;
 
-            string cmd = String.Format("select * from {0} ", getSchemaTable());
-            cmd += String.Format(" join {0}.immeuble i on i.id = immeuble_id ", getSchema());
+            var cmd = $"select * from {getSchemaTable()} ";
+            cmd += $" join {getSchema()}.immeuble i on i.id = immeuble_id ";
             cmd += " where i.reference = @ref_imm and numero_lot = @numero_lot";
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
             { 
                 new NpgsqlParameter("@ref_imm", ref_imm),
                 new NpgsqlParameter("@numero_lot", numero_lot),
             };
-            DataTable table = getResultSQL(cmd, parameters);
+            var table = getResultSQL(cmd, parameters);
 
             if (table != null)
                 if (table.Rows.Count > 0)

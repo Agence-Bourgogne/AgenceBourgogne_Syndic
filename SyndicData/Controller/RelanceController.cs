@@ -39,17 +39,17 @@ namespace SyndicData.Controller
         }
         public static NatureEntite getNatureRelance()
         {
-            string reference = ParametresDB.getParam1("RELANCE", "NATURE");
+            var reference = ParametresDB.getParam1("RELANCE", "NATURE");
             return NatureController.getController().getEntiteFromField("reference", reference);
         }
         public static FournisseurEntite getFournisseurRelance()
         {
-            string reference = ParametresDB.getParam1("RELANCE", "FOURNISSEUR");
+            var reference = ParametresDB.getParam1("RELANCE", "FOURNISSEUR");
             return FournisseurController.getController().getEntiteFromField("reference", reference);
         }
         public static decimal getMontantRelance(int type_relance)
         {
-            string montant = "";
+            var montant = "";
             switch ( type_relance)
             {
                 case 0:
@@ -68,29 +68,29 @@ namespace SyndicData.Controller
 
         public static bool GenerateRelance(List<RelanceEntite>[] relances, DateTime dt)
         {
-            bool rc = false;
+            var rc = false;
 
-            NpgsqlConnection cnx = Database.GetInstance();
-            NpgsqlTransaction trx = cnx.BeginTransaction();
+            var cnx = Database.GetInstance();
+            var trx = cnx.BeginTransaction();
             try
             {
-                int numero_operation = 0;
+                var numero_operation = 0;
 
-                string base_repart = ParametresDB.getParam1("RELANCE", "BASE");
-                FournisseurEntite fournisseur = getFournisseurRelance();
-                NatureEntite nature = getNatureRelance();
+                var base_repart = ParametresDB.getParam1("RELANCE", "BASE");
+                var fournisseur = getFournisseurRelance();
+                var nature = getNatureRelance();
 
-                SaisieFactureController facCtl = SaisieFactureController.getController();
-                OperationController opeCtl = OperationController.getController();
-                for ( int type = 0; type < relances.Length; type ++)
+                var facCtl = SaisieFactureController.getController();
+                var opeCtl = OperationController.getController();
+                for ( var type = 0; type < relances.Length; type ++)
                 {
-                    decimal montant_relance = getMontantRelance(type);
-                    string lib_relance = getLibelleEcritureRelance(type);
+                    var montant_relance = getMontantRelance(type);
+                    var lib_relance = getLibelleEcritureRelance(type);
 
-                    List<RelanceEntite> relanceList = relances[type];
+                    var relanceList = relances[type];
                     if (relanceList.Count > 0)
                     {
-                        string copro_ids = getQuotedCoproprietaireId(relanceList);
+                        var copro_ids = getQuotedCoproprietaireId(relanceList);
                         if (!CoproprietaireController.getController().MiseAjourDateRelances(copro_ids, dt, type))
                             throw new Exception("Mise A Jour date Relances");
                         if (type > 0)
@@ -98,9 +98,9 @@ namespace SyndicData.Controller
                             // TODO Attention le type 3 ne doit pas générer d'écriture ( Déja Générée )
                             //if ( type < 3 )
                             if (montant_relance > 0)
-                                foreach ( RelanceEntite relance in relanceList)
+                                foreach ( var relance in relanceList)
                                 {
-                                    SaisieFactureEntite facture = new SaisieFactureEntite();
+                                    var facture = new SaisieFactureEntite();
                                     facture.date_operation = facture.date_reference = dt;
                                     facture.numero_operation = numero_operation++;
                                     facture.liasse_id = "relance";
@@ -117,7 +117,7 @@ namespace SyndicData.Controller
                                     if (!facCtl.InsertOrUpdate(facture))
                                         throw new Exception("Generate Facture");
 
-                                    OperationEntite operation = new OperationEntite(facture);
+                                    var operation = new OperationEntite(facture);
                                     operation.debit = montant_relance;
                                     operation.coproprietaire_id = relance.coproprietaire_id;
                                     operation.lot_id = relance.lot_id;
@@ -141,21 +141,21 @@ namespace SyndicData.Controller
         }
         public static string getQuotedCoproprietaireId(List<RelanceEntite> relances)
         {
-            string quoted = "";
+            var quoted = "";
 
-            foreach (RelanceEntite relance in relances)
+            foreach (var relance in relances)
             {
-                quoted += (quoted == "" ? "" : ", ") + String.Format("'{0}'", relance.coproprietaire_id);
+                quoted += (quoted == "" ? "" : ", ") + $"'{relance.coproprietaire_id}'";
             }
             return quoted;
         }
         public static string getQuotedCoproprietaireId(List<string> ids_copro)
         {
-            string quoted = "";
+            var quoted = "";
 
-            foreach (string id_copro in ids_copro)
+            foreach (var id_copro in ids_copro)
             {
-                quoted += (quoted == "" ? "" : ", ") + String.Format("'{0}'", id_copro);
+                quoted += (quoted == "" ? "" : ", ") + $"'{id_copro}'";
             }
             return quoted;
         }

@@ -7,8 +7,8 @@ namespace EspaceSyndic.UtilsApp
     {
         public static AutoCompleteStringCollection getLotsAutocomplete(ImmeubleEntite immeuble)
         {
-            AutoCompleteStringCollection lotAuto = new AutoCompleteStringCollection();
-            DataTable table = immeuble.getListeLots();
+            var lotAuto = new AutoCompleteStringCollection();
+            var table = immeuble.getListeLots();
             foreach (DataRow row in table.Rows)
             {
                 lotAuto.Add(row["numero_lot"].ToString());

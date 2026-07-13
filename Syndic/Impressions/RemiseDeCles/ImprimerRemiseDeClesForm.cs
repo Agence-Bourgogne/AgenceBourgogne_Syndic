@@ -22,7 +22,7 @@ namespace EspaceSyndic.Impressions.RemiseDeCles
         
         private void lblImmeuble_Click(object sender, EventArgs e)
         {
-            FindImmeubleForm form = new FindImmeubleForm();
+            var form = new FindImmeubleForm();
             form.ShowDialog();
             if (!"".Equals(form.reference))
             {
@@ -43,7 +43,7 @@ namespace EspaceSyndic.Impressions.RemiseDeCles
             if (immeuble != null )
             {
                 btnRapport.Enabled = true;
-                Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.DateExercice);
+                Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
             }
             else
             {
@@ -59,7 +59,7 @@ namespace EspaceSyndic.Impressions.RemiseDeCles
 
         private void btnRapport_Click(object sender, EventArgs e)
         {
-            ReportParameter[] parameters = new ReportParameter[]{
+            var parameters = new ReportParameter[]{
                 new ReportParameter("DateRemise", dtRemise.Value.ToShortDateString())
             };
 

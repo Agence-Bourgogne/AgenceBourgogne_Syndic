@@ -55,7 +55,7 @@ namespace Gerance.Formulaires.Indices
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            UpdateIndiceForm form = new UpdateIndiceForm(cbIndices.SelectedValue.ToString());
+            var form = new UpdateIndiceForm(cbIndices.SelectedValue.ToString());
             form.ShowDialog();
             FillDataGrid();
         }
@@ -68,7 +68,7 @@ namespace Gerance.Formulaires.Indices
 
             if ( dataGridView.SelectedRows.Count > 0 )
             {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
                 if (row != null) 
                 {
                     if (tbCoeff != null)

@@ -42,17 +42,17 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         }
         void FillDataGrid()
         {
-            DataTable table = OperationController.getController().getOperations(operation);
+            var table = OperationController.getController().getOperations(operation);
             dataGridView.DataSource = table;
-            DataGridViewColumnCollection cols = dataGridView.Columns;
+            var cols = dataGridView.Columns;
             ControlsWindows.ToTitleCase(cols);
             cols["id"].Visible = false;
             cols["statut"].Visible = false;
             decimal total = 0;
             foreach (DataRow row in table.Rows)
             {
-                decimal credit = Convertir.ToDecimal(row["credit"]);
-                decimal debit = Convertir.ToDecimal(row["debit"]);
+                var credit = Convertir.ToDecimal(row["credit"]);
+                var debit = Convertir.ToDecimal(row["debit"]);
                 total += credit - debit;
             }
             tbTotal.Text = Math.Abs(total).ToString();
@@ -62,18 +62,18 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            decimal montant = Convertir.ToDecimal(tbMontant.Text);
-            string ref_nature = tbNature.Text;
-            string ref_fournisseur = tbFournisseur.Text;
-            DateTime date_reference = DateTime.Parse(tbDateCreation.Text);
-            string comment = tbComment.Text;
-            string comment_fournisseur = tbCommentaireFournisseur.Text;
-            string base_repart = tbBase.Text;
+            var montant = Convertir.ToDecimal(tbMontant.Text);
+            var ref_nature = tbNature.Text;
+            var ref_fournisseur = tbFournisseur.Text;
+            var date_reference = DateTime.Parse(tbDateCreation.Text);
+            var comment = tbComment.Text;
+            var comment_fournisseur = tbCommentaireFournisseur.Text;
+            var base_repart = tbBase.Text;
 
-            NatureEntite nature = NatureController.getController().getEntiteFromField("reference", ref_nature);
-            FournisseurEntite fournisseur = FournisseurController.getController().getEntiteFromField("reference", ref_fournisseur);
-            NpgsqlConnection cnx = Database.GetInstance();
-            NpgsqlTransaction trx = cnx.BeginTransaction();
+            var nature = NatureController.getController().getEntiteFromField("reference", ref_nature);
+            var fournisseur = FournisseurController.getController().getEntiteFromField("reference", ref_fournisseur);
+            var cnx = Database.GetInstance();
+            var trx = cnx.BeginTransaction();
 
             try
             {
@@ -83,7 +83,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
                     throw new Exception("Fournisseur invalide");
 
 
-                SaisieFactureEntite entite = new SaisieFactureEntite();
+                var entite = new SaisieFactureEntite();
                 entite.base_repart = base_repart;
                 entite.immeuble_id = operation.immeuble_id;
                 entite.numero_operation = SaisieFactureController.getController().getNextNumeroOperation(Convert.ToDateTime(tbDateCreation.Text));
@@ -102,8 +102,8 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
                     throw new Exception("Facture");
                 foreach (DataGridViewRow rowGrid in dataGridView.Rows)
                 {
-                    DataRowView row = (DataRowView)rowGrid.DataBoundItem;
-                    OperationEntite opes = OperationController.getController().getEntiteById(row["id"].ToString());
+                    var row = (DataRowView)rowGrid.DataBoundItem;
+                    var opes = OperationController.getController().getEntiteById(row["id"].ToString());
                     opes.nature_id = nature.id;
                     opes.date_reference = date_reference;
                     opes.libelle = comment;
@@ -165,7 +165,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
 
         private void lblFournisseur_Click(object sender, EventArgs e)
         {
-            FindFournisseurForm form = new FindFournisseurForm();
+            var form = new FindFournisseurForm();
             form.ShowDialog();
             if (!"".Equals(form.reference))
             {

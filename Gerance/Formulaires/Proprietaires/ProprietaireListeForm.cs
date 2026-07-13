@@ -35,25 +35,25 @@ namespace Gerance.Formulaires.Proprietaires
         }
         protected override void ShowFicheForm( string entite_id)
         {
-            ProprietaireFicheForm form = new ProprietaireFicheForm(entite_id);
+            var form = new ProprietaireFicheForm(entite_id);
             ShowForm(form);
         }
 
         private void btnFiltre_Click(object sender, EventArgs e)
         {
-            ProprietaireFindForm form = new ProprietaireFindForm();
-            DialogResult res = form.ShowDialog();
+            var form = new ProprietaireFindForm();
+            var res = form.ShowDialog();
             if (res == DialogResult.OK)
             {
-                ProprietaireEntite proprio = ProprietaireController.getController().getEntiteFromField("reference", form.reference);
-                ProprietaireFicheForm fiche = new ProprietaireFicheForm(proprio.id);
+                var proprio = ProprietaireController.getController().getEntiteFromField("reference", form.reference);
+                var fiche = new ProprietaireFicheForm(proprio.id);
                 fiche.ShowDialog();
             }
         }
         protected override void dataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            DataGridView dgv = (DataGridView)sender;
-            DataGridViewColumn col = dgv.Columns[e.ColumnIndex];
+            var dgv = (DataGridView)sender;
+            var col = dgv.Columns[e.ColumnIndex];
 
             try
             {

@@ -72,7 +72,7 @@ namespace Gerance.Impressions.CompteProprietaire
             tbRefProprio.BackColor = Color.White;
             if (tbRefProprio.Text != "")
             {
-                ProprietaireEntite locataire = ProprietaireController.getController().getEntiteFromField("reference", tbRefProprio.Text);
+                var locataire = ProprietaireController.getController().getEntiteFromField("reference", tbRefProprio.Text);
                 if (locataire == null)
                 {
                     tbRefProprio.BackColor = Color.Red;
@@ -85,7 +85,7 @@ namespace Gerance.Impressions.CompteProprietaire
             if (!bLoading && dataGridView.SelectedRows.Count > 0 )
             {
                 Console.WriteLine("selectionChanged");
-                DataGridViewRow row = dataGridView.SelectedRows[0];
+                var row = dataGridView.SelectedRows[0];
                 tbRefProprio.Text = row.Cells["reference"].Value.ToString();
             }
         }
@@ -98,7 +98,7 @@ namespace Gerance.Impressions.CompteProprietaire
 
         private void btnPrint_Click(object sender, EventArgs e)
         {
-            string ref_proprio = tbRefProprio.Text;
+            var ref_proprio = tbRefProprio.Text;
             if ( ref_proprio != "" )
             {
 

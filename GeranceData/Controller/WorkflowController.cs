@@ -45,9 +45,9 @@ namespace GeranceData.Controller
 
         public WorkflowEntite getWorkflow(int reference, DateTime date)
         {
-            DateTime date_reference = new DateTime(date.Year, date.Month, 1);
-            String cmd = " where reference = @reference and date_reference = @date_reference";
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var date_reference = new DateTime(date.Year, date.Month, 1);
+            var cmd = " where reference = @reference and date_reference = @date_reference";
+            var parameters = new List<NpgsqlParameter> 
             { 
                 new NpgsqlParameter("@reference", reference), 
                 new NpgsqlParameter("@date_reference", date_reference), 
@@ -57,13 +57,14 @@ namespace GeranceData.Controller
         }
         public DataTable getMonthListWorkflow(DateTime date)
         {
-            DateTime date_reference = new DateTime(date.Year, date.Month, 1);
-            string cmd = " select w.*, coalesce(audit_updated, audit_created) as date_ecriture, coalesce(audit_updated_by, audit_created_by) as utilisateur, ";
-            cmd += String.Format("( select count(*) from {0}.workflow_detail where workflow_id = w.id ) as nombre_elements", getSchema());
-            cmd += String.Format(" from {0} w", getSchemaTable() );
+            var date_reference = new DateTime(date.Year, date.Month, 1);
+            var cmd = " select w.*, coalesce(audit_updated, audit_created) as date_ecriture, coalesce(audit_updated_by, audit_created_by) as utilisateur, ";
+            cmd +=
+                $"( select count(*) from {getSchema()}.workflow_detail where workflow_id = w.id ) as nombre_elements";
+            cmd += $" from {getSchemaTable()} w";
             cmd += " where date_reference >= @date_reference and date_reference <= @date_fin ";
             cmd += " order by date_ecriture";
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
+            var parameters = new List<NpgsqlParameter> 
             { 
                 new NpgsqlParameter("@date_reference", date_reference), 
                 new NpgsqlParameter("@date_fin", date_reference.AddMonths(1).AddDays(-1)), 
@@ -74,8 +75,8 @@ namespace GeranceData.Controller
         public WorkflowEntite WriteRecord(int reference, DateTime date)
         {
 //            setTimestampServer();
-            DateTime date_reference = new DateTime(date.Year, date.Month, 1);
-            WorkflowEntite workflow = getWorkflow(reference, date_reference);
+            var date_reference = new DateTime(date.Year, date.Month, 1);
+            var workflow = getWorkflow(reference, date_reference);
 
             if (workflow == null)
                 workflow = new WorkflowEntite(reference, date_reference);

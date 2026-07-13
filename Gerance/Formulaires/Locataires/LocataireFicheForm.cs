@@ -68,7 +68,7 @@ namespace Gerance.Formulaires.Locataires
         {
             if (tbRefComptable.Text != locataire.Comptable.reference)
             {
-                ComptableEntite comptable = ComptableController.getController().getEntiteFromField("reference", tbRefComptable.Text);
+                var comptable = ComptableController.getController().getEntiteFromField("reference", tbRefComptable.Text);
                 locataire.Comptable = comptable;
             }
             tbNomComptable.Text = locataire.Comptable.nom;
@@ -121,7 +121,7 @@ namespace Gerance.Formulaires.Locataires
         private void label2_Click(object sender, EventArgs e)
         {
 
-            ScanUtilForm form = new ScanUtilForm(ScanMethod.TWAIN);
+            var form = new ScanUtilForm(ScanMethod.TWAIN);
             form.SavePicture += form_SavePicture;
             form.ShowDialog();
 //            ScanUtils.WIAAcquire();

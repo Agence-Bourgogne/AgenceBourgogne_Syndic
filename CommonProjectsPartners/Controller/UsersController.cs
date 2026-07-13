@@ -26,7 +26,7 @@ namespace CommonProjectsPartners.Controller
         }
         public DataTable getListeUsers()
         {
-            string cmd = String.Format(" select u.*, r.nom as role from {0} u ", getSchemaTable());
+            var cmd = $" select u.*, r.nom as role from {getSchemaTable()} u ";
             cmd += " join roles r on r.id  = u.roles_id";
             cmd += " order by reference";
 

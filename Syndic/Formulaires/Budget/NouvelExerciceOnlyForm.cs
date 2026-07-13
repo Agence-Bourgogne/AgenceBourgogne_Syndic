@@ -28,13 +28,13 @@ namespace EspaceSyndic.Formulaires.Budget
             MinimumSize = MaximumSize = Size;
             if (exercice_id == "")
             {
-                DateTime dt = ExerciceComptableController.getController().getNewDateDebutExercice(immeuble_id);
+                var dt = ExerciceComptableController.getController().getNewDateDebutExercice(immeuble_id);
                 dtDeb.Value = dt;
                 dtFin.Value = dtDeb.Value.AddYears(1).AddDays(-1);
             }
             else
             {
-                ExerciceComptableEntite exercice = ExerciceComptableController.getController().getEntiteById(exercice_id);
+                var exercice = ExerciceComptableController.getController().getEntiteById(exercice_id);
                 dtDeb.Value = exercice.date_deb;
                 dtFin.Value = exercice.date_fin;
                 tbReference.Text = exercice.reference;
@@ -57,8 +57,8 @@ namespace EspaceSyndic.Formulaires.Budget
         }
         private bool GenerateBudget()
         {
-            NpgsqlConnection cnx = Database.GetInstance();
-            NpgsqlTransaction trx = cnx.BeginTransaction();
+            var cnx = Database.GetInstance();
+            var trx = cnx.BeginTransaction();
             try
             {
                 ExerciceComptableEntite exercice = null;
@@ -81,7 +81,7 @@ namespace EspaceSyndic.Formulaires.Budget
                 }
                 exercice_id = exercice.id;
 
-                BudgetEntite budget = BudgetController.getController().getEntiteFromField("exercice_id", exercice.id);
+                var budget = BudgetController.getController().getEntiteFromField("exercice_id", exercice.id);
 
                 if (budget == null)
                 {
@@ -96,7 +96,7 @@ namespace EspaceSyndic.Formulaires.Budget
                 }
                 //this.exercice_id = budget.id;
 
-                BudgetLigneController controller = BudgetLigneController.getController();
+                var controller = BudgetLigneController.getController();
 
 
                 trx.Commit();

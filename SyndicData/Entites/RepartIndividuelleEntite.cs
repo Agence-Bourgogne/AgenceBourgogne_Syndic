@@ -34,7 +34,7 @@ namespace SyndicData.Entites
         }
         public override void setValues(DataRow row)
         {
-            FieldInfo[] members = GetType().GetFields();
+            var members = GetType().GetFields();
 
             updatables.Clear();
 
@@ -56,7 +56,7 @@ namespace SyndicData.Entites
         }
         public static RepartIndividuelleEntite setData(OperationEntite operation, SaisieFactureEntite saisie, DataRow oldRow)
         {
-            RepartIndividuelleEntite repart = new RepartIndividuelleEntite(oldRow);
+            var repart = new RepartIndividuelleEntite(oldRow);
 
             repart.saisie_id = saisie.id;
             repart.type_saisie = (int) GlobalConstantes.TypeSaisie.Facture;
@@ -89,7 +89,7 @@ namespace SyndicData.Entites
          */
         public static RepartIndividuelleEntite setData(OperationEntite operation, RepartIndividuelleEntite oldRepart, GlobalConstantes.TypeSaisie type)
         {
-            RepartIndividuelleEntite repart = oldRepart;
+            var repart = oldRepart;
             
             if (repart == null ) 
                 repart = new RepartIndividuelleEntite();
