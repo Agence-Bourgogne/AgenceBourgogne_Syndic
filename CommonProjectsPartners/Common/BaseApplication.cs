@@ -7,6 +7,8 @@ using Word = Microsoft.Office.Interop.Word;
 using Microsoft.Office.Interop.Excel;
 using CommonProjectsPartners.Utils;
 using CommonProjectsPartners.Entites;
+using Range = Microsoft.Office.Interop.Excel.Range;
+
 namespace CommonProjectsPartners.Common
 {
     public class BaseApplication
