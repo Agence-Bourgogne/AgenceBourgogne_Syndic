@@ -10,6 +10,8 @@ using Npgsql;
 using CommonProjectsPartners.Entites;
 using CommonProjectsPartners.Common;
 using CommonProjectsPartners.Utils;
+using MessageBox = System.Windows.Forms.MessageBox;
+
 namespace CommonProjectsPartners.Controller
 {
     public abstract class AbstractBaseController<TENTITE> where TENTITE : AbstractBaseEntite, new()
