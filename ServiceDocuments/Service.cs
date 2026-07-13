@@ -19,21 +19,21 @@ public class Service : IService
     public string CreateUser(string Code, String Password = "")
     {
         var msg = "";
-        IDal dal = new Dal();
+        IDal dal = new Dal(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath);
         msg = dal.CreateUser(Code, Password);
         return msg;
     }
     public string DeleteUser(string Guid)
     {
         var msg = "";
-        IDal dal = new Dal();
+        IDal dal = new Dal(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath);
         msg = dal.DeleteUser(Guid);
         return msg;
     }
     public string DeleteCopro(string Guid)
     {
         var msg = "";
-        IDal dal = new Dal();
+        IDal dal = new Dal(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath);
         msg = dal.DeleteCopro(Guid);
         return msg;
     }
@@ -64,7 +64,7 @@ public class Service : IService
             try
             {
                 var part = parts.Find(x => x.Key == Guid);
-                IDal dal = new Dal();
+                IDal dal = new Dal(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath);
                 dal.CreateDocument(text, Guid, part.Content, immeuble_id, copro_id);
                 resText = "Document Enregistré";
             }
@@ -79,24 +79,24 @@ public class Service : IService
     }
     public UserEntitie GetUserFromCode(String code)
     {
-        IDal dal = new Dal();
+        IDal dal = new Dal(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath);
         return dal.GetUserFromCode(code);
     }
 
     public UserEntitie GetUserFromGuid(String Guid)
     {
-        IDal dal = new Dal();
+        IDal dal = new Dal(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath);
         return dal.GetUserFromGuid(Guid);
     }
     public List<UserEntitie> GetAllUsers()
     {
-        IDal dal = new Dal();
+        IDal dal = new Dal(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath);
         return dal.GetAllUsers();
     }
     public List<ChildrenEntitie> GetUserCoproprietaires(string guid)
     {
         var childrens = new List<ChildrenEntitie>();
-        IDal dal = new Dal();
+        IDal dal = new Dal(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath);
         var user = dal.GetUserFromGuid(guid);
         if (user != null)
         {
@@ -108,14 +108,14 @@ public class Service : IService
     public List<ChildrenEntitie> GetCoproChildrens(string copro_id)
     {
         var childrens = new List<ChildrenEntitie>();
-        IDal dal = new Dal();
+        IDal dal = new Dal(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath);
         childrens = dal.GetCoproChildrens(copro_id);
         return childrens;
     }
 
     public string AddCopro(string user_id, string immeuble_id, String copro_id, string reference_imm, string adresse_imm, string reference_copro, string nom)
     {
-        IDal dal = new Dal();
+        IDal dal = new Dal(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath);
         return dal.AddCopro(user_id, immeuble_id, copro_id, reference_imm, adresse_imm, reference_copro, nom);
     }
     public bool Connected()
@@ -125,19 +125,19 @@ public class Service : IService
     public string UpdateUser(string Guid, string Code, String Password = "")
     {
         var msg = "";
-        IDal dal = new Dal();
+        IDal dal = new Dal(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath);
         msg = dal.UpdateUser(Guid, Code, Password);
         return msg;
     }
     public List<DocumentEntitie> GetListDocuments(string immeuble_id = "", string copro_id ="")
     {
-        IDal dal = new Dal();
+        IDal dal = new Dal(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath);
         return dal.GetDocuments(immeuble_id, copro_id);
     }
     public string DeleteDocument(string Guid)
     {
         var msg = "";
-        IDal dal = new Dal();
+        IDal dal = new Dal(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath);
         msg = dal.DeleteDocument(Guid);
         return msg;
     }

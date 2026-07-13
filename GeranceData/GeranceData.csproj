@@ -1,102 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{199F4A63-0F6C-4FDE-95A2-995A6102B270}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GeranceData</RootNamespace>
-    <AssemblyName>GeranceData</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Npgsql, Version=3.2.7.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Npgsql.3.2.7\lib\net451\Npgsql.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.3.0\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Common\GlobalConstantes.cs" />
-    <Compile Include="Common\ParametresDB.cs" />
-    <Compile Include="Controller\BienController.cs" />
-    <Compile Include="Controller\ComptableController.cs" />
-    <Compile Include="Controller\CompteProprioController.cs" />
-    <Compile Include="Controller\DocumentController.cs" />
-    <Compile Include="Controller\FournisseurController.cs" />
-    <Compile Include="Controller\QuittancesController.cs" />
-    <Compile Include="Controller\ImmeubleController.cs" />
-    <Compile Include="Controller\IndiceController.cs" />
-    <Compile Include="Controller\LocataireController.cs" />
-    <Compile Include="Controller\NatureController.cs" />
-    <Compile Include="Controller\ParametreController.cs" />
-    <Compile Include="Controller\ProprietaireController.cs" />
-    <Compile Include="Controller\FacturesController.cs" />
-    <Compile Include="Controller\ReglementsController.cs" />
-    <Compile Include="Controller\RegulChargeController.cs" />
-    <Compile Include="Controller\WorkflowController.cs" />
-    <Compile Include="Controller\WorkflowDetailController.cs" />
-    <Compile Include="Entites\BienEntite.cs" />
-    <Compile Include="Entites\ComptableEntite.cs" />
-    <Compile Include="Entites\CompteProprioEntite.cs" />
-    <Compile Include="Entites\DocumentEntite.cs" />
-    <Compile Include="Entites\FournisseurEntite.cs" />
-    <Compile Include="Entites\IndiceEntite.cs" />
-    <Compile Include="Entites\LocataireEntite.cs" />
-    <Compile Include="Entites\NatureEntite.cs" />
-    <Compile Include="Entites\ParametreEntite.cs" />
-    <Compile Include="Entites\ProprietaireEntite.cs" />
-    <Compile Include="Entites\QuittanceEntite.cs" />
-    <Compile Include="Entites\ReglementEntite.cs" />
-    <Compile Include="Entites\FactureEntite.cs" />
-    <Compile Include="Entites\RegulChargeEntite.cs" />
-    <Compile Include="Entites\WorkflowDetailEntite.cs" />
-    <Compile Include="Entites\WorkflowEntite.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CommonProjectsPartners\CommonProjectsPartners.csproj">
-      <Project>{6736e0fb-3a8e-4b70-8937-bd676f22a007}</Project>
-      <Name>CommonProjectsPartners</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+		<OutputType>Library</OutputType>
+
+		<RootNamespace>GeranceData</RootNamespace>
+		<AssemblyName>GeranceData</AssemblyName>
+
+		<!-- Conserve Properties\AssemblyInfo.cs -->
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Npgsql" Version="3.2.7" />
+		<PackageReference Include="System.Threading.Tasks.Extensions" Version="4.3.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\CommonProjectsPartners\CommonProjectsPartners.csproj" />
+	</ItemGroup>
+
 </Project>

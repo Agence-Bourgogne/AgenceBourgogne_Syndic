@@ -7,13 +7,13 @@ namespace SyndicDocumentsData.Models
 {
     public class Dal : IDal
     {
-        string apPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath;
-       
+        private readonly string appPath;
         private BddContext bdd;
-        public Dal()
-        {
-            bdd = new BddContext();
 
+        public Dal(string appPath)
+        {
+            this.appPath = appPath;
+            bdd = new BddContext();
         }
 
         public string UpdateUser(string Guid, string CodeUser, String password = "")
@@ -234,7 +234,7 @@ namespace SyndicDocumentsData.Models
         public string DeleteDocument(String Guid)
         {
             var msg = "";
-            var rootDir = System.IO.Directory.GetParent(apPath).Parent;
+            var rootDir = System.IO.Directory.GetParent(appPath).Parent;
             var rootPath = rootDir.FullName;
             var doc = GetDocumentFromGuid(Guid);
             if (doc != null)
