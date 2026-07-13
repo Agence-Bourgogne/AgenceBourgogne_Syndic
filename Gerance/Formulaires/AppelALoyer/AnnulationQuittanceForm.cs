@@ -12,7 +12,6 @@ using GeranceData.Entites;
 using CommonProjectsPartners.Utils;
 using CommonProjectsPartners.Entites;
 using GeranceData.Common;
-using Microsoft.Reporting.WinForms;
 using Npgsql;
 
 namespace Gerance.Formulaires.AppelALoyer
