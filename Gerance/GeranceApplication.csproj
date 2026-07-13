@@ -3,31 +3,23 @@
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net48</TargetFramework>
-
 		<UseWindowsForms>true</UseWindowsForms>
-
 		<RootNamespace>Gerance</RootNamespace>
 		<AssemblyName>Gerance</AssemblyName>
-
 		<ApplicationIcon>logo-ab2.ico</ApplicationIcon>
 		<StartupObject>Gerance.GeranceApplication</StartupObject>
-
-		<!-- Conserve AssemblyInfo.cs existant -->
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-
-		<!-- Compatible WinForms ancien -->
 		<LangVersion>latest</LangVersion>
+
+		<Product>Gerance</Product>
+		<AssemblyVersion>1.0.0.47</AssemblyVersion>
+		<FileVersion>1.0.0.47</FileVersion>
 	</PropertyGroup>
 
-
-	<!-- NuGet -->
 	<ItemGroup>
 		<PackageReference Include="Npgsql" Version="8.0.9" />
 		<PackageReference Include="Microsoft.ReportingServices.ReportViewerControl.Winforms" Version="150.1652.0" />
 	</ItemGroup>
-
-
-	<!-- Références framework -->
+	
 	<ItemGroup>
 		<Reference Include="System" />
 		<Reference Include="System.Core" />
@@ -39,7 +31,6 @@
 		<Reference Include="System.IO.Compression" />
 	</ItemGroup>
 
-	<!-- Ressources WinForms -->
 	<ItemGroup>
 		<EmbeddedResource Update="Properties\Resources.resx">
 			<Generator>ResXFileCodeGenerator</Generator>
@@ -54,8 +45,6 @@
 		</Compile>
 	</ItemGroup>
 
-
-	<!-- Projets internes -->
 	<ItemGroup>
 		<ProjectReference Include="..\CommonProjectsPartners\CommonProjectsPartners.csproj" />
 		<ProjectReference Include="..\SyndicData\SyndicData.csproj" />
@@ -86,12 +75,8 @@
 		</Compile>
 	</ItemGroup>
 
-
-	<!-- Fichiers non compilés -->
 	<ItemGroup>
 		<None Include="App.config" />
 		<Content Include="logo-ab2.ico" />
 	</ItemGroup>
-
-
 </Project>

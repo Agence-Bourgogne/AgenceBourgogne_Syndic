@@ -2,19 +2,10 @@
 
 	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework>
-		<OutputType>Library</OutputType>
-		<RootNamespace>SyndicData</RootNamespace>
-		<AssemblyName>SyndicData</AssemblyName>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<UseWindowsForms>true</UseWindowsForms>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Npgsql" Version="8.0.9" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Reference Include="System.Windows" />
 	</ItemGroup>
 
 	<ItemGroup>

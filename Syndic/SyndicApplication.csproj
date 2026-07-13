@@ -12,11 +12,16 @@
 		<ApplicationIcon>logo-ab2.ico</ApplicationIcon>
 		<ApplicationManifest>Properties\app.manifest</ApplicationManifest>
 
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
 
 		<Prefer32Bit>false</Prefer32Bit>
 		<SignAssembly>false</SignAssembly>
+
+		<AssemblyTitle>EspaceSyndic</AssemblyTitle>
+		<Product>EspaceSyndic</Product>
+
+		<AssemblyVersion>1.0.0.97</AssemblyVersion>
+		<FileVersion>1.0.0.97</FileVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)'=='Debug'">

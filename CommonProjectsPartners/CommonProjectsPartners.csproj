@@ -2,17 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework>
-		<OutputType>Library</OutputType>
-		<RootNamespace>CommonProjectsPartners</RootNamespace>
-		<AssemblyName>CommonProjectsPartners</AssemblyName>
 		<LangVersion>latest</LangVersion>
-		<UseWindowsForms>true</UseWindowsForms>
-		<AssemblyTitle>CommonProjectsPartners</AssemblyTitle>
-		<Product>CommonProjectsPartners</Product>
-		<Copyright>Copyright © 2014</Copyright>
-		<AssemblyVersion>1.0.0.0</AssemblyVersion>
-		<FileVersion>1.0.0.0</FileVersion>
-		<ComVisible>false</ComVisible>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -49,7 +39,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-
 		<Reference Include="Microsoft.CSharp" />
 		<Reference Include="PresentationCore" />
 

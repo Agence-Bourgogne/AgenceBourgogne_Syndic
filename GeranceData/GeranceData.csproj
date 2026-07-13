@@ -2,14 +2,6 @@
 
 	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework>
-		<OutputType>Library</OutputType>
-
-		<RootNamespace>GeranceData</RootNamespace>
-		<AssemblyName>GeranceData</AssemblyName>
-
-		<!-- Conserve Properties\AssemblyInfo.cs -->
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-
 		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 
