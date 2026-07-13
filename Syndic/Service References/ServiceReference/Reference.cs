@@ -8,6 +8,9 @@
 // </auto-generated>
 
 
+using System.ServiceModel;
+using System.ServiceModel.Channels;
+
 namespace EspaceSyndic.ServiceReference {
     using System.Runtime.Serialization;
     using System;
@@ -361,23 +364,48 @@ namespace EspaceSyndic.ServiceReference {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public partial class ServiceClient : System.ServiceModel.ClientBase<EspaceSyndic.ServiceReference.IService>, EspaceSyndic.ServiceReference.IService {
         
-        public ServiceClient() {
+        private static Binding CreateBinding()
+        {
+            var binding = new BasicHttpBinding
+            {
+                MaxReceivedMessageSize = int.MaxValue,
+                MaxBufferSize = int.MaxValue,
+                MaxBufferPoolSize = int.MaxValue,
+                OpenTimeout = TimeSpan.FromMinutes(10),
+                CloseTimeout = TimeSpan.FromMinutes(10),
+                SendTimeout = TimeSpan.FromMinutes(10),
+                ReceiveTimeout = TimeSpan.FromMinutes(10),
+                ReaderQuotas =
+                {
+                    MaxArrayLength = int.MaxValue,
+                    MaxBytesPerRead = int.MaxValue,
+                    MaxDepth = int.MaxValue,
+                    MaxNameTableCharCount = int.MaxValue,
+                    MaxStringContentLength = int.MaxValue
+                }
+            };
+
+            return binding;
         }
-        
-        public ServiceClient(string endpointConfigurationName) : 
-                base(endpointConfigurationName) {
+
+        public ServiceClient()
+            : this(new EndpointAddress("https://localhost:44373/Service.svc"))
+        {
         }
-        
-        public ServiceClient(string endpointConfigurationName, string remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
+
+        public ServiceClient(string serviceUrl)
+            : this(new EndpointAddress(serviceUrl))
+        {
         }
-        
-        public ServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
+
+        public ServiceClient(EndpointAddress remoteAddress)
+            : base(CreateBinding(), remoteAddress)
+        {
         }
-        
-        public ServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(binding, remoteAddress) {
+
+        public ServiceClient(Binding binding, EndpointAddress remoteAddress)
+            : base(binding, remoteAddress)
+        {
         }
         
         public string CreateUser(string Code, string Password) {

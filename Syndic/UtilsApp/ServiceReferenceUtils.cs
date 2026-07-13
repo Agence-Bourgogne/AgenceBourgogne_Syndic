@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.ServiceModel;
+
 namespace EspaceSyndic.UtilsApp
 {
     public class ServiceReferenceUtils
@@ -10,7 +12,7 @@ namespace EspaceSyndic.UtilsApp
         {
             if (sc == null)
             {
-                sc = new ServiceReference.ServiceClient("BasicHttpBinding_IService", serveur);
+                sc = new ServiceReference.ServiceClient(new BasicHttpBinding(), new EndpointAddress(serveur));
             }
             return sc;
         }

@@ -42,6 +42,8 @@ namespace EspaceSyndic.Formulaires.Controles
             if (ValidatingControl != null)
                 ValidatingControl(sender, e);
         }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public String Reference
         {
             get
@@ -53,6 +55,8 @@ namespace EspaceSyndic.Formulaires.Controles
                 tbRefImmeuble.Text = value;
             }
         }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool Invalid
         {
             set
