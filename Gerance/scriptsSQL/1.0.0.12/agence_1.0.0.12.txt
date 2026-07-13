@@ -1,0 +1,2 @@
+﻿UPDATE agence.factures set fournisseur_id = '4A17BE3E9CB24BB782BFFC3E25892D29', code_reglement = 5 where fournisseur_id = 'AB';
+ALTER TABLE agence.factures ADD COLUMN libelle_fournisseur character varying;

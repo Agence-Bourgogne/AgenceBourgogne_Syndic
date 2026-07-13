@@ -1,0 +1,4 @@
+﻿alter table agence.lot_description alter column avance TYPE numeric(11,2);select 
+
+delete from agence.lot_repartition
+where lot_id like'*%';

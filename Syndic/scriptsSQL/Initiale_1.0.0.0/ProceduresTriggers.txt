@@ -1,0 +1,28 @@
+﻿CREATE OR REPLACE FUNCTION agence.immeuble_trg()
+  RETURNS trigger AS
+$BODY$declare
+	cmd character varying;
+begin
+if TG_OP = 'INSERT' then
+	
+	cmd := 'select public.create_immeuble(''@agence'', ''@ref_immeuble'')';
+	cmd := replace (cmd, '@agence', new.agence);
+	cmd := replace (cmd, '@ref_immeuble', new.reference);
+	raise notice  'note %', cmd;
+	execute cmd;
+end if;
+return new;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION agence.immeuble_trg()
+  OWNER TO postgres;
+language 'plpgsql' volatile cost 100;
+
+CREATE TRIGGER immeuble_trg
+  AFTER INSERT OR UPDATE
+  ON agence.immeuble
+  FOR EACH ROW
+  EXECUTE PROCEDURE agence.immeuble_trg();
+

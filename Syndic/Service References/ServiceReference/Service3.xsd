@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/SyndicDocumentsData.Entities" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/SyndicDocumentsData.Entities" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="UserEntitie">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseEntitie">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="UserEntitie" nillable="true" type="tns:UserEntitie" />
+  <xs:complexType name="BaseEntitie">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Guid" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="audit_created" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="audit_updated" nillable="true" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BaseEntitie" nillable="true" type="tns:BaseEntitie" />
+  <xs:complexType name="ArrayOfUserEntitie">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UserEntitie" nillable="true" type="tns:UserEntitie" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUserEntitie" nillable="true" type="tns:ArrayOfUserEntitie" />
+  <xs:complexType name="ArrayOfChildrenEntitie">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ChildrenEntitie" nillable="true" type="tns:ChildrenEntitie" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfChildrenEntitie" nillable="true" type="tns:ArrayOfChildrenEntitie" />
+  <xs:complexType name="ChildrenEntitie">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseEntitie">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Copro_id" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Immeuble_id" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="User_id" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ChildrenEntitie" nillable="true" type="tns:ChildrenEntitie" />
+  <xs:complexType name="ArrayOfDocumentEntitie">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DocumentEntitie" nillable="true" type="tns:DocumentEntitie" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDocumentEntitie" nillable="true" type="tns:ArrayOfDocumentEntitie" />
+  <xs:complexType name="DocumentEntitie">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseEntitie">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="copro_id" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="icon" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="immeuble_id" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="text" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DocumentEntitie" nillable="true" type="tns:DocumentEntitie" />
+</xs:schema>

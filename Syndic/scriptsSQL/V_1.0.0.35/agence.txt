@@ -1,0 +1,2 @@
+﻿update agence.liasse set statut=1
+where statut = 0 and id in ( select liasse_id from agence.saisie_facture where base_repart='0')

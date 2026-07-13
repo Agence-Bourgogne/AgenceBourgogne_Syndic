@@ -1,0 +1,7 @@
+﻿ALTER TABLE agence.coproprietaire ALTER COLUMN vente RENAME huissier;
+ALTER TABLE agence.coproprietaire ALTER COLUMN huissier SET DEFAULT false;
+
+CREATE UNIQUE INDEX lot_description_immeuble_id_numero_lot_idx
+  ON agence.lot_description
+  USING btree
+  (immeuble_id COLLATE pg_catalog."default", numero_lot);

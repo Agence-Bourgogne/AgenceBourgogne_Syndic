@@ -1,0 +1,725 @@
+﻿DROP TABLE if exists agence.proprietaire;
+CREATE TABLE agence.proprietaire
+(
+	id character varying(32) not null default public.get_uuid(),
+	reference character varying not null,
+	nom character varying not null,
+	prenom character varying(50),  
+	adresse character varying(255),
+	codepostal character varying(5),
+	ville character varying(50),
+	telephone character varying(16),
+	email character varying,
+	pays character varying,
+	note character varying,
+	taux_honoraire integer,
+	comptable_id character varying,
+
+	dernier_cheque numeric(9,2),
+	debit numeric(9,2),
+	credit numeric(9,2),
+	libelle character varying,
+
+	  paiement_type integer,
+	  rib character varying,
+	  banque character varying,
+
+	statut integer,
+	audit_created timestamp without time zone default now(),
+	audit_created_by character varying(35),
+	audit_updated timestamp without time zone,
+	audit_updated_by character varying(35),
+  
+	CONSTRAINT proprietaire_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.proprietaire
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.proprietaire TO postgres;
+GRANT SELECT, UPDATE, INSERT, TRUNCATE, DELETE ON TABLE agence.proprietaire TO public;
+CREATE UNIQUE INDEX proprietaire_reference_idx
+  ON agence.proprietaire
+  USING btree
+  (reference COLLATE pg_catalog."default");
+
+DROP TABLE if exists agence.comptable;
+CREATE TABLE agence.comptable
+(
+	id character varying(32) not null default public.get_uuid(),
+	reference character varying not null,
+	nom character varying not null,
+	prenom character varying(50),  
+	adresse character varying(255),
+	codepostal character varying(5),
+	ville character varying(50),
+	telephone character varying(16),
+	email character varying,
+	pays character varying,
+	note character varying,
+	statut integer,
+	audit_created timestamp without time zone default now(),
+	audit_created_by character varying(35),
+	audit_updated timestamp without time zone,
+	audit_updated_by character varying(35),
+	CONSTRAINT comptable_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.comptable
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.comptable TO postgres;
+GRANT SELECT, UPDATE, INSERT, TRUNCATE, DELETE ON TABLE  agence.comptable TO public;
+CREATE UNIQUE INDEX comptable_reference_idx
+  ON agence.comptable
+  USING btree
+  (reference COLLATE pg_catalog."default");
+
+DROP TABLE if exists agence.locataire;
+CREATE TABLE agence.locataire
+(
+	id character varying(32) not null default public.get_uuid(),
+	reference character varying not null,
+	nom character varying not null,
+	prenom character varying(50),  
+	adresse character varying(255),
+	codepostal character varying(5),
+	ville character varying(50),
+	telephone character varying(16),
+	email character varying,
+	pays character varying,
+	note character varying,
+	comptable_id character varying,
+	total_du decimal(9,2),
+	statut integer,
+	audit_created timestamp without time zone default now(),
+	audit_created_by character varying(35),
+	audit_updated timestamp without time zone,
+	audit_updated_by character varying(35),
+	CONSTRAINT locataire_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.locataire
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.locataire TO postgres;
+GRANT SELECT, UPDATE, INSERT, TRUNCATE, DELETE ON TABLE agence.locataire TO public;
+CREATE UNIQUE INDEX locataire_reference_idx
+  ON agence.locataire
+  USING btree
+  (reference COLLATE pg_catalog."default");
+
+DROP TABLE if exists agence.nature;
+
+CREATE TABLE agence.nature
+(
+  id character varying(32) NOT NULL DEFAULT get_uuid(),
+  reference character varying NOT NULL,
+  nom character varying NOT NULL,
+  charge_locative integer,
+  declaration character varying(3),
+  reference_comptabilite character varying,
+  statut integer DEFAULT 1,
+  audit_created timestamp without time zone DEFAULT now(),
+  audit_created_by character varying(35),
+  audit_updated timestamp without time zone,
+  audit_updated_by character varying(35),
+  type_charge integer NOT NULL DEFAULT 0,
+  budgetisable boolean,
+  CONSTRAINT nature_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.nature
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.nature TO postgres;
+GRANT SELECT, UPDATE, INSERT, TRUNCATE, DELETE ON TABLE agence.nature TO public;
+
+-- Index: agence.nature_reference_idx
+
+-- DROP INDEX agence.nature_reference_idx;
+
+CREATE UNIQUE INDEX nature_reference_idx
+  ON agence.nature
+  USING btree
+  (reference COLLATE pg_catalog."default");
+
+
+DROP TABLE if exists agence.biens;
+CREATE TABLE agence.biens
+(
+  id character varying(32) NOT NULL DEFAULT get_uuid(),
+  reference character varying NOT NULL,
+  numero_lot integer,
+  batiment character varying,
+  escalier character varying,
+  etage character varying,
+  type_construction integer,
+  nom character varying NOT NULL,
+  adresse character varying,
+  codepostal character varying(5),
+  ville character varying(50),
+  proprietaire_id character varying(32) NOT NULL,
+  locataire_id character varying(32),
+  date_entree date,
+  taxe integer,
+  valeur_taxe numeric(9,2),
+  montant_loyer numeric(9,2),
+  montant_charges numeric(9,2),
+  montant_caution numeric(9,2),
+  montant_augmentation numeric(9,2),
+  divers1 character varying,
+  montant_divers1 numeric(9,2),
+  divers2 character varying,
+  montant_divers2 numeric(9,2),
+  divers3 character varying,
+  montant_divers3 numeric(9,2),
+  divers4 character varying,
+  montant_divers4 numeric(9,2),
+  divers5 character varying,
+  montant_divers5 numeric(9,2),
+  dernier_indice integer,
+  periodicite_loyer integer,
+  mois_augmentation integer,
+  duree_bail integer,
+  date_quittance date,
+  periodicite_augmentation integer,
+  type_bien integer,
+  type_charge integer,
+  frais_bail numeric(9,2),
+  honoraires_locataire numeric(9,2),
+  montant_du decimal(9,2),
+  statut integer DEFAULT 1,
+  audit_created timestamp without time zone DEFAULT now(),
+  audit_created_by character varying(35),
+  audit_updated timestamp without time zone,
+  audit_updated_by character varying(35),
+  CONSTRAINT biens_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.biens
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.biens TO postgres;
+GRANT SELECT, UPDATE, INSERT, TRUNCATE, DELETE ON TABLE agence.biens TO public;
+
+-- Index: agence.biens_reference_numero_lot_idx
+
+-- DROP INDEX agence.biens_reference_numero_lot_idx;
+
+CREATE INDEX biens_reference_numero_lot_idx
+  ON agence.biens
+  USING btree
+  (reference COLLATE pg_catalog."default", numero_lot);
+
+DROP TABLE if exists agence.indices;
+
+CREATE TABLE agence.indices
+(
+  id character varying(32) NOT NULL DEFAULT get_uuid(),
+  reference character varying,
+  annee integer,
+  trimestre integer,
+  indice numeric(9,2),
+  variation numeric(9,2),
+  audit_created timestamp without time zone DEFAULT now(),
+  audit_created_by character varying(35),
+  audit_updated timestamp without time zone,
+  audit_updated_by character varying(35),
+  CONSTRAINT indices_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.indices
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.indices TO postgres;
+GRANT SELECT, UPDATE, INSERT, TRUNCATE, DELETE ON TABLE agence.indices TO public;
+
+CREATE UNIQUE INDEX indices_annee_trimestre_idx
+  ON agence.indices
+  USING btree
+  (reference, annee, trimestre);
+
+  DROP TABLE if exists agence.reglements;
+
+CREATE TABLE agence.reglements
+(
+  id character varying(32) NOT NULL DEFAULT get_uuid(),
+  bien_id character varying(32) NOT NULL,
+  proprietaire_id character varying(32) NOT NULL,
+  locataire_id character varying(32),
+  date_reglement date,
+  libelle character varying,
+  debit numeric(9,2),
+  credit numeric(9,2),
+  code_reglement integer,
+  tire character varying,
+  banque_tire character varying,
+  base_honoraire numeric(9,2),
+  charges numeric(9,2),
+  honoraire_locataire numeric(9,2),
+  augmentation numeric(9,2),
+  frais_bail numeric(9,2),
+  valeur_taxe numeric(9,2),
+  divers1 character varying,
+  montant_divers1 numeric(9,2),
+  divers2 character varying,
+  montant_divers2 numeric(9,2),
+  divers3 character varying,
+  montant_divers3 numeric(9,2),
+  divers4 character varying,
+  montant_divers4 numeric(9,2),
+  divers5 character varying,
+  montant_divers5 numeric(9,2),
+
+  statut integer DEFAULT 1,
+
+  audit_created timestamp without time zone DEFAULT now(),
+  audit_created_by character varying(35),
+  audit_updated timestamp without time zone,
+  audit_updated_by character varying(35),
+  CONSTRAINT reglements_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.reglements
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.reglements TO postgres;
+GRANT SELECT, UPDATE, INSERT, TRUNCATE, DELETE ON TABLE agence.reglements TO public;
+
+CREATE INDEX reglements_date_reglement_idx
+  ON agence.reglements
+  USING btree
+  (date_reglement);
+
+ DROP TABLE if exists agence.quittances;
+CREATE TABLE agence.quittances
+(
+  id character varying(32) NOT NULL DEFAULT get_uuid(),
+  bien_id character varying(32) NOT NULL,
+  proprietaire_id character varying(32) NOT NULL,
+  locataire_id character varying(32),
+  date_quittance date,
+  montant_quittance numeric(9,2),
+  montant_loyer numeric(9,2),
+  montant_charge numeric(9,2),
+  montant_augmentation numeric(9,2),
+  honoraire_locataire numeric(9,2),
+  frais_bail numeric(9,2),
+  valeur_taxe numeric(9,2),
+  divers1 character varying,
+  montant_divers1 numeric(9,2),
+  divers2 character varying,
+  montant_divers2 numeric(9,2),
+  divers3 character varying,
+  montant_divers3 numeric(9,2),
+  divers4 character varying,
+  montant_divers4 numeric(9,2),
+  divers5 character varying,
+  montant_divers5 numeric(9,2),
+
+  statut integer DEFAULT 1,
+
+  audit_created timestamp without time zone DEFAULT now(),
+  audit_created_by character varying(35),
+  audit_updated timestamp without time zone,
+  audit_updated_by character varying(35),
+  CONSTRAINT quittances_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.quittances
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.quittances TO postgres;
+GRANT SELECT, UPDATE, INSERT, TRUNCATE, DELETE ON TABLE agence.quittances TO public;
+
+CREATE INDEX quittances_date_quittance_idx
+  ON agence.quittances
+  USING btree
+  (date_quittance);
+
+DROP TABLE if exists agence.comptable;
+CREATE TABLE agence.comptable
+(
+	id character varying(32) not null default public.get_uuid(),
+	reference character varying not null,
+	nom character varying not null,
+	prenom character varying(50),  
+	adresse character varying(255),
+	codepostal character varying(5),
+	ville character varying(50),
+	telephone character varying(16),
+	email character varying,
+	pays character varying,
+	note character varying,
+	statut integer,
+	audit_created timestamp without time zone default now(),
+	audit_created_by character varying(35),
+	audit_updated timestamp without time zone,
+	audit_updated_by character varying(35),
+	CONSTRAINT comptable_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.comptable
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.comptable TO postgres;
+GRANT SELECT, UPDATE, INSERT, TRUNCATE, DELETE ON TABLE  agence.comptable TO public;
+CREATE UNIQUE INDEX comptable_reference_idx
+  ON agence.comptable
+  USING btree
+  (reference COLLATE pg_catalog."default");
+
+DROP TABLE if exists agence.locataire;
+CREATE TABLE agence.locataire
+(
+	id character varying(32) not null default public.get_uuid(),
+	reference character varying not null,
+	nom character varying not null,
+	prenom character varying(50),  
+	adresse character varying(255),
+	codepostal character varying(5),
+	ville character varying(50),
+	telephone character varying(16),
+	email character varying,
+	pays character varying,
+	note character varying,
+	comptable_id character varying,
+	total_du decimal(9,2),
+	statut integer,
+	audit_created timestamp without time zone default now(),
+	audit_created_by character varying(35),
+	audit_updated timestamp without time zone,
+	audit_updated_by character varying(35),
+	CONSTRAINT locataire_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.locataire
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.locataire TO postgres;
+GRANT SELECT, UPDATE, INSERT, TRUNCATE, DELETE ON TABLE agence.locataire TO public;
+CREATE UNIQUE INDEX locataire_reference_idx
+  ON agence.locataire
+  USING btree
+  (reference COLLATE pg_catalog."default");
+
+DROP TABLE if exists agence.nature;
+
+CREATE TABLE agence.nature
+(
+  id character varying(32) NOT NULL DEFAULT get_uuid(),
+  reference character varying NOT NULL,
+  nom character varying NOT NULL,
+  charge_locative integer,
+  declaration character varying(3),
+  reference_comptabilite character varying,
+  statut integer DEFAULT 1,
+  audit_created timestamp without time zone DEFAULT now(),
+  audit_created_by character varying(35),
+  audit_updated timestamp without time zone,
+  audit_updated_by character varying(35),
+  type_charge integer NOT NULL DEFAULT 0,
+  budgetisable boolean,
+  CONSTRAINT nature_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.nature
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.nature TO postgres;
+GRANT SELECT, UPDATE, INSERT, TRUNCATE, DELETE ON TABLE agence.nature TO public;
+
+-- Index: agence.nature_reference_idx
+
+-- DROP INDEX agence.nature_reference_idx;
+
+CREATE UNIQUE INDEX nature_reference_idx
+  ON agence.nature
+  USING btree
+  (reference COLLATE pg_catalog."default");
+
+
+DROP TABLE if exists agence.biens;
+CREATE TABLE agence.biens
+(
+  id character varying(32) NOT NULL DEFAULT get_uuid(),
+  reference character varying NOT NULL,
+  numero_lot integer,
+  batiment character varying,
+  escalier character varying,
+  etage character varying,
+  type_construction integer,
+  nom character varying NOT NULL,
+  adresse character varying,
+  codepostal character varying(5),
+  ville character varying(50),
+  proprietaire_id character varying(32) NOT NULL,
+  locataire_id character varying(32),
+  date_entree date,
+  taxe integer,
+  valeur_taxe numeric(9,2),
+  montant_loyer numeric(9,2),
+  montant_charges numeric(9,2),
+  montant_caution numeric(9,2),
+  montant_augmentation numeric(9,2),
+  divers1 character varying,
+  montant_divers1 numeric(9,2),
+  divers2 character varying,
+  montant_divers2 numeric(9,2),
+  divers3 character varying,
+  montant_divers3 numeric(9,2),
+  divers4 character varying,
+  montant_divers4 numeric(9,2),
+  divers5 character varying,
+  montant_divers5 numeric(9,2),
+  dernier_indice integer,
+  periodicite_loyer integer,
+  mois_augmentation integer,
+  duree_bail integer,
+  date_quittance date,
+  periodicite_augmentation integer,
+  type_bien integer,
+  type_charge integer,
+  frais_bail numeric(9,2),
+  honoraires_locataire numeric(9,2),
+  montant_du decimal(9,2),
+  statut integer DEFAULT 1,
+  audit_created timestamp without time zone DEFAULT now(),
+  audit_created_by character varying(35),
+  audit_updated timestamp without time zone,
+  audit_updated_by character varying(35),
+  CONSTRAINT biens_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.biens
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.biens TO postgres;
+GRANT SELECT, UPDATE, INSERT, TRUNCATE, DELETE ON TABLE agence.biens TO public;
+
+-- Index: agence.biens_reference_numero_lot_idx
+
+-- DROP INDEX agence.biens_reference_numero_lot_idx;
+
+CREATE INDEX biens_reference_numero_lot_idx
+  ON agence.biens
+  USING btree
+  (reference COLLATE pg_catalog."default", numero_lot);
+
+DROP TABLE if exists agence.indices;
+
+CREATE TABLE agence.indices
+(
+  id character varying(32) NOT NULL DEFAULT get_uuid(),
+  reference character varying,
+  annee integer,
+  trimestre integer,
+  indice numeric(9,2),
+  variation numeric(9,2),
+  audit_created timestamp without time zone DEFAULT now(),
+  audit_created_by character varying(35),
+  audit_updated timestamp without time zone,
+  audit_updated_by character varying(35),
+  CONSTRAINT indices_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.indices
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.indices TO postgres;
+GRANT SELECT, UPDATE, INSERT, TRUNCATE, DELETE ON TABLE agence.indices TO public;
+
+CREATE UNIQUE INDEX indices_annee_trimestre_idx
+  ON agence.indices
+  USING btree
+  (reference, annee, trimestre);
+
+  DROP TABLE if exists agence.reglements;
+
+CREATE TABLE agence.reglements
+(
+  id character varying(32) NOT NULL DEFAULT get_uuid(),
+  bien_id character varying(32) NOT NULL,
+  proprietaire_id character varying(32) NOT NULL,
+  locataire_id character varying(32),
+  date_reglement date,
+  libelle character varying,
+  debit numeric(9,2),
+  credit numeric(9,2),
+  code_reglement integer,
+  tire character varying,
+  banque_tire character varying,
+  base_honoraire numeric(9,2),
+  charges numeric(9,2),
+  honoraire_locataire numeric(9,2),
+  augmentation numeric(9,2),
+  frais_bail numeric(9,2),
+  valeur_taxe numeric(9,2),
+  divers1 character varying,
+  montant_divers1 numeric(9,2),
+  divers2 character varying,
+  montant_divers2 numeric(9,2),
+  divers3 character varying,
+  montant_divers3 numeric(9,2),
+  divers4 character varying,
+  montant_divers4 numeric(9,2),
+  divers5 character varying,
+  montant_divers5 numeric(9,2),
+
+  statut integer DEFAULT 1,
+
+  audit_created timestamp without time zone DEFAULT now(),
+  audit_created_by character varying(35),
+  audit_updated timestamp without time zone,
+  audit_updated_by character varying(35),
+  CONSTRAINT reglements_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.reglements
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.reglements TO postgres;
+GRANT SELECT, UPDATE, INSERT, TRUNCATE, DELETE ON TABLE agence.reglements TO public;
+
+CREATE INDEX reglements_date_reglement_idx
+  ON agence.reglements
+  USING btree
+  (date_reglement);
+
+  DROP TABLE if exists agence.factures;
+
+CREATE TABLE agence.factures
+(
+  id character varying(32) NOT NULL DEFAULT get_uuid(),
+  bien_id character varying(32) NOT NULL,
+  proprietaire_id character varying(32) NOT NULL,
+  locataire_id character varying(32),
+  fournisseur_id character varying(32),
+  nature_id character varying(32),
+  date_facture date,
+  libelle character varying,
+  debit numeric(9,2),
+  credit numeric(9,2),
+  code_reglement integer,
+
+  statut integer DEFAULT 1,
+
+  audit_created timestamp without time zone DEFAULT now(),
+  audit_created_by character varying(35),
+  audit_updated timestamp without time zone,
+  audit_updated_by character varying(35),
+  CONSTRAINT factures_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.factures
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.factures TO postgres;
+GRANT SELECT, UPDATE, INSERT, TRUNCATE, DELETE ON TABLE agence.factures TO public;
+
+CREATE INDEX factures_date_reglement_idx
+  ON agence.factures
+  USING btree
+  (date_facture);
+
+
+DROP TABLE if exists agence.regul_charges;
+CREATE TABLE agence.regul_charges
+(
+  id character varying(32) NOT NULL DEFAULT get_uuid(),
+  bien_id character varying(32) NOT NULL,
+  proprietaire_id character varying(32) NOT NULL,
+  locataire_id character varying(32),
+  nature_id character varying(32),
+  date_debut date,
+  date_fin date,
+  date_saisie date,
+  debit numeric(9,2),
+
+  statut integer DEFAULT 1,
+
+  audit_created timestamp without time zone DEFAULT now(),
+  audit_created_by character varying(35),
+  audit_updated timestamp without time zone,
+  audit_updated_by character varying(35),
+  CONSTRAINT regul_charges_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.regul_charges
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.regul_charges TO postgres;
+GRANT SELECT, UPDATE, INSERT, TRUNCATE, DELETE ON TABLE agence.regul_charges TO public;
+
+DROP TABLE if exists agence.compte_proprietaire;
+CREATE TABLE agence.compte_proprietaire
+(
+  id character varying(32) NOT NULL DEFAULT get_uuid(),
+  proprietaire_id character varying(32) NOT NULL,
+  date_ecriture date,
+  libelle character varying, 
+  debit numeric(9,2),
+  credit numeric(9,2),
+
+  statut integer DEFAULT 1,
+
+  audit_created timestamp without time zone DEFAULT now(),
+  audit_created_by character varying(35),
+  audit_updated timestamp without time zone,
+  audit_updated_by character varying(35),
+  CONSTRAINT compte_proprietaire_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.compte_proprietaire
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.compte_proprietaire TO postgres;
+GRANT SELECT, UPDATE, INSERT, TRUNCATE, DELETE ON TABLE agence.compte_proprietaire TO public;
+
+
+DROP TABLE if exists agence.documents;
+CREATE TABLE agence.documents
+(
+  id character varying(32) NOT NULL DEFAULT get_uuid(),
+  document_type character varying, 
+  reference character varying(32) NOT NULL,
+  date_document date,
+  libelle character varying, 
+
+  document_image bytea,
+
+
+  statut integer DEFAULT 1,
+
+  audit_created timestamp without time zone DEFAULT now(),
+  audit_created_by character varying(35),
+  audit_updated timestamp without time zone,
+  audit_updated_by character varying(35),
+  CONSTRAINT documents_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.documents
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.documents TO postgres;
+GRANT SELECT, UPDATE, INSERT, TRUNCATE, DELETE ON TABLE agence.documents TO public;
+

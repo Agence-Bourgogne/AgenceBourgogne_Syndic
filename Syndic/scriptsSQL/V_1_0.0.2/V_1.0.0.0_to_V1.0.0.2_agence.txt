@@ -1,0 +1,107 @@
+﻿
+alter table agence.commentaire_immeuble rename to aide_immeuble;
+
+-- update agence.aide_immeuble set code = 'CONVOCATION' WHERE CODE='TEXTE';
+
+CREATE INDEX lot_repartition_reference_idx
+  ON agence.lot_repartition
+  USING btree
+  (reference COLLATE pg_catalog."default");
+
+ALTER TABLE agence.operation ADD COLUMN saisie_id character varying(32);
+alter table agence.saisie_remise_cheque rename to saisie_reglement;
+
+alter TABLE agence.nature ADD COLUMN type_charge integer;
+alter TABLE agence.nature ADD COLUMN budgetisable boolean;
+
+DROP TABLE IF EXISTS agence.exercice_comptable;
+
+CREATE TABLE agence.exercice_comptable
+(
+  id character varying(32) NOT NULL DEFAULT get_uuid(),
+  immeuble_id character varying NOT NULL,
+  reference character varying NOT NULL,
+  nom character varying NOT NULL,
+  date_deb date NOT NULL,
+  date_fin date,
+  statut integer NOT NULL DEFAULT 0,
+  audit_created timestamp without time zone NOT NULL DEFAULT now(),
+  audit_created_by character varying,
+  audit_updated timestamp without time zone,
+  audit_updated_by character varying,
+  CONSTRAINT exercice_comptable_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+
+ALTER TABLE agence.exercice_comptable
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.exercice_comptable TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE agence.exercice_comptable TO public;
+
+CREATE unique INDEX exercice_comptable_immeuble_id_reference_idx
+  ON agence.exercice_comptable
+  USING btree
+  (immeuble_id COLLATE pg_catalog."default", reference COLLATE pg_catalog."default");
+
+
+DROP TABLE IF exists agence.budget;
+
+CREATE TABLE agence.budget
+(
+  id character varying(32) NOT NULL DEFAULT get_uuid(),
+  exercice_id character varying NOT NULL,
+  reference character varying NOT NULL,
+  version integer default 1,
+  statut integer,
+  audit_created timestamp without time zone DEFAULT now(),
+  audit_created_by character varying(35),
+  audit_updated timestamp without time zone,
+  audit_updated_by character varying(35),
+  CONSTRAINT budget_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.budget
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.budget TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE agence.budget TO public;
+CREATE UNIQUE INDEX budget_exercice_id_reference_version_idx
+  ON agence.budget
+  USING btree
+  (exercice_id COLLATE pg_catalog."default", reference COLLATE pg_catalog."default", version);
+
+
+DROP TABLE IF exists agence.budget_ligne;
+
+CREATE TABLE agence.budget_ligne
+(
+  id character varying(32) NOT NULL DEFAULT get_uuid(),
+  budget_id character varying NOT NULL,
+  nature_id character varying NOT NULL,
+  base_repart character varying NOT NULL,
+  montant numeric(11,2),
+  statut integer,
+  audit_created timestamp without time zone DEFAULT now(),
+  audit_created_by character varying(35),
+  audit_updated timestamp without time zone,
+  audit_updated_by character varying(35),
+  CONSTRAINT budget_ligne_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.budget_ligne
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.budget_ligne TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE agence.budget_ligne TO public;
+
+CREATE INDEX budget_reference_idx
+  ON agence.budget
+  USING btree
+  (budget_id COLLATE pg_catalog."default", reference COLLATE pg_catalog."default");
+
+
+alter table agence.operation rename solde to global;

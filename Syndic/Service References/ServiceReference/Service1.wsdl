@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Service" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://syndic.fullflash.fr/ServiceDocuments/Service.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://syndic.fullflash.fr/ServiceDocuments/Service.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://syndic.fullflash.fr/ServiceDocuments/Service.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/SyndicDocumentsData.Entities" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IService_CreateUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateUser" />
+  </wsdl:message>
+  <wsdl:message name="IService_CreateUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_UploadPartFile_InputMessage">
+    <wsdl:part name="parameters" element="tns:UploadPartFile" />
+  </wsdl:message>
+  <wsdl:message name="IService_UploadPartFile_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UploadPartFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_CloseFile_InputMessage">
+    <wsdl:part name="parameters" element="tns:CloseFile" />
+  </wsdl:message>
+  <wsdl:message name="IService_CloseFile_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CloseFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetUserFromCode_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserFromCode" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetUserFromCode_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserFromCodeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetUserFromGuid_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserFromGuid" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetUserFromGuid_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserFromGuidResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetAllUsers_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllUsers" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetAllUsers_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllUsersResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetUserCoproprietaires_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserCoproprietaires" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetUserCoproprietaires_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserCoproprietairesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetCoproChildrens_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCoproChildrens" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetCoproChildrens_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCoproChildrensResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddCopro_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddCopro" />
+  </wsdl:message>
+  <wsdl:message name="IService_AddCopro_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddCoproResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_DeleteUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteUser" />
+  </wsdl:message>
+  <wsdl:message name="IService_DeleteUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_DeleteCopro_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteCopro" />
+  </wsdl:message>
+  <wsdl:message name="IService_DeleteCopro_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteCoproResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetListDocuments_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetListDocuments" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetListDocuments_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetListDocumentsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_DeleteDocument_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteDocument" />
+  </wsdl:message>
+  <wsdl:message name="IService_DeleteDocument_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteDocumentResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_Connected_InputMessage">
+    <wsdl:part name="parameters" element="tns:Connected" />
+  </wsdl:message>
+  <wsdl:message name="IService_Connected_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ConnectedResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_UpdateUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateUser" />
+  </wsdl:message>
+  <wsdl:message name="IService_UpdateUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateUserResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IService">
+    <wsdl:operation name="CreateUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/CreateUser" message="tns:IService_CreateUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/CreateUserResponse" message="tns:IService_CreateUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UploadPartFile">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/UploadPartFile" message="tns:IService_UploadPartFile_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/UploadPartFileResponse" message="tns:IService_UploadPartFile_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CloseFile">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/CloseFile" message="tns:IService_CloseFile_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/CloseFileResponse" message="tns:IService_CloseFile_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserFromCode">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetUserFromCode" message="tns:IService_GetUserFromCode_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetUserFromCodeResponse" message="tns:IService_GetUserFromCode_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserFromGuid">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetUserFromGuid" message="tns:IService_GetUserFromGuid_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetUserFromGuidResponse" message="tns:IService_GetUserFromGuid_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllUsers">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetAllUsers" message="tns:IService_GetAllUsers_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetAllUsersResponse" message="tns:IService_GetAllUsers_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserCoproprietaires">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetUserCoproprietaires" message="tns:IService_GetUserCoproprietaires_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetUserCoproprietairesResponse" message="tns:IService_GetUserCoproprietaires_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCoproChildrens">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetCoproChildrens" message="tns:IService_GetCoproChildrens_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetCoproChildrensResponse" message="tns:IService_GetCoproChildrens_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddCopro">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/AddCopro" message="tns:IService_AddCopro_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/AddCoproResponse" message="tns:IService_AddCopro_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/DeleteUser" message="tns:IService_DeleteUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/DeleteUserResponse" message="tns:IService_DeleteUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCopro">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/DeleteCopro" message="tns:IService_DeleteCopro_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/DeleteCoproResponse" message="tns:IService_DeleteCopro_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetListDocuments">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetListDocuments" message="tns:IService_GetListDocuments_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetListDocumentsResponse" message="tns:IService_GetListDocuments_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteDocument">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/DeleteDocument" message="tns:IService_DeleteDocument_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/DeleteDocumentResponse" message="tns:IService_DeleteDocument_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Connected">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/Connected" message="tns:IService_Connected_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/ConnectedResponse" message="tns:IService_Connected_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/UpdateUser" message="tns:IService_UpdateUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/UpdateUserResponse" message="tns:IService_UpdateUser_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IService" type="tns:IService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CreateUser">
+      <soap:operation soapAction="http://tempuri.org/IService/CreateUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UploadPartFile">
+      <soap:operation soapAction="http://tempuri.org/IService/UploadPartFile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CloseFile">
+      <soap:operation soapAction="http://tempuri.org/IService/CloseFile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserFromCode">
+      <soap:operation soapAction="http://tempuri.org/IService/GetUserFromCode" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserFromGuid">
+      <soap:operation soapAction="http://tempuri.org/IService/GetUserFromGuid" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllUsers">
+      <soap:operation soapAction="http://tempuri.org/IService/GetAllUsers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserCoproprietaires">
+      <soap:operation soapAction="http://tempuri.org/IService/GetUserCoproprietaires" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCoproChildrens">
+      <soap:operation soapAction="http://tempuri.org/IService/GetCoproChildrens" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddCopro">
+      <soap:operation soapAction="http://tempuri.org/IService/AddCopro" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteUser">
+      <soap:operation soapAction="http://tempuri.org/IService/DeleteUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCopro">
+      <soap:operation soapAction="http://tempuri.org/IService/DeleteCopro" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetListDocuments">
+      <soap:operation soapAction="http://tempuri.org/IService/GetListDocuments" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteDocument">
+      <soap:operation soapAction="http://tempuri.org/IService/DeleteDocument" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Connected">
+      <soap:operation soapAction="http://tempuri.org/IService/Connected" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateUser">
+      <soap:operation soapAction="http://tempuri.org/IService/UpdateUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Service">
+    <wsdl:port name="BasicHttpBinding_IService" binding="tns:BasicHttpBinding_IService">
+      <soap:address location="http://syndic.fullflash.fr/ServiceDocuments/Service.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

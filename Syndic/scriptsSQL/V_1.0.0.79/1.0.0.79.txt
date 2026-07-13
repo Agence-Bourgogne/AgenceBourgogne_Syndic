@@ -1,0 +1,14 @@
+﻿ALTER TABLE agence.repart_individuelle ADD COLUMN ref_cpt integer default 1;
+ALTER TABLE agence.operation ADD COLUMN ref_cpt integer default 1;
+
+
+Ajout parametre IMPRESSION, HEADER_AGENCE, Agence Bourgogne
+Ajout parametre IMPRESSION, HEADER_DESCRIPTION :
+
+SYNDIC DE COPROPRIETES
+LOCATIONS-TRANSACTIONS
+45 RUE DES CARMES
+45000 ORLEANS
+TELEPHONE 02 38 53 48 27
+TELECOPIE 02 38 54 34 09
+EMAIL agence.bourgogne@cegetel.net

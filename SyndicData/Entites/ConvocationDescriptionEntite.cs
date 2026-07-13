@@ -1,0 +1,48 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data;
+using System.Reflection;
+using CommonProjectsPartners.Entites;
+
+namespace SyndicData.Entites
+{
+    public class ConvocationDescriptionEntite : AbstractBaseEntite
+    {
+        public string convocation_id;
+        public int numero_ordre;
+        public string description;
+        public int votants;
+        public int approuves;
+        public int abstensions;
+        public int refuses;
+        public int statut;
+
+        public ConvocationDescriptionEntite()
+        {
+            id = "";
+            setValues(null);
+        }
+        public ConvocationDescriptionEntite(DataRow row)
+        {
+            setValues(row);
+        }
+        public override void setValues(DataRow row)
+        {
+            FieldInfo[] members = GetType().GetFields();
+
+            updatables.Clear();
+            updatables.Add(new UpdateField("convocation_id", true, members));
+            updatables.Add(new UpdateField("numero_ordre", true, members));
+            updatables.Add(new UpdateField("description", true, members));
+            updatables.Add(new UpdateField("votants", true, members));
+            updatables.Add(new UpdateField("approuves", true, members));
+            updatables.Add(new UpdateField("abstensions", true, members));
+            updatables.Add(new UpdateField("refuses", true, members));
+            updatables.Add(new UpdateField("statut", true, members));
+            base.setValues(row);
+        }
+    }
+}

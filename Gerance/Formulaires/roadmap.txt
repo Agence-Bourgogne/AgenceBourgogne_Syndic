@@ -1,0 +1,154 @@
+﻿1.0.0.47
+	- Appel à loyer : Lettres pour les dates en cas de loyer trimestriel
+	- Paramétrage des impressions
+	- Gestion du Pays 
+
+1.0.0.46
+	- Correction Cumul Frais agence sur Recap Loyer pour impots
+
+1.0.0.45
+	- Correction appels à loyer
+
+1.0.0.44
+	- Si bien Taxe = 0 = > Tva = 0
+	- Gestion du bien sur Quittance d'entrée'
+
+1.0.0.43
+	- Quittance d'entrée agrandir Honoraires
+	- Réglements de locataire plus affecté à un bien
+
+1.0.0.42
+	- Quittance d'entree bug gestion des dates
+
+1.0.0.41
+	- Problèmes des Comptables avec référence Vide
+	- Reédition d'un appel à loyer tenir compte de la date de dernière quittance
+	- Comptable référence à blanc protégée
+
+1.0.0.40
+	- Modification periodicite loyer
+	- Civilités impression quittances
+	- Dates fin de période
+	- Edition => charges
+	- Gestion du solde Fiche Proprietaire
+
+1.0.0.39 
+	- Frais Administratifs * 2 pour relevés honoraires
+
+1.0.0.38
+	- Honoraires nlle location * 2
+
+1.0.0.37
+	- Report des soldes Négatifs en premier
+	- Gestion du champs etat de lieux
+	- Mantis 291
+	- Gestion de l'etat des lieux
+	
+1.0.0.36
+	- Report des soldes Négatifs
+
+1.0.0.35
+	- Correction Update Facture Honoraires
+
+1.0.0.34
+	- Correction Releves Releves Honoraires (Etats des Lieux)
+
+1.0.0.33
+	- Mantis 272 (Etats des lieux)
+	- Mantis 279 (Adresse et ref sur Etat fical Impôts)
+	- Mantis 229 (Civilités Propriétaires)
+	- Mantis 228 (Civilités Locataires)
+	- Accès au filtre sur Bien,  Proprio, Locataires
+
+1.0.0.32
+	- Gestion Actif/Inactif des Biens
+	- Gestion Actif/Inactif des Locataires
+	- Gestion Actif/Inactif des Proprietaires
+	- Edition Compte Proprietaire Reglements trié ds ordre de saisie (Mantis 271)
+	- Saisie Reglements de loyers Raccourcis ne remplace plus le texte (Mantis 257)
+	- Selection du reglement modifié (Mantis 254)
+	- Tri des factures en saisie (Mantis 253)
+	- Impression comptes proprio sans réglements(Mantis 270)
+	- Maj comptes proprio sans réglements(Mantis 270)
+
+1.0.0.31
+	- Correction Mise en page Releves Honoraires Propriétaires 
+
+1.0.0.30
+	- Correction reglements invalides des données de reprise
+	- En récapitulatif loyer et frais par ligne fiscale filtre sur les lignes fiscales N° vide
+	- Modification récapitulatif loyer et frais (Mantis 232) Hormis Liste des propriétaires
+	- Parametrage Reference Ligne Fiscale LOYERS
+
+1.0.0.29
+	- Correction pour impression reglement proprietaire pour gérer les factures et réglements annulés
+	- Correction pour impression reglement proprietaire déduction honoraire_locataire du reglement
+
+1.0.0.28
+	- Correction Creation Factures Honoraires Montants < 0 (Mantis 224)
+	- Correction Compte propriétaires, Pas de réglements mais Factures (Mantis 225)
+	- Possibilite de modifier le libelle d'un reglement
+
+1.0.0.27
+	- Correction Impression Réglements Propriétaire
+
+1.0.0.26
+	- Correction Génération Factures Proriétaires
+
+1.0.0.25
+	- Correction Solde sur Quittance d'entree
+	- Impression Quittance Correction date de Fin sur Loyer Trimestriel
+	- Impression Quittance synchorinzation des Dates de Fin / Date de début
+	- Liste Factures Acces au Filtre Locataire
+	- Generation des Factures Proprietaires ne multiplie plus par 2 les Honoraires Nvlle Location
+	- Compte propriétaires Ordre de tri utilise aussi la nature
+
+1.0.0.24
+	- Liste Virements Loyers Propriétaires Cumul sur compte si Existe sinon sur Nom
+	- Liste Virements Mise en page plus de rupture sur Proprietaire
+	- Liste Virements Cumul des Loyers Tient Compte des factures à montant négatif
+
+1.0.0.23
+	- Correction Formulaire de recherche multiple (acces aux fiches Par ID)
+
+1.0.0.22
+	- Aide/Modifications
+	- Relevé Honoraires Nom du locataire et pas qui à fait le chèque
+	- Virements à faire au propiétaires Cumul des Loyers 
+	- Nouveau Formulaire de recherche Multiple ( Bien, Proprietaire, Locataire)
+	- Fichiers=> Immeubles	: Bouton de Filtre
+	- Fichiers=> Locataires	: Bouton de Filtre
+	- Fichiers=> Proprietaires	: Bouton de Filtre
+
+1.0.0.21
+	- Nom du locataire sur Rélevé honoraires
+	- Marge sur Rapport Quittance d'entree 
+	- Révision Impression Compte Proprio
+	- Total Impression Reglement Proprietaire
+	- Rupture Impression Reglement Proprietaire
+	- Maj Compte Locataire n'affiche qu'une seule fois Le proprio
+	- Honoraires Locataire sur Appel à loyer / Quittance
+	- Reimpression d'une quittance
+	- RAZ Hono_loc et Etat des lieux
+
+1.0.0.20
+	- Frais (Etat des Lieux) sur Appel à Loyer
+	- Frais (Etat des Lieux) sur Quittance
+	- Quittance entree = Quittance Habituelle
+	- Filtre locataire Sur Maj Dossiers Locataires
+	- Raz Frais Bail sur UpdateDossier
+	- Ajout Raccourcis Clavier sur saisie Réglements
+	- Retards de paiements modification de la requete d'éval
+	- Nom et Adresse Comptable sur Appel à Loyer
+	- Position adresse sur retards et Mise en demeure
+	- Nom et Adresse Comptable sur Retard et Mise en demeure
+	- Mantis 151 reference et nom locataire
+
+1.0.0.19
+	- Imrimer => Rapport
+	- Ajout Check Sur AppelALoyerListe pour loyer = 0
+	- BienController ORDER 'from table B'
+	- Correction de la Fiche Quittance (Annul/Modif)
+	- Fiche Entree Locataire
+	- Libelle sur Fiche Bien
+	- Tri sur Impression Compte Proprio

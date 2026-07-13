@@ -1,0 +1,71 @@
+﻿select reference, nom, count(reference) from agence.nature
+group by reference, nom
+having count(reference) > 1;
+
+select * from agence.fournisseur
+where reference in
+(
+select reference  from agence.fournisseur
+group by reference, nom
+having count(reference) > 1
+)
+
+select * from agence.coproprietaire
+where reference in
+(
+select reference  from agence.coproprietaire
+group by reference, nom
+having count(reference) > 1
+)
+
+select * from agence.immeuble
+where reference in
+(
+select reference  from agence.immeuble
+group by reference, nom
+having count(reference) > 1
+)
+
+select distinct immeuble.reference
+FROM 
+  agence.operation, 
+  agence.immeuble, 
+  agence.nature
+WHERE 
+  operation.immeuble_id = immeuble.id AND
+  operation.nature_id = nature.id AND
+  coproprietaire_id LIKE '*%';
+
+SELECT 
+  immeuble.reference, 
+  operation.date_operation, 
+  operation.type_mouvement, 
+  operation.type_operation, 
+  operation.lot_id, 
+  operation.base_repart, 
+  operation.debit, 
+  operation.credit, 
+  operation.statut, 
+  operation.libelle, 
+  nature.reference, 
+  nature.nom, 
+  operation.coproprietaire_id, 
+  lot_description.date_changement, 
+  coproprietaire.reference, 
+  coproprietaire.nom, 
+  coproprietaire.vente
+FROM 
+  agence.operation, 
+  agence.immeuble, 
+  agence.nature, 
+  agence.lot_description, 
+  agence.coproprietaire
+WHERE 
+  operation.immeuble_id = immeuble.id AND
+  operation.nature_id = nature.id AND
+  operation.lot_id = lot_description.id AND
+  lot_description.coproprietaire_id = coproprietaire.id AND
+  operation.coproprietaire_id LIKE '*%';
+
+select * from agence.coproprietaire 
+where id not in (select coproprietaire_id from agence.lot_description);

@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <Body>
+    <ReportItems>
+      <Rectangle Name="Rectangle1">
+        <ReportItems>
+          <Subreport Name="Subreport1">
+            <ReportName>ConvocationViergeReport</ReportName>
+            <Parameters>
+              <Parameter Name="DateEntete">
+                <Value>=Parameters!DateEntete.Value</Value>
+              </Parameter>
+              <Parameter Name="DateAssemblee">
+                <Value>=Parameters!DateAssemblee.Value</Value>
+              </Parameter>
+              <Parameter Name="HeureAssemblee">
+                <Value>=Parameters!HeureAssemblee.Value</Value>
+              </Parameter>
+              <Parameter Name="OrdreDuJour">
+                <Value>=Parameters!OrdreDuJour.Value</Value>
+              </Parameter>
+              <Parameter Name="LieuAssemblee">
+                <Value>=Parameters!LieuAssemblee.Value</Value>
+              </Parameter>
+              <Parameter Name="Convocation">
+                <Value>=Parameters!Convocation.Value</Value>
+              </Parameter>
+              <Parameter Name="repart_immeuble">
+                <Value>=Parameters!repart_immeuble.Value</Value>
+              </Parameter>
+              <Parameter Name="paragraphe_decret">
+                <Value>=Parameters!paragraphe_decret.Value</Value>
+              </Parameter>
+              <Parameter Name="paragraphe_decret_contenu">
+                <Value>=Parameters!paragraphe_decret_contenu.Value</Value>
+              </Parameter>
+              <Parameter Name="Header_Description">
+                <Value>=Parameters!Header_Description.Value</Value>
+              </Parameter>
+              <Parameter Name="Header_Agence">
+                <Value>=Parameters!Header_Agence.Value</Value>
+              </Parameter>
+              <Parameter Name="DateLimite">
+                <Value>=Parameters!DateLimite.Value</Value>
+              </Parameter>
+            </Parameters>
+            <Top>0.3175cm</Top>
+            <Height>0.92368cm</Height>
+            <Width>17.95104cm</Width>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingTop>1cm</PaddingTop>
+            </Style>
+          </Subreport>
+        </ReportItems>
+        <KeepTogether>true</KeepTogether>
+        <Top>0.3175cm</Top>
+        <Left>0.42016cm</Left>
+        <Height>1.24118cm</Height>
+        <Width>18.0537cm</Width>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Rectangle>
+      <Rectangle Name="Rectangle2">
+        <ReportItems>
+          <Subreport Name="Subreport3">
+            <ReportName>EspaceSyndic.Impressions.Convocations.ConvocFeuillePresence.rdlc</ReportName>
+            <Parameters>
+              <Parameter Name="DateAssemblee">
+                <Value>=Parameters!DateAssemblee.Value</Value>
+              </Parameter>
+              <Parameter Name="TypeAssemblee">
+                <Value>=Parameters!Convocation.Value</Value>
+              </Parameter>
+              <Parameter Name="Header_Description">
+                <Value>=Parameters!Header_Description.Value</Value>
+              </Parameter>
+              <Parameter Name="Header_Agence">
+                <Value>=Parameters!Header_Agence.Value</Value>
+              </Parameter>
+            </Parameters>
+            <Top>0.3cm</Top>
+            <Height>0.96275cm</Height>
+            <Width>17.95104cm</Width>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingTop>1cm</PaddingTop>
+            </Style>
+          </Subreport>
+        </ReportItems>
+        <PageBreak>
+          <BreakLocation>Start</BreakLocation>
+        </PageBreak>
+        <KeepTogether>true</KeepTogether>
+        <Top>1.73507cm</Top>
+        <Left>0.42016cm</Left>
+        <Height>1.26275cm</Height>
+        <Width>18.0537cm</Width>
+        <ZIndex>1</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Rectangle>
+      <Rectangle Name="Rectangle3">
+        <ReportItems>
+          <Subreport Name="Subreport2">
+            <ReportName>ConvocationReport</ReportName>
+            <Parameters>
+              <Parameter Name="DateEntete">
+                <Value>=Parameters!DateEntete.Value</Value>
+              </Parameter>
+              <Parameter Name="DateAssemblee">
+                <Value>=Parameters!DateAssemblee.Value</Value>
+              </Parameter>
+              <Parameter Name="HeureAssemblee">
+                <Value>=Parameters!HeureAssemblee.Value</Value>
+              </Parameter>
+              <Parameter Name="OrdreDuJour">
+                <Value>=Parameters!OrdreDuJour.Value</Value>
+              </Parameter>
+              <Parameter Name="LieuAssemblee">
+                <Value>=Parameters!LieuAssemblee.Value</Value>
+              </Parameter>
+              <Parameter Name="Convocation">
+                <Value>=Parameters!Convocation.Value</Value>
+              </Parameter>
+              <Parameter Name="repart_immeuble">
+                <Value>=Parameters!repart_immeuble.Value</Value>
+              </Parameter>
+              <Parameter Name="paragraphe_decret">
+                <Value>=Parameters!paragraphe_decret.Value</Value>
+              </Parameter>
+              <Parameter Name="paragraphe_decret_contenu">
+                <Value>=Parameters!paragraphe_decret_contenu.Value</Value>
+              </Parameter>
+              <Parameter Name="Header_Description">
+                <Value>=Parameters!Header_Description.Value</Value>
+              </Parameter>
+              <Parameter Name="Header_Agence">
+                <Value>=Parameters!Header_Agence.Value</Value>
+              </Parameter>
+              <Parameter Name="DateLimite">
+                <Value>=Parameters!DateLimite.Value</Value>
+              </Parameter>
+            </Parameters>
+            <Top>0.10907cm</Top>
+            <Height>0.85312cm</Height>
+            <Width>17.95104cm</Width>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Subreport>
+        </ReportItems>
+        <PageBreak>
+          <BreakLocation>Start</BreakLocation>
+        </PageBreak>
+        <KeepTogether>true</KeepTogether>
+        <Top>4.97337cm</Top>
+        <Left>0.42016cm</Left>
+        <Height>1.17062cm</Height>
+        <Width>18.0537cm</Width>
+        <ZIndex>2</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Rectangle>
+      <Rectangle Name="Rectangle4">
+        <ReportItems>
+          <Subreport Name="Subreport4">
+            <ReportName>ConvocationModeleReport</ReportName>
+            <Parameters>
+              <Parameter Name="Convocation">
+                <Value>=Parameters!Convocation.Value</Value>
+              </Parameter>
+              <Parameter Name="AnneeAssemblee">
+                <Value>=Parameters!AnneeAssemblee.Value</Value>
+              </Parameter>
+              <Parameter Name="DateAssembleeText">
+                <Value>=Parameters!DateAssembleeText.Value</Value>
+              </Parameter>
+              <Parameter Name="AdresseImmeuble">
+                <Value>=Parameters!AdresseImmeuble.Value</Value>
+              </Parameter>
+              <Parameter Name="HeureAssemblee">
+                <Value>=Parameters!HeureAssemblee.Value</Value>
+              </Parameter>
+              <Parameter Name="DateAssemblee">
+                <Value>=Parameters!DateAssemblee.Value</Value>
+              </Parameter>
+              <Parameter Name="LieuAssemblee">
+                <Value>=Parameters!LieuAssemblee.Value</Value>
+              </Parameter>
+              <Parameter Name="OrdreDuJour">
+                <Value>=Parameters!OrdreDuJour.Value</Value>
+              </Parameter>
+              <Parameter Name="Header_Agence">
+                <Value>=Parameters!Header_Agence.Value</Value>
+              </Parameter>
+              <Parameter Name="Header_Description">
+                <Value>=Parameters!Header_Description.Value</Value>
+              </Parameter>
+              <Parameter Name="DateLimite">
+                <Value>=Parameters!DateLimite.Value</Value>
+              </Parameter>
+            </Parameters>
+            <Top>0.3cm</Top>
+            <Height>0.85312cm</Height>
+            <Width>17.95104cm</Width>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Subreport>
+        </ReportItems>
+        <PageBreak>
+          <BreakLocation>Start</BreakLocation>
+        </PageBreak>
+        <KeepTogether>true</KeepTogether>
+        <Top>3.17421cm</Top>
+        <Left>0.42016cm</Left>
+        <Height>1.17062cm</Height>
+        <Width>18.0537cm</Width>
+        <ZIndex>3</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Rectangle>
+    </ReportItems>
+    <Height>2.61935in</Height>
+    <Style />
+  </Body>
+  <Width>19cm</Width>
+  <Page>
+    <PageHeight>29.7cm</PageHeight>
+    <PageWidth>21cm</PageWidth>
+    <InteractiveHeight>29.7cm</InteractiveHeight>
+    <InteractiveWidth>21cm</InteractiveWidth>
+    <LeftMargin>0.8cm</LeftMargin>
+    <RightMargin>0cm</RightMargin>
+    <TopMargin>0.8cm</TopMargin>
+    <BottomMargin>1cm</BottomMargin>
+    <ColumnSpacing>0.13cm</ColumnSpacing>
+    <Style />
+  </Page>
+  <AutoRefresh>0</AutoRefresh>
+  <ReportParameters>
+    <ReportParameter Name="DateEntete">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="DateAssemblee">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="HeureAssemblee">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="OrdreDuJour">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="LieuAssemblee">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Convocation">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="repart_immeuble">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="paragraphe_decret">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="AdresseImmeuble">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="AnneeAssemblee">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="DateAssembleeText">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="paragraphe_decret_contenu">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Header_Agence">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Header_Description">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="DateLimite">
+      <DataType>String</DataType>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+  <Language>fr-FR</Language>
+  <rd:ReportUnitType>Cm</rd:ReportUnitType>
+  <rd:ReportID>523a69be-0b3b-4911-926e-15fc791a40f1</rd:ReportID>
+</Report>

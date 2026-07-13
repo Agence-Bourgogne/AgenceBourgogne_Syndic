@@ -1,0 +1,35 @@
+﻿update agence.immeuble set nom = replace(nom, 'Ch?t', 'Chât'), rue = replace(rue, 'Ch?t', 'Chât');
+update agence.immeuble set nom = replace(nom, 'Coudi?re', 'Coudière'), rue = replace(rue, 'Coudi?re', 'Coudière');
+update agence.immeuble set nom = replace(nom, 'R?publi', 'Républi'), rue = replace(rue, 'R?publi', 'Républi');
+update agence.immeuble set nom = replace(nom, 'Solf?rino', 'Solférino'), rue = replace(rue, 'Solf?rino', 'Solférino');
+update agence.immeuble set nom = replace(nom, 'Th?ophile', 'Théophile'), rue = replace(rue, 'Th?ophile', 'Théophile');
+update agence.immeuble set nom = replace(nom, 'Jaur?s', 'Jaurès'), rue = replace(rue, 'Jaur?s', 'Jaurès');
+
+select * from agence.immeuble where nom like '%?%' or rue like '%?%';
+
+
+update agence.fournisseur set nom = replace(nom, 'Ch?t', 'Chât'), adresse= replace(adresse, 'Ch?t', 'Chât');
+update agence.fournisseur set adresse= replace(adresse, 'Bo?te', 'Boite');
+update agence.fournisseur set adresse= replace(adresse, 'c?dex', 'cedex');
+update agence.fournisseur set adresse= replace(adresse, 'all?e', 'allée');
+update agence.fournisseur set adresse = replace(adresse, 'Jaur?s', 'Jaurès');
+update agence.fournisseur set adresse = replace(adresse, 'arch?', 'arché');
+update agence.fournisseur set adresse = replace(adresse, 'L?on', 'Léon');
+
+select * from agence.fournisseur where nom like '%?%' or adresse like '%?%';
+
+update agence.coproprietaire set adresse = replace(adresse, 'C?teaux', 'Côteaux');
+update agence.coproprietaire set adresse = replace(adresse, 'Hel?ne', 'Helène');
+update agence.coproprietaire set adresse = replace(adresse, 'Cl?mendi?re', 'Clémendiere');
+update agence.coproprietaire set adresse = replace(adresse, 'G?n?', 'Géné');
+update agence.coproprietaire set adresse = replace(adresse, 'i?re', 'iere');
+update agence.coproprietaire set adresse = replace(adresse, 'R?s', 'Rés');
+update agence.coproprietaire set adresse = replace(adresse, 'n?', 'n°');
+update agence.coproprietaire set adresse = replace(adresse, 'ib?ra', 'ibéra');
+
+select * from agence.coproprietaire  where nom like '%?%' or adresse like '%?%' or prenom like '%?%';
+
+select i.reference, i.nom, date_deb 
+from agence.immeuble i
+join agence.exercice_comptable on immeuble_id = i.id
+where date_deb < '2014-01-01';

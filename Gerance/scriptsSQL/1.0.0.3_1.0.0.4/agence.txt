@@ -1,0 +1,11 @@
+﻿ALTER TABLE agence.biens ADD COLUMN zone_tendue integer;
+ALTER TABLE agence.biens ALTER COLUMN zone_tendue SET DEFAULT 0;
+
+ALTER TABLE agence.biens ADD COLUMN meuble integer;
+ALTER TABLE agence.biens ALTER COLUMN meuble SET DEFAULT 0;
+
+ALTER TABLE agence.biens ADD COLUMN colocation_type integer;
+ALTER TABLE agence.biens ALTER COLUMN colocation_type SET DEFAULT 0;
+
+ALTER TABLE agence.biens ADD COLUMN colocation_nb integer;
+ALTER TABLE agence.biens ALTER COLUMN colocation_nb SET DEFAULT 0;

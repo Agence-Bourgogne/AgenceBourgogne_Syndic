@@ -1,0 +1,2 @@
+﻿ALTER TABLE agence.saisie_appel_fond ADD COLUMN lot_id character varying;
+ALTER TABLE agence.saisie_facture ADD COLUMN lot_id character varying;

@@ -1,0 +1,162 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using SyndicData.Common;
+using SyndicData.Controller;
+using SyndicData.Entites;
+using CommonProjectsPartners.Utils;
+using CommonProjectsPartners.Common;
+using System.IO;
+
+namespace EspaceSyndic.Formulaires.Config
+{
+    public partial class ModelesDocumentsForm : Form
+    {
+        public ModelesDocumentsForm()
+        {
+            InitializeComponent();
+        }
+
+        private void ModelesDocumentsForm_Load(object sender, EventArgs e)
+        {
+            ParametreEntite groupe = ParametreController.controller.getGroupeEntite("MODELES"); 
+            if ( groupe != null )
+            { 
+                dataGridView.DataSource = ParametreController.controller.getListFromEntiteGroupe(groupe);
+                DataGridViewColumnCollection cols = dataGridView.Columns;
+                cols["id"].Visible = false;
+                cols["groupe"].Visible = false;
+                cols["code"].Visible = false;
+                cols["nom"].Visible = false;
+                cols["param_1"].Visible = false;
+                cols["param_2"].Visible = false;
+                cols["param_3"].Visible = false;
+                cols["iparam_1"].Visible = false;
+                cols["iparam_2"].Visible = false;
+                cols["iparam_3"].Visible = false;
+                cols["audit_created"].Visible = false;
+                cols["audit_created_by"].Visible = false;
+                cols["audit_updated"].Visible = false;
+                cols["audit_updated_by"].Visible = false;
+                string[] columnsDef = groupe.param_1.Split(',');
+                foreach (string coldef in columnsDef)
+                {
+                    string[] paramCol = coldef.Replace(" as ", ":").Split(':');
+                    string colName = paramCol[0].ToLower().Trim();
+                    cols[colName].Visible = true;
+                    if (paramCol.Length > 1)
+                        cols[colName].HeaderText = paramCol[1];
+                    else
+                        cols[colName].HeaderText = colName;
+                }
+                ControlsWindows.ToTitleCase(cols);
+            }
+        }
+
+        private void BtnEdit_Click(object sender, EventArgs e)
+        {
+            if ( dataGridView.SelectedRows.Count > 0  )
+            {
+                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+                if ( row != null )
+                {
+                    Console.WriteLine(row["param_1"].ToString());
+                    BaseApplication.OpenWordFile(row["param_1"].ToString());
+                }
+            }
+
+        }
+
+        private void btnExport_Click(object sender, EventArgs e)
+        {
+            if (dataGridView.SelectedRows.Count > 0)
+            {
+                String serveur_modeles = ParametresDB.getParam1("PARAMETRES_DIVERS", "SERVEUR_MODELES");
+                if (!serveur_modeles.EndsWith("\\"))
+                    serveur_modeles += "\\";
+
+                try
+                {
+                    foreach (DataGridViewRow rowGrid in dataGridView.SelectedRows)
+                    {
+                        DataRowView row = (DataRowView)rowGrid.DataBoundItem;
+                        if (row != null)
+                        {
+                            string fileSrc = row["param_1"].ToString();
+                            FileInfo fInfoSrc = new FileInfo(fileSrc);
+                            FileInfo fInfoDst = new FileInfo(serveur_modeles + fInfoSrc.Name);
+                            bool bWriteFile = true;
+                            if (fInfoDst.LastWriteTime > fInfoSrc.LastWriteTime)
+                            {
+                                if (DialogResult.Yes != MessageBox.Show("Le fichier sur le serveur est plus récent que le fichier local\r\nVoulez-vous Continuer", "Attention", MessageBoxButtons.YesNo))
+                                    bWriteFile = false;
+                            }
+                            if (bWriteFile)
+                            {
+                                Console.WriteLine(fInfoSrc.Name);
+                                Guid g = Guid.NewGuid();
+                                
+                                File.Move(fInfoDst.FullName, fInfoDst.FullName+"."+g.ToString());
+                                File.Copy(fInfoSrc.FullName, fInfoDst.FullName);
+                            }
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+        private void btnImport_Click(object sender, EventArgs e)
+        {
+            if (dataGridView.SelectedRows.Count > 0)
+            {
+                String serveur_modeles = ParametresDB.getParam1("PARAMETRES_DIVERS", "SERVEUR_MODELES");
+                if (!serveur_modeles.EndsWith("\\"))
+                    serveur_modeles += "\\";
+
+                try
+                {
+                    foreach (DataGridViewRow rowGrid in dataGridView.SelectedRows)
+                    {
+                        DataRowView row = (DataRowView)rowGrid.DataBoundItem;
+                        if (row != null)
+                        {
+                            string fileDst = row["param_1"].ToString();
+                            FileInfo fInfoDst = new FileInfo(fileDst);
+                            FileInfo fInfoSrc = new FileInfo(serveur_modeles + fInfoDst.Name);
+                            bool bWriteFile = true;
+                            if (fInfoDst.LastWriteTime > fInfoSrc.LastWriteTime)
+                            {
+                                if (DialogResult.Yes != MessageBox.Show("Le fichier local est plus récent que le fichier sur le serveur\r\nVoulez-vous Continuer", "Attention", MessageBoxButtons.YesNo))
+                                    bWriteFile = false;
+                            }
+                            if (bWriteFile)
+                            {
+                                Console.WriteLine(fInfoSrc.Name);
+                                Guid g = Guid.NewGuid();
+
+                                File.Move(fInfoDst.FullName, fInfoDst.FullName + "." + g.ToString());
+                                File.Copy(fInfoSrc.FullName, fInfoDst.FullName);
+                            }
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+    }
+}

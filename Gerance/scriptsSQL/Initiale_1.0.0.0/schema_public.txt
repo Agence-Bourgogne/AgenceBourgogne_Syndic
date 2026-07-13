@@ -1,0 +1,77 @@
+
+
+create or replace function uuid_generate_uuid()
+returns uuid as
+$BODY$ declare 
+begin
+	return uuid_in(md5(random()::text || now()::text)::cstring);
+end; $BODY$
+language plpgsql volatile strict cost 1;
+ALTER FUNCTION uuid_generate_uuid()
+  OWNER TO postgres;
+  
+  CREATE OR REPLACE FUNCTION get_uuid()
+  RETURNS character varying AS
+$BODY$ declare
+var varchar:= uuid_generate_uuid();
+begin
+while var = uuid_generate_uuid()::varchar loop
+end loop;
+return replace(upper(uuid_generate_v4()::varchar),'-','');
+end; $BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION get_uuid()
+  OWNER TO postgres;
+
+
+drop table if exists parametres;
+
+create table parametres (
+  id character varying(32) not null default public.get_uuid(),
+  groupe character varying(20),
+  code character varying(20),
+  nom character varying(80),
+  param_1 character varying(20),
+  param_2 character varying(20),
+  param_3 character varying(20),
+  iparam_1 integer,
+  iparam_2 integer,
+  iparam_3 integer,
+  	audit_created timestamp without time zone default now(),
+	audit_created_by character varying(35),
+	audit_updated timestamp without time zone,
+	audit_updated_by character varying(35),
+
+CONSTRAINT parametres_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE parametres
+  OWNER TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE parametres TO public;
+
+
+drop table if exists audit;
+
+create table audit (
+	id character varying(32) not null default public.get_uuid(),
+  schema_entite character varying(255),
+  name_entite character varying(255),
+  entite_id character varying(32),
+  operation_entite character varying(10),
+  propertie_entite  character varying(255),
+  propertie_type character varying(255),
+  old_value character varying,
+  new_value character varying,
+  audit_date timestamp without time zone,
+  audit_user character varying(35),
+CONSTRAINT audit_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE audit
+  OWNER TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE audit TO public;

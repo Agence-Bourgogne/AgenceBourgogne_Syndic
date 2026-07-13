@@ -1,0 +1,5 @@
+﻿ALTER TABLE parametres
+   ALTER COLUMN code TYPE character varying,
+   ALTER COLUMN nom TYPE character varying,
+   ALTER COLUMN audit_updated_by TYPE character varying,
+   ALTER COLUMN audit_created_by TYPE character varying;

@@ -1,0 +1,86 @@
+CREATE SCHEMA agence_base
+  AUTHORIZATION postgres;
+
+
+GRANT ALL ON SCHEMA agence_base TO postgres;
+GRANT ALL ON SCHEMA agence_base TO public;
+COMMENT ON SCHEMA agence_base
+  IS 'base schema immeuble';
+
+  
+
+drop table if exists agence_base.immeuble_repartition;
+create table agence_base.immeuble_repartition 
+(
+	id character varying(32) not null default public.get_uuid(),
+	immeuble_id character varying not null,
+	reference character varying not null,
+	nom character varying ,
+	valeur  integer,
+	ligne integer,
+	colonne integer,
+	type_ventilation integer,
+	audit_created timestamp without time zone default now(),
+	audit_created_by character varying(35),
+	audit_updated timestamp without time zone,
+	audit_updated_by character(35),
+	CONSTRAINT immeuble_repartition_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence_base.immeuble_repartition
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence_base.immeuble_repartition TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE agence_base.immeuble_repartition TO public;
+  
+drop table if exists agence_base.lot_description;
+create table agence_base.lot_description
+(
+	id character varying(32) not null default public.get_uuid(),
+	numero_lot integer not null,
+	immeuble_id character varying not null,
+	coproprietaire_id character varying not null,
+	date_changement timestamp without time zone,
+	numero_batiment character varying,
+	numero_escalier character varying,
+	numero_etage character varying,
+	avance float,
+	audit_created timestamp without time zone default now(),
+	audit_created_by character varying(35),
+	audit_updated timestamp without time zone,
+	audit_updated_by character(35),
+	CONSTRAINT lot_description_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence_base.lot_description
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence_base.lot_description TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE agence_base.lot_description TO public;
+
+drop table if exists agence_base.lot_repartition;
+create table agence_base.lot_repartition 
+(
+	id character varying(32) not null default public.get_uuid(),
+	immeuble_id character varying not null,
+	lot_id character varying not null,
+	reference character varying not null,
+	valeur  integer,
+	ligne integer,
+	colonne integer,
+	type_ventilation integer,
+	audit_created timestamp without time zone default now(),
+	audit_created_by character varying(35),
+	audit_updated timestamp without time zone,
+	audit_updated_by character(35),
+	CONSTRAINT lot_repartition_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence_base.lot_repartition
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence_base.lot_repartition TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE agence_base.lot_repartition TO public;

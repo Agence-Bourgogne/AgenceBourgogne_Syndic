@@ -1,0 +1,139 @@
+﻿DROP TABLE IF EXISTS agence.convocation;
+
+CREATE TABLE agence.convocation
+(
+  id character varying(32) NOT NULL DEFAULT get_uuid(),
+  immeuble_id character varying NOT NULL,
+  date_asssemble date NOT NULL,
+  heure_assemblee character varying,
+  lieu_assemblee character varying,
+  type_convocation integer,
+  statut integer NOT NULL DEFAULT 0,
+  audit_created timestamp without time zone NOT NULL DEFAULT now(),
+  audit_created_by character varying,
+  audit_updated timestamp without time zone,
+  audit_updated_by character varying,
+  CONSTRAINT convocation_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+
+ALTER TABLE agence.convocation
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.convocation TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE agence.convocation TO public;
+
+CREATE UNIQUE INDEX convocation_immeuble_id_date_asssemble_idx
+  ON agence.convocation
+  USING btree
+  (immeuble_id COLLATE pg_catalog."default", date_asssemble);
+
+
+DROP TABLE IF EXISTS agence.convocation_description;
+
+CREATE TABLE agence.convocation_description
+(
+  id character varying(32) NOT NULL DEFAULT get_uuid(),
+  convocation_id character varying NOT NULL,
+  numero_ordre integer,
+  description character varying,
+  votants integer,
+  approuves integer,
+  abstensions integer,
+  refuses integer,
+  statut integer NOT NULL DEFAULT 0,
+  audit_created timestamp without time zone NOT NULL DEFAULT now(),
+  audit_created_by character varying,
+  audit_updated timestamp without time zone,
+  audit_updated_by character varying,
+  CONSTRAINT convocation_description_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+
+ALTER TABLE agence.convocation_description
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.convocation_description TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE agence.convocation_description TO public;
+
+CREATE INDEX convocation_description_convocation_id_idx
+  ON agence.convocation_description
+  USING btree
+  (convocation_id COLLATE pg_catalog."default");
+
+
+ALTER TABLE agence.aide_immeuble
+   ALTER COLUMN audit_updated_by TYPE character varying,
+   ALTER COLUMN audit_created_by TYPE character varying;
+
+ALTER TABLE agence.budget
+   ALTER COLUMN audit_updated_by TYPE character varying,
+   ALTER COLUMN audit_created_by TYPE character varying;
+
+ALTER TABLE agence.budget_ligne
+   ALTER COLUMN audit_updated_by TYPE character varying,
+   ALTER COLUMN audit_created_by TYPE character varying;
+
+ALTER TABLE agence.coproprietaire
+   ALTER COLUMN audit_updated_by TYPE character varying,
+   ALTER COLUMN audit_created_by TYPE character varying;
+
+ALTER TABLE agence.exercice_comptable
+   ALTER COLUMN audit_updated_by TYPE character varying,
+   ALTER COLUMN audit_created_by TYPE character varying;
+
+ALTER TABLE agence.fournisseur
+   ALTER COLUMN audit_updated_by TYPE character varying,
+   ALTER COLUMN audit_created_by TYPE character varying;
+
+ALTER TABLE agence.immeuble
+   ALTER COLUMN audit_updated_by TYPE character varying,
+   ALTER COLUMN audit_created_by TYPE character varying;
+
+ALTER TABLE agence.immeuble_repartition
+   ALTER COLUMN audit_updated_by TYPE character varying,
+   ALTER COLUMN audit_created_by TYPE character varying;
+
+ALTER TABLE agence.liasse
+   ALTER COLUMN audit_updated_by TYPE character varying,
+   ALTER COLUMN audit_created_by TYPE character varying;
+
+ALTER TABLE agence.lot_description
+   ALTER COLUMN audit_updated_by TYPE character varying,
+   ALTER COLUMN audit_created_by TYPE character varying;
+
+ALTER TABLE agence.lot_repartition
+   ALTER COLUMN audit_updated_by TYPE character varying,
+   ALTER COLUMN audit_created_by TYPE character varying;
+
+ALTER TABLE agence.nature
+   ALTER COLUMN audit_updated_by TYPE character varying,
+   ALTER COLUMN audit_created_by TYPE character varying;
+
+ALTER TABLE agence.operation
+   ALTER COLUMN audit_updated_by TYPE character varying,
+   ALTER COLUMN audit_created_by TYPE character varying;
+
+ALTER TABLE agence.repart_individuelle
+   ALTER COLUMN audit_updated_by TYPE character varying,
+   ALTER COLUMN audit_created_by TYPE character varying;
+
+ALTER TABLE agence.saisie_appel_fond
+   ALTER COLUMN audit_updated_by TYPE character varying,
+   ALTER COLUMN audit_created_by TYPE character varying;
+
+ALTER TABLE agence.saisie_facture
+   ALTER COLUMN audit_updated_by TYPE character varying,
+   ALTER COLUMN audit_created_by TYPE character varying;
+
+ALTER TABLE agence.saisie_reglement
+   ALTER COLUMN audit_updated_by TYPE character varying,
+   ALTER COLUMN audit_created_by TYPE character varying;
+
+
+
+
+
+

@@ -1,0 +1,2 @@
+﻿ALTER TABLE agence.proprietaire ADD COLUMN civilite integer;
+ALTER TABLE agence.locataire ADD COLUMN civilite integer;

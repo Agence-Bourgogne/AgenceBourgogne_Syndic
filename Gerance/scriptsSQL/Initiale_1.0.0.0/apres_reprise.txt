@@ -1,0 +1,15 @@
+﻿update agence.factures set libelle = 'Frais de Bail ou Administratifs' where libelle = 'Frais de Bail ou Administrat';
+
+
+update agence.biens set adresse = replace(adresse, 'i?re', 'iere');
+update agence.biens set nom = replace(nom, 'i?re', 'iere');
+update agence.biens set nom = replace(nom, 'R?s', 'Rés');
+
+select reference, nom,adresse from agence.biens where nom like '%?%' or adresse like '%?%';
+
+select reference, nom,adresse from agence.proprietaire where nom like '%?%' or adresse like '%?%';
+select reference, nom,adresse from agence.locataire where nom like '%?%' or adresse like '%?%';
+select reference, nom,adresse from agence.fournisseur where nom like '%?%' or adresse like '%?%';
+
+update agence.compte_proprietaire  set libelle = replace(libelle, 'R_glement', 'Réglement');
+update agence.compte_proprietaire  set libelle = replace(libelle, 'R?glement', 'Réglement');

@@ -1,0 +1,2 @@
+﻿ALTER TABLE agence.biens ADD COLUMN garantie_universelle integer;
+ALTER TABLE agence.biens ALTER COLUMN garantie_universelle SET DEFAULT 0;

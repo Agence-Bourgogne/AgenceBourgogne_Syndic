@@ -1,0 +1,53 @@
+﻿SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+SET search_path = public, pg_catalog;
+
+ALTER TABLE parametres ALTER COLUMN code TYPE character varying(60);
+ALTER TABLE parametres ALTER COLUMN param_1 TYPE character varying;
+ALTER TABLE parametres ALTER COLUMN param_2 TYPE character varying;
+ALTER TABLE parametres ALTER COLUMN param_3 TYPE character varying;
+
+
+INSERT INTO parametres (groupe, code, param_1) VALUES ( 'KEY_CODE', 'F1',  '1ER JUILLET AU 31 DECEMBRE 201x');
+INSERT INTO parametres (groupe, code, param_1) VALUES ( 'KEY_CODE', 'F2', 'TAXES FONCIERES 201x');
+INSERT INTO parametres (groupe, code, param_1) VALUES ( 'KEY_CODE', 'F3', 'CHEQUE ');
+INSERT INTO parametres (groupe, code, param_1) VALUES ( 'KEY_CODE', 'F4', 'VIREMENT DU ');
+INSERT INTO parametres (groupe, code, param_1) VALUES ( 'KEY_CODE', 'F5', 'MANDAT DU ');
+INSERT INTO parametres (groupe, code, param_1) VALUES ( 'KEY_CODE', 'F6', 'VERSEMENT ');
+INSERT INTO parametres (groupe, code, param_1) VALUES ( 'KEY_CODE', 'F7', '1ER JUILLET 2012 AU 30 JUIN 201x');
+INSERT INTO parametres (groupe, code, param_1) VALUES ( 'KEY_CODE', 'F8', 'LETTRES RECOMMANDEES, VACATIONS');
+INSERT INTO parametres (groupe, code, param_1) VALUES ( 'KEY_CODE', 'F9', '1ER JANVIER AU 31 MARS 201x');
+INSERT INTO parametres (groupe, code, param_1) VALUES ( 'KEY_CODE', 'F10', '1ER AVRIL AU 30 JUIN 201x');
+INSERT INTO parametres (groupe, code, param_1) VALUES ( 'KEY_CODE', 'F11', '1ER JUILLET AU 30 SEPTEMBRE 201x');
+INSERT INTO parametres (groupe, code, param_1) VALUES ( 'KEY_CODE', 'F12', '1ER OCTOBRE AU 31 DECEMBRE 201x');
+
+UPDATE parametres set groupe = 'AIDE_IMMEUBLE', CODE='CONVOCATION' where groupe = 'COMMENTAIRE';
+
+INSERT INTO parametres (groupe, code, nom, iparam_1, iparam_2) VALUES ( 'TYPECHARGE', 'Courantes', 'Charges Courantes', 1, 1);
+INSERT INTO parametres (groupe, code, nom, iparam_1, iparam_2) VALUES ( 'TYPECHARGE', 'Pour travaux', 'Pour travaux', 2, 0);
+INSERT INTO parametres (groupe, code, nom, iparam_1, iparam_2) VALUES ( 'TYPECHARGE', 'Inconnu', 'Inconnu', 9, 1);
+
+
+ALTER TABLE parametres ADD COLUMN audit_created timestamp without time zone;
+ALTER TABLE parametres ALTER COLUMN audit_created SET DEFAULT now();
+ALTER TABLE parametres ADD COLUMN audit_created_by character varying(35);
+ALTER TABLE parametres ADD COLUMN audit_updated timestamp without time zone;
+ALTER TABLE parametres ADD COLUMN audit_updated_by character varying(35);
+
+UPDATE parametres set groupe = 'CIVILITE' where groupe = 'CODEENVOI';
+
+INSERT INTO parametres (groupe, code, nom, param_1, iparam_1) values ( 'HDR_GROUPE', 'CIVILITE', 'Civilités', 'code', 'iparam_1');
+INSERT INTO parametres (groupe, code, nom, param_1, iparam_1) values ( 'HDR_GROUPE', 'KEY_CODE', 'Raccourcis Clavier', 'param_1, iparam_1');
+INSERT INTO parametres (groupe, code, nom, param_1, iparam_1) values ( 'HDR_GROUPE', 'MODELES', 'Modèles Word', 'code, iparam_1');
+
+
+INSERT INTO parametres (groupe, code, nom, param_1, iparam_1) values ( 'HDR_GROUPE', 'FACTURE_REGLEMENT', 'Mode de réglement Facture', 'code,iparam_1', 12);
+
+INSERT INTO parametres (groupe, code, nom, param_1, iparam_1) values ( 'FACTURE_REGLEMENT', 'Autre', '', '', 2);
+INSERT INTO parametres (groupe, code, nom, param_1, iparam_1) values ( 'FACTURE_REGLEMENT', 'Autre', '', '', 3);
+

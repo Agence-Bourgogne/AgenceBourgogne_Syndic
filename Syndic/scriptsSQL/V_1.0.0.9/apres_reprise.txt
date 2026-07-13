@@ -1,0 +1,32 @@
+﻿DROP TABLE IF EXISTS agence.repart_individuelle;
+
+CREATE TABLE agence.repart_individuelle
+(
+  id character varying(32) NOT NULL DEFAULT get_uuid(),
+  saisie_id character varying(32) NOT NULL ,
+  type_saisie integer,
+  operation_id character varying(32) NOT NULL,
+  immeuble_id character varying NOT NULL,
+  lot_id character varying NOT NULL,
+  reference character varying NOT NULL,
+  date_reference date,
+  global numeric(9,2),
+  entrant numeric(9,2),
+  sortant numeric(9,2),
+  valeur numeric(9,2),
+  montant numeric(9,2),
+  statut integer NOT NULL DEFAULT 0,
+  audit_created timestamp without time zone NOT NULL DEFAULT now(),
+  audit_created_by character varying,
+  audit_updated timestamp without time zone,
+  audit_updated_by character varying,
+  CONSTRAINT repart_individuelle_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+
+ALTER TABLE agence.repart_individuelle
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.repart_individuelle TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE agence.repart_individuelle TO public;

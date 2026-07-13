@@ -1,0 +1,34 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Config
+{
+    public partial class ZoomParamForm : Form
+    {
+        public string txtParam = "";
+        public ZoomParamForm()
+        {
+            InitializeComponent();
+        }
+
+        private void ZoomParamForm_Load(object sender, EventArgs e)
+        {
+            tbComment.Text = txtParam;
+            btnEnter.Width = 0;
+        }
+
+        private void btnValid_Click(object sender, EventArgs e)
+        {
+            this.txtParam = tbComment.Text;
+            this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
+    }
+}

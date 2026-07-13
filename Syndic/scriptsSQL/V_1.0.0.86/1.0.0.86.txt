@@ -1,0 +1,1 @@
+﻿ALTER TABLE agence.immeuble ADD COLUMN texte_date character varying;

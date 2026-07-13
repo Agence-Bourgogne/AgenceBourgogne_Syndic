@@ -1,0 +1,249 @@
+﻿1.0.0.97
+	- Ajout des fonctionnalité d'export serveur pour Appel de fonds, convocation, additif et budget
+
+1.0.0.96
+    - Ajout colonne Email et télephone pour l'export de copropriétaire
+1.0.0.95
+
+1.0.0.94
+	- Ajout publication de document pour tout les copropriétaires
+
+1.0.0.93
+	- Amélioration Publication Documents, possibilité d'ajouts plusieurs fichiers et repertoire entier
+
+1.0.0.92
+	- Publication Documents
+
+1.0.0.91
+	- Export Relevés Fiscaux
+	- Rapport Relevés Fiscaux declaration = true
+
+1.0.0.90
+
+1.0.0.89
+	- Référence copropriété sur relevé ficaux
+	- Convocation enregister le lieu sur quitter
+
+1.0.0.88
+	- Ne plus faire apparaitre les lots désactivés dans la combo
+		de consultation de comptes proprio (Mantis 426)
+	- Convocations Feuille de présence triée par Nom en PubliPostage (Mantis 429)
+	- Duplicatas et Ecritures en retard de paiement (Mantis 427)
+	- Convocations publipostage Eliminer les lots désactivés (Mantis 425)
+	- Suppression case à cocher => Tout Cocher
+
+1.0.0.87
+	- Correction Releve Compte proprietaire (Mantis 424)
+	- Correction Impression Convocation par Publipostage (Mantis 422)
+		- (Total Tantième sur Convoc Vierge)
+		- (Total Tantième A la fin de la feuille de présence)
+	- Detail facture pour Solde Bilan possiblite de recalculer(Mantis 423)
+		- Mise à jour de l'opération
+
+1.0.0.86
+	- Base 85, ..
+	- Resize Retard paiments 
+	- Generation ecriture si duplicata (retard paiement 416)
+	- Tantièmes sur convocation (Mantis 417, 418)
+	- Coloration sur Factures et appel de fond (8x Mantis413) 
+	- Exclusion de certaines natures dans les charges privatives
+	- Update UserWeb
+	- Texte Immeuble ds Appel de Fonds
+	- Releve Compte Proprio Gérant + Huissier (Mantis 421)
+
+
+1.0.0.85
+	- Suppresion Crlf dans edition des  etiquettes
+
+1.0.0.84
+	- Correction Cloture exercice
+
+1.0.0.83
+	- Export PDF des releves Individuels
+	- Gestion des utilisateurs Web
+	- Export PDF Bilan Comptable
+	- Correction de Cloture exercice
+
+1.0.0.82
+	- Ordoner les rélévés individuels en fonction de la saisie
+
+1.0.0.81
+	- Protection pour heure non renseignée sur convocation
+
+1.0.0.80
+	- Convocations Sous Word
+	- Export Coproprietaires Actifs uniquement
+
+1.0.0.79
+	- Imprimer le pays dans l'adresse copro 
+		( Appel de fond, Releve Individuel, Convocation, Additif )
+	- Correction de la mise en page des Operations de gestion 
+	- Tri sur les listes dans Operations de gestion
+	- Fiche fournisseurs Non Modale
+	- Fiche immeubles Non Modale
+	- Fiche coproprietaires Non Modale
+	- Duplicata sur mise en demeure
+	- Gestion des Factures avec plusieurs Compteurs par coproprietaires
+	- Parametrage Impression entetes 
+
+1.0.0.78
+	- Correction 1.0.0.76 Date de fin exercice erronée
+	- Correction relevés indivuels (mantis 381)
+
+1.0.0.77
+	- Correction doublons releves fiscaux
+
+1.0.0.76
+	- Correction cloture exercice
+	- Opération de gestion Mode Admin
+	- Releves individuels Totaux erronés si Debit ou credit < 0
+	- Reglements < 0 dans la colonne Debit
+	- Tri des relances Immeuble , numéro de lot
+	- Relance 2 exemplaires si agence
+
+1.0.0.75
+	- Gestion des Mise en demeures
+	- Civilites Gérant
+	- Ecran Retard de paiements Filtre sur les actifs 
+	- Releves individuels Imprimer si statut inactif mais solde <> 0
+
+1.0.0.74
+	- Correction Montants des relances
+
+1.0.0.73
+	- Indexes dans relevés individuels
+	- Sur le fichier copropriétaires laisser la possibilité de faire une recherche sur les gérants. 
+
+1.0.0.72
+	- Si relance envoyée à un gérant faire apparaitre le nom du copropiétaire dans la lettre de relance.
+
+1.0.0.71
+	- Les immeubles désactivés n'apparaissent plus dans Commentaires immeubles
+	- Ecran convocation l'heure est à blanc par défaut
+	- Mantis 316 inversion Colonne en impression liste factures
+	- Convocation Parametrage du contenu du decret
+	- Edition Appel de Fond Parametrage FETES
+	- Operation de gestion Selection de la ligne courant après Zoom
+	- Révision Entete Feuille de présence
+
+1.0.0.70
+	- Modification du libelle facture en base 70
+	- Bug releve individuels (l specifie + 1 fois);
+
+1.0.0.69
+	- Liste des lots n'afficher que les lots actifs
+	- Plus de ligne blanche dans les formulaires de Recherche 
+	- Releves individuels n'utilise que les lots actifs
+
+1.0.0.68
+	- Efface Dates de Relance
+	- Relance Nom/Adresse Comptable si existe
+	- Mise à jour des dates de relance
+	- Releve Individuels Pas de part locative pour les commerces
+	- Saisie appels de Fonds Lot dans la liste
+	- Saisie appels de Fonds Plein Ecran possible
+	- Saisie appels de Fonds FirstDisplayedScrollingRowIndex
+	- Maj du lot facture en relance
+	- Operation gestion  (Présentation)
+	- Mise à jour des titres de base depuis saisie facture (81-85)
+
+1.0.0.67
+	- Protection modification des maj-titres immeubles
+
+1.0.0.66
+	- Controle des données
+
+1.0.0.65
+	- Mantis 283 ( Filtre sur Fichier Copro)
+
+1.0.0.64
+	- Mantis 282 (Tantiémes sur relevés Individuels)
+	- Mantis 281 (Rélevés Individuels Réglements Nature 140)
+
+1.0.0.63
+	- Mantis 280
+
+1.0.0.62 
+	- Mantis 268
+
+1.0.0.61
+	- Mantis 262 (Nom fournisseur Quand 999)
+
+1.0.0.60
+	- Mantis 252 (Suite au Verso)
+	- Mantis 258 (Releve Fiscal)
+
+1.0.0.59
+	- Mantis 260 ( Releves indiviuels )
+	- Mantis 248 ( Maj Avance )
+	- Mantis 247 ( Virgule )
+	- Mantis 246 ( Répartition Erronée )
+
+1.0.0.58
+	- Mantis 243 (Tenir Compte de la référence Lot / Repart)
+	- Mantis 242 ( Supression defitives de lot de répartition)
+	- Mantis 273 Mise à jour Impression Feuille de Présence
+
+1.0.0.57
+	- Fiche Immeuble Nouveau Desactivé => FAUX par défaut
+
+1.0.0.56
+	- Impressions Saisie Factures Regroupement par fournisseurs ( Refonte de l'impression )
+	- Saisie Facture sur modification le libelle fournissuer n'est plus remplacé par le nom fournisseur
+	- Liste fournisseur la liste est ordonnée par référence
+	- Modification Fiche Fournisseur Test sur référence invalide
+	- Visualisation Opération => Appel de fonds Si base 80 ajouter le N° de Lot
+
+1.0.0.55
+	- Feuille de Remise de clefs ajout d'une colonne N° de lot
+	- Correction Paramètrage de l'entete appel de fond
+	- Opération de gestion Enregistrement de la présentation (Clic Droit sur la liste)
+	- Feuille de Présence prénom après le nom du proprietaire
+
+1.0.0.54
+	- Depuis impression Appel de fond raccourci pour accèder au parametre du coupon
+	- Depuis Consultation Compte Propriétaire Bouton pour accèder aux retard de paiements
+	- Correction Nouvel Exercice pour Nouvel Immeuble
+	- Correction Repartition Nouvel Immeuble
+	- Activation / Désactivation d'immeuble
+	- Activation / Désactivation copro
+
+1.0.0.53
+	- Modification des modeles de documents
+	- Validation  Appel de Fond => Seuls les Copros concernés sont Imprimés ( ex R20 base 26 )
+	- Réimpression Appel de fond Choix de l'appel à Imprimer
+		 Seuls les Copros concernés sont Imprimés ( ex R20 base 26 )
+	- RéImpression de la liste des factures
+	- Modification Impression liste des factures (Mantis 198)
+
+1.0.0.52
+	- Config Parametres de Connexion 
+	- Filtre sur les retard de paiements
+
+1.0.0.51
+	- Saut de page incorrect dans impression convocations
+	- Filtre Nature reglement sur Impression Reglement
+	- Ne pas imprimer Convoc et Fiche De présence si tantième = 0
+	- Releves individuels agrandissement de la colonne Tantièmes
+	- Releves individuels si civilité = 0 Plus de point (SCI par ex)
+	- Releves Fiscaux si civilité = 0 Plus de point (SCI par ex)
+
+1.0.0.50
+	- Paramétrage Affichage saisie Facture
+	- Possibilité de mise à jour exercice
+	- Suppression de liasse vide en Saisie Facture
+	- Suppression de liasse vide en Saisie Appel de Fonds
+	- Controle de données 
+		Extraction des totaux et bilans sur .csv (Tous les immeubles)
+	- Appel de Fonds Reprise de Trésorerie Nature 140 base 81
+	- Correction Date d'Exercice
+
+1.0.0.49
+	- Aide/Modifications
+	- Possiblite de modifier le lot sur Détail Facture (BS80)
+	- Correction Facture montant négatif
+	- Impression Relevés Individuels Colonne Crédit élargie
+	- Correction Modification Facture(date)
+	- Correction Recalcul Appel de fond
+
+

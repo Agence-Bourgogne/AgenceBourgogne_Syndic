@@ -1,0 +1,473 @@
+DROP SCHEMA agence;
+
+CREATE SCHEMA agence
+AUTHORIZATION postgres;
+
+GRANT ALL ON SCHEMA agence TO postgres;
+GRANT ALL ON SCHEMA agence TO public;
+COMMENT ON SCHEMA agence
+  IS 'schema standard agence';
+
+
+DROP TABLE if exists agence.coproprietaire;
+CREATE TABLE agence.coproprietaire
+(
+	id character varying(32) not null default public.get_uuid(),
+	reference character varying not null,
+	nom character varying not null,
+	vente boolean,
+	prenom character varying(50),  
+	codenvoi integer,
+	adresse character varying(255),
+	codepostal character varying(5),
+	ville character varying(50),
+	telephone character varying(16),
+	email character varying,
+	pays character varying,
+	nomcomp character varying(50),
+	codenvcomp integer,
+	adressecomp character varying(255),
+	villecomp character varying(50),
+	codecomp character varying(5),
+	telcomp character varying(15),
+	declaration boolean,
+	drapeau varchar(5),
+	note character varying(255),
+	dateappel date,
+	daterel1 date,
+	daterel2 date,
+	daterel3 date,
+	statut integer,
+	commerce boolean,
+	audit_created timestamp without time zone default now(),
+	audit_created_by character varying(35),
+	audit_updated timestamp without time zone,
+	audit_updated_by character varying(35),
+  
+	CONSTRAINT coproprietaire_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.coproprietaire
+  OWNER TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE agence.coproprietaire TO public;
+CREATE UNIQUE INDEX coproprietaire_reference_idx
+  ON agence.coproprietaire
+  USING btree
+  (reference COLLATE pg_catalog."default");
+
+
+-- Table: immeuble
+
+DROP TABLE if exists agence.immeuble;
+
+CREATE TABLE agence.immeuble
+(
+	id character varying(32) not null default public.get_uuid(),
+	reference character varying NOT NULL,
+	nom character varying not null,
+	rue character varying(80),
+	codepostal character varying(5),
+	ville character varying(25),
+	nombrelots integer,
+	note character varying,
+	note_repart character varying,
+	datecreation date,
+	datecloture date,
+	dateass date,
+	lieuconv character varying(65),
+	soldeinitial numeric(9,2),
+	soldefin numeric(9,2),
+	comptebanque character varying(14),
+	statut integer default 1,
+	audit_created timestamp without time zone default now(),
+	audit_created_by character varying(35),
+	audit_updated timestamp without time zone,
+	audit_updated_by character varying(35),
+  
+	CONSTRAINT immeuble_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.immeuble
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.immeuble TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE agence.immeuble TO public;
+CREATE UNIQUE INDEX immeuble_reference_idx
+  ON agence.immeuble
+  USING btree
+  (reference COLLATE pg_catalog."default");
+
+
+-- Table: fournisseur
+
+DROP TABLE if exists agence.fournisseur;
+
+CREATE TABLE agence.fournisseur
+(
+	id character varying(32) not null default public.get_uuid(),
+	reference character varying not null,
+	nom character varying not null,
+	interlocuteur character varying,
+	telephone character varying(16),	
+	adresse character varying(255),
+	codepostal character varying(5),
+	ville character varying,
+	reglement integer default 0,
+	commentaire character varying,
+	siret character varying(17),
+	numsecu character varying(16),
+	codeape character varying(4),
+	numurs character varying (20),
+	compte_banque character varying,
+	iban character varying,
+	statut integer default 1,
+	audit_created timestamp without time zone default now(),
+	audit_created_by character varying(35),
+	audit_updated timestamp without time zone,
+	audit_updated_by character varying(35),
+
+	CONSTRAINT fournisseur_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.fournisseur
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.fournisseur TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE agence.fournisseur TO public;
+CREATE UNIQUE INDEX fournisseur_reference_idx
+  ON agence.fournisseur
+  USING btree
+  (reference COLLATE pg_catalog."default");
+
+
+-- Table: nature
+
+DROP TABLE if exists agence.nature;
+
+CREATE TABLE agence.nature
+(
+	id character varying(32) not null default public.get_uuid(),
+	reference character varying not null,
+	nom character varying not null,
+	charge_locative integer,
+	declaration character varying(3),
+	reference_comptabilite character varying,
+	statut integer default 1,
+	audit_created timestamp without time zone default now(),
+	audit_created_by character varying(35),
+	audit_updated timestamp without time zone,
+	audit_updated_by character varying(35),
+
+	CONSTRAINT nature_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.nature
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.nature TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE agence.nature TO public;
+CREATE UNIQUE INDEX nature_reference_idx
+  ON agence.nature
+  USING btree
+  (reference COLLATE pg_catalog."default");
+
+drop table if exists agence.immeuble_repartition;
+create table agence.immeuble_repartition 
+(
+	id character varying(32) not null default public.get_uuid(),
+	immeuble_id character varying not null,
+	reference character varying not null,
+	nom character varying ,
+	valeur  integer,
+	ligne integer,
+	colonne integer,
+	type_ventilation integer,
+	statut integer default 1,
+	audit_created timestamp without time zone default now(),
+	audit_created_by character varying(35),
+	audit_updated timestamp without time zone,
+	audit_updated_by character varying(35),
+	CONSTRAINT immeuble_repartition_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.immeuble_repartition
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.immeuble_repartition TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE agence.immeuble_repartition TO public;
+CREATE UNIQUE INDEX repartition_immeuble_ligne_colonne_idx
+  ON agence.immeuble_repartition
+  USING btree
+  (immeuble_id COLLATE pg_catalog."default", ligne, colonne);
+CREATE UNIQUE INDEX repartition_immeuble_reference_idx
+  ON agence.immeuble_repartition
+  USING btree
+  (immeuble_id COLLATE pg_catalog."default", reference COLLATE pg_catalog."default");
+
+drop table if exists agence.lot_description;
+create table agence.lot_description
+(
+	id character varying(32) not null default public.get_uuid(),
+	numero_lot integer not null,
+	immeuble_id character varying not null,
+	coproprietaire_id character varying not null,
+	date_changement timestamp without time zone,
+	numero_batiment character varying,
+	numero_escalier character varying,
+	numero_etage character varying,
+	avance float,
+	statut integer default 1,
+	audit_created timestamp without time zone default now(),
+	audit_created_by character varying(35),
+	audit_updated timestamp without time zone,
+	audit_updated_by character varying(35),
+	CONSTRAINT lot_description_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.lot_description
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.lot_description TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE agence.lot_description TO public;
+
+drop table if exists agence.lot_repartition;
+create table agence.lot_repartition 
+(
+	id character varying(32) not null default public.get_uuid(),
+	immeuble_id character varying not null,
+	lot_id character varying not null,
+	reference character varying not null,
+	valeur  integer,
+	ligne integer,
+	colonne integer,
+	type_ventilation integer,
+	audit_created timestamp without time zone default now(),
+	audit_created_by character varying(35),
+	audit_updated timestamp without time zone,
+	audit_updated_by character varying(35),
+	CONSTRAINT lot_repartition_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.lot_repartition
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.lot_repartition TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE agence.lot_repartition TO public;
+
+-- Table: liasses
+
+DROP TABLE if exists agence.liasse;
+
+CREATE TABLE agence.liasse
+(
+	id character varying(32) not null default public.get_uuid(),
+	reference character varying not null,
+	montant numeric(11,2),
+	type_ecriture character varying not null,
+	statut integer,
+	audit_created timestamp without time zone default now(),
+	audit_created_by character varying(35),
+	audit_updated timestamp without time zone,
+	audit_updated_by character varying(35),
+	CONSTRAINT liasse_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.liasse
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.liasse TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE agence.liasse TO public;
+
+
+-- Table: saisie_facture
+
+DROP TABLE if exists agence.saisie_facture;
+
+CREATE TABLE agence.saisie_facture
+(
+	id character varying(32) NOT NULL DEFAULT get_uuid(),
+	date_operation date not null,
+	numero_operation integer not null,
+	liasse_id character varying not null,
+	immeuble_id character varying not null,
+	fournisseur_id character varying not null,
+	reglement integer, 
+	nature_id character varying not null,
+	libelle character varying,
+	comment_fournisseur character varying,
+	date_reference date,
+	montant numeric(11,2),
+-- 	base_global numeric(11,2),
+	base_repart character varying,
+	statut integer,
+	audit_created timestamp without time zone default now(),
+	audit_created_by character varying(35),
+	audit_updated timestamp without time zone,
+	audit_updated_by character varying(35),
+	CONSTRAINT saisie_facture_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.saisie_facture
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.saisie_facture TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE agence.saisie_facture TO public;
+
+-- Table: saisie_appel_fond
+
+DROP TABLE if exists agence.saisie_appel_fond;
+
+CREATE TABLE agence.saisie_appel_fond
+(
+	id character varying(32) NOT NULL DEFAULT get_uuid(),
+
+	date_operation date not null,
+	numero_operation integer not null,
+
+	liasse_id character varying not null,
+	immeuble_id character varying not null,
+	base_repart character varying not null,
+	nature_id character varying not null,
+	libelle character varying,
+	date_reference date,
+	montant numeric(11,2),
+-- 	base_global numeric(11,2),
+	statut integer,
+	audit_created timestamp without time zone default now(),
+	audit_created_by character varying(35),
+	audit_updated timestamp without time zone,
+	audit_updated_by character varying(35),
+	CONSTRAINT saisie_appel_fond_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.saisie_appel_fond
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.saisie_appel_fond TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE agence.saisie_appel_fond TO public;
+
+-- Table: saisie_remise_cheque
+
+DROP TABLE if exists agence.saisie_remise_cheque;
+
+CREATE TABLE agence.saisie_remise_cheque
+(
+	id character varying(32) NOT NULL DEFAULT get_uuid(),
+	date_operation date not null,
+	numero_operation integer not null,
+	liasse_id character varying not null,
+	coproprietaire_id character varying not null,
+	immeuble_id character varying not null,
+	comptebanque character varying , 
+--	lot_id character varying not null,
+	nature_id character varying not null,
+	libelle character varying,
+	date_reference date,
+	montant numeric(11,2),
+	emetteur character varying,
+	banque character varying,
+--	base_global numeric(11,2),
+	statut integer,
+	audit_created timestamp without time zone default now(),
+	audit_created_by character varying(35),
+	audit_updated timestamp without time zone,
+	audit_updated_by character varying(35),
+	CONSTRAINT saisie_remise_cheque_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.saisie_remise_cheque
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.saisie_remise_cheque TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE agence.saisie_remise_cheque TO public;
+
+
+-- Table: operation
+
+DROP TABLE if exists agence.operation;
+
+CREATE TABLE agence.operation
+(
+	id character varying(32) NOT NULL DEFAULT get_uuid(),
+
+	date_operation date not null,
+
+	type_mouvement character varying not null,
+	type_operation character varying not null,
+	numero_operation integer not null,
+	numero_ligne integer not null,
+
+	liasse_id character varying not null,
+	immeuble_id character varying not null,
+	lot_id character varying not null,
+	base_repart character varying not null,
+	nature_id character varying not null,
+	coproprietaire_id character varying not null,
+	libelle character varying,
+	date_reference date,
+	debit numeric(11,2),
+	credit numeric(11,2),
+	solde numeric(11,2),
+	statut integer,
+	audit_created timestamp without time zone default now(),
+	audit_created_by character varying(35),
+	audit_updated timestamp without time zone,
+	audit_updated_by character varying(35),
+	CONSTRAINT operation_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.operation
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.operation TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE agence.operation TO public;
+
+CREATE INDEX operation_liasse_id_idx
+  ON agence.operation
+  USING btree
+  (liasse_id COLLATE pg_catalog."default");
+
+CREATE INDEX operation_type_mouvement_date_operation_type_operation_nume_idx
+  ON agence.operation
+  USING btree
+  (type_mouvement COLLATE pg_catalog."default", date_operation, type_operation COLLATE pg_catalog."default", numero_operation, numero_ligne);
+
+-- Table: commentaire
+
+DROP TABLE if exists agence.commentaire_immeuble;
+
+CREATE TABLE agence.commentaire_immeuble
+(
+	id character varying(32) NOT NULL DEFAULT get_uuid(),
+	immeuble_id character varying not null,
+	code character varying not null,
+	libelle character varying not null,
+	audit_created timestamp without time zone default now(),
+	audit_created_by character varying(35),
+	audit_updated timestamp without time zone,
+	audit_updated_by character varying(35),
+	CONSTRAINT commentaire_immeuble_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE agence.commentaire_immeuble
+  OWNER TO postgres;
+GRANT ALL ON TABLE agence.commentaire_immeuble TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE agence.commentaire_immeuble TO public;
+
+
+

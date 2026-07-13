@@ -1,0 +1,14 @@
+﻿Bonjour, 
+
+Vous trouverez ci dessous votre mot de passe, l'identifiant de connexion est votre email.
+
+{pass}
+
+Veuillez cliquer sur le lien ci-dessous (ou le recopier dans votre navigateur).
+
+{link}
+
+
+Attention, ce lien est valable pour une durée de 24 heures.
+
+En vous remerciant de votre confiance.
