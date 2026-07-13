@@ -46,7 +46,6 @@
 	<ItemGroup>
 
 		<Reference Include="Microsoft.CSharp" />
-
 		<Reference Include="PresentationCore" />
 
 		<Reference Include="System.IO.Compression" />
@@ -56,7 +55,6 @@
 	<ItemGroup>
 		<PackageReference Include="Npgsql" Version="3.2.7" />
 		<PackageReference Include="NTwain" Version="3.7.6" />
-		<PackageReference Include="System.Threading.Tasks.Extensions" Version="4.3.0" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,123 +1,39 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{90437AAB-C250-472D-AB72-00996B0835AE}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SyndicData</RootNamespace>
-    <AssemblyName>SyndicData</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Npgsql, Version=3.2.7.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Npgsql.3.2.7\lib\net451\Npgsql.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.3.0\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Windows" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Common\GlobalConstantes.cs" />
-    <Compile Include="Common\ParametresDB.cs" />
-    <Compile Include="Controller\AideImmeubleController.cs" />
-    <Compile Include="Controller\BudgetController.cs" />
-    <Compile Include="Controller\BudgetLigneController.cs" />
-    <Compile Include="Controller\ConvocationController.cs" />
-    <Compile Include="Controller\CoproprietaireController.cs" />
-    <Compile Include="Controller\ExerciceComptableController.cs" />
-    <Compile Include="Controller\FournisseurController.cs" />
-    <Compile Include="Controller\ImmeubleController.cs" />
-    <Compile Include="Controller\ImmeubleRepartitionController.cs" />
-    <Compile Include="Controller\LiasseController.cs" />
-    <Compile Include="Controller\LotDescriptionController.cs" />
-    <Compile Include="Controller\LotRepartitionController.cs" />
-    <Compile Include="Controller\ParametreController.cs" />
-    <Compile Include="Controller\RelanceController.cs" />
-    <Compile Include="Controller\NatureController.cs" />
-    <Compile Include="Controller\OperationController.cs" />
-    <Compile Include="Controller\RepartIndividuelleController.cs" />
-    <Compile Include="Controller\SaisieAppelFondController.cs" />
-    <Compile Include="Controller\SaisieFactureController.cs" />
-    <Compile Include="Controller\SaisieReglementController.cs" />
-    <Compile Include="Entites\AideImmeubleEntite.cs" />
-    <Compile Include="Entites\BudgetEntite.cs" />
-    <Compile Include="Entites\BudgetLigneEntite.cs" />
-    <Compile Include="Entites\ConvocationDescriptionEntite.cs" />
-    <Compile Include="Entites\ConvocationEntite.cs" />
-    <Compile Include="Entites\CoproprietaireEntite.cs" />
-    <Compile Include="Entites\ExerciceComptableEntite.cs" />
-    <Compile Include="Entites\FournisseurEntite.cs" />
-    <Compile Include="Entites\ImmeubleEntite.cs" />
-    <Compile Include="Entites\ImmeubleRepartitionEntite.cs" />
-    <Compile Include="Entites\LiasseEntite.cs" />
-    <Compile Include="Entites\LotDescriptionEntite.cs" />
-    <Compile Include="Entites\LotRepartitionEntite.cs" />
-    <Compile Include="Entites\NatureEntite.cs" />
-    <Compile Include="Entites\OperationEntite.cs" />
-    <Compile Include="Entites\ParametreEntite.cs" />
-    <Compile Include="Entites\RelanceEntite.cs" />
-    <Compile Include="Entites\RepartIndividuelleEntite.cs" />
-    <Compile Include="Entites\SaisieAppelFondEntite.cs" />
-    <Compile Include="Entites\SaisieFactureEntite.cs" />
-    <Compile Include="Entites\SaisieReglementEntite.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CommonProjectsPartners\CommonProjectsPartners.csproj">
-      <Project>{6736e0fb-3a8e-4b70-8937-bd676f22a007}</Project>
-      <Name>CommonProjectsPartners</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\DataSources\" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+		<OutputType>Library</OutputType>
+		<RootNamespace>SyndicData</RootNamespace>
+		<AssemblyName>SyndicData</AssemblyName>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<UseWindowsForms>true</UseWindowsForms>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Npgsql" Version="3.2.7" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="System.Windows" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\CommonProjectsPartners\CommonProjectsPartners.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Properties\Settings.Designer.cs">
+			<AutoGen>true</AutoGen>
+			<DesignTimeSharedInput>true</DesignTimeSharedInput>
+			<DependentUpon>Settings.settings</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="app.config" />
+		<None Update="Properties\Settings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
 </Project>

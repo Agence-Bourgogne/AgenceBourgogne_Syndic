@@ -15,7 +15,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="Npgsql" Version="3.2.7" />
-		<PackageReference Include="System.Threading.Tasks.Extensions" Version="4.3.0" />
 	</ItemGroup>
 
 	<ItemGroup>
