@@ -1,7 +1,0 @@
-﻿ALTER TABLE agence.factures ADD COLUMN reglement_id character varying;
-
-update agence.factures set statut=9 where
-fournisseur_id = '4A17BE3E9CB24BB782BFFC3E25892D29'
-and nature_id = '204E4781C5E6432F9CB0C93CCDDA5124'
-and (libelle = 'Honoraires Agence' or libelle='TVA sur Honoraires')
-and date_facture >= '2015-08-01';

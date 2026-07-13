@@ -1,1 +1,0 @@
-﻿update agence.locataire set comptable_id = null  where comptable_id = 'E734CB9819954BE585C27B12E570DE14';

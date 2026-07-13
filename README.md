@@ -1,1 +1,0 @@
-# ProjectsPartners_Syndic
