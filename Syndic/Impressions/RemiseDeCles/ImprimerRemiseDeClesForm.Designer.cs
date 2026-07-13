@@ -1,11 +1,15 @@
-﻿namespace EspaceSyndic.Impressions.RemiseDeCles
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using Microsoft.Reporting.WinForms;
+
+namespace EspaceSyndic.Impressions.RemiseDeCles
 {
     partial class ImprimerRemiseDeClesForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -214,19 +218,19 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox gbParams;
-        private System.Windows.Forms.DateTimePicker dtRemise;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox tbRefImmeuble;
-        private System.Windows.Forms.Label lblImmeuble;
-        private Microsoft.Reporting.WinForms.ReportViewer reportViewer1;
-        private System.Windows.Forms.Panel panelButton;
-        private System.Windows.Forms.Button btnRapport;
-        private System.Windows.Forms.Button btnQuit;
-        protected System.Windows.Forms.ImageList imageList1;
+        private GroupBox gbParams;
+        private DateTimePicker dtRemise;
+        private Label label2;
+        private TextBox tbRefImmeuble;
+        private Label lblImmeuble;
+        private ReportViewer reportViewer1;
+        private Panel panelButton;
+        private Button btnRapport;
+        private Button btnQuit;
+        protected ImageList imageList1;
 //        private Datasets.CoproprietaireImmeuble coproprietaireImmeuble;
-        private System.Windows.Forms.BindingSource tableCoproImmeubleBindingSource;
-        private System.Windows.Forms.Button btnEnter;
+        private BindingSource tableCoproImmeubleBindingSource;
+        private Button btnEnter;
  //       private Datasets.CoproprietaireImmeubleTableAdapters.CoproImmeubleTableAdapter coproImmeubleTableAdapter;
     }
 }

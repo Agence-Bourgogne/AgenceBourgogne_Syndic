@@ -1,149 +1,148 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using SyndicData.Entites;
-using Npgsql;
 using System.Windows.Forms;
-using CommonProjectsPartners.Utils;
 using CommonProjectsPartners.Controller;
+using CommonProjectsPartners.Utils;
+using Npgsql;
+using SyndicData.Entites;
 
-namespace SyndicData.Controller
+namespace SyndicData.Controller;
+
+public class LotRepartitionController : AbstractBaseController<LotRepartitionEntite>
 {
-    public class LotRepartitionController : AbstractBaseController<LotRepartitionEntite>
+    private static readonly LotRepartitionController controller = new();
+    public override string getTable()
     {
-        static LotRepartitionController controller = new LotRepartitionController();
-        public override string getTable()
+        return "lot_repartition";
+    }
+
+    public static LotRepartitionController getController()
+    {
+        return controller;
+        //return new LotRepartitionController();
+    }
+    public DataTable GetLotsRepartition(ImmeubleEntite immeuble)
+    {
+        return GetLotsRepartition(immeuble.id);
+    }
+
+    public DataTable GetLotRepartitionHaveMultiCompteur(string immeuble_id, string base_repart)
+    {
+        var cmd = $"select * from {getSchemaTable()} ";
+        cmd += " where immeuble_id = @immeuble_id ";
+        cmd += "and reference = @reference and valeur > 1 ";
+        cmd += "order by ligne, colonne";
+        adapter.SelectCommand = new NpgsqlCommand(cmd, Database.GetInstance());
+        adapter.SelectCommand.Parameters.AddWithValue("@immeuble_id", immeuble_id);
+        adapter.SelectCommand.Parameters.AddWithValue("@reference", base_repart);
+        //            adapter.SelectCommand.Parameters.AddWithValue("@lot_id", lot_id);
+
+        var table = new DataTable();
+        try
         {
-            return "lot_repartition";
+            adapter.Fill(table);
         }
-
-        public static LotRepartitionController getController()
+        catch (NpgsqlException e)
         {
-            return controller;
-            //return new LotRepartitionController();
+            MessageBox.Show(e.Message);
+            return null;
         }
-        public DataTable GetLotsRepartition(ImmeubleEntite immeuble)
-        {
-            return GetLotsRepartition(immeuble.id);
-        }
+        return table;
 
-        public DataTable GetLotRepartitionHaveMultiCompteur(string immeuble_id, string base_repart)
-        {
-            var cmd = $"select * from {getSchemaTable()} ";
-            cmd += " where immeuble_id = @immeuble_id ";
-            cmd += "and reference = @reference and valeur > 1 ";
-            cmd += "order by ligne, colonne";
-            adapter.SelectCommand = new NpgsqlCommand(cmd, Database.GetInstance());
-            adapter.SelectCommand.Parameters.AddWithValue("@immeuble_id", immeuble_id);
-            adapter.SelectCommand.Parameters.AddWithValue("@reference", base_repart);
-            //            adapter.SelectCommand.Parameters.AddWithValue("@lot_id", lot_id);
+    }
 
-            var table = new DataTable();
-            try
-            {
-                adapter.Fill(table);
-            }
-            catch (NpgsqlException e)
-            {
-                MessageBox.Show(e.Message);
-                return null;
-            }
-            return table;
+    public DataTable GetLotsRepartition(string immeuble_id)
+    {
+        var cmd = $"select * from {getSchemaTable()} ";
+        cmd += " where immeuble_id = @immeuble_id order by ligne, colonne";
 
-        }
-
-        public DataTable GetLotsRepartition(string immeuble_id)
-        {
-            var cmd = $"select * from {getSchemaTable()} ";
-            cmd += " where immeuble_id = @immeuble_id order by ligne, colonne";
-
-            adapter.SelectCommand = new NpgsqlCommand(cmd, Database.GetInstance());
-            adapter.SelectCommand.Parameters.AddWithValue("@immeuble_id", immeuble_id);
+        adapter.SelectCommand = new NpgsqlCommand(cmd, Database.GetInstance());
+        adapter.SelectCommand.Parameters.AddWithValue("@immeuble_id", immeuble_id);
 //            adapter.SelectCommand.Parameters.AddWithValue("@lot_id", lot_id);
 
-            var table = new DataTable();
-            try
-            {
-                adapter.Fill(table);
-            }
-            catch (NpgsqlException e)
-            {
-                MessageBox.Show(e.Message);
-                return null;
-            }
-            return table;
-        }
-        public DataTable GetLotsRepartitionFromBase(string immeuble_id, string base_repart)
+        var table = new DataTable();
+        try
         {
-            var cmd = $"select lr.*, ld.coproprietaire_id as copro_id from {getSchemaTable()} lr";
-
-            cmd += $" join {getSchema()}.immeuble i on i.id = lr.immeuble_id ";
-            cmd += $" join {getSchema()}.lot_description ld on ld.id = lr.lot_id ";
-            cmd += " where lr.immeuble_id = @immeuble_id and lr.reference = @base_repart ";
-
-            var parameters = new List<NpgsqlParameter>
-            {
-                new NpgsqlParameter("@immeuble_id", immeuble_id),
-                new NpgsqlParameter("@base_repart", base_repart),
-
-            };
-            return getResultSQL(cmd, parameters);
+            adapter.Fill(table);
         }
-        public DataTable GetListLotsDescription(string immeuble_id, string base_repart)
+        catch (NpgsqlException e)
         {
-            var cmd = "select s.cpt as Compteur, ref_cpt, null as ancien, null as nouveau, null as index, null as montant, l.id , c.id as coproprietaire_id, l.numero_lot, c.reference as coproprietaire, c.nom, c.prenom from ";
-            cmd += "( \n";
+            MessageBox.Show(e.Message);
+            return null;
+        }
+        return table;
+    }
+    public DataTable GetLotsRepartitionFromBase(string immeuble_id, string base_repart)
+    {
+        var cmd = $"select lr.*, ld.coproprietaire_id as copro_id from {getSchemaTable()} lr";
 
-            cmd +=
-                $"select 'cpt 5' as cpt, 5 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 5 union \n";
-            cmd +=
-                $"select 'cpt 4' as cpt, 4 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 5 union \n";
-            cmd +=
-                $"select 'cpt 3' as cpt, 3 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 5 union \n";
-            cmd +=
-                $"select 'cpt 2' as cpt, 2 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 5 union \n";
-            cmd +=
-                $"select 'cpt 1' as cpt, 1 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 5 union \n";
+        cmd += $" join {getSchema()}.immeuble i on i.id = lr.immeuble_id ";
+        cmd += $" join {getSchema()}.lot_description ld on ld.id = lr.lot_id ";
+        cmd += " where lr.immeuble_id = @immeuble_id and lr.reference = @base_repart ";
 
-            cmd +=
-                $"select 'cpt 4' as cpt, 4 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 4 union \n";
-            cmd +=
-                $"select 'cpt 3' as cpt, 3 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 4 union \n";
-            cmd +=
-                $"select 'cpt 2' as cpt, 2 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 4 union \n";
-            cmd +=
-                $"select 'cpt 1' as cpt, 1 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 4 union \n";
+        var parameters = new List<NpgsqlParameter>
+        {
+            new("@immeuble_id", immeuble_id),
+            new("@base_repart", base_repart)
 
-            cmd +=
-                $"select 'cpt 3' as cpt, 3 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 3 union \n";
-            cmd +=
-                $"select 'cpt 2' as cpt, 2 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 3 union \n";
-            cmd +=
-                $"select 'cpt 1' as cpt, 1 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 3 union \n";
+        };
+        return getResultSQL(cmd, parameters);
+    }
+    public DataTable GetListLotsDescription(string immeuble_id, string base_repart)
+    {
+        var cmd = "select s.cpt as Compteur, ref_cpt, null as ancien, null as nouveau, null as index, null as montant, l.id , c.id as coproprietaire_id, l.numero_lot, c.reference as coproprietaire, c.nom, c.prenom from ";
+        cmd += "( \n";
 
-            cmd +=
-                $"select 'cpt 2' as cpt, 2 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 2 union \n";
-            cmd +=
-                $"select 'cpt 1' as cpt, 1 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 2 union \n";
+        cmd +=
+            $"select 'cpt 5' as cpt, 5 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 5 union \n";
+        cmd +=
+            $"select 'cpt 4' as cpt, 4 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 5 union \n";
+        cmd +=
+            $"select 'cpt 3' as cpt, 3 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 5 union \n";
+        cmd +=
+            $"select 'cpt 2' as cpt, 2 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 5 union \n";
+        cmd +=
+            $"select 'cpt 1' as cpt, 1 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 5 union \n";
+
+        cmd +=
+            $"select 'cpt 4' as cpt, 4 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 4 union \n";
+        cmd +=
+            $"select 'cpt 3' as cpt, 3 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 4 union \n";
+        cmd +=
+            $"select 'cpt 2' as cpt, 2 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 4 union \n";
+        cmd +=
+            $"select 'cpt 1' as cpt, 1 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 4 union \n";
+
+        cmd +=
+            $"select 'cpt 3' as cpt, 3 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 3 union \n";
+        cmd +=
+            $"select 'cpt 2' as cpt, 2 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 3 union \n";
+        cmd +=
+            $"select 'cpt 1' as cpt, 1 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 3 union \n";
+
+        cmd +=
+            $"select 'cpt 2' as cpt, 2 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 2 union \n";
+        cmd +=
+            $"select 'cpt 1' as cpt, 1 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 2 union \n";
             
 //            cmd += String.Format("select 'cpt 1' as cpt, 1 as ref_cpt, * from {0} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 1 union \n", getSchemaTable());
 
-            cmd +=
-                $"select '' as cpt, 1 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur <= 1 \n";
+        cmd +=
+            $"select '' as cpt, 1 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur <= 1 \n";
 
-            cmd += " ) s ";
-            cmd += "join agence.lot_description l on l.id = lot_id ";
-            cmd += "join agence.coproprietaire c on c.id = l.coproprietaire_id " ;
-            cmd += "order by l.numero_lot, cpt ";
+        cmd += " ) s ";
+        cmd += "join agence.lot_description l on l.id = lot_id ";
+        cmd += "join agence.coproprietaire c on c.id = l.coproprietaire_id " ;
+        cmd += "order by l.numero_lot, cpt ";
 
-            Console.WriteLine(cmd);
+        Console.WriteLine(cmd);
             
-            var parameters = new List<NpgsqlParameter>
-            {
-                new NpgsqlParameter("@immeuble_id", immeuble_id),
-                new NpgsqlParameter("@base_repart", base_repart),
-            };
-            return getResultSQL(cmd, parameters);
-        }
+        var parameters = new List<NpgsqlParameter>
+        {
+            new("@immeuble_id", immeuble_id),
+            new("@base_repart", base_repart)
+        };
+        return getResultSQL(cmd, parameters);
     }
 }

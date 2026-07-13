@@ -1,23 +1,22 @@
-﻿using SyndicData.Entites;
-using CommonProjectsPartners.Controller;
+﻿using CommonProjectsPartners.Controller;
+using SyndicData.Entites;
 
-namespace SyndicData.Controller
+namespace SyndicData.Controller;
+
+public class FournisseurController : AbstractBaseController<FournisseurEntite>
 {
-    public class FournisseurController : AbstractBaseController<FournisseurEntite>
+    private static readonly FournisseurController controller = new();
+    public override string getTable()
     {
-        static FournisseurController controller = new FournisseurController();
-        public override string getTable()
-        {
-            return "fournisseur";
-        }
-        public static FournisseurController getController()
-        {
-            return controller;
-            //return new FournisseurController();
-        }
-        public FournisseurController()
-        {
-            DefaultOrder = "reference";
-        }
+        return "fournisseur";
+    }
+    public static FournisseurController getController()
+    {
+        return controller;
+        //return new FournisseurController();
+    }
+    public FournisseurController()
+    {
+        DefaultOrder = "reference";
     }
 }

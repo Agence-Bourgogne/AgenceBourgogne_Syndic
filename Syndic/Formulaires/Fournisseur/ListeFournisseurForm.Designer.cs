@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Fournisseur
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Fournisseur
 {
     partial class ListeFournisseurForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -334,23 +337,23 @@
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip generalMenu;
-        private System.Windows.Forms.ToolStripMenuItem editionToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem editerToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem nouveauToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem supprimerToolStripMenuItem1;
-        private System.Windows.Forms.DataGridView dataGridView;
-        private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.ContextMenuStrip RowMenu;
-        private System.Windows.Forms.ToolStripMenuItem editionToolStripMenuItem;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnQuit;
-        private System.Windows.Forms.Button BtnEdit;
-        private System.Windows.Forms.Button BtnSave;
-        private System.Windows.Forms.Button btnFiche;
-        private System.Windows.Forms.Button btnNew;
-        private System.Windows.Forms.Button btnExport;
-        private System.Windows.Forms.Button btnFiltre;
-        private System.Windows.Forms.CheckBox ckActif;
+        private MenuStrip generalMenu;
+        private ToolStripMenuItem editionToolStripMenuItem1;
+        private ToolStripMenuItem editerToolStripMenuItem;
+        private ToolStripMenuItem nouveauToolStripMenuItem;
+        private ToolStripMenuItem supprimerToolStripMenuItem1;
+        private DataGridView dataGridView;
+        private ImageList imageList1;
+        private ContextMenuStrip RowMenu;
+        private ToolStripMenuItem editionToolStripMenuItem;
+        private Panel panel1;
+        private Button btnQuit;
+        private Button BtnEdit;
+        private Button BtnSave;
+        private Button btnFiche;
+        private Button btnNew;
+        private Button btnExport;
+        private Button btnFiltre;
+        private CheckBox ckActif;
     }
 }

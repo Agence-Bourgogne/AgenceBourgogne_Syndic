@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Ecritures
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Ecritures
 {
     partial class ValidationFactureForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -212,14 +215,14 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox gbFactures;
-        private System.Windows.Forms.DataGridView dataGridViewEcriture;
-        private System.Windows.Forms.Panel panelButton;
-        private System.Windows.Forms.Button btnQuit;
-        private System.Windows.Forms.Button btnValid;
-        protected System.Windows.Forms.ImageList imageList2;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.DataGridView dataGridViewLiasse;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn valider;
+        private GroupBox gbFactures;
+        private DataGridView dataGridViewEcriture;
+        private Panel panelButton;
+        private Button btnQuit;
+        private Button btnValid;
+        protected ImageList imageList2;
+        private GroupBox groupBox1;
+        private DataGridView dataGridViewLiasse;
+        private DataGridViewCheckBoxColumn valider;
     }
 }

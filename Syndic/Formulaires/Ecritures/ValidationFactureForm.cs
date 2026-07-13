@@ -3,139 +3,139 @@ using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
 using CommonProjectsPartners.Utils;
-using SyndicData.Controller;
-using SyndicData.Common;
-using EspaceSyndic.Impressions.Facture;
 using EspaceSyndic.Formulaires.OperationsGestion;
-namespace EspaceSyndic.Formulaires.Ecritures
-{
-    public partial class ValidationFactureForm : Form
-    {
-        public ValidationFactureForm()
-        {
-            InitializeComponent();
-        }
+using EspaceSyndic.Impressions.Facture;
+using SyndicData.Common;
+using SyndicData.Controller;
 
-        private void ValidationFactureForm_Load(object sender, EventArgs e)
-        {
+namespace EspaceSyndic.Formulaires.Ecritures;
+
+public partial class ValidationFactureForm : Form
+{
+    public ValidationFactureForm()
+    {
+        InitializeComponent();
+    }
+
+    private void ValidationFactureForm_Load(object sender, EventArgs e)
+    {
 //            ControlsWindows.FillComboFromParams(cbType, "TYPE_VALIDATION", "nom");
-            FillDataGrid();
+        FillDataGrid();
 //            this.MinimumSize = this.MaximumSize = this.Size;
 
-        }
+    }
 
-        private void FillDataGrid()
+    private void FillDataGrid()
+    {
+        var source = LiasseController.getController().getLiasseActives(GlobalConstantes.TypeOperation.Facture, false);
+        dataGridViewLiasse.DataSource = source;
+        if (dataGridViewLiasse.DataSource != null)
         {
-            var source = LiasseController.getController().getLiasseActives(GlobalConstantes.TypeOperation.Facture, false);
-            dataGridViewLiasse.DataSource = source;
-            if (dataGridViewLiasse.DataSource != null)
-            {
-                var cols = dataGridViewLiasse.Columns;
-                cols["id"].Visible = false;
-                cols["audit_created"].Visible = false;
-                cols["audit_created_by"].Visible = false;
-                cols["audit_updated"].Visible = false;
-                cols["audit_updated_by"].Visible = false;
-                cols["audit_created"].Visible = false;
-                cols["statut"].Visible = false;
-                cols["type_ecriture"].Visible = false;
-                cols["valider"].MinimumWidth = cols["valider"].Width = 20;
-                cols["valider"].ReadOnly = false;
+            var cols = dataGridViewLiasse.Columns;
+            cols["id"].Visible = false;
+            cols["audit_created"].Visible = false;
+            cols["audit_created_by"].Visible = false;
+            cols["audit_updated"].Visible = false;
+            cols["audit_updated_by"].Visible = false;
+            cols["audit_created"].Visible = false;
+            cols["statut"].Visible = false;
+            cols["type_ecriture"].Visible = false;
+            cols["valider"].MinimumWidth = cols["valider"].Width = 20;
+            cols["valider"].ReadOnly = false;
 
-                ControlsWindows.ToTitleCase(cols);
-            }
+            ControlsWindows.ToTitleCase(cols);
         }
+    }
 
-        private void dataGridViewLiasse_SelectionChanged(object sender, EventArgs e)
+    private void dataGridViewLiasse_SelectionChanged(object sender, EventArgs e)
+    {
+        if (dataGridViewLiasse.SelectedRows.Count < 1)
+            return;
+        var rowGrid = (DataRowView) dataGridViewLiasse.SelectedRows[0].DataBoundItem;
+        var liasse_id = rowGrid["id"].ToString();
+        var source = SaisieFactureController.getController().getListeFactures(liasse_id);
+        dataGridViewEcriture.DataSource = source;
+        if (source != null)
         {
-            if (dataGridViewLiasse.SelectedRows.Count < 1)
-                return;
-            var rowGrid = (DataRowView) dataGridViewLiasse.SelectedRows[0].DataBoundItem;
-            var liasse_id = rowGrid["id"].ToString();
-            var source = SaisieFactureController.getController().getListeFactures(liasse_id);
-            dataGridViewEcriture.DataSource = source;
-            if (source != null)
-            {
-                var cols = dataGridViewEcriture.Columns;
-                cols["id"].Visible = false;
-                cols["immeuble_id"].Visible = false;
-                cols["fournisseur_id"].Visible = false;
-                cols["nature_id"].Visible = false;
-                cols["liasse_id"].Visible = false;
-                //cols["immeuble_ref"].Visible = false;
-                //cols["nature_ref"].Visible = false;
-                //cols["fournisseur_ref"].Visible = false;
-                cols["date_operation"].Visible = false;
-                ControlsWindows.ToTitleCase(cols);
-            }
-            if (dataGridViewEcriture.Rows.Count > 0)
-                dataGridViewEcriture.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
-            else
-                dataGridViewEcriture.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            var cols = dataGridViewEcriture.Columns;
+            cols["id"].Visible = false;
+            cols["immeuble_id"].Visible = false;
+            cols["fournisseur_id"].Visible = false;
+            cols["nature_id"].Visible = false;
+            cols["liasse_id"].Visible = false;
+            //cols["immeuble_ref"].Visible = false;
+            //cols["nature_ref"].Visible = false;
+            //cols["fournisseur_ref"].Visible = false;
+            cols["date_operation"].Visible = false;
+            ControlsWindows.ToTitleCase(cols);
         }
+        if (dataGridViewEcriture.Rows.Count > 0)
+            dataGridViewEcriture.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+        else
+            dataGridViewEcriture.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+    }
 
-        private void dataGridViewLiasse_CellContentClick(object sender, DataGridViewCellEventArgs e)
+    private void dataGridViewLiasse_CellContentClick(object sender, DataGridViewCellEventArgs e)
+    {
+        //Console.WriteLine("{0}:{1}", e.RowIndex, e.ColumnIndex);
+        if (e.ColumnIndex == 0)
         {
-            //Console.WriteLine("{0}:{1}", e.RowIndex, e.ColumnIndex);
-            if (e.ColumnIndex == 0)
-            {
-                var row = dataGridViewLiasse.Rows[e.RowIndex];
-                if (row.Cells[e.ColumnIndex].Value == null)
-                    row.Cells[e.ColumnIndex].Value = false;
-                row.Cells[e.ColumnIndex].Value = !((bool)row.Cells[e.ColumnIndex].Value);
-            }
+            var row = dataGridViewLiasse.Rows[e.RowIndex];
+            if (row.Cells[e.ColumnIndex].Value == null)
+                row.Cells[e.ColumnIndex].Value = false;
+            row.Cells[e.ColumnIndex].Value = !(bool)row.Cells[e.ColumnIndex].Value;
         }
-        private void btnValid_Click(object sender, EventArgs e)
-        {
+    }
+    private void btnValid_Click(object sender, EventArgs e)
+    {
 //            bool bAllValide = true;
-            var liasses = new List<string>();
+        var liasses = new List<string>();
 
-            foreach (DataGridViewRow rowGrid in dataGridViewLiasse.Rows)
-            {
-                if (rowGrid.Cells["valider"].Value != null)
-                    if (((bool)rowGrid.Cells["valider"].Value) == true)
-                    {
-                        var row = (DataRowView)rowGrid.DataBoundItem;
-                        var liasse_id = row["id"].ToString();
-                        //if (!OperationController.getController().ValidateFacture(liasse_id))
-                        //{
-                        //    bAllValide = false;
-                        //    break;
-                        //}
-                        liasses.Add(liasse_id);
-                    }
-            }
-            if ( liasses.Count < 1)
-            {
-                MessageBox.Show("Pas de liasse à valider");
-            }
-            else
-                if (OperationController.getController().ValidateFacture(liasses))
-                {
-
-                    try
-                    {
-                        var form = new ImprimerListeFacturationForm(liasses);
-                        form.ShowDialog();
-
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-                }
-            FillDataGrid();
-        }
-
-        private void dataGridViewEcriture_DoubleClick(object sender, EventArgs e)
+        foreach (DataGridViewRow rowGrid in dataGridViewLiasse.Rows)
         {
-            if (dataGridViewEcriture.SelectedRows.Count > 0)
+            if (rowGrid.Cells["valider"].Value != null)
+                if ((bool)rowGrid.Cells["valider"].Value)
+                {
+                    var row = (DataRowView)rowGrid.DataBoundItem;
+                    var liasse_id = row["id"].ToString();
+                    //if (!OperationController.getController().ValidateFacture(liasse_id))
+                    //{
+                    //    bAllValide = false;
+                    //    break;
+                    //}
+                    liasses.Add(liasse_id);
+                }
+        }
+        if ( liasses.Count < 1)
+        {
+            MessageBox.Show(@"Pas de liasse à valider");
+        }
+        else
+        if (OperationController.getController().ValidateFacture(liasses))
+        {
+
+            try
             {
-                var row = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
-//                Console.WriteLine(row["id"]);
-                var form = new DetailFactureForm(row["id"].ToString());
+                var form = new ImprimerListeFacturationForm(liasses);
                 form.ShowDialog();
+
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        FillDataGrid();
+    }
+
+    private void dataGridViewEcriture_DoubleClick(object sender, EventArgs e)
+    {
+        if (dataGridViewEcriture.SelectedRows.Count > 0)
+        {
+            var row = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
+//                Console.WriteLine(row["id"]);
+            var form = new DetailFactureForm(row["id"].ToString());
+            form.ShowDialog();
         }
     }
 }

@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Ecritures
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Ecritures
 {
     partial class FicheReglementForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -581,45 +584,45 @@
 
         #endregion
 
-        protected System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Label label4;
-        protected System.Windows.Forms.ComboBox cbLiasse;
-        protected System.Windows.Forms.TextBox tbMontantLiasse;
-        protected System.Windows.Forms.Label lblLiasse;
-        protected System.Windows.Forms.TextBox tbDiff;
-        protected System.Windows.Forms.Label lblDiff;
-        protected System.Windows.Forms.TextBox tbTotal;
-        protected System.Windows.Forms.Label lblTotal;
-        private System.Windows.Forms.Panel panelButton;
-        private System.Windows.Forms.Button btnQuit;
-        private System.Windows.Forms.Button btnAdd;
-        private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.GroupBox gbFactures;
-        private System.Windows.Forms.DataGridView dataGridViewEcriture;
-        private System.Windows.Forms.GroupBox groupBox1;
-        protected System.Windows.Forms.TextBox tbLibCopro;
-        private System.Windows.Forms.TextBox tbCopro;
-        private System.Windows.Forms.Label lblCopro;
-        private System.Windows.Forms.TextBox tbMontant;
-        private System.Windows.Forms.Label lblDebit;
-        private System.Windows.Forms.MaskedTextBox tbDate;
-        private System.Windows.Forms.Label label3;
-        protected System.Windows.Forms.TextBox tbLibNature;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox tbLibelle;
-        private System.Windows.Forms.TextBox tbNature;
-        private System.Windows.Forms.Label lblNature;
-        private System.Windows.Forms.TextBox tbBanque;
-        private System.Windows.Forms.Label lblBanque;
-        private System.Windows.Forms.TextBox tbEmetteur;
-        private System.Windows.Forms.Label lblEmetteur;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.DataGridView dataGridViewLots;
-        private System.Windows.Forms.DataGridViewTextBoxColumn reglement;
-        protected System.Windows.Forms.ImageList imageList2;
-        private System.Windows.Forms.Button btnEnter;
-        private System.Windows.Forms.Button btnHelp;
-        private System.Windows.Forms.Button btnDelete;
+        protected GroupBox groupBox3;
+        private Label label4;
+        protected ComboBox cbLiasse;
+        protected TextBox tbMontantLiasse;
+        protected Label lblLiasse;
+        protected TextBox tbDiff;
+        protected Label lblDiff;
+        protected TextBox tbTotal;
+        protected Label lblTotal;
+        private Panel panelButton;
+        private Button btnQuit;
+        private Button btnAdd;
+        private Button btnSave;
+        private GroupBox gbFactures;
+        private DataGridView dataGridViewEcriture;
+        private GroupBox groupBox1;
+        protected TextBox tbLibCopro;
+        private TextBox tbCopro;
+        private Label lblCopro;
+        private TextBox tbMontant;
+        private Label lblDebit;
+        private MaskedTextBox tbDate;
+        private Label label3;
+        protected TextBox tbLibNature;
+        private Label label2;
+        private TextBox tbLibelle;
+        private TextBox tbNature;
+        private Label lblNature;
+        private TextBox tbBanque;
+        private Label lblBanque;
+        private TextBox tbEmetteur;
+        private Label lblEmetteur;
+        private ComboBox comboBox1;
+        private Label label5;
+        private DataGridView dataGridViewLots;
+        private DataGridViewTextBoxColumn reglement;
+        protected ImageList imageList2;
+        private Button btnEnter;
+        private Button btnHelp;
+        private Button btnDelete;
     }
 }

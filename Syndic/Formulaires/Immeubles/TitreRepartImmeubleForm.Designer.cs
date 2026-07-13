@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Immeubles
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Immeubles
 {
     partial class TitreRepartImmeubleForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -340,28 +343,28 @@
 
         #endregion
 
-        protected System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnQuit;
-        private System.Windows.Forms.Button btnAdd;
-        private System.Windows.Forms.Button btnSave;
-        protected System.Windows.Forms.GroupBox Factures;
-        protected System.Windows.Forms.DataGridView dataGridView;
-        protected System.Windows.Forms.GroupBox groupBox3;
-        protected System.Windows.Forms.TextBox tbTitre;
-        protected System.Windows.Forms.Label lblTitre;
-        protected System.Windows.Forms.TextBox tbBase;
-        protected System.Windows.Forms.Label lblBase;
-        private System.Windows.Forms.ComboBox cbRepart;
-        protected System.Windows.Forms.Label label1;
-        protected System.Windows.Forms.TextBox tbColonne;
-        protected System.Windows.Forms.Label lblColonne;
-        protected System.Windows.Forms.TextBox tbLigne;
-        protected System.Windows.Forms.Label label2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn reference;
-        private System.Windows.Forms.DataGridViewTextBoxColumn repartition;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nom;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ligne;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colonne;
+        protected ImageList imageList1;
+        private Panel panel1;
+        private Button btnQuit;
+        private Button btnAdd;
+        private Button btnSave;
+        protected GroupBox Factures;
+        protected DataGridView dataGridView;
+        protected GroupBox groupBox3;
+        protected TextBox tbTitre;
+        protected Label lblTitre;
+        protected TextBox tbBase;
+        protected Label lblBase;
+        private ComboBox cbRepart;
+        protected Label label1;
+        protected TextBox tbColonne;
+        protected Label lblColonne;
+        protected TextBox tbLigne;
+        protected Label label2;
+        private DataGridViewTextBoxColumn reference;
+        private DataGridViewTextBoxColumn repartition;
+        private DataGridViewTextBoxColumn nom;
+        private DataGridViewTextBoxColumn ligne;
+        private DataGridViewTextBoxColumn colonne;
     }
 }

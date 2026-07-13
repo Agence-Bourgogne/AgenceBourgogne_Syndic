@@ -1,12 +1,11 @@
 ﻿using System.Windows.Forms;
 
-namespace EspaceSyndic.Impressions.RelevesIndividuels
+namespace EspaceSyndic.Impressions.RelevesIndividuels;
+
+public partial class ExportCopro : Form
 {
-    public partial class ExportCopro : Form
+    public ExportCopro()
     {
-        public ExportCopro()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

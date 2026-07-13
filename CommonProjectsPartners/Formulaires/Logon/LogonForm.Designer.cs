@@ -1,11 +1,14 @@
-﻿namespace CommonProjectsPartners.Formulaires.Logon
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace CommonProjectsPartners.Formulaires.Logon
 {
     partial class LogonForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -156,13 +159,13 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox tbUser;
-        private System.Windows.Forms.TextBox tbPassword;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btnValid;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.TextBox tbMessage;
+        private Label label1;
+        private TextBox tbUser;
+        private TextBox tbPassword;
+        private Label label2;
+        private Button btnValid;
+        private PictureBox pictureBox1;
+        private Button btnCancel;
+        private TextBox tbMessage;
     }
 }

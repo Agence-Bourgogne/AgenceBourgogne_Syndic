@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Common
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Common
 {
     partial class FindStdForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -173,14 +176,14 @@
 
         #endregion
 
-        public System.Windows.Forms.DataGridView dataGridView;
-        protected System.Windows.Forms.Panel panel1;
-        protected System.Windows.Forms.Button cancel;
-        protected System.Windows.Forms.Button valid;
-        protected System.Windows.Forms.Label label1;
-        protected System.Windows.Forms.TextBox tbRef;
-        protected System.Windows.Forms.TextBox tbNom;
-        protected System.Windows.Forms.Label label2;
-        protected System.Windows.Forms.Button btnEnter;
+        public DataGridView dataGridView;
+        protected Panel panel1;
+        protected Button cancel;
+        protected Button valid;
+        protected Label label1;
+        protected TextBox tbRef;
+        protected TextBox tbNom;
+        protected Label label2;
+        protected Button btnEnter;
     }
 }

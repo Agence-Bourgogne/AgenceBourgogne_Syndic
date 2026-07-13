@@ -1,93 +1,86 @@
 ﻿using System;
 using System.Drawing;
-using WIA;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 using NTwain;
 using NTwain.Data;
+using WIA;
+using CommonDialog = WIA.CommonDialog;
 
-namespace CommonProjectsPartners.Utils
+namespace CommonProjectsPartners.Utils;
+
+public delegate void DataTransferredEventHandler(object sender, EventArgs e);
+public class ScanUtils
 {
-    public delegate void DataTransferredEventHandler(object sender, EventArgs e);
-    public class ScanUtils
+    public Image image;
+    public DataTransferredEventHandler DataTransferred;
+    public void WIAAcquire()
     {
-        public Image image;
-        public DataTransferredEventHandler DataTransferred;
-        public bool WIAAcquire(bool bShowUI = true)
+        var cl = new CommonDialog();
+        try
         {
-            var rc = false;
-            var cl = new WIA.CommonDialog();
-            try
+            var d = cl.ShowSelectDevice(WiaDeviceType.ScannerDeviceType, true, true);
+            if (d != null)
             {
-                var d = cl.ShowSelectDevice(WiaDeviceType.ScannerDeviceType, true, true);
-                if (d != null)
+                object result = cl.ShowAcquireImage(WiaDeviceType.ScannerDeviceType, WiaImageIntent.GrayscaleIntent, WiaImageBias.MinimizeSize, FormatID.wiaFormatPNG);
+                if (result != null)
                 {
-                    object result = cl.ShowAcquireImage(WiaDeviceType.ScannerDeviceType, WiaImageIntent.GrayscaleIntent, WiaImageBias.MinimizeSize, FormatID.wiaFormatPNG);
-                    if (result != null)
-                    {
-                        var img = (ImageFile)result;
-                        image = Image.FromStream(new MemoryStream((byte[])img.FileData.get_BinaryData()));
-                        if (DataTransferred != null)
-                            DataTransferred(this, new EventArgs());
-                        rc = true;
-                    }
+                    var img = (ImageFile)result;
+                    image = Image.FromStream(new MemoryStream((byte[])img.FileData.get_BinaryData()));
+                    DataTransferred?.Invoke(this, EventArgs.Empty);
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("{0}", ex.HResult);
-                if (ex.HResult != -2145320860)
-                    if (ex.HResult != -2145320939)
-                        MessageBox.Show(ex.Message);
-                    else
-                        MessageBox.Show("Pas de scanner connecté");
-            }
-
-            return rc;
         }
-
-        public bool TwainAcquire(IntPtr handle, bool bShowUI = true)
+        catch (Exception ex)
         {
-            var rc = false;
-            DataSource src;
-            ITwainSession session;
-
-            var id = TWIdentity.CreateFromAssembly(DataGroups.Image, System.Reflection.Assembly.GetExecutingAssembly());
-            session = new TwainSession(id);
-            session.Open(new WindowsFormsMessageLoopHook(handle));
-
-            session.DataTransferred += (s, ex) =>
-            {
-                image = Image.FromStream(ex.GetNativeImageStream());
-                if (DataTransferred != null)
-                    DataTransferred(this, new EventArgs());
-            };
-            session.SourceDisabled += (s, ex) =>
-            {
-                var sess = (TwainSession)s;
-                sess.CurrentSource.Close();
-                sess.Close();
-            };
-
-            src = session.ShowSourceSelector();
-
-            try
-            {
-                if (src != null)
-                {
-                    src.Open();
-
-                    src.Capabilities.ICapPixelType.SetValue(PixelType.BlackWhite);
-                    src.Capabilities.CapAutoScan.SetValue(BoolType.True);
-                    src.Enable(SourceEnableMode.ShowUI, true, handle);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-            return rc;
+            Console.WriteLine("{0}", ex.HResult);
+            if (ex.HResult != -2145320860)
+                if (ex.HResult != -2145320939)
+                    MessageBox.Show(ex.Message);
+                else
+                    MessageBox.Show(@"Pas de scanner connecté");
         }
+    }
+
+    public bool TwainAcquire(IntPtr handle)
+    {
+        var rc = false;
+
+        var id = TWIdentity.CreateFromAssembly(DataGroups.Image, Assembly.GetExecutingAssembly());
+        ITwainSession session = new TwainSession(id);
+        session.Open(new WindowsFormsMessageLoopHook(handle));
+
+        session.DataTransferred += (_, ex) =>
+        {
+            image = Image.FromStream(ex.GetNativeImageStream());
+            DataTransferred?.Invoke(this, EventArgs.Empty);
+        };
+        session.SourceDisabled += (s, _) =>
+        {
+            var sess = (TwainSession)s;
+            sess.CurrentSource.Close();
+            sess.Close();
+        };
+
+        var src = session.ShowSourceSelector();
+
+        try
+        {
+            if (src != null)
+            {
+                src.Open();
+
+                src.Capabilities.ICapPixelType.SetValue(PixelType.BlackWhite);
+                src.Capabilities.CapAutoScan.SetValue(BoolType.True);
+                src.Enable(SourceEnableMode.ShowUI, true, handle);
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
+
+        return rc;
     }
 }

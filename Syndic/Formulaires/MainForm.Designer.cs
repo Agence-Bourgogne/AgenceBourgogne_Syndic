@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires
 {
     partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -689,72 +692,72 @@
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem fichiersToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem immeublesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem copropriétairesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem fournisseursToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem naturesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem commentairesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ecrituresToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saisieToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem validationToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem reflemToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem appelDeFondsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem appelsDeFondsNouvelExerciceToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem editionsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem convocationsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem additifsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem accusésDeReceptionToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem feuillesDePrésenceToolStripMenuItem;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ToolStripMenuItem utilitairesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem outilsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem quitterToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saisieReglementCoproproToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem parametresToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem bordereauRemiseDeChèquesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem tableauRemiseDeClefsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem appelDeFondDunimmeubleToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem consultationComptesPropriétairesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem retardDePaiementsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem transfertAppelDeFondsSurGéranceToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem bilanGénéralEtCompteExploitationToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem relevésIndividuelsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem budgetPrévisionnelToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem relevésCommercesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem immeublesToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem editionEtiquettesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem editionComptesFiscauxParImmeublesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem balanceReglementsFacturesPourUnImmeubleToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem balanceReglementsAppelsDeFondImmeubleToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem balanceReglementsFacturesPourLeCompteSyndicToolStripMenuItem;
-        private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.ToolStripMenuItem parametresGenerauxToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem visualisationOperationDeGestionToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem clotureExerciceToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem deconnexionToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem quitterToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem utilisateursToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem controlesDBToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem facturesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem reglementsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem appelDeFondToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem repareFacturesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem répareRéglementsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem operationsReglementsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem répareOpérationReglementsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem operationsFacturesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem operationsAppelDeFondToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem controleDesDonnéesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem aideMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem impressionRéglementsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem modèlesDeDocumentsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem impressionListeFacturesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem utilisateursWebToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem publicationDeDocumentsToolStripMenuItem;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem fichiersToolStripMenuItem;
+        private ToolStripMenuItem immeublesToolStripMenuItem;
+        private ToolStripMenuItem copropriétairesToolStripMenuItem;
+        private ToolStripMenuItem fournisseursToolStripMenuItem;
+        private ToolStripMenuItem naturesToolStripMenuItem;
+        private ToolStripMenuItem commentairesToolStripMenuItem;
+        private ToolStripMenuItem ecrituresToolStripMenuItem;
+        private ToolStripMenuItem saisieToolStripMenuItem;
+        private ToolStripMenuItem validationToolStripMenuItem;
+        private ToolStripMenuItem reflemToolStripMenuItem;
+        private ToolStripMenuItem appelDeFondsToolStripMenuItem;
+        private ToolStripMenuItem appelsDeFondsNouvelExerciceToolStripMenuItem;
+        private ToolStripMenuItem editionsToolStripMenuItem;
+        private ToolStripMenuItem convocationsToolStripMenuItem;
+        private ToolStripMenuItem additifsToolStripMenuItem;
+        private ToolStripMenuItem accusésDeReceptionToolStripMenuItem;
+        private ToolStripMenuItem feuillesDePrésenceToolStripMenuItem;
+        private Label label1;
+        private Label label2;
+        private Label label3;
+        private ToolStripMenuItem utilitairesToolStripMenuItem;
+        private ToolStripMenuItem outilsToolStripMenuItem;
+        private ToolStripMenuItem quitterToolStripMenuItem;
+        private ToolStripMenuItem saisieReglementCoproproToolStripMenuItem;
+        private ToolStripMenuItem parametresToolStripMenuItem;
+        private ToolStripMenuItem bordereauRemiseDeChèquesToolStripMenuItem;
+        private ToolStripMenuItem tableauRemiseDeClefsToolStripMenuItem;
+        private ToolStripMenuItem appelDeFondDunimmeubleToolStripMenuItem;
+        private ToolStripMenuItem consultationComptesPropriétairesToolStripMenuItem;
+        private ToolStripMenuItem retardDePaiementsToolStripMenuItem;
+        private ToolStripMenuItem transfertAppelDeFondsSurGéranceToolStripMenuItem;
+        private ToolStripMenuItem bilanGénéralEtCompteExploitationToolStripMenuItem;
+        private ToolStripMenuItem relevésIndividuelsToolStripMenuItem;
+        private ToolStripMenuItem budgetPrévisionnelToolStripMenuItem;
+        private ToolStripMenuItem relevésCommercesToolStripMenuItem;
+        private ToolStripMenuItem immeublesToolStripMenuItem1;
+        private ToolStripMenuItem editionEtiquettesToolStripMenuItem;
+        private ToolStripMenuItem editionComptesFiscauxParImmeublesToolStripMenuItem;
+        private ToolStripMenuItem balanceReglementsFacturesPourUnImmeubleToolStripMenuItem;
+        private ToolStripMenuItem balanceReglementsAppelsDeFondImmeubleToolStripMenuItem;
+        private ToolStripMenuItem balanceReglementsFacturesPourLeCompteSyndicToolStripMenuItem;
+        private Button btnCancel;
+        private ToolStripMenuItem parametresGenerauxToolStripMenuItem;
+        private ToolStripMenuItem visualisationOperationDeGestionToolStripMenuItem;
+        private ToolStripMenuItem clotureExerciceToolStripMenuItem;
+        private ToolStripMenuItem deconnexionToolStripMenuItem;
+        private ToolStripMenuItem quitterToolStripMenuItem1;
+        private ToolStripMenuItem utilisateursToolStripMenuItem;
+        private ToolStripMenuItem controlesDBToolStripMenuItem;
+        private ToolStripMenuItem facturesToolStripMenuItem;
+        private ToolStripMenuItem reglementsToolStripMenuItem;
+        private ToolStripMenuItem appelDeFondToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripMenuItem repareFacturesToolStripMenuItem;
+        private ToolStripMenuItem répareRéglementsToolStripMenuItem;
+        private ToolStripMenuItem operationsReglementsToolStripMenuItem;
+        private ToolStripMenuItem répareOpérationReglementsToolStripMenuItem;
+        private ToolStripMenuItem operationsFacturesToolStripMenuItem;
+        private ToolStripMenuItem operationsAppelDeFondToolStripMenuItem;
+        private ToolStripMenuItem controleDesDonnéesToolStripMenuItem;
+        private ToolStripMenuItem aideMenuItem;
+        private ToolStripMenuItem impressionRéglementsToolStripMenuItem;
+        private ToolStripMenuItem modèlesDeDocumentsToolStripMenuItem;
+        private ToolStripMenuItem impressionListeFacturesToolStripMenuItem;
+        private ToolStripMenuItem utilisateursWebToolStripMenuItem;
+        private ToolStripMenuItem publicationDeDocumentsToolStripMenuItem;
     }
 }

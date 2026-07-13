@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Config
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Config
 {
     partial class ZoomParamForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -113,10 +116,10 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnEnter;
-        private System.Windows.Forms.Button cancel;
-        private System.Windows.Forms.Button btnValid;
-        private System.Windows.Forms.RichTextBox tbComment;
+        private Panel panel1;
+        private Button btnEnter;
+        private Button cancel;
+        private Button btnValid;
+        private RichTextBox tbComment;
     }
 }

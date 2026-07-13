@@ -1,11 +1,15 @@
-﻿namespace EspaceSyndic.Impressions.Additif
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using Microsoft.Reporting.WinForms;
+
+namespace EspaceSyndic.Impressions.Additif
 {
     partial class ImprimerAdditifForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -378,31 +382,31 @@
 
         #endregion
 
-        protected System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.Panel panelButton;
-        private System.Windows.Forms.Button btnRapport;
-        private System.Windows.Forms.Button btnQuit;
-        private Microsoft.Reporting.WinForms.ReportViewer reportViewer1;
-        protected System.Windows.Forms.GroupBox groupBox3;
-        protected System.Windows.Forms.Label label1;
-        protected System.Windows.Forms.TextBox tbRefImmeuble;
-        protected System.Windows.Forms.Label lblImmeuble;
-        private System.Windows.Forms.RichTextBox tbText;
-        protected System.Windows.Forms.Label label3;
-        protected System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox tbLieu;
-        protected System.Windows.Forms.Label label2;
-        protected System.Windows.Forms.Label label5;
-        protected System.Windows.Forms.MaskedTextBox tbHeure;
+        protected ImageList imageList1;
+        private Panel panelButton;
+        private Button btnRapport;
+        private Button btnQuit;
+        private ReportViewer reportViewer1;
+        protected GroupBox groupBox3;
+        protected Label label1;
+        protected TextBox tbRefImmeuble;
+        protected Label lblImmeuble;
+        private RichTextBox tbText;
+        protected Label label3;
+        protected Label label4;
+        private TextBox tbLieu;
+        protected Label label2;
+        protected Label label5;
+        protected MaskedTextBox tbHeure;
         //private Datasets.CoproprietaireImmeuble coproprietaireImmeuble;
-        private System.Windows.Forms.BindingSource tableCoproImmeubleBindingSource;
+        private BindingSource tableCoproImmeubleBindingSource;
         //private Datasets.CoproprietaireImmeubleTableAdapters.CoproImmeubleTableAdapter coproImmeubleTableAdapter;
-        private System.Windows.Forms.DateTimePicker dtDateAssemblee;
-        private System.Windows.Forms.DateTimePicker dtDateEntete;
-        protected System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox cbConvoc;
-        private System.Windows.Forms.Button btnEnter;
-        private System.Windows.Forms.Button btnWord;
-        private System.Windows.Forms.Button BtnExportServeur;
+        private DateTimePicker dtDateAssemblee;
+        private DateTimePicker dtDateEntete;
+        protected Label label6;
+        private ComboBox cbConvoc;
+        private Button btnEnter;
+        private Button btnWord;
+        private Button BtnExportServeur;
     }
 }

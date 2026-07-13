@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Immeubles
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Immeubles
 {
     partial class FicheAideImmeubleForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -174,14 +177,14 @@
 
         #endregion
 
-        protected System.Windows.Forms.ComboBox cbTypeComment;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.RichTextBox tbComment;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button cancel;
-        private System.Windows.Forms.Button btnValid;
-        protected System.Windows.Forms.TextBox tbRefImmeuble;
-        protected System.Windows.Forms.Label lblImmeuble;
-        private System.Windows.Forms.Button btnEnter;
+        protected ComboBox cbTypeComment;
+        private Label label1;
+        private RichTextBox tbComment;
+        private Panel panel1;
+        private Button cancel;
+        private Button btnValid;
+        protected TextBox tbRefImmeuble;
+        protected Label lblImmeuble;
+        private Button btnEnter;
     }
 }

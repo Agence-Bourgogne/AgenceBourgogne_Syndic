@@ -3,714 +3,718 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using CommonProjectsPartners.Utils;
 using CommonProjectsPartners.Common;
-using SyndicData.Entites;
-using SyndicData.Controller;
+using CommonProjectsPartners.Utils;
+using EspaceSyndic.Formulaires.Common;
 using EspaceSyndic.Formulaires.Coproprietaire;
 using EspaceSyndic.Formulaires.Immeubles;
 using EspaceSyndic.Formulaires.Nature;
-//using EspaceSyndic.Formulaires.Fournisseur;
-using EspaceSyndic.Formulaires.Common;
 using EspaceSyndic.Impressions.AppelDeFond;
 using EspaceSyndic.UtilsApp;
 using SyndicData.Common;
+using SyndicData.Controller;
+using SyndicData.Entites;
 
-namespace EspaceSyndic.Formulaires.Ecritures
+namespace EspaceSyndic.Formulaires.Ecritures;
+
+public partial class FicheAppelDeFondForm : Form
 {
-    public partial class FicheAppelDeFondForm : Form
+    protected ImmeubleEntite immeuble;
+    protected NatureEntite nature;
+    protected AutoCompleteStringCollection baseAuto = new();
+    protected bool bLoadEcriture;
+    private readonly HelpForm infoForm = new("aide_appelfond");
+    private readonly InfoKeyHelpForm infoKey = new("aide_clavier_appelfond");
+    private readonly string TitreForm;
+    private AutoCompleteStringCollection lotAuto = new();
+    private string saisie_id = "";
+    public FicheAppelDeFondForm()
     {
-        protected ImmeubleEntite immeuble = null;
-        protected NatureEntite nature = null;
-        protected AutoCompleteStringCollection baseAuto = new AutoCompleteStringCollection();
-        protected bool bLoadEcriture;
-        HelpForm infoForm = new HelpForm("aide_appelfond");
-        InfoKeyHelpForm infoKey = new InfoKeyHelpForm("aide_clavier_appelfond");
-        String TitreForm;
-        AutoCompleteStringCollection lotAuto = new AutoCompleteStringCollection();
-        String saisie_id = "";
-        public FicheAppelDeFondForm()
-        {
-            InitializeComponent();
-            TitreForm = Text;
-        }
-        private void Form_Load(object sender, EventArgs e)
-        {
-            RepartitionControlsWindows.initGridRepartition(dataGridView);
-            //            EnableSaisieEcriture(false);
-            var dt = DateTime.Now;
-            tbDateCreation.Text = dt.ToShortDateString();
+        InitializeComponent();
+        TitreForm = Text;
+    }
+    private void Form_Load(object sender, EventArgs e)
+    {
+        RepartitionControlsWindows.initGridRepartition(dataGridView);
+        //            EnableSaisieEcriture(false);
+        var dt = DateTime.Now;
+        tbDateCreation.Text = dt.ToShortDateString();
 
-            ControlsWindows.setAutoControle(tbRefImmeuble, ImmeubleController.getController().getAutoComplete("reference"));
-            ControlsWindows.setAutoControle(tbNature, NatureController.getController().getAutoComplete("reference"));
-            dataGridView.ScrollBars = ScrollBars.None;
-            dataGridView.BackgroundColor = Color.LightGray;
-            dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            EnableSaveAction();
-            ControlsWindows.setTooltip(tbComment, "Libellé Appel de Fond");
-            FillComboLiasse();
-            tbRefImmeuble.Focus();
+        ControlsWindows.setAutoControle(tbRefImmeuble, ImmeubleController.getController().getAutoComplete("reference"));
+        ControlsWindows.setAutoControle(tbNature, NatureController.getController().getAutoComplete("reference"));
+        dataGridView.ScrollBars = ScrollBars.None;
+        dataGridView.BackgroundColor = Color.LightGray;
+        dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+        EnableSaveAction();
+        ControlsWindows.setTooltip(tbComment, "Libellé Appel de Fond");
+        FillComboLiasse();
+        tbRefImmeuble.Focus();
 //            this.MinimumSize = this.MaximumSize = this.Size;
-            btnEnter.Width = 0;
-            // TODO Paramétrer
-            lblDiff.Visible = tbDiff.Visible = lblTotal.Visible = tbTotal.Visible = lblLiasse.Visible = tbMontantLiasse.Visible = false;
-            tbNature.Text = "145";
+        btnEnter.Width = 0;
+        // TODO Paramétrer
+        lblDiff.Visible = tbDiff.Visible = lblTotal.Visible = tbTotal.Visible = lblLiasse.Visible = tbMontantLiasse.Visible = false;
+        tbNature.Text = "145";
+        tbNature_Validating(null, null);
+    }
+
+    private void FillComboLiasse()
+    {
+        cbLiasse.DataSource = LiasseController.getController().getLiasseActives(getTypeEcriture());
+        cbLiasse.DisplayMember = "reference";
+        cbLiasse.ValueMember = "id";
+        cbLiasse.Enabled = true;
+        cbLiasse_SelectedIndexChanged(null, null);
+    }
+    protected void EnableSaveAction()
+    {
+        var enable = true;
+
+        enable &= immeuble != null;
+        enable &= nature != null;
+        enable &= baseAuto.Contains(tbBase.Text);
+        enable &= !tbMontant.Text.Equals("");
+            
+        btnAdd.Enabled = enable;
+        btnSave.Enabled = dataGridViewEcriture.Rows.Count > 0;
+    }
+    protected void cbLiasse_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (!cbLiasse.Enabled) return;
+        var row = (DataRowView)cbLiasse.SelectedItem;
+        tbTotal.Text = row["montant"].ToString();
+        tbTotal_TextChanged(null, null);
+
+        FillDatagridEcritures();
+
+        var source = (DataTable) dataGridViewEcriture.DataSource;
+        ImmeubleEntite immeuble = null;
+
+        if (source.Rows.Count > 0)
+        {
+            var rowEcriture = source.Rows[0];
+            immeuble =ImmeubleController.getController().getEntiteById(rowEcriture["immeuble_id"].ToString());
+        }
+        if (immeuble != null)
+        {
+            tbRefImmeuble.Text = immeuble.reference;
+            tbRefImmeuble.Enabled = false;
+            tbRefImmeuble_Validating(null, null);
+            tbDateCreation.Focus();
+        }
+        else
+        {
+            tbRefImmeuble.Enabled = true;
+            tbRefImmeuble.Text = "";
+            tbRefImmeuble.Focus();
+        }
+    }
+
+    protected void tbTotal_TextChanged(object sender, EventArgs e)
+    {
+        var total = Convertir.ToFloat(tbTotal.Text);
+        EnableSaisieEcriture(total != 0);
+    }
+    protected virtual void EnableSaisieEcriture(bool saisie)
+    {
+        tbRefImmeuble.Enabled = saisie;
+        tbDateCreation.Enabled = saisie;
+        tbNature.Enabled = saisie;
+        tbMontant.Enabled = saisie;
+        tbBase.Enabled = immeuble != null;
+    }
+    public virtual GlobalConstantes.TypeOperation getTypeEcriture()
+    {
+        return GlobalConstantes.TypeOperation.AppelDeFond;
+    }
+    protected void FillDatagridEcritures()
+    {
+        bLoadEcriture = true;
+        var liasse_id = cbLiasse.SelectedValue.ToString();
+        var source = SaisieAppelFondController.getController().getGridRowSaisieAppelFond(liasse_id);
+        dataGridViewEcriture.DataSource = source;
+        dataGridViewEcriture.ClearSelection();
+        if (source != null)
+        {
+            var cols = dataGridViewEcriture.Columns;
+            dataGridViewEcriture.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            ControlsWindows.ToTitleCase(cols);
+            cols["id"].Visible = false;
+            cols["immeuble_id"].Visible = false;
+            cols["nature_id"].Visible = false;
+            cols["liasse_id"].Visible = false;
+            cols["immeuble_ref"].Visible = false;
+            cols["nature_ref"].Visible = false;
+            cols["nature"].Visible = false;
+                
+            cols["Immeuble"].MinimumWidth = cols["Immeuble"].Width = 220;
+            //cols["Nature"].MinimumWidth = cols["Nature"].Width = 180;
+            cols["Libellé Ecriture"].MinimumWidth = cols["Libellé Ecriture"].Width = 240;
+            cols["base"].Width = 40;
+            cols["lot"].Width = 40;
+            cols["montant"].Width = 60;
+            cols["Date Ecriture"].Width = 80;
+            //if (source.Rows.Count < 1)
+            //else
+            //    dataGridViewEcriture.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+        }
+        float current = 0;
+        foreach (DataRow row in source.Rows)
+        {
+            current += Convertir.ToFloat(row["montant"]);
+        }
+            
+        tbMontantLiasse.Text = current.ToString();
+
+        if (!"".Equals(tbTotal.Text))
+        {
+            double total = Convertir.ToFloat(tbTotal.Text);
+            tbDiff.Text = (total - current).ToString();
+        }
+        var bVisibilite = false;
+        if (!LiasseEntite.NOUVELLE_ID.Equals(liasse_id))
+        {
+            if (dataGridViewEcriture.Rows.Count <= 0)
+                bVisibilite = true;
+        }
+        btnDelLiasse.Visible = bVisibilite;
+
+        if (dataGridViewEcriture.Rows.Count > 0)
+            dataGridViewEcriture.FirstDisplayedScrollingRowIndex = dataGridViewEcriture.Rows.Count - 1;
+
+        bLoadEcriture = false;
+    }
+    private void ClearFicheSaisie()
+    {
+        tbMontant.Text = "";
+        tbBase.Text = "";
+        tbComment.Text = "";
+        tbRefImmeuble_Validating(null, null);
+        btnAdd.Text = "&Ajouter";
+        tbLot.Text = "";
+        lblLot.Visible = false;
+        tbLot.Visible = false;
+    }
+
+    private void lblImmeuble_Click(object sender, EventArgs e)
+    {
+        var form = new FindImmeubleForm();
+        form.ShowDialog();
+        if (!"".Equals(form.reference))
+        {
+            tbRefImmeuble.Text = form.reference;
+            tbRefImmeuble_Validating(null, null);
+        }
+    }
+
+    private void ShowFromRepartitionImmeuble(ImmeubleEntite immeuble)
+    {
+        var repartitionImmeuble = immeuble.getRepartitionImmeuble();
+
+        baseAuto = RepartitionControlsWindows.ShowRepartitionImmeuble(dataGridView, repartitionImmeuble);
+        ControlsWindows.setAutoControle(tbBase, baseAuto);
+        lotAuto = LotsControlsWindows.getLotsAutocomplete(immeuble);
+        ControlsWindows.setAutoControle(tbLot, lotAuto);
+    }
+
+    private void tbRefImmeuble_Validating(object sender, CancelEventArgs e)
+    {
+        immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
+        infoKey.DoFormText(this);
+        if (immeuble != null)
+        {
+            tbRefImmeuble.BackColor = Color.White;
+            ShowFromRepartitionImmeuble(immeuble);
+            tbBase.Enabled = true;
+            Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
+            infoForm.DoFormText(this, immeuble.note_repart);
+        }
+        else
+        {
+            if (!"".Equals(tbRefImmeuble.Text))
+                tbRefImmeuble.BackColor = Color.Red;
+            tbBase.Text = "";
+            Text = TitreForm;
+            tbBase.Enabled = false;
+            infoForm.Hide();
+        }
+        EnableSaveAction();
+
+    }
+
+    private void lblNature_Click(object sender, EventArgs e)
+    {
+        var form = new FindNatureForm();
+        form.ShowDialog();
+        if (!"".Equals(form.reference))
+        {
+            tbNature.Text = form.reference;
             tbNature_Validating(null, null);
         }
-        void FillComboLiasse()
+    }
+
+    private void btnNatureAdd_Click(object sender, EventArgs e)
+    {
+        var form = new FicheNatureForm(false);
+        form.entite = new NatureEntite();
+        form.ShowDialog();
+        if (!form.entite.id.Equals(""))
         {
-            cbLiasse.DataSource = LiasseController.getController().getLiasseActives(getTypeEcriture());
-            cbLiasse.DisplayMember = "reference";
-            cbLiasse.ValueMember = "id";
-            cbLiasse.Enabled = true;
-            cbLiasse_SelectedIndexChanged(null, null);
+            tbNature.Text = form.entite.reference;
+            tbNature_Validating(null, null);
         }
-        protected void EnableSaveAction()
-        {
-            var enable = true;
+        ControlsWindows.setAutoControle(tbNature, NatureController.getController().getAutoComplete("reference"));
+    }
 
-            enable &= (immeuble != null);
-            enable &= (nature != null);
-            enable &= (baseAuto.Contains(tbBase.Text));
-            enable &= (!tbMontant.Text.Equals(""));
-            
-            btnAdd.Enabled = enable;
-            btnSave.Enabled = dataGridViewEcriture.Rows.Count > 0;
+    private void tbNature_Validating(object sender, CancelEventArgs e)
+    {
+        if (tbNature.Text == "")
+            return;
+        nature = NatureController.getController().getEntiteFromField("reference", tbNature.Text);
+        if (nature != null)
+        {
+            tbNature.BackColor = Color.White;
+            tbLibNature.Text = nature.nom;
         }
-        protected void cbLiasse_SelectedIndexChanged(object sender, EventArgs e)
+        else
         {
-            if (!cbLiasse.Enabled) return;
-            var row = (DataRowView)cbLiasse.SelectedItem;
-            tbTotal.Text = row["montant"].ToString();
-            tbTotal_TextChanged(null, null);
+            tbNature.BackColor = Color.Red;
+            tbLibNature.Text = "";
+        }
+        EnableSaveAction();
 
-            FillDatagridEcritures();
+    }
+    private void tbBase_TextChanged(object sender, EventArgs e)
+    {
+        if (baseAuto.Contains(tbBase.Text) || tbBase.Text == "")
+        {
+            tbBase.BackColor = Color.White;
+        }
+        else
+        {
+            tbBase.BackColor = Color.Red;
+        }
+        tbLot.Visible = tbBase.Text == "80";
+        lblLot.Visible = tbBase.Text == "80";
+        ShowOldLot();
+        EnableSaveAction();
+    }
 
-            var source = (DataTable) dataGridViewEcriture.DataSource;
-            ImmeubleEntite immeuble = null;
-
-            if (source.Rows.Count > 0)
+    private void tbMontantFac_TextChanged(object sender, EventArgs e)
+    {
+        float montant = 0;
+        if (tbMontant.Text != "")
+        {
+            montant = Convertir.ToFloat(tbMontant.Text.Replace(".", ","));
+            if (montant == 0)
             {
-                var rowEcriture = source.Rows[0];
-                immeuble =ImmeubleController.getController().getEntiteById(rowEcriture["immeuble_id"].ToString());
-            }
-            if (immeuble != null)
-            {
-                tbRefImmeuble.Text = immeuble.reference;
-                tbRefImmeuble.Enabled = false;
-                tbRefImmeuble_Validating(null, null);
-                tbDateCreation.Focus();
+                tbMontant.BackColor = Color.Red;
             }
             else
             {
-                tbRefImmeuble.Enabled = true;
-                tbRefImmeuble.Text = "";
-                tbRefImmeuble.Focus();
+                tbMontant.BackColor = Color.White;
+            }
+        }
+        EnableSaveAction();
+    }
+
+    private void selectComboLiasse(string liasse_id)
+    {
+        var source = LiasseController.getController().getLiasseActives(GlobalConstantes.TypeOperation.AppelDeFond);
+        cbLiasse.DataSource = source;
+        foreach (DataRow row in source.Rows)
+        {
+            if (liasse_id.Equals(row["id"].ToString()))
+            {
+                cbLiasse.SelectedValue = liasse_id;
+                break;
+            }
+        }
+    }
+    private void btnAdd_Click(object sender, EventArgs e)
+    {
+        if (dataGridViewEcriture.SelectedRows.Count > 0)
+            UpdateEcriture();
+        else
+            SaveEcriture();
+    }
+
+    private SaisieAppelFondEntite FillSaisieFromForm(SaisieAppelFondEntite saisie)
+    {
+        saisie.immeuble_id = immeuble.id;
+        saisie.nature_id = nature.id;
+        saisie.montant = Convertir.ToDecimal(tbMontant.Text);
+        saisie.date_reference = Convert.ToDateTime(tbDateCreation.Text);
+        saisie.libelle = tbComment.Text;
+        saisie.base_repart = tbBase.Text;
+        return saisie;
+    }
+
+    private bool ValidateForm()
+    {
+        var msg = "";
+
+        if (immeuble == null) msg += "Immeuble invalide\r\n";
+        if (nature == null) msg += "Nature invalide\r\n";
+        if (!baseAuto.Contains(tbBase.Text)) msg += "Base invalide\r\n";
+        if (tbMontant.Text.Equals("")) msg += "Montant invalide\r\n";
+        if (tbComment.Text.Equals("")) msg += "Libelle invalide\r\n";
+        if (msg != "")
+        {
+            MessageBox.Show(msg);
+            return false;
+        }
+
+        var dtFac = Convert.ToDateTime(tbDateCreation.Text);
+        var exercice = ExerciceComptableController.getController().getExerciceFromDate(immeuble.id, dtFac);
+
+        if ( exercice != null )
+        {
+            if ( exercice.statut != (int) GlobalConstantes.StatutExercice.Ouvert)
+            {
+                var dr = MessageBox.Show("La date de l'opération correspond à un exercice Cloturé\r\nVoulez vous continuer", "Attention", MessageBoxButtons.YesNo);
+                if (dr != DialogResult.Yes)
+                    return false;
             }
         }
 
-        protected void tbTotal_TextChanged(object sender, EventArgs e)
+        return true;
+    }
+
+    private void UpdateEcriture()
+    {
+        if (!ValidateForm())
+            return;
+
+        var rowGrid = (DataRowView) dataGridViewEcriture.SelectedRows[0].DataBoundItem;
+        if (rowGrid != null)
         {
-            var total = Convertir.ToFloat(tbTotal.Text);
-            EnableSaisieEcriture(total != 0);
-        }
-        protected virtual void EnableSaisieEcriture(bool saisie)
-        {
-            tbRefImmeuble.Enabled = saisie;
-            tbDateCreation.Enabled = saisie;
-            tbNature.Enabled = saisie;
-            tbMontant.Enabled = saisie;
-            tbBase.Enabled = immeuble != null;
-        }
-        public virtual GlobalConstantes.TypeOperation getTypeEcriture()
-        {
-            return GlobalConstantes.TypeOperation.AppelDeFond;
-        }
-        protected void FillDatagridEcritures()
-        {
-            bLoadEcriture = true;
-            var liasse_id = cbLiasse.SelectedValue.ToString();
-            var source = SaisieAppelFondController.getController().getGridRowSaisieAppelFond(liasse_id);
-            dataGridViewEcriture.DataSource = source;
-            dataGridViewEcriture.ClearSelection();
-            if (source != null)
-            {
-                var cols = dataGridViewEcriture.Columns;
-                dataGridViewEcriture.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                ControlsWindows.ToTitleCase(cols);
-                cols["id"].Visible = false;
-                cols["immeuble_id"].Visible = false;
-                cols["nature_id"].Visible = false;
-                cols["liasse_id"].Visible = false;
-                cols["immeuble_ref"].Visible = false;
-                cols["nature_ref"].Visible = false;
-                cols["nature"].Visible = false;
-                
-                cols["Immeuble"].MinimumWidth = cols["Immeuble"].Width = 220;
-                //cols["Nature"].MinimumWidth = cols["Nature"].Width = 180;
-                cols["Libellé Ecriture"].MinimumWidth = cols["Libellé Ecriture"].Width = 240;
-                cols["base"].Width = 40;
-                cols["lot"].Width = 40;
-                cols["montant"].Width = 60;
-                cols["Date Ecriture"].Width = 80;
-                //if (source.Rows.Count < 1)
-                //else
-                //    dataGridViewEcriture.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
-            }
-            float current = 0;
-            foreach (DataRow row in source.Rows)
-            {
-                current += Convertir.ToFloat(row["montant"]);
-            }
-            
-            tbMontantLiasse.Text = current.ToString();
-
-            if (!"".Equals(tbTotal.Text))
-            {
-                double total = Convertir.ToFloat(tbTotal.Text);
-                tbDiff.Text = (total - current).ToString();
-            }
-            var bVisibilite = false;
-            if (!LiasseEntite.NOUVELLE_ID.Equals(liasse_id))
-            {
-                if (dataGridViewEcriture.Rows.Count <= 0)
-                    bVisibilite = true;
-            }
-            btnDelLiasse.Visible = bVisibilite;
-
-            if (dataGridViewEcriture.Rows.Count > 0)
-                dataGridViewEcriture.FirstDisplayedScrollingRowIndex = dataGridViewEcriture.Rows.Count - 1;
-
-            bLoadEcriture = false;
-        }
-        private void ClearFicheSaisie()
-        {
-            var liasse_id = cbLiasse.SelectedValue.ToString();
-
-            tbMontant.Text = "";
-            tbBase.Text = "";
-            tbComment.Text = "";
-            tbRefImmeuble_Validating(null, null);
-            btnAdd.Text = "&Ajouter";
-            tbLot.Text = "";
-            lblLot.Visible = false;
-            tbLot.Visible = false;
-        }
-
-        private void lblImmeuble_Click(object sender, EventArgs e)
-        {
-            var form = new FindImmeubleForm();
-            form.ShowDialog();
-            if (!"".Equals(form.reference))
-            {
-                tbRefImmeuble.Text = form.reference;
-                tbRefImmeuble_Validating(null, null);
-            }
-        }
-
-        private void ShowFromRepartitionImmeuble(ImmeubleEntite immeuble)
-        {
-            var repartitionImmeuble = immeuble.getRepartitionImmeuble();
-
-            baseAuto = RepartitionControlsWindows.ShowRepartitionImmeuble(dataGridView, repartitionImmeuble);
-            ControlsWindows.setAutoControle(tbBase, baseAuto);
-            lotAuto = LotsControlsWindows.getLotsAutocomplete(immeuble);
-            ControlsWindows.setAutoControle(tbLot, lotAuto);
-        }
-
-        private void tbRefImmeuble_Validating(object sender, CancelEventArgs e)
-        {
-            immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
-            infoKey.DoFormText(this);
-            if (immeuble != null)
-            {
-                tbRefImmeuble.BackColor = Color.White;
-                ShowFromRepartitionImmeuble(immeuble);
-                tbBase.Enabled = true;
-                Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
-                infoForm.DoFormText(this, immeuble.note_repart);
-            }
-            else
-            {
-                if (!"".Equals(tbRefImmeuble.Text))
-                    tbRefImmeuble.BackColor = Color.Red;
-                tbBase.Text = "";
-                Text = TitreForm;
-                tbBase.Enabled = false;
-                infoForm.Hide();
-            }
-            EnableSaveAction();
-
-        }
-
-        private void lblNature_Click(object sender, EventArgs e)
-        {
-            var form = new FindNatureForm();
-            form.ShowDialog();
-            if (!"".Equals(form.reference))
-            {
-                tbNature.Text = form.reference;
-                tbNature_Validating(null, null);
-            }
-        }
-
-        private void btnNatureAdd_Click(object sender, EventArgs e)
-        {
-            var form = new FicheNatureForm(false);
-            form.entite = new NatureEntite();
-            form.ShowDialog();
-            if (!form.entite.id.Equals(""))
-            {
-                tbNature.Text = form.entite.reference;
-                tbNature_Validating(null, null);
-            }
-            ControlsWindows.setAutoControle(tbNature, NatureController.getController().getAutoComplete("reference"));
-        }
-
-        private void tbNature_Validating(object sender, CancelEventArgs e)
-        {
-            if (tbNature.Text == "")
-                return;
-            nature = NatureController.getController().getEntiteFromField("reference", tbNature.Text);
-            if (nature != null)
-            {
-                tbNature.BackColor = Color.White;
-                tbLibNature.Text = nature.nom;
-            }
-            else
-            {
-                tbNature.BackColor = Color.Red;
-                tbLibNature.Text = "";
-            }
-            EnableSaveAction();
-
-        }
-        private void tbBase_TextChanged(object sender, EventArgs e)
-        {
-            if (baseAuto.Contains(tbBase.Text) || tbBase.Text == "")
-            {
-                tbBase.BackColor = Color.White;
-            }
-            else
-            {
-                tbBase.BackColor = Color.Red;
-            }
-            tbLot.Visible = (tbBase.Text == "80");
-            lblLot.Visible = (tbBase.Text == "80");
-            ShowOldLot();
-            EnableSaveAction();
-        }
-
-        private void tbMontantFac_TextChanged(object sender, EventArgs e)
-        {
-            float montant = 0;
-            if (tbMontant.Text != "")
-            {
-                montant = Convertir.ToFloat(tbMontant.Text.Replace(".", ","));
-                if (montant == 0)
-                {
-                    tbMontant.BackColor = Color.Red;
-                }
-                else
-                {
-                    tbMontant.BackColor = Color.White;
-                }
-            }
-            EnableSaveAction();
-        }
-
-        private void selectComboLiasse(string liasse_id)
-        {
-            var source = LiasseController.getController().getLiasseActives(GlobalConstantes.TypeOperation.AppelDeFond);
-            cbLiasse.DataSource = source;
-            foreach (DataRow row in source.Rows)
-            {
-                if (liasse_id.Equals(row["id"].ToString()))
-                {
-                    cbLiasse.SelectedValue = liasse_id;
-                    break;
-                }
-            }
-        }
-        private void btnAdd_Click(object sender, EventArgs e)
-        {
-            if (dataGridViewEcriture.SelectedRows.Count > 0)
-                UpdateEcriture();
-            else
-                SaveEcriture();
-        }
-
-        private SaisieAppelFondEntite FillSaisieFromForm(SaisieAppelFondEntite saisie)
-        {
-            saisie.immeuble_id = immeuble.id;
-            saisie.nature_id = nature.id;
-            saisie.montant = Convertir.ToDecimal(tbMontant.Text);
-            saisie.date_reference = Convert.ToDateTime(tbDateCreation.Text);
-            saisie.libelle = tbComment.Text;
-            saisie.base_repart = tbBase.Text;
-            return saisie;
-        }
-
-        private bool ValidateForm()
-        {
-            var msg = "";
-
-            if (immeuble == null) msg += "Immeuble invalide\r\n";
-            if (nature == null) msg += "Nature invalide\r\n";
-            if (!baseAuto.Contains(tbBase.Text)) msg += "Base invalide\r\n";
-            if (tbMontant.Text.Equals("")) msg += "Montant invalide\r\n";
-            if (tbComment.Text.Equals("")) msg += "Libelle invalide\r\n";
-            if (msg != "")
-            {
-                MessageBox.Show(msg);
-                return false;
-            }
-
-            var dtFac = Convert.ToDateTime(tbDateCreation.Text);
-            var exercice = ExerciceComptableController.getController().getExerciceFromDate(immeuble.id, dtFac);
-
-            if ( exercice != null )
-            {
-                if ( exercice.statut != (int) GlobalConstantes.StatutExercice.Ouvert)
-                {
-                    var dr = MessageBox.Show("La date de l'opération correspond à un exercice Cloturé\r\nVoulez vous continuer", "Attention", MessageBoxButtons.YesNo);
-                    if (dr != DialogResult.Yes)
-                        return false;
-                }
-            }
-
-            return true;
-        }
-
-        private void UpdateEcriture()
-        {
-            if (!ValidateForm())
-                return;
-
-            var rowGrid = (DataRowView) dataGridViewEcriture.SelectedRows[0].DataBoundItem;
-            if (rowGrid != null)
-            {
-                var row = rowGrid.Row;
-                try
-                {
-                    var saisie = SaisieAppelFondController.getController().getEntiteById(row["id"].ToString());
-                    if (saisie != null)
-                    {
-                        saisie_id = saisie.id;
-                        var immeuble_repart = ImmeubleRepartitionController.getController().getRepartFromImmeubleBase(immeuble.id, tbBase.Text);
-                        if (immeuble_repart == null) return;
-                        
-                        var oldBase = saisie.base_repart;
-
-                        if (tbBase.Text != oldBase)
-                        {
-                            var old_repart = ImmeubleRepartitionController.getController().getRepartFromImmeubleBase(immeuble.id, saisie.base_repart);
-                            if ( old_repart.type_ventilation != immeuble_repart.type_ventilation)
-                            {
-                                MessageBox.Show("Vous ne pouvez pas changer de base si le type de répartition change \r\nVous devez supprimer l'écriture");
-                                return;
-                            }
-                        }
-                        saisie = FillSaisieFromForm(saisie);
-
-                        if (immeuble_repart.type_ventilation == (int)GlobalConstantes.TypeRepartition.Individuelle)
-                        {
-                            if ( tbBase.Text == "80" )
-                            {
-                                SaisieAppelFondController.getController().UpdateSaisieAndLot(saisie, immeuble.id, tbLot.Text, Convertir.ToDecimal(tbMontant.Text));
-                            }
-                            else
-                            {
-                                var form = new FicheAppelDeFondRepartitionIndividuelle();
-                                form.saisie = saisie;
-                                form.immeuble = immeuble;
-                                var rc = form.ShowDialog();
-                            }
-                        }
-                        else
-                            SaisieAppelFondController.getController().InsertOrUpdate(saisie);
-
-                        ClearFicheSaisie();
-
-                        FillDatagridEcritures();
-                        tbRefImmeuble.Focus();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            }
-        }
-        private void btnValid_Click(object sender, EventArgs e)
-        {
-            var msg  = "Voulez-vous valider cet appel de fond\n";
-            msg+= "Cette opération est irréversible\n";
-            msg+= "Si vous répondez Oui\n";
-            msg+= "Seule l'impression (Réimpression) sera accessible";
-
-            var res = MessageBox.Show( msg, "Attention", MessageBoxButtons.YesNoCancel);
-            if (res == DialogResult.Cancel)
-                return;
-            
-            if (res == DialogResult.No)
-                Close();
-
-            if ( res == DialogResult.Yes)
-            {
-                var liasse_id = cbLiasse.SelectedValue.ToString();
-                OperationController.getController().ValidateAppelDeFond(liasse_id);
-                cbLiasse.DataSource = LiasseController.getController().getLiasseActives(getTypeEcriture());
-                var form = new ImprimerAppelDeFondForm();
-                form.immeuble = immeuble;
-                form.saisie_id = saisie_id;
-                form.ShowDialog();
-            }
-        }
-        private void SaveEcriture()
-        {
-            if (!ValidateForm())
-                return;
-
-            var bNewLiasse = false;
-            var numero_operation = 1;
-            var liasse_id = cbLiasse.SelectedValue.ToString();
-            LiasseEntite liasse = null;
-            if (LiasseEntite.NOUVELLE_ID.Equals(liasse_id))
-            {
-                //LiasseEntite liasse = new LiasseEntite();
-                liasse = new LiasseEntite();
-                liasse.isNew = true;
-                liasse.montant = Convertir.ToDecimal(tbTotal.Text);
-                liasse.type_ecriture = getTypeEcriture().ToString();
-                liasse.statut = (int)GlobalConstantes.StatutOperation.Brouillon;
-                liasse.reference = $"{BaseApplication.ComputerName} pour {immeuble.reference} du {DateTime.Now}";
-                //LiasseController.getController().InsertOrUpdate(liasse);
-                liasse_id = liasse.id = liasse.get_uuid();
-                bNewLiasse = true;
-            }
-
-            numero_operation = SaisieAppelFondController.getController().getNextNumeroOperation(Convert.ToDateTime(tbDateCreation.Text));
-
-            var saisie = new SaisieAppelFondEntite();
-            saisie.liasse_id = liasse_id;
-            saisie.date_operation = saisie.date_reference = Convert.ToDateTime(tbDateCreation.Text);
-            saisie.numero_operation = numero_operation;
-            saisie = FillSaisieFromForm(saisie);
-            saisie.statut = (int)GlobalConstantes.StatutOperation.Brouillon;
+            var row = rowGrid.Row;
             try
             {
-                var immeuble_repart = ImmeubleRepartitionController.getController().getEntiteFromField("reference", tbBase.Text);
-                if (immeuble_repart == null) return;
-                if (immeuble_repart.type_ventilation == (int)GlobalConstantes.TypeRepartition.Individuelle)
+                var saisie = SaisieAppelFondController.getController().getEntiteById(row["id"].ToString());
+                if (saisie != null)
                 {
-                    if (tbBase.Text == "80")
+                    saisie_id = saisie.id;
+                    var immeuble_repart = ImmeubleRepartitionController.getController().getRepartFromImmeubleBase(immeuble.id, tbBase.Text);
+                    if (immeuble_repart == null) return;
+                        
+                    var oldBase = saisie.base_repart;
+
+                    if (tbBase.Text != oldBase)
                     {
-                         SaisieAppelFondController.getController().UpdateSaisieAndLot(saisie, immeuble.id, tbLot.Text, Convertir.ToDecimal(tbMontant.Text));
+                        var old_repart = ImmeubleRepartitionController.getController().getRepartFromImmeubleBase(immeuble.id, saisie.base_repart);
+                        if ( old_repart.type_ventilation != immeuble_repart.type_ventilation)
+                        {
+                            MessageBox.Show("""
+                                            Vous ne pouvez pas changer de base si le type de répartition change 
+                                            Vous devez supprimer l'écriture
+                                            """);
+                            return;
+                        }
+                    }
+                    saisie = FillSaisieFromForm(saisie);
+
+                    if (immeuble_repart.type_ventilation == (int)GlobalConstantes.TypeRepartition.Individuelle)
+                    {
+                        if ( tbBase.Text == "80" )
+                        {
+                            SaisieAppelFondController.getController().UpdateSaisieAndLot(saisie, immeuble.id, tbLot.Text, Convertir.ToDecimal(tbMontant.Text));
+                        }
+                        else
+                        {
+                            var form = new FicheAppelDeFondRepartitionIndividuelle();
+                            form.saisie = saisie;
+                            form.immeuble = immeuble;
+                            form.ShowDialog();
+                        }
                     }
                     else
-                    {
-                        var form = new FicheAppelDeFondRepartitionIndividuelle();
-                        form.saisie = saisie;
-                        form.immeuble = immeuble;
-                        if (DialogResult.Cancel == form.ShowDialog())
-                            bNewLiasse = false;
-                    }
+                        SaisieAppelFondController.getController().InsertOrUpdate(saisie);
+
+                    ClearFicheSaisie();
+
+                    FillDatagridEcritures();
+                    tbRefImmeuble.Focus();
                 }
-                else
-                    SaisieAppelFondController.getController().InsertOrUpdate(saisie);
-
-                if (bNewLiasse)
-                    LiasseController.getController().InsertOrUpdate(liasse);
-
-                ClearFicheSaisie();
-                if ( bNewLiasse )
-                    selectComboLiasse(liasse_id);
-
-                saisie_id = saisie.id;
-
-                FillDatagridEcritures();
-                tbRefImmeuble.Focus();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
+    }
+    private void btnValid_Click(object sender, EventArgs e)
+    {
+        var msg  = "Voulez-vous valider cet appel de fond\n";
+        msg+= "Cette opération est irréversible\n";
+        msg+= "Si vous répondez Oui\n";
+        msg+= "Seule l'impression (Réimpression) sera accessible";
 
-        private void FicheAppelDeFondForm_FormClosing(object sender, FormClosingEventArgs e)
+        var res = MessageBox.Show( msg, "Attention", MessageBoxButtons.YesNoCancel);
+        if (res == DialogResult.Cancel)
+            return;
+            
+        if (res == DialogResult.No)
+            Close();
+
+        if ( res == DialogResult.Yes)
         {
-//            infoForm.Hide();
-            e.Cancel = false;
+            var liasse_id = cbLiasse.SelectedValue.ToString();
+            OperationController.getController().ValidateAppelDeFond(liasse_id);
+            cbLiasse.DataSource = LiasseController.getController().getLiasseActives(getTypeEcriture());
+            var form = new ImprimerAppelDeFondForm();
+            form.immeuble = immeuble;
+            form.saisie_id = saisie_id;
+            form.ShowDialog();
         }
+    }
+    private void SaveEcriture()
+    {
+        if (!ValidateForm())
+            return;
 
-        private void tbHelpBox_KeyPress(object sender, KeyPressEventArgs e)
+        var bNewLiasse = false;
+        var numero_operation = 1;
+        var liasse_id = cbLiasse.SelectedValue.ToString();
+        LiasseEntite liasse = null;
+        if (LiasseEntite.NOUVELLE_ID.Equals(liasse_id))
         {
-
-            if (ModifierKeys == Keys.Control)
-                if (e.KeyChar == ' ')
-                {
-                    e.Handled = true;
-                    if ( sender.Equals(tbRefImmeuble))
-                        lblImmeuble_Click(null, null);
-                    if (sender.Equals(tbNature))
-                        lblNature_Click(null, null);
-                    if (sender.Equals(tbLot))
-                        lblLot_Click(null, null);
-                }
-        }
-
-        private void tbComment_KeyPress(object sender, KeyEventArgs e)
-        {
-            StandardFunctionnalities.Standard_KeyPress(sender, e);
-        }
-        private void ShowOldLot()
-        {
-            if (dataGridViewEcriture.SelectedRows.Count > 0)
+            //LiasseEntite liasse = new LiasseEntite();
+            liasse = new LiasseEntite
             {
-                var rowGrid = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
-                if (rowGrid != null)
-                {
-                    var row = rowGrid.Row;
-                    if (tbBase.Text == "80")
-                    {
-                        tbLot.Text = OperationController.getController().getNumeroLotFromSaisie(row["id"].ToString());
-                    }
-                }
-            }
+                isNew = true,
+                montant = Convertir.ToDecimal(tbTotal.Text),
+                type_ecriture = getTypeEcriture().ToString(),
+                statut = (int)GlobalConstantes.StatutOperation.Brouillon,
+                reference = $"{BaseApplication.ComputerName} pour {immeuble.reference} du {DateTime.Now}"
+            };
+            //LiasseController.getController().InsertOrUpdate(liasse);
+            liasse_id = liasse.id = liasse.get_uuid();
+            bNewLiasse = true;
         }
-        private void dataGridViewEcriture_SelectionChanged(object sender, EventArgs e)
+
+        numero_operation = SaisieAppelFondController.getController().getNextNumeroOperation(Convert.ToDateTime(tbDateCreation.Text));
+
+        var saisie = new SaisieAppelFondEntite
         {
-            if (!bLoadEcriture)
-                if (dataGridViewEcriture.SelectedRows.Count > 0)
+            liasse_id = liasse_id
+        };
+        saisie.date_operation = saisie.date_reference = Convert.ToDateTime(tbDateCreation.Text);
+        saisie.numero_operation = numero_operation;
+        saisie = FillSaisieFromForm(saisie);
+        saisie.statut = (int)GlobalConstantes.StatutOperation.Brouillon;
+        try
+        {
+            var immeuble_repart = ImmeubleRepartitionController.getController().getEntiteFromField("reference", tbBase.Text);
+            if (immeuble_repart == null) return;
+            if (immeuble_repart.type_ventilation == (int)GlobalConstantes.TypeRepartition.Individuelle)
+            {
+                if (tbBase.Text == "80")
                 {
-                    var rowGrid = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
-                    if (rowGrid != null)
-                    {
-                        var row = rowGrid.Row;
-                        tbRefImmeuble.Text = row["immeuble_ref"].ToString();
-                        tbBase.Text = row["base"].ToString();
-                        tbNature.Text = row["nature_ref"].ToString();
-                        tbMontant.Text = row["montant"].ToString();
-                        tbComment.Text = row["Libellé Ecriture"].ToString();
-                        tbDateCreation.Text = row["Date Ecriture"].ToString();
-                        tbRefImmeuble_Validating(null, null);
-                        tbNature_Validating(null, null);
-                        tbRefImmeuble.Enabled = true;
-                        ShowOldLot();
-                        btnAdd.Text = "&Modifier";
-                    }
+                    SaisieAppelFondController.getController().UpdateSaisieAndLot(saisie, immeuble.id, tbLot.Text, Convertir.ToDecimal(tbMontant.Text));
                 }
                 else
                 {
-                    ClearFicheSaisie();
+                    var form = new FicheAppelDeFondRepartitionIndividuelle();
+                    form.saisie = saisie;
+                    form.immeuble = immeuble;
+                    if (DialogResult.Cancel == form.ShowDialog())
+                        bNewLiasse = false;
                 }
-        }
-
-        private void btnEnter_Click(object sender, EventArgs e)
-        {
-            ControlsWindows.FocusNextTabbedControl(this);
-        }
-
-        private void tbDateCreation_Enter(object sender, EventArgs e)
-        {
-            tbDateCreation.SelectAll();
-        }
-
-        private void btnHelp_Click(object sender, EventArgs e)
-        {
-            if (!infoKey.Visible)
-                infoKey.ShowForm(this);
+            }
             else
-                infoKey.Close();
-            Activate();
-        }
+                SaisieAppelFondController.getController().InsertOrUpdate(saisie);
 
-        private void btnRepart_Click(object sender, EventArgs e)
-        {
-            if (!infoForm.Visible)
-                infoForm.ShowForm(this);
-            else
-                infoForm.Close();
-            Activate();
-        }
+            if (bNewLiasse)
+                LiasseController.getController().InsertOrUpdate(liasse);
 
-        private void btnDel_Click(object sender, EventArgs e)
+            ClearFicheSaisie();
+            if ( bNewLiasse )
+                selectComboLiasse(liasse_id);
+
+            saisie_id = saisie.id;
+
+            FillDatagridEcritures();
+            tbRefImmeuble.Focus();
+        }
+        catch (Exception ex)
         {
+            MessageBox.Show(ex.Message);
+        }
+    }
+
+    private void FicheAppelDeFondForm_FormClosing(object sender, FormClosingEventArgs e)
+    {
+//            infoForm.Hide();
+        e.Cancel = false;
+    }
+
+    private void tbHelpBox_KeyPress(object sender, KeyPressEventArgs e)
+    {
+
+        if (ModifierKeys == Keys.Control)
+            if (e.KeyChar == ' ')
+            {
+                e.Handled = true;
+                if ( sender.Equals(tbRefImmeuble))
+                    lblImmeuble_Click(null, null);
+                if (sender.Equals(tbNature))
+                    lblNature_Click(null, null);
+                if (sender.Equals(tbLot))
+                    lblLot_Click(null, null);
+            }
+    }
+
+    private void tbComment_KeyPress(object sender, KeyEventArgs e)
+    {
+        StandardFunctionnalities.Standard_KeyPress(sender, e);
+    }
+    private void ShowOldLot()
+    {
+        if (dataGridViewEcriture.SelectedRows.Count > 0)
+        {
+            var rowGrid = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
+            if (rowGrid != null)
+            {
+                var row = rowGrid.Row;
+                if (tbBase.Text == "80")
+                {
+                    tbLot.Text = OperationController.getController().getNumeroLotFromSaisie(row["id"].ToString());
+                }
+            }
+        }
+    }
+    private void dataGridViewEcriture_SelectionChanged(object sender, EventArgs e)
+    {
+        if (!bLoadEcriture)
             if (dataGridViewEcriture.SelectedRows.Count > 0)
             {
                 var rowGrid = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
                 if (rowGrid != null)
                 {
                     var row = rowGrid.Row;
-                    var saisie = SaisieAppelFondController.getController().getEntiteById(row["id"].ToString());
-                    if (saisie != null)
-                    {
-                        SaisieAppelFondController.getController().DeleteEntite(saisie);
-                        ClearFicheSaisie();
-                        FillDatagridEcritures();
-                        tbRefImmeuble.Focus();
-                    }
+                    tbRefImmeuble.Text = row["immeuble_ref"].ToString();
+                    tbBase.Text = row["base"].ToString();
+                    tbNature.Text = row["nature_ref"].ToString();
+                    tbMontant.Text = row["montant"].ToString();
+                    tbComment.Text = row["Libellé Ecriture"].ToString();
+                    tbDateCreation.Text = row["Date Ecriture"].ToString();
+                    tbRefImmeuble_Validating(null, null);
+                    tbNature_Validating(null, null);
+                    tbRefImmeuble.Enabled = true;
+                    ShowOldLot();
+                    btnAdd.Text = "&Modifier";
                 }
             }
-        }
-
-        private void RowMenu_Opening(object sender, CancelEventArgs e)
-        {
-
-        }
-
-        private void supprimerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            btnDel_Click(null, null);
-        }
-
-        private void dataGridViewEcriture_DoubleClick(object sender, EventArgs e)
-        {
-            if (dataGridViewEcriture.SelectedRows.Count > 0)
+            else
             {
-                var numbase = Convertir.ToInt(tbBase.Text);
-                if (numbase >= 81 && numbase <= 88)
+                ClearFicheSaisie();
+            }
+    }
+
+    private void btnEnter_Click(object sender, EventArgs e)
+    {
+        ControlsWindows.FocusNextTabbedControl(this);
+    }
+
+    private void tbDateCreation_Enter(object sender, EventArgs e)
+    {
+        tbDateCreation.SelectAll();
+    }
+
+    private void btnHelp_Click(object sender, EventArgs e)
+    {
+        if (!infoKey.Visible)
+            infoKey.ShowForm(this);
+        else
+            infoKey.Close();
+        Activate();
+    }
+
+    private void btnRepart_Click(object sender, EventArgs e)
+    {
+        if (!infoForm.Visible)
+            infoForm.ShowForm(this);
+        else
+            infoForm.Close();
+        Activate();
+    }
+
+    private void btnDel_Click(object sender, EventArgs e)
+    {
+        if (dataGridViewEcriture.SelectedRows.Count > 0)
+        {
+            var rowGrid = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
+            if (rowGrid != null)
+            {
+                var row = rowGrid.Row;
+                var saisie = SaisieAppelFondController.getController().getEntiteById(row["id"].ToString());
+                if (saisie != null)
                 {
-                    var row = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
-                    var form = new FicheAppelDeFondRepartitionIndividuelle();
-                    form.saisie = SaisieAppelFondController.getController().getEntiteById(row["id"].ToString());
-                    form.immeuble = ImmeubleController.getController().getEntiteById(row["immeuble_id"].ToString());
-                    form.ShowDialog();
+                    SaisieAppelFondController.getController().DeleteEntite(saisie);
+                    ClearFicheSaisie();
+                    FillDatagridEcritures();
+                    tbRefImmeuble.Focus();
                 }
             }
-
         }
+    }
 
-        private void tbLot_Validating(object sender, CancelEventArgs e)
+    private void RowMenu_Opening(object sender, CancelEventArgs e)
+    {
+
+    }
+
+    private void supprimerToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        btnDel_Click(null, null);
+    }
+
+    private void dataGridViewEcriture_DoubleClick(object sender, EventArgs e)
+    {
+        if (dataGridViewEcriture.SelectedRows.Count > 0)
         {
-            if (tbLot.Visible)
+            var numbase = Convertir.ToInt(tbBase.Text);
+            if (numbase >= 81 && numbase <= 88)
             {
-
+                var row = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
+                var form = new FicheAppelDeFondRepartitionIndividuelle();
+                form.saisie = SaisieAppelFondController.getController().getEntiteById(row["id"].ToString());
+                form.immeuble = ImmeubleController.getController().getEntiteById(row["immeuble_id"].ToString());
+                form.ShowDialog();
             }
         }
 
-        private void lblLot_Click(object sender, EventArgs e)
-        {
-            var form = new FindLotCoproprietaireImmeubleForm();
-            form.immeuble = immeuble;
-            form.ShowDialog();
-            if (form.reference != "")
-            {
-                tbLot.Text = form.reference;
-            }
-        }
+    }
 
-        private void btnDelLiasse_Click(object sender, EventArgs e)
+    private void tbLot_Validating(object sender, CancelEventArgs e)
+    {
+        if (tbLot.Visible)
         {
-            var liasse_id = cbLiasse.SelectedValue.ToString();
-            var liasse = LiasseController.getController().getEntiteById(liasse_id);
-            if (liasse != null)
-            {
-                liasse.statut = (int)GlobalConstantes.StatutData.Supprime;
-                LiasseController.getController().InsertOrUpdate(liasse);
-                FillComboLiasse();
-            }
+
+        }
+    }
+
+    private void lblLot_Click(object sender, EventArgs e)
+    {
+        var form = new FindLotCoproprietaireImmeubleForm();
+        form.immeuble = immeuble;
+        form.ShowDialog();
+        if (form.reference != "")
+        {
+            tbLot.Text = form.reference;
+        }
+    }
+
+    private void btnDelLiasse_Click(object sender, EventArgs e)
+    {
+        var liasse_id = cbLiasse.SelectedValue.ToString();
+        var liasse = LiasseController.getController().getEntiteById(liasse_id);
+        if (liasse != null)
+        {
+            liasse.statut = (int)GlobalConstantes.StatutData.Supprime;
+            LiasseController.getController().InsertOrUpdate(liasse);
+            FillComboLiasse();
         }
     }
 }

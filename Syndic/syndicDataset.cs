@@ -1,29 +1,19 @@
-﻿namespace EspaceSyndic {
-    
-    
-    public partial class syndicDataset {
-        partial class fiscal_coproDataTable
-        {
-        }
-    
-        partial class facturation_hdr_descrDataTable
-        {
-        }
-    
-        partial class soldes_releve_indivDataTable
-        {
-        }
-    
-        partial class BudgetAnnex3DataTable
-        {
-        }
+﻿namespace EspaceSyndic;
+
+public partial class syndicDataset {
+    private class fiscal_coproDataTable
+    {
     }
-}
+    
+    partial class facturation_hdr_descrDataTable
+    {
+    }
 
-namespace EspaceSyndic.syndicDatasetTableAdapters {
+    private class soldes_releve_indivDataTable
+    {
+    }
 
-
-    public partial class facturation_hdr_descrTableAdapter
+    private class BudgetAnnex3DataTable
     {
     }
 }

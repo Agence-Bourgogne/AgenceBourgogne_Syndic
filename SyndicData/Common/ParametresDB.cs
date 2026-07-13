@@ -1,121 +1,109 @@
 ﻿using System;
-using System.Linq;
-//using System.Threading.Tasks;
 using System.Data;
-using Npgsql;
 using System.Windows.Forms;
 using CommonProjectsPartners.Utils;
-namespace SyndicData.Common
-{
-    public class ParametresDB
-    {
-        static DataTable tableParametres = null;
+using Npgsql;
 
-        private static void Load()
+
+namespace SyndicData.Common;
+
+public static class ParametresDB
+{
+    private static DataTable tableParametres;
+
+    private static void Load()
+    {
         {
-//            if ( tableParametres == null )
-            {
-                tableParametres = new DataTable();
-                var cmd = "select * from parametres order by groupe, code";
-                try 
-	            {
-                    var adapter = new NpgsqlDataAdapter();
-                    adapter.SelectCommand = new NpgsqlCommand(cmd, Database.GetInstance());
-                    adapter.Fill(tableParametres);
-	            }
-	            catch (Exception e)
-	            {
-                    MessageBox.Show(e.Message);
-	            }           
-            }
-        }
-        public static DataRow get(string groupe, string code)
-        {
-            Load();
-            foreach (DataRow currRow in tableParametres.Rows)
-            {
-                if ( currRow["groupe"].ToString() == groupe)
-                    if (currRow["code"].ToString() == code)
-                    {
-                        return currRow;
-                    }
-            }
-            return null;
-        }
-        public static string getParam1(string groupe, string code, string default_value = "")
-        {
-            var row = get(groupe, code);
-            if (row != null)
-                return row["param_1"].ToString();
-            return default_value;
-        }
-        public static DataTable getComboData(String groupe, string code = "") 
-        {
-            var table = new DataTable();
-            var cmd = "";
-            if (code != "")
-                cmd = "select * from parametres where groupe = @groupe and code=@code order by groupe, iparam_1";
-            else
-                cmd = "select * from parametres where groupe = @groupe order by groupe, iparam_1";
-            try
+            tableParametres = new DataTable();
+            const string cmd = "select * from parametres order by groupe, code";
+            try 
             {
                 var adapter = new NpgsqlDataAdapter();
-                var sqlCmd = new NpgsqlCommand(cmd, Database.GetInstance());
-                adapter.SelectCommand = sqlCmd;
-                sqlCmd.Parameters.AddWithValue("@groupe", groupe);
-                sqlCmd.Parameters.AddWithValue("@code", code);
-                adapter.Fill(table);
+                adapter.SelectCommand = new NpgsqlCommand(cmd, Database.GetInstance());
+                adapter.Fill(tableParametres);
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
             }           
-            return table;
         }
-        public static void bindGridComboColumn(DataGridViewColumnCollection cols, String group, string columnName)
+    }
+    public static DataRow get(string groupe, string code)
+    {
+        Load();
+        foreach (DataRow currRow in tableParametres.Rows)
         {
-            if ( cols[columnName + "_cb"] == null )
-            {
-                var cmb = new DataGridViewComboBoxColumn();
-                cmb.DataSource = getComboData(group);
-                cmb.DisplayMember = "code";
-                cmb.ValueMember = "iparam_1";
-                //cmb.Name = columnName;
-                cmb.DataPropertyName = columnName;
-                cmb.Name = columnName + "_cb";
-                cmb.HeaderText = columnName;
-                var idx = cols[columnName].Index;
-                cols.Insert(idx, cmb);
-                cols[columnName].Visible = false;
-            }
+            if ( currRow["groupe"].ToString() == groupe)
+                if (currRow["code"].ToString() == code)
+                {
+                    return currRow;
+                }
         }
-        public static void FillComboFromParams(ComboBox cb, string groupe, string display = "code", string value = "iparam_1")
+        return null;
+    }
+    public static string getParam1(string groupe, string code, string default_value = "")
+    {
+        var row = get(groupe, code);
+        if (row != null)
+            return row["param_1"].ToString();
+        return default_value;
+    }
+    public static DataTable getComboData(string groupe, string code = "") 
+    {
+        var table = new DataTable();
+        var cmd = "";
+        if (code != "")
+            cmd = "select * from parametres where groupe = @groupe and code=@code order by groupe, iparam_1";
+        else
+            cmd = "select * from parametres where groupe = @groupe order by groupe, iparam_1";
+        try
         {
-            cb.DataSource = getComboData(groupe);
-            cb.ValueMember = value;
-            cb.DisplayMember = display;
+            var adapter = new NpgsqlDataAdapter();
+            var sqlCmd = new NpgsqlCommand(cmd, Database.GetInstance());
+            adapter.SelectCommand = sqlCmd;
+            sqlCmd.Parameters.AddWithValue("@groupe", groupe);
+            sqlCmd.Parameters.AddWithValue("@code", code);
+            adapter.Fill(table);
         }
+        catch (Exception e)
+        {
+            MessageBox.Show(e.Message);
+        }           
+        return table;
+    }
+    public static void bindGridComboColumn(DataGridViewColumnCollection cols, string group, string columnName)
+    {
+        if ( cols[columnName + "_cb"] == null )
+        {
+            var cmb = new DataGridViewComboBoxColumn();
+            cmb.DataSource = getComboData(group);
+            cmb.DisplayMember = "code";
+            cmb.ValueMember = "iparam_1";
+            cmb.DataPropertyName = columnName;
+            cmb.Name = columnName + "_cb";
+            cmb.HeaderText = columnName;
+            var idx = cols[columnName].Index;
+            cols.Insert(idx, cmb);
+            cols[columnName].Visible = false;
+        }
+    }
+    public static void FillComboFromParams(ComboBox cb, string groupe, string display = "code", string value = "iparam_1")
+    {
+        cb.DataSource = getComboData(groupe);
+        cb.ValueMember = value;
+        cb.DisplayMember = display;
+    }
 
-        public static bool IsBaseCompteur(string baseToCheck)
+    public static bool IsBaseCompteur(string baseToCheck)
+    {
+        var bCompteur = false;
+        var bases = getParam1("BASES", "COMPTEURS");
+        if (bases != null)
         {
-            var bCompteur = false;
-            var bases = getParam1("BASES", "COMPTEURS");
-            if (bases != null)
-            {
-                var base_compteur = bases.Replace(" ", "").Split(',');
-                if (base_compteur.Contains(baseToCheck))
-                    bCompteur = true;
-            }
-            return bCompteur;
+            var base_compteur = bases.Replace(" ", "").Split(',');
+            if (base_compteur.Contains(baseToCheck))
+                bCompteur = true;
         }
-        //protected static void getBasesCompteurs()
-        //{
-        //    string bases = ParametresDB.getParam1("BASES", "COMPTEURS");
-        //    if (bases != null)
-        //    {
-        //        base_compteur = bases.Replace(" ", "").Split(',');
-        //    }
-        //}
-
+        return bCompteur;
     }
 }

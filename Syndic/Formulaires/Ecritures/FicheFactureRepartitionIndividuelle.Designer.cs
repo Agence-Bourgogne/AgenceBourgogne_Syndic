@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Ecritures
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Ecritures
 {
     partial class FicheFactureRepartitionIndividuelle
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -302,25 +305,25 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.DataGridView dataGridViewLots;
-        private System.Windows.Forms.GroupBox gbBase;
-        private System.Windows.Forms.TextBox tbMontantActuel;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox tbDiff;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox tbBase;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnValid;
-        private System.Windows.Forms.Button btnQuit;
-        private System.Windows.Forms.TextBox tbMontantTotal;
-        private System.Windows.Forms.Label lblTotal;
-        private System.Windows.Forms.TextBox tbGlobal;
-        private System.Windows.Forms.Label lblGlobal;
-        private System.Windows.Forms.Button btnEnter;
-        private System.Windows.Forms.Button button1;
+        private GroupBox groupBox2;
+        private DataGridView dataGridViewLots;
+        private GroupBox gbBase;
+        private TextBox tbMontantActuel;
+        private Label label1;
+        private TextBox tbDiff;
+        private Label label9;
+        private TextBox tbBase;
+        private Label label2;
+        private ImageList imageList1;
+        private Panel panel1;
+        private Button btnValid;
+        private Button btnQuit;
+        private TextBox tbMontantTotal;
+        private Label lblTotal;
+        private TextBox tbGlobal;
+        private Label lblGlobal;
+        private Button btnEnter;
+        private Button button1;
 
     }
 }

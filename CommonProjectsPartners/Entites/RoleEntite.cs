@@ -1,31 +1,30 @@
 ﻿using System.Data;
 
-namespace CommonProjectsPartners.Entites
+namespace CommonProjectsPartners.Entites;
+
+public class RoleEntite : AbstractBaseEntite
 {
-    public class RoleEntite : AbstractBaseEntite
+    public string reference;
+    public string nom;
+
+    public RoleEntite()
     {
-        public string reference;
-        public string nom;
+        id = "";
+        setValues(null);
+    }
+    public RoleEntite(DataRow row)
+    {
+        setValues(row);
+    }
+    public override void setValues(DataRow row)
+    {
+        var members = GetType().GetFields();
 
-        public RoleEntite()
-        {
-            id = "";
-            setValues(null);
-        }
-        public RoleEntite(DataRow row)
-        {
-            setValues(row);
-        }
-        public override void setValues(DataRow row)
-        {
-            var members = GetType().GetFields();
+        updatables.Clear();
 
-            updatables.Clear();
+        updatables.Add(new UpdateField("reference", true, members));
+        updatables.Add(new UpdateField("nom", true, members));
 
-            updatables.Add(new UpdateField("reference", true, members));
-            updatables.Add(new UpdateField("nom", true, members));
-
-            base.setValues(row);
-        }
+        base.setValues(row);
     }
 }

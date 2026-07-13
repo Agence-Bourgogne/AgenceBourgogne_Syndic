@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Utilisateurs
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Utilisateurs
 {
     partial class FindUser
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -334,26 +337,26 @@
 
         #endregion
 
-        protected System.Windows.Forms.Panel panel1;
-        protected System.Windows.Forms.Button cancel;
-        protected System.Windows.Forms.Button valid;
-        protected System.Windows.Forms.Label label2;
-        protected System.Windows.Forms.Button btnEnter;
-        private System.Windows.Forms.ComboBox cbTypeUser;
-        protected System.Windows.Forms.TextBox tbNom;
-        protected System.Windows.Forms.Label label1;
-        protected System.Windows.Forms.TextBox tbRef;
-        protected System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        public System.Windows.Forms.DataGridView dataGridView;
-        private System.Windows.Forms.TreeView treeView;
-        private System.Windows.Forms.Button btnGenerate;
-        private System.Windows.Forms.TextBox tbPassword;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox tbCode;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.CheckBox ckSendMail;
-        protected System.Windows.Forms.TextBox tbNomComp;
-        protected System.Windows.Forms.Label label6;
+        protected Panel panel1;
+        protected Button cancel;
+        protected Button valid;
+        protected Label label2;
+        protected Button btnEnter;
+        private ComboBox cbTypeUser;
+        protected TextBox tbNom;
+        protected Label label1;
+        protected TextBox tbRef;
+        protected Label label3;
+        private TableLayoutPanel tableLayoutPanel1;
+        public DataGridView dataGridView;
+        private TreeView treeView;
+        private Button btnGenerate;
+        private TextBox tbPassword;
+        private Label label4;
+        private TextBox tbCode;
+        private Label label5;
+        private CheckBox ckSendMail;
+        protected TextBox tbNomComp;
+        protected Label label6;
     }
 }

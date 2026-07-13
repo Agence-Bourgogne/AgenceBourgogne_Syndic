@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Budget
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Budget
 {
     partial class NouvelExerciceOnlyForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -150,14 +153,14 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox tbReference;
-        private System.Windows.Forms.Label lblBase;
-        private System.Windows.Forms.DateTimePicker dtFin;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.DateTimePicker dtDeb;
-        private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Button btnOk;
+        private GroupBox groupBox1;
+        private TextBox tbReference;
+        private Label lblBase;
+        private DateTimePicker dtFin;
+        private Label label2;
+        private Label label3;
+        private DateTimePicker dtDeb;
+        private Button btnCancel;
+        private Button btnOk;
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace CommonProjectsPartners.Common
+﻿namespace CommonProjectsPartners.Common;
+
+public interface ICommonChangedListener
 {
-    public interface ICommonChangedListener
-    {
-        void ChangedReference(object sender, CommonEventArgs e);
-    }
+    void ChangedReference(object sender, CommonEventArgs e);
 }

@@ -1,8 +1,7 @@
+using System.Data.Entity.Migrations;
+
 namespace SyndicDocumentsData.Migrations
 {
-    using System;
-    using System.Data.Entity.Migrations;
-    
     public partial class Migre2 : DbMigration
     {
         public override void Up()

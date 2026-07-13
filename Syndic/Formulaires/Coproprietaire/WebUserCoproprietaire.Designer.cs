@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Coproprietaire
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Coproprietaire
 {
     partial class WebUserCoproprietaire
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -309,22 +312,22 @@
 
         #endregion
 
-        private System.Windows.Forms.ImageList imageList1;
-        public System.Windows.Forms.Panel panel1;
-        public System.Windows.Forms.ImageList imageList;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.TreeView treeView;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        public System.Windows.Forms.Button btnQuit;
-        public System.Windows.Forms.Button btnNewCopro;
-        public System.Windows.Forms.Button btnDelCopro;
-        public System.Windows.Forms.Button btnDelDoc;
-        private System.Windows.Forms.ListBox listDoc;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox tbEmail;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.TextBox tbPassword;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btnGenerate;
+        private ImageList imageList1;
+        public Panel panel1;
+        public ImageList imageList;
+        private TableLayoutPanel tableLayoutPanel1;
+        private TreeView treeView;
+        private TableLayoutPanel tableLayoutPanel2;
+        public Button btnQuit;
+        public Button btnNewCopro;
+        public Button btnDelCopro;
+        public Button btnDelDoc;
+        private ListBox listDoc;
+        private GroupBox groupBox1;
+        private TextBox tbEmail;
+        private Label label17;
+        private TextBox tbPassword;
+        private Label label2;
+        private Button btnGenerate;
     }
 }

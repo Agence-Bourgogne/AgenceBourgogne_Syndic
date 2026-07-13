@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Utilisateurs
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Utilisateurs
 {
     partial class UtilisateurFicheForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -325,26 +328,26 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.CheckBox ckPassword;
-        protected System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox cbRole;
-        protected System.Windows.Forms.TextBox tbPassword;
-        protected System.Windows.Forms.Label label1;
-        protected System.Windows.Forms.TextBox tbPrenom;
-        protected System.Windows.Forms.Label lblPrenom;
-        protected System.Windows.Forms.TextBox tbNom;
-        protected System.Windows.Forms.Label label4;
-        protected System.Windows.Forms.TextBox tbReference;
-        protected System.Windows.Forms.Label lblReference;
-        protected System.Windows.Forms.Panel panel1;
-        protected System.Windows.Forms.Button btnEnter;
-        protected System.Windows.Forms.Button btnQuit;
-        protected System.Windows.Forms.Button btnSave;
-        protected System.Windows.Forms.Button btnLast;
-        protected System.Windows.Forms.Button btnNext;
-        protected System.Windows.Forms.Button btnPrev;
-        protected System.Windows.Forms.Button btnFirst;
-        protected System.Windows.Forms.ImageList imageList1;
+        private GroupBox groupBox1;
+        private CheckBox ckPassword;
+        protected Label label2;
+        private ComboBox cbRole;
+        protected TextBox tbPassword;
+        protected Label label1;
+        protected TextBox tbPrenom;
+        protected Label lblPrenom;
+        protected TextBox tbNom;
+        protected Label label4;
+        protected TextBox tbReference;
+        protected Label lblReference;
+        protected Panel panel1;
+        protected Button btnEnter;
+        protected Button btnQuit;
+        protected Button btnSave;
+        protected Button btnLast;
+        protected Button btnNext;
+        protected Button btnPrev;
+        protected Button btnFirst;
+        protected ImageList imageList1;
     }
 }

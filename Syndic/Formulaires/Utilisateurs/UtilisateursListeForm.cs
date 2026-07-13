@@ -2,114 +2,111 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
+using CommonProjectsPartners.Common;
 using CommonProjectsPartners.Controller;
 using CommonProjectsPartners.Utils;
-using CommonProjectsPartners.Common;
-namespace EspaceSyndic.Formulaires.Utilisateurs
+
+namespace EspaceSyndic.Formulaires.Utilisateurs;
+
+public partial class UtilisateursListeForm : Form
 {
-    public partial class UtilisateursListeForm : Form
+    protected readonly string regKey = "";
+    public UtilisateursListeForm()
     {
-        bool bLoading;
-        protected string regKey = "";
-        public UtilisateursListeForm()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        private void UtilisateursListeForm_Load(object sender, EventArgs e)
-        {
-            FillDataGrid();
-        }
-        protected void HideAndResizeColumns(DataGridViewColumnCollection cols)
-        {
-            cols["id"].Visible = false;
-            cols["audit_created"].Visible = false;
-            cols["audit_created_by"].Visible = false;
-            cols["audit_updated"].Visible = false;
-            cols["audit_updated_by"].Visible = false;
-            cols["statut"].Visible = false;
-            cols["roles_id"].Visible = false;
-            cols["password"].Visible = false;
-            cols["resources_id"].Visible = false;
-        }
+    private void UtilisateursListeForm_Load(object sender, EventArgs e)
+    {
+        FillDataGrid();
+    }
+    protected void HideAndResizeColumns(DataGridViewColumnCollection cols)
+    {
+        cols["id"].Visible = false;
+        cols["audit_created"].Visible = false;
+        cols["audit_created_by"].Visible = false;
+        cols["audit_updated"].Visible = false;
+        cols["audit_updated_by"].Visible = false;
+        cols["statut"].Visible = false;
+        cols["roles_id"].Visible = false;
+        cols["password"].Visible = false;
+        cols["resources_id"].Visible = false;
+    }
 
-        protected void FillDataGrid()
+    protected void FillDataGrid()
+    {
+        dataGridView.DataSource = getFormListe();
+        if (dataGridView.DataSource != null)
         {
-            bLoading = true;
-            dataGridView.DataSource = getFormListe();
-            if (dataGridView.DataSource != null)
-            {
-                var cols = dataGridView.Columns;
-                HideAndResizeColumns(cols);
-                ControlsWindows.ToTitleCase(cols);
-                OrderColumns();
-            }
-            bLoading = false;
+            var cols = dataGridView.Columns;
+            HideAndResizeColumns(cols);
+            ControlsWindows.ToTitleCase(cols);
+            OrderColumns();
         }
-        protected  DataTable getFormListe()
+    }
+    protected  DataTable getFormListe()
+    {
+        return UsersController.getController().getListeUsers();
+    }
+    protected void ShowFicheForm(string entite_id)
+    {
+        var form = new UtilisateurFicheForm(entite_id);
+        ShowForm(form);
+    }
+    protected void OrderColumns()
+    {
+        if (regKey == "")
+            return;
+        foreach (DataGridViewColumn col in dataGridView.Columns)
         {
-            return UsersController.getController().getListeUsers();
+            var index = (int)CommonRegistry.getRegistryValue(regKey, col.Name, -1);
+            if (index != -1)
+                col.DisplayIndex = index;
         }
-        protected void ShowFicheForm(string entite_id)
-        {
-            var form = new UtilisateurFicheForm(entite_id);
-            ShowForm(form);
-        }
-        protected void OrderColumns()
-        {
-            if (regKey == "")
-                return;
-            foreach (DataGridViewColumn col in dataGridView.Columns)
-            {
-                var index = (int)CommonRegistry.getRegistryValue(regKey, col.Name, -1);
-                if (index != -1)
-                    col.DisplayIndex = index;
-            }
-        }
-        protected void btnNew_Click(object sender, EventArgs e)
-        {
-            ShowFicheForm(null);
-        }
+    }
+    protected void btnNew_Click(object sender, EventArgs e)
+    {
+        ShowFicheForm(null);
+    }
 
-        protected void ShowForm(Form form)
-        {
-            Enabled = false;
-            form.ShowDialog();
-            Enabled = true;
-            FillDataGrid();
-        }
+    protected void ShowForm(Form form)
+    {
+        Enabled = false;
+        form.ShowDialog();
+        Enabled = true;
+        FillDataGrid();
+    }
 
-        protected void btnFiche_Click(object sender, EventArgs e)
-        {
-            ShowFicheFromSelectedRow();
-        }
+    protected void btnFiche_Click(object sender, EventArgs e)
+    {
+        ShowFicheFromSelectedRow();
+    }
 
-        protected void ShowFicheFromSelectedRow()
+    protected void ShowFicheFromSelectedRow()
+    {
+        if (dataGridView.SelectedRows.Count > 0)
         {
-            if (dataGridView.SelectedRows.Count > 0)
-            {
-                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
-                if (row != null)
-                    ShowFicheForm(row["id"].ToString());
-            }
+            var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
+            if (row != null)
+                ShowFicheForm(row["id"].ToString());
         }
-        private void dataGridView_DoubleClick(object sender, EventArgs e)
-        {
-            ShowFicheFromSelectedRow();
-        }
+    }
+    private void dataGridView_DoubleClick(object sender, EventArgs e)
+    {
+        ShowFicheFromSelectedRow();
+    }
 
-        protected List<string> getExportColsToHide()
-        {
-            return new List<string> { "id", "audit_created", "audit_created_by", "audit_updated", "audit_updated_by" };
-        }
-        private void btnExport_Click(object sender, EventArgs e)
-        {
-            BaseApplication.DataGridToExcel(dataGridView, getExportColsToHide());
-        }
+    protected List<string> getExportColsToHide()
+    {
+        return ["id", "audit_created", "audit_created_by", "audit_updated", "audit_updated_by"];
+    }
+    private void btnExport_Click(object sender, EventArgs e)
+    {
+        BaseApplication.DataGridToExcel(dataGridView, getExportColsToHide());
+    }
 
-        private void btnQuit_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
+    private void btnQuit_Click(object sender, EventArgs e)
+    {
+        Close();
     }
 }

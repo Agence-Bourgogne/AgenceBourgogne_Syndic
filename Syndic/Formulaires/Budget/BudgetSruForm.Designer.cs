@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Budget
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Budget
 {
     partial class BudgetSruForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -400,30 +403,30 @@
 
         #endregion
 
-        private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnPrint;
-        private System.Windows.Forms.Button btnEnter;
-        private System.Windows.Forms.Button btnDel;
-        private System.Windows.Forms.Button btnAdd;
-        private System.Windows.Forms.Button btnQuit;
-        private System.Windows.Forms.GroupBox gbBudget;
-        private System.Windows.Forms.DataGridView dataGridView;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox tbAdresse;
-        private System.Windows.Forms.TextBox tbNom;
-        private System.Windows.Forms.TextBox tbRefImmeuble;
-        private System.Windows.Forms.Label lblImmeuble;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox cbExercice;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox tbLibNature;
-        private System.Windows.Forms.TextBox tbMontant;
-        private System.Windows.Forms.TextBox tbBase;
-        private System.Windows.Forms.Label lblBase;
-        private System.Windows.Forms.TextBox tbNature;
-        private System.Windows.Forms.Label lblNature;
-        private System.Windows.Forms.Button btnExerciceAdd;
-        private System.Windows.Forms.Button btnExport;
+        private ImageList imageList1;
+        private Panel panel1;
+        private Button btnPrint;
+        private Button btnEnter;
+        private Button btnDel;
+        private Button btnAdd;
+        private Button btnQuit;
+        private GroupBox gbBudget;
+        private DataGridView dataGridView;
+        private GroupBox groupBox1;
+        private TextBox tbAdresse;
+        private TextBox tbNom;
+        private TextBox tbRefImmeuble;
+        private Label lblImmeuble;
+        private Label label3;
+        private ComboBox cbExercice;
+        private Label label8;
+        private TextBox tbLibNature;
+        private TextBox tbMontant;
+        private TextBox tbBase;
+        private Label lblBase;
+        private TextBox tbNature;
+        private Label lblNature;
+        private Button btnExerciceAdd;
+        private Button btnExport;
     }
 }

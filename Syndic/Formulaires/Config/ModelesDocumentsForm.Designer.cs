@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Config
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Config
 {
     partial class ModelesDocumentsForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -177,12 +180,12 @@
 
         #endregion
 
-        private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.DataGridView dataGridView;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnQuit;
-        private System.Windows.Forms.Button BtnEdit;
-        private System.Windows.Forms.Button btnImport;
-        private System.Windows.Forms.Button btnExport;
+        private ImageList imageList1;
+        private DataGridView dataGridView;
+        private Panel panel1;
+        private Button btnQuit;
+        private Button BtnEdit;
+        private Button btnImport;
+        private Button btnExport;
     }
 }

@@ -1,4 +1,7 @@
-﻿namespace EspaceSyndic.Formulaires.Ecritures
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Ecritures
 {
     partial class FicheAppelDeFondForm
     {
@@ -625,48 +628,48 @@
 
         #endregion
 
-        protected System.Windows.Forms.GroupBox groupBox3;
-        protected System.Windows.Forms.ComboBox cbLiasse;
-        protected System.Windows.Forms.TextBox tbMontantLiasse;
-        protected System.Windows.Forms.Label lblLiasse;
-        protected System.Windows.Forms.TextBox tbDiff;
-        protected System.Windows.Forms.Label lblDiff;
-        protected System.Windows.Forms.TextBox tbTotal;
-        protected System.Windows.Forms.Label lblTotal;
-        protected System.Windows.Forms.GroupBox groupBox1;
-        protected System.Windows.Forms.Button btnNatureAdd;
-        protected System.Windows.Forms.TextBox tbComment;
-        protected System.Windows.Forms.TextBox tbMontant;
-        protected System.Windows.Forms.Label label8;
-        protected System.Windows.Forms.TextBox tbLibNature;
-        protected System.Windows.Forms.TextBox tbBase;
-        protected System.Windows.Forms.Label lblBase;
-        protected System.Windows.Forms.TextBox tbNature;
-        protected System.Windows.Forms.Label lblNature;
-        protected System.Windows.Forms.Label label3;
-        protected System.Windows.Forms.MaskedTextBox tbDateCreation;
-        protected System.Windows.Forms.TextBox tbRefImmeuble;
-        protected System.Windows.Forms.Label lblImmeuble;
-        protected System.Windows.Forms.GroupBox Factures;
-        protected System.Windows.Forms.DataGridView dataGridViewEcriture;
-        protected System.Windows.Forms.GroupBox groupBox2;
-        protected System.Windows.Forms.DataGridView dataGridView;
-        protected System.Windows.Forms.ImageList imageList1;
-        protected System.Windows.Forms.ContextMenuStrip RowMenu;
-        protected System.Windows.Forms.ToolStripMenuItem editerToolStripMenuItem;
-        protected System.Windows.Forms.ToolStripMenuItem supprimerToolStripMenuItem;
-        private System.ComponentModel.IContainer components;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnQuit;
-        private System.Windows.Forms.Button btnAdd;
-        private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.Button btnEnter;
-        private System.Windows.Forms.Button btnHelp;
-        private System.Windows.Forms.Button btnRepart;
-        private System.Windows.Forms.Button btnDel;
-        protected System.Windows.Forms.TextBox tbLot;
-        protected System.Windows.Forms.Label lblLot;
-        private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.Button btnDelLiasse;
+        protected GroupBox groupBox3;
+        protected ComboBox cbLiasse;
+        protected TextBox tbMontantLiasse;
+        protected Label lblLiasse;
+        protected TextBox tbDiff;
+        protected Label lblDiff;
+        protected TextBox tbTotal;
+        protected Label lblTotal;
+        protected GroupBox groupBox1;
+        protected Button btnNatureAdd;
+        protected TextBox tbComment;
+        protected TextBox tbMontant;
+        protected Label label8;
+        protected TextBox tbLibNature;
+        protected TextBox tbBase;
+        protected Label lblBase;
+        protected TextBox tbNature;
+        protected Label lblNature;
+        protected Label label3;
+        protected MaskedTextBox tbDateCreation;
+        protected TextBox tbRefImmeuble;
+        protected Label lblImmeuble;
+        protected GroupBox Factures;
+        protected DataGridView dataGridViewEcriture;
+        protected GroupBox groupBox2;
+        protected DataGridView dataGridView;
+        protected ImageList imageList1;
+        protected ContextMenuStrip RowMenu;
+        protected ToolStripMenuItem editerToolStripMenuItem;
+        protected ToolStripMenuItem supprimerToolStripMenuItem;
+        private IContainer components;
+        private Panel panel1;
+        private Button btnQuit;
+        private Button btnAdd;
+        private Button btnSave;
+        private Button btnEnter;
+        private Button btnHelp;
+        private Button btnRepart;
+        private Button btnDel;
+        protected TextBox tbLot;
+        protected Label lblLot;
+        private ToolTip toolTip1;
+        private Button btnDelLiasse;
     }
 }

@@ -1,11 +1,15 @@
-﻿namespace EspaceSyndic.Impressions
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using Microsoft.Reporting.WinForms;
+
+namespace EspaceSyndic.Impressions
 {
     partial class FeuillePresencePrintForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -231,23 +235,23 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox gbParams;
-        private System.Windows.Forms.TextBox tbRefImmeuble;
-        private System.Windows.Forms.Label lblImmeuble;
-        private Microsoft.Reporting.WinForms.ReportViewer reportViewer1;
+        private GroupBox gbParams;
+        private TextBox tbRefImmeuble;
+        private Label lblImmeuble;
+        private ReportViewer reportViewer1;
         //        private Datasets.CoproprietaireLotDataset coproprietaireLotDataset;
 //        private Datasets.CoproprietaireLotDatasetTableAdapters.immeubleTableAdapter immeubleTableAdapter;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox cbAssemblee;
-        private System.Windows.Forms.DateTimePicker dtAssemblee;
-        private System.Windows.Forms.Label label2;
+        private Label label1;
+        private ComboBox cbAssemblee;
+        private DateTimePicker dtAssemblee;
+        private Label label2;
  //       private Datasets.CoproprietaireImmeuble coproprietaireImmeuble;
-        private System.Windows.Forms.BindingSource tableCoproImmeubleBindingSource;
+        private BindingSource tableCoproImmeubleBindingSource;
 //        private Datasets.CoproprietaireImmeubleTableAdapters.CoproImmeubleTableAdapter coproImmeubleTableAdapter;
-        protected System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.Panel panelButton;
-        private System.Windows.Forms.Button btnRapport;
-        private System.Windows.Forms.Button btnQuit;
-        private System.Windows.Forms.Button btnEnter;
+        protected ImageList imageList1;
+        private Panel panelButton;
+        private Button btnRapport;
+        private Button btnQuit;
+        private Button btnEnter;
     }
 }

@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Common
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Common
 {
     partial class HelpForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -70,7 +73,7 @@
 
         #endregion
 
-        public System.Windows.Forms.RichTextBox tbHelp;
+        public RichTextBox tbHelp;
 
 
     }

@@ -1,15 +1,13 @@
-﻿namespace CommonProjectsPartners.Common
+﻿namespace CommonProjectsPartners.Common;
+
+public class CommonEventArgs
 {
-    public class CommonEventArgs
+    public readonly string newRef;
+    public readonly string newRef2;
+
+    public CommonEventArgs(string newRef, string newRef2 = "")
     {
-        public string newRef;
-        public string newRef2;
-        public string newRef3;
-        public CommonEventArgs(string newRef, string newRef2 = "", string newRef3 = "")
-        {
-            this.newRef = newRef;
-            this.newRef2 = newRef2;
-            this.newRef3 = newRef3;
-        }
+        this.newRef = newRef;
+        this.newRef2 = newRef2;
     }
 }

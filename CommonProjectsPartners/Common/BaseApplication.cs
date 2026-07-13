@@ -1,489 +1,473 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
-using System.IO;
-using Word = Microsoft.Office.Interop.Word;
-using Microsoft.Office.Interop.Excel;
-using CommonProjectsPartners.Utils;
 using CommonProjectsPartners.Entites;
+using CommonProjectsPartners.Utils;
+using Microsoft.Office.Interop.Excel;
+using Application = Microsoft.Office.Interop.Excel.Application;
+using DataTable = System.Data.DataTable;
+using Word = Microsoft.Office.Interop.Word;
 using Range = Microsoft.Office.Interop.Excel.Range;
 
-namespace CommonProjectsPartners.Common
+namespace CommonProjectsPartners.Common;
+
+public static class BaseApplication
 {
-    public class BaseApplication
+    public static string schema = "";
+    private static Word.Application wrdApp;
+    private static Application excelApp;
+
+    public static UserEntite userConnected = null;
+    private static readonly object oMissing = Missing.Value;
+    private static readonly object oFalse = false;
+
+    public static string ComputerName => SystemInformation.ComputerName;
+
+    public static string AuditString => $"[{ComputerName}][{userConnected.reference}]";
+
+    private static Word.Application GetWordInstance()
     {
-        public static string schema = "";
-//        public static string ComputerName = "";
-        private static Word.Application wrdApp = null;
-        private static Microsoft.Office.Interop.Excel.Application excelApp = null;
-        static List<string> filesName = new List<string>();
-//        public static string modeleEtiquettes;
-        public static UserEntite userConnected = null;
-        static object oMissing = System.Reflection.Missing.Value;
-        static object oFalse = false;
-        static object oTrue = true;
+        wrdApp ??= new Word.Application();
 
-        public static string ComputerName
+        try
         {
-            get
-            {
-                return SystemInformation.ComputerName;
-            }
+            _ = wrdApp.Creator;
         }
-        public static string AuditString
+        catch (Exception )
         {
-            get
-            {
-                return $"[{ComputerName}][{userConnected.reference}]";
-            }
-        }
-        public static Word.Application GetWordInstance()
-        {
-            if ( wrdApp == null )
-                wrdApp = new Word.Application();
-            try
-            {
-                var value = wrdApp.Creator;
-            }
-            catch (Exception )
-            {
-                wrdApp = new Word.Application();
-            }
-
-            return wrdApp;
-        }
-        public static Microsoft.Office.Interop.Excel.Application GetExcelInstance()
-        {
-            if (excelApp == null)
-                excelApp = new Microsoft.Office.Interop.Excel.Application();
-
-            try
-            {
-                excelApp.MergeInstances = true;
-
-            }
-            catch (Exception)
-            {
-                excelApp = new Microsoft.Office.Interop.Excel.Application();
-                excelApp.MergeInstances = true;
-            } 
-            return excelApp;
+            wrdApp = new Word.Application();
         }
 
-        public static void DataTableToExcel(System.Data.DataTable table, List<string> colsToHide)
+        return wrdApp;
+    }
+    public static Application GetExcelInstance()
+    {
+        if (excelApp == null)
+            excelApp = new Application();
+
+        try
         {
-            Cursor.Current = Cursors.WaitCursor;
+            excelApp.MergeInstances = true;
 
-            var xlApp = GetExcelInstance();
-            var wb = xlApp.ActiveWorkbook;
-            Worksheet ws;
-            if (wb == null)
+        }
+        catch (Exception)
+        {
+            excelApp = new Application
             {
-                wb = xlApp.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
-                ws = wb.Worksheets[1];
-            }
-            else
-            {
-                Worksheet last = wb.Worksheets[wb.Worksheets.Count];
-                ws = wb.Sheets.Add(oMissing, last);
-            }
+                MergeInstances = true
+            };
+        } 
+        return excelApp;
+    }
 
-            var bind = new BindingSource();
-            bind.DataSource = table;
-            xlApp.Visible = false;
-            var iCol = 1;
+    public static void DataTableToExcel(DataTable table, List<string> colsToHide)
+    {
+        Cursor.Current = Cursors.WaitCursor;
 
-            foreach ( System.Data.DataColumn col in table.Columns)
+        var xlApp = GetExcelInstance();
+        var wb = xlApp.ActiveWorkbook;
+        Worksheet ws;
+        if (wb == null)
+        {
+            wb = xlApp.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
+            ws = wb.Worksheets[1];
+        }
+        else
+        {
+            Worksheet last = wb.Worksheets[wb.Worksheets.Count];
+            ws = wb.Sheets.Add(oMissing, last);
+        }
+
+        var bind = new BindingSource();
+        bind.DataSource = table;
+        xlApp.Visible = false;
+        var iCol = 1;
+
+        foreach ( DataColumn col in table.Columns)
+        {
+            if (!colsToHide.Contains(col.ColumnName) )
+                ws.Cells[1, iCol++] = col.ColumnName;
+        }
+        var iRow = 2;
+        var cells = ws.Cells;
+        var t = DateTime.Now.TimeOfDay;
+        foreach (DataRow row in table.Rows)
+        {
+            var bShowRow = true;
+            if (bShowRow)
             {
-                if (!colsToHide.Contains(col.ColumnName) )//&& colsToHide.Contains(col.ColumnName))
-                    ws.Cells[1, iCol++] = col.ColumnName;
-            }
-            var iRow = 2;
-            var cells = ws.Cells;
-            var dt = DateTime.Now;
-            var t = DateTime.Now.TimeOfDay;
-            foreach (System.Data.DataRow row in table.Rows)
-            {
-                var bShowRow = true;
-                if (bShowRow)
+                iCol = 1;
+                var idxCol = 0;
+
+                foreach (DataColumn col in table.Columns)
                 {
-                    iCol = 1;
-                    var idxCol = 0;
-                    Range rowXls = cells[iRow];
-                    foreach (System.Data.DataColumn col in table.Columns)
+                    if (!colsToHide.Contains(col.ColumnName))
                     {
-                        if (!colsToHide.Contains(col.ColumnName))
-                        {
-                            Range range = cells[iRow, iCol++];//ws.Cells[iRow, iCol++];
-                            //cells[iRow, iCol++].Value = row[idxCol];
-                            //range.Value = row[col.ColumnName].ToString();
-//                            range.Value = row[idxCol];
-                            var value = row[idxCol];
-                            if (value is Decimal)
-                                range.Value = value;
-                            else
-                                if (value is DateTime)
-                                    range.Value = ((DateTime)value).ToShortDateString();
-                                else
-                                    range.Value = value.ToString();
-                        }
-                        idxCol++;
+                        Range range = cells[iRow, iCol++];
+
+                        var value = row[idxCol];
+                        if (value is decimal)
+                            range.Value = value;
+                        else
+                        if (value is DateTime time)
+                            range.Value = time.ToShortDateString();
+                        else
+                            range.Value = value.ToString();
                     }
-                    iRow++;
+                    idxCol++;
                 }
+                iRow++;
             }
-            var t2 = DateTime.Now.TimeOfDay;
-            var ta = t2 - t;
+        }
+        var t2 = DateTime.Now.TimeOfDay;
+        var ta = t2 - t;
 
-            Console.WriteLine(ta.TotalSeconds);
+        Console.WriteLine(ta.TotalSeconds);
 
-            xlApp.Visible = true;
-            ((_Workbook)wb).Activate();
-            ((_Worksheet)ws).Activate();
-            ws.Columns.AutoFit();
-            Cursor.Current = Cursors.Default;
+        xlApp.Visible = true;
+        wb.Activate();
+        ws.Activate();
+        ws.Columns.AutoFit();
+        Cursor.Current = Cursors.Default;
+    }
+
+    public static object DataGridToExcel(DataGridView datagrid, List<string> colsToHide, string checkColumn = "", string [] colToSum = null)
+    {
+        Cursor.Current = Cursors.WaitCursor;
+
+        var xlApp = GetExcelInstance();
+        var wb = xlApp.ActiveWorkbook;
+        Worksheet ws;
+        if (wb == null)
+        {
+            wb = xlApp.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
+            ws = wb.Worksheets[1];
+        }
+        else
+        {
+            Worksheet last = wb.Worksheets[wb.Worksheets.Count];
+            ws = wb.Sheets.Add(oMissing, last);
         }
 
-        public static object DataGridToExcel(DataGridView datagrid, List<string> colsToHide, string checkColumn = "", string [] colToSum = null)
+        xlApp.Visible = false;
+        var iCol = 1;
+        foreach (DataGridViewColumn col in datagrid.Columns)
         {
-            Cursor.Current = Cursors.WaitCursor;
-
-            var xlApp = GetExcelInstance();
-            var wb = xlApp.ActiveWorkbook;
-            Worksheet ws;
-            if (wb == null)
+            if (!colsToHide.Contains(col.Name) && col.Visible)
             {
-                wb = xlApp.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
-                ws = wb.Worksheets[1];
+                ws.Cells[1, iCol++] = col.HeaderText;
             }
-            else
-            {
-                Worksheet last = wb.Worksheets[wb.Worksheets.Count];
-                ws = wb.Sheets.Add(oMissing, last);
-            }
+        }
+        var iRow = 2;
 
-            xlApp.Visible = false;
-            var iCol = 1;
-            foreach (DataGridViewColumn col in datagrid.Columns)
+        foreach (DataGridViewRow row in datagrid.Rows)
+        {
+            var bShowRow = true;
+            if (checkColumn != "")
             {
-                if (!colsToHide.Contains(col.Name) && col.Visible)
-                {
-                    ws.Cells[1, iCol++] = col.HeaderText;
-                }
+                if (row.Cells[checkColumn].Value == null || !(bool)row.Cells[checkColumn].Value)
+                    bShowRow = false;
             }
-            var iRow = 2;
-
-            foreach (DataGridViewRow row in datagrid.Rows)
+            if ( bShowRow )
             {
-                var bShowRow = true;
-                if (checkColumn != "")
+                iCol = 1;
+                var idxCol = 0;
+                foreach (DataGridViewCell cell in row.Cells)
                 {
-                    if (row.Cells[checkColumn].Value == null)
-                        bShowRow = false;
-                    else
-                        if (!(bool)row.Cells[checkColumn].Value)
-                            bShowRow = false;
-                }
-                if ( bShowRow )
-                {
-                    iCol = 1;
-                    var idxCol = 0;
-                    foreach (DataGridViewCell cell in row.Cells)
+                    var col = datagrid.Columns[idxCol];
+
+                    if (!colsToHide.Contains(col.Name) && col.Visible)
                     {
-                        var col = datagrid.Columns[idxCol];
-
-                        if (!colsToHide.Contains(col.Name) && col.Visible)
-                        {
-                            Range range = ws.Cells[iRow, iCol++];
-                            if (cell.Value  is  Decimal)
-                                range.Value = cell.Value;
-                            else
-                                if (cell.Value is DateTime)
-                                    range.Value = "'"+((DateTime) cell.Value).ToShortDateString();
-                                else
-                                    range.Value = "'"+ cell.Value;
-                        }
-                        idxCol++;
+                        Range range = ws.Cells[iRow, iCol++];
+                        if (cell.Value  is  decimal)
+                            range.Value = cell.Value;
+                        else
+                        if (cell.Value is DateTime time)
+                            range.Value = "'"+time.ToShortDateString();
+                        else
+                            range.Value = "'"+ cell.Value;
                     }
-                    iRow++;
+                    idxCol++;
                 }
+                iRow++;
             }
+        }
 
-            if (colToSum != null)
+        if (colToSum != null)
+        {
+            foreach ( var colName in colToSum )
             {
-                foreach ( var colName in colToSum )
+                var col = datagrid.Columns[colName];
+                if (col != null)
                 {
-                    var col = datagrid.Columns[colName];
-                    if (col != null)
-                    {
-                        var colChar = (char)((int)'A' + col.Index - 1);
-                        Range r = ws.Cells[iRow, col.Index];
-                        r.Formula = String.Format("=SUM({0}2:{0}{1})", colChar, iRow - 1);
-                    }
+                    var colChar = (char)('A' + col.Index - 1);
+                    Range r = ws.Cells[iRow, col.Index];
+                    r.Formula = string.Format("=SUM({0}2:{0}{1})", colChar, iRow - 1);
                 }
             }
+        }
             
-            xlApp.Visible = true;
+        xlApp.Visible = true;
 
-            ((_Workbook)wb).Activate();
-            ((_Worksheet)ws).Activate();
-            ws.Columns.AutoFit();
-            Cursor.Current = Cursors.Default;
-            return ws;
-        }
-        public static void ColumnFormula(object wsObject, int colDesti , string colFormula, string colName, int colStop)
+        wb.Activate();
+        ws.Activate();
+        ws.Columns.AutoFit();
+        Cursor.Current = Cursors.Default;
+        return ws;
+    }
+    public static void ColumnFormula(object wsObject, int colDesti , string colFormula, string colName, int colStop)
+    {
+        var ws = (_Worksheet)wsObject;
+        try
         {
-            var ws = ((_Worksheet)wsObject);
-            try
-            {
-                var range = ws.Rows;
-                var nbRows = range.Rows.Count;
+            var range = ws.Rows;
+            var nbRows = range.Rows.Count;
 
-                ws.Cells[1, colDesti].Value = colName;
-                for (var iRow = 2; iRow < nbRows; iRow++)
-                {
-                    Range cell = ws.Cells[iRow, colStop];
-                    if (cell.Value == null)
-                        break;
-                    var colChar = (char)((int)'A' + colDesti);
-                    cell = ws.Cells[iRow, colDesti];
-                    var formula = String.Format(colFormula, iRow, colChar );
-                    cell.Formula = formula;
-                }
-            }
-            catch (Exception ex)
+            ws.Cells[1, colDesti].Value = colName;
+            for (var iRow = 2; iRow < nbRows; iRow++)
             {
-                Console.WriteLine(ex.Message);
+                Range cell = ws.Cells[iRow, colStop];
+                if (cell.Value == null)
+                    break;
+                var colChar = (char)('A' + colDesti);
+                cell = ws.Cells[iRow, colDesti];
+                var formula = string.Format(colFormula, iRow, colChar );
+                cell.Formula = formula;
             }
         }
-        public static void OpenWordFile(string fileName)
+        catch (Exception ex)
         {
-            var wrdApp = GetWordInstance();
-            try
-            {
-                wrdApp.Visible = true;
-                var doc = wrdApp.Documents.Add(System.Reflection.Missing.Value);
-                wrdApp.Documents.Open(fileName);
-                wrdApp.Activate();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            Console.WriteLine(ex.Message);
         }
-        static Word.Bookmark GetField(Word.Document doc, String FieldName)
+    }
+    public static void OpenWordFile(string fileName)
+    {
+        var wrdApp = GetWordInstance();
+        try
         {
-            foreach (Word.Bookmark field in doc.Bookmarks)
-            {
-                if ( field.Name == FieldName)
-                    return field;
-            }
-            return null;
-        }
-
-        public static void ActivateWord()
-        {
-            var wrdApp = GetWordInstance();
             wrdApp.Visible = true;
+            wrdApp.Documents.Add(Missing.Value);
+            wrdApp.Documents.Open(fileName);
             wrdApp.Activate();
         }
-        public static String GetTempFileName(string ext)
+        catch (Exception ex)
         {
-            if (!ext.StartsWith("."))
-                ext = "." + ext;
-            return Path.GetTempPath() + Guid.NewGuid().ToString() + ext;
+            MessageBox.Show(ex.Message);
         }
+    }
 
-        public static void MergeFiles(string outputFile, List<String> files, bool bDelete = true)
+    private static Word.Bookmark GetField(Word.Document doc, string FieldName)
+    {
+        foreach (Word.Bookmark field in doc.Bookmarks)
         {
-            var wrdApp = GetWordInstance();
-            try
-            {
-                var doc = wrdApp.Documents.Add();
-                var sel = wrdApp.Selection;
-                var bFirst = true;
+            if ( field.Name == FieldName)
+                return field;
+        }
+        return null;
+    }
 
-                foreach (var file in files)
+    public static void ActivateWord()
+    {
+        var wrdApp = GetWordInstance();
+        wrdApp.Visible = true;
+        wrdApp.Activate();
+    }
+    public static string GetTempFileName(string ext)
+    {
+        if (!ext.StartsWith("."))
+            ext = "." + ext;
+        return Path.GetTempPath() + Guid.NewGuid() + ext;
+    }
+
+    public static void MergeFiles(string outputFile, List<string> files, bool bDelete = true)
+    {
+        var wrdApp = GetWordInstance();
+        try
+        {
+            var doc = wrdApp.Documents.Add();
+            var bFirst = true;
+
+            foreach (var file in files)
+            {
+                if (File.Exists(file))
                 {
-                    if (File.Exists(file))
+                    var newDoc = wrdApp.Documents.Add(file);
+                    var wrdRange = doc.Content;
+
+                    Word.Section sec;
+                    if (bFirst)
                     {
-                        var newDoc = wrdApp.Documents.Add(file);
-                        var wrdRange = doc.Content;
-
-                        Word.Section sec;
-                        if (bFirst)
-                        {
-                            wrdRange.PageSetup.TopMargin = newDoc.PageSetup.TopMargin;
-                            wrdRange.PageSetup.BottomMargin = newDoc.PageSetup.BottomMargin;
-                            wrdRange.PageSetup.LeftMargin = newDoc.PageSetup.LeftMargin;
-                            wrdRange.PageSetup.RightMargin = newDoc.PageSetup.RightMargin;
-                            bFirst = false;
-                        }
-                        else
-                        {
-                            sec = wrdRange.Sections.Add();
-                            sec.PageSetup.TopMargin = newDoc.PageSetup.TopMargin;
-                            sec.PageSetup.BottomMargin = newDoc.PageSetup.BottomMargin;
-                            sec.PageSetup.LeftMargin = newDoc.PageSetup.LeftMargin;
-                            sec.PageSetup.RightMargin = newDoc.PageSetup.RightMargin;
-                        }
-                        doc.Words.Last.InsertFile(file);
-                        ((Word._Document)newDoc).Close();
-                        if (bDelete)
-                            File.Delete(file);
+                        wrdRange.PageSetup.TopMargin = newDoc.PageSetup.TopMargin;
+                        wrdRange.PageSetup.BottomMargin = newDoc.PageSetup.BottomMargin;
+                        wrdRange.PageSetup.LeftMargin = newDoc.PageSetup.LeftMargin;
+                        wrdRange.PageSetup.RightMargin = newDoc.PageSetup.RightMargin;
+                        bFirst = false;
                     }
+                    else
+                    {
+                        sec = wrdRange.Sections.Add();
+                        sec.PageSetup.TopMargin = newDoc.PageSetup.TopMargin;
+                        sec.PageSetup.BottomMargin = newDoc.PageSetup.BottomMargin;
+                        sec.PageSetup.LeftMargin = newDoc.PageSetup.LeftMargin;
+                        sec.PageSetup.RightMargin = newDoc.PageSetup.RightMargin;
+                    }
+                    doc.Words.Last.InsertFile(file);
+                    newDoc.Close();
+                    if (bDelete)
+                        File.Delete(file);
                 }
-                var dir = Path.GetDirectoryName(outputFile);
-                if (!Directory.Exists(dir))
-                    Directory.CreateDirectory(dir);
-                doc.SaveAs(outputFile);
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            var dir = Path.GetDirectoryName(outputFile);
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+            doc.SaveAs(outputFile);
         }
-
-        public static void PublipostageLettreWordAndInsertFile(System.Data.DataTable source, string modele, String DocToInsert, String FieldName, String FileResult = "")
+        catch (Exception ex)
         {
-            var wrdApp = GetWordInstance();
+            MessageBox.Show(ex.Message);
+        }
+    }
 
-            try
-            {
-                var doc = wrdApp.Documents.Add(modele);
-                var merge = doc.MailMerge;
+    public static void PublipostageLettreWordAndInsertFile(DataTable source, string modele, string DocToInsert, string FieldName, string FileResult = "")
+    {
+        var wrdApp = GetWordInstance();
 
-                var field = GetField(doc, FieldName);
-                if (field != null)
-                {
-                    field.Range.InsertFile(DocToInsert);
-                }
+        try
+        {
+            var doc = wrdApp.Documents.Add(modele);
+            var merge = doc.MailMerge;
 
-                var fileNameCsv = Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
-                GenerateDataSource(source, fileNameCsv);
-                merge.MainDocumentType = Word.WdMailMergeMainDocType.wdFormLetters;
-                merge.OpenDataSource(fileNameCsv, false);
-                merge.Execute();
-                merge.ViewMailMergeFieldCodes = 0;
-                ((Word._Document)doc).Close(oFalse);
+            var field = GetField(doc, FieldName);
+            field?.Range.InsertFile(DocToInsert);
+
+            var fileNameCsv = Path.GetTempPath() + Guid.NewGuid() + ".csv";
+            GenerateDataSource(source, fileNameCsv);
+            merge.MainDocumentType = Word.WdMailMergeMainDocType.wdFormLetters;
+            merge.OpenDataSource(fileNameCsv, false);
+            merge.Execute();
+            merge.ViewMailMergeFieldCodes = 0;
+            doc.Close(oFalse);
                 
-                if ( !String.IsNullOrEmpty(FileResult))
-                    wrdApp.ActiveDocument.SaveAs2(FileResult);
+            if ( !string.IsNullOrEmpty(FileResult))
+                wrdApp.ActiveDocument.SaveAs2(FileResult);
                 
-                ((Word._Document)wrdApp.ActiveDocument).Close(oFalse);
+            wrdApp.ActiveDocument.Close(oFalse);
 
-                File.Delete(fileNameCsv);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            File.Delete(fileNameCsv);
         }
-
-        public static void PublipostageLettreWordAndFillTable(System.Data.DataTable source, string modele, List<String[]> datas, int indexTable, String FileResult = "")
+        catch (Exception ex)
         {
-            var wrdApp = GetWordInstance();
+            MessageBox.Show(ex.Message);
+        }
+    }
 
-            try
+    public static void PublipostageLettreWordAndFillTable(DataTable source, string modele, List<string[]> datas, int indexTable, string FileResult = "")
+    {
+        var wrdApp = GetWordInstance();
+
+        try
+        {
+            var doc = wrdApp.Documents.Add(modele);
+            var merge = doc.MailMerge;
+
+            var fileName = Path.GetTempPath() + Guid.NewGuid() + ".csv";
+            GenerateDataSource(source, fileName);
+            merge.MainDocumentType = Word.WdMailMergeMainDocType.wdFormLetters;
+            merge.OpenDataSource(fileName, false);
+            merge.Execute();
+            merge.ViewMailMergeFieldCodes = 0;
+            doc.Close(oFalse);
+            File.Delete(fileName);
+            var table = wrdApp.ActiveDocument.Tables[indexTable];
+            var col = 1;
+            foreach (var dataColumns in datas)
             {
-                var doc = wrdApp.Documents.Add(modele);
-                var merge = doc.MailMerge;
-
-                var fileName = Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
-                GenerateDataSource(source, fileName);
-                merge.MainDocumentType = Word.WdMailMergeMainDocType.wdFormLetters;
-                merge.OpenDataSource(fileName, false);
-                merge.Execute();
-                merge.ViewMailMergeFieldCodes = 0;
-                ((Word._Document)doc).Close(oFalse);
-                File.Delete(fileName);
-                var table = wrdApp.ActiveDocument.Tables[indexTable];
-                var col = 1;
-                foreach (var dataColumns in datas)
+                var row = table.Rows.Add();
+                col = 1;
+                foreach (var data in dataColumns)
                 {
-                    var row = table.Rows.Add();
-                    col = 1;
-                    foreach (var data in dataColumns)
-                    {
-                        row.Cells[col].Range.Text = data;
-                        col++;
-                    }
+                    row.Cells[col].Range.Text = data;
+                    col++;
                 }
-                table.Rows[2].Delete();
+            }
+            table.Rows[2].Delete();
+            {
+                var row = table.Rows.Add();
+                var dataRow = source.Rows[0];
+                for (var i = 1; i < col - 1; i++)
                 {
-                    var row = table.Rows.Add();
-                    var dataRow = source.Rows[0];
-                    for (var i = 1; i < col - 1; i++)
-                    {
-                        row.Cells[i].Borders[Word.WdBorderType.wdBorderBottom].LineStyle = Word.WdLineStyle.wdLineStyleNone;
-                        row.Cells[i].Borders[Word.WdBorderType.wdBorderLeft].LineStyle = Word.WdLineStyle.wdLineStyleNone;
-                        row.Cells[i].Borders[Word.WdBorderType.wdBorderRight].LineStyle = Word.WdLineStyle.wdLineStyleNone;
-                    }
-                    row.Cells[col - 1].Range.Text = dataRow["valeur"].ToString();
-                    row.Cells[col - 1].Borders.OutsideLineStyle = Word.WdLineStyle.wdLineStyleSingle;
+                    row.Cells[i].Borders[Word.WdBorderType.wdBorderBottom].LineStyle = Word.WdLineStyle.wdLineStyleNone;
+                    row.Cells[i].Borders[Word.WdBorderType.wdBorderLeft].LineStyle = Word.WdLineStyle.wdLineStyleNone;
+                    row.Cells[i].Borders[Word.WdBorderType.wdBorderRight].LineStyle = Word.WdLineStyle.wdLineStyleNone;
                 }
-                if (!String.IsNullOrEmpty(FileResult))
-                    wrdApp.ActiveDocument.SaveAs2(FileResult);
+                row.Cells[col - 1].Range.Text = dataRow["valeur"].ToString();
+                row.Cells[col - 1].Borders.OutsideLineStyle = Word.WdLineStyle.wdLineStyleSingle;
+            }
+            if (!string.IsNullOrEmpty(FileResult))
+                wrdApp.ActiveDocument.SaveAs2(FileResult);
 
-                ((Word._Document)wrdApp.ActiveDocument).Close(oFalse);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            wrdApp.ActiveDocument.Close(oFalse);
         }
-
-        public static void PublipostageLettreWord(System.Data.DataTable source, string modele)
+        catch (Exception ex)
         {
-            var wrdApp = GetWordInstance();
-
-            try
-            {
-                wrdApp.Visible = true;
-                var docMailing = wrdApp.Documents.Add(modele);
-                var merge = docMailing.MailMerge;
-
-                var fileName = Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
-                GenerateDataSource(source, fileName);
-
-                merge.MainDocumentType = Word.WdMailMergeMainDocType.wdFormLetters;
-                merge.OpenDataSource(fileName, false);
-                merge.Execute();
-                merge.ViewMailMergeFieldCodes = 0;
-                ((Word._Document)docMailing).Close(oFalse);
-                File.Delete(fileName);
-                wrdApp.Activate();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            } 
+            MessageBox.Show(ex.Message);
         }
-        public static void PublipostageEtiquetteWord( System.Data.DataTable source, string modele)
-        {
-            var wrdApp = GetWordInstance();
-            try
-            {
-                var fileName = Path.GetTempPath() + Guid.NewGuid().ToString() + ".csv";
-                wrdApp.Visible = true;
+    }
 
-                var docMailing = wrdApp.Documents.Add(modele);
-                var merge = docMailing.MailMerge;
+    public static void PublipostageLettreWord(DataTable source, string modele)
+    {
+        var wrdApp = GetWordInstance();
+
+        try
+        {
+            wrdApp.Visible = true;
+            var docMailing = wrdApp.Documents.Add(modele);
+            var merge = docMailing.MailMerge;
+
+            var fileName = Path.GetTempPath() + Guid.NewGuid() + ".csv";
+            GenerateDataSource(source, fileName);
+
+            merge.MainDocumentType = Word.WdMailMergeMainDocType.wdFormLetters;
+            merge.OpenDataSource(fileName, false);
+            merge.Execute();
+            merge.ViewMailMergeFieldCodes = 0;
+            docMailing.Close(oFalse);
+            File.Delete(fileName);
+            wrdApp.Activate();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+        } 
+    }
+    public static void PublipostageEtiquetteWord( DataTable source, string modele)
+    {
+        var wrdApp = GetWordInstance();
+        try
+        {
+            var fileName = Path.GetTempPath() + Guid.NewGuid() + ".csv";
+            wrdApp.Visible = true;
+
+            var docMailing = wrdApp.Documents.Add(modele);
+            var merge = docMailing.MailMerge;
 
             
-                //                string fileName = @"c:\syndic_modeles\csv\etiquettes.csv";
+            //                string fileName = @"c:\syndic_modeles\csv\etiquettes.csv";
 
-                GenerateDataSource(source, fileName);
+            GenerateDataSource(source, fileName);
                 
-                merge.MainDocumentType = Word.WdMailMergeMainDocType.wdMailingLabels;
-                merge.OpenDataSource(fileName, false);
+            merge.MainDocumentType = Word.WdMailMergeMainDocType.wdMailingLabels;
+            merge.OpenDataSource(fileName, false);
 
-                //
-                //// Obtenir la source de données
+            //
+            //// Obtenir la source de données
               
-                // Obtenir la source de données
-                var dataSource = docMailing.MailMerge.DataSource.MappedDataFields;
+            // Obtenir la source de données
+            var dataSource = docMailing.MailMerge.DataSource.MappedDataFields;
 
             //    // Définir les mappages souhaités
             //    var fieldMappings = new Dictionary<string, string>
@@ -495,91 +479,82 @@ namespace CommonProjectsPartners.Common
             //    {"Ville", "VILLE"},
             //    {"Pays", "PAYS"}
             //};
-                dataSource[Word.WdMappedDataFields.wdCourtesyTitle].DataFieldIndex = 1;
-                dataSource[Word.WdMappedDataFields.wdLastName].DataFieldIndex = 2;
-                dataSource[Word.WdMappedDataFields.wdFirstName].DataFieldIndex = 4;
-                dataSource[Word.WdMappedDataFields.wdAddress1].DataFieldIndex = 5;
-                dataSource[Word.WdMappedDataFields.wdPostalCode].DataFieldIndex =6;
-                dataSource[Word.WdMappedDataFields.wdCity].DataFieldIndex = 7;
+            dataSource[Word.WdMappedDataFields.wdCourtesyTitle].DataFieldIndex = 1;
+            dataSource[Word.WdMappedDataFields.wdLastName].DataFieldIndex = 2;
+            dataSource[Word.WdMappedDataFields.wdFirstName].DataFieldIndex = 4;
+            dataSource[Word.WdMappedDataFields.wdAddress1].DataFieldIndex = 5;
+            dataSource[Word.WdMappedDataFields.wdPostalCode].DataFieldIndex =6;
+            dataSource[Word.WdMappedDataFields.wdCity].DataFieldIndex = 7;
 
-                // Mettre à jour tous les champs du document
-                docMailing.Fields.Update();
+            // Mettre à jour tous les champs du document
+            docMailing.Fields.Update();
 
-                // Sauvegarder les modifications
-               // docMailing.Save();
-
-
-                //-
+            // Sauvegarder les modifications
+            // docMailing.Save();
 
 
-                merge.Execute();
-                merge.ViewMailMergeFieldCodes = 0;
-                ((Word._Document)docMailing).Close(oFalse);
-                File.Delete(fileName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);                
-            } 
+            //-
 
+
+            merge.Execute();
+            merge.ViewMailMergeFieldCodes = 0;
+            docMailing.Close(oFalse);
+            File.Delete(fileName);
         }
-        public static bool GenerateDataSource(System.Data.DataTable source, string fileName, Encoding encoding = null)
+        catch (Exception ex)
         {
-            var retValue = false;
-            try
+            MessageBox.Show(ex.Message);                
+        } 
+
+    }
+    public static bool GenerateDataSource(DataTable source, string fileName, Encoding encoding = null)
+    {
+        var retValue = false;
+        try
+        {
+            if (source != null)
             {
-                if (source != null)
-                {
-                    TextWriter file;
-                    if (encoding != null)
-                        file = new StreamWriter(fileName, false, encoding);
-                    else
-                        file = new StreamWriter(fileName);
-                    Database.SerializeCSV(source, file);
-                    file.Close();
-                }
+                TextWriter file;
+                if (encoding != null)
+                    file = new StreamWriter(fileName, false, encoding);
+                else
+                    file = new StreamWriter(fileName);
+                Database.SerializeCSV(source, file);
+                file.Close();
             }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
-            return retValue;
         }
-
-        public static void CloseOfficeInstance()
+        catch (Exception e)
         {
-            try
-            {
-                if (wrdApp != null)
-                {
-                    ((Microsoft.Office.Interop.Word._Application)wrdApp.Application).Quit(false);
-                    wrdApp = null;
-                }
-            }
-            catch (Exception)
-            {
-            }
-            try
-            {
-                if (excelApp != null)
-                {
-                    var wb = excelApp.Application.ActiveWorkbook;
-                    if (wb != null)
-                        wb.Close(false);
-                    excelApp.Application.Quit();
-                    excelApp = null;
-                }
-            }
-            catch (Exception)
-            {
-            }
+            MessageBox.Show(e.Message);
+        }
+        return retValue;
+    }
 
-            foreach (var file in filesName)
+    public static void CloseOfficeInstance()
+    {
+        try
+        {
+            if (wrdApp != null)
             {
-                if ( File.Exists(file))
-                    File.Delete(file);
+                wrdApp.Application.Quit(false);
+                wrdApp = null;
             }
-
+        }
+        catch (Exception)
+        {
+        }
+        try
+        {
+            if (excelApp != null)
+            {
+                var wb = excelApp.Application.ActiveWorkbook;
+                wb?.Close(false);
+                excelApp.Application.Quit();
+                excelApp = null;
+            }
+        }
+        catch (Exception)
+        {
         }
     }
 }

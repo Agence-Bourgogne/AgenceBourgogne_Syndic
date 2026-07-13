@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Immeubles
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Immeubles
 {
     partial class FicheImmeubleForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -581,46 +584,46 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox tbNumero;
-        private System.Windows.Forms.Label lblRef;
-        private System.Windows.Forms.MaskedTextBox tbDateCreation;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.MaskedTextBox tbCodePostal;
-        private System.Windows.Forms.TextBox tbAdresse;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox tbNom;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox tbVille;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.MaskedTextBox tbCompteBanque;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.MaskedTextBox tbLots;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.DataGridView dataGridView;
-        private System.Windows.Forms.Button btnFirst;
-        private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.Button btnPrev;
-        private System.Windows.Forms.Button btnNext;
-        private System.Windows.Forms.Button btnLast;
-        private System.Windows.Forms.Button btnQuit;
-        private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.TextBox tbNote;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Button btnModif;
-        private System.Windows.Forms.Button btnModifLot;
-        private System.Windows.Forms.TextBox tbNoteRepart;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label lblTitre;
-        private System.Windows.Forms.Label lblTxtImmeuble;
-        private System.Windows.Forms.Button btnEnter;
-        private System.Windows.Forms.Label lblExercice;
-        private System.Windows.Forms.CheckBox ckDesactiv;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox tbAppel;
+        private GroupBox groupBox1;
+        private Label label1;
+        private TextBox tbNumero;
+        private Label lblRef;
+        private MaskedTextBox tbDateCreation;
+        private Label label3;
+        private Label label6;
+        private MaskedTextBox tbCodePostal;
+        private TextBox tbAdresse;
+        private Label label5;
+        private TextBox tbNom;
+        private Label label4;
+        private TextBox tbVille;
+        private Label label7;
+        private MaskedTextBox tbCompteBanque;
+        private Label label8;
+        private MaskedTextBox tbLots;
+        private Label label9;
+        private GroupBox groupBox2;
+        private DataGridView dataGridView;
+        private Button btnFirst;
+        private ImageList imageList1;
+        private Button btnPrev;
+        private Button btnNext;
+        private Button btnLast;
+        private Button btnQuit;
+        private Button btnSave;
+        private Panel panel1;
+        private TextBox tbNote;
+        private Label label10;
+        private Button btnModif;
+        private Button btnModifLot;
+        private TextBox tbNoteRepart;
+        private Label label11;
+        private Label lblTitre;
+        private Label lblTxtImmeuble;
+        private Button btnEnter;
+        private Label lblExercice;
+        private CheckBox ckDesactiv;
+        private Label label2;
+        private TextBox tbAppel;
     }
 }

@@ -1,11 +1,15 @@
-﻿namespace EspaceSyndic.Impressions.RetardsPaiements
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using Microsoft.Reporting.WinForms;
+
+namespace EspaceSyndic.Impressions.RetardsPaiements
 {
     partial class RetardsPaiementsForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -501,38 +505,38 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox gbFactures;
-        private System.Windows.Forms.DataGridView dataGridView;
-        private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnList;
-        private System.Windows.Forms.Button btnRelance;
-        private System.Windows.Forms.Button btnQuit;
-        protected System.Windows.Forms.GroupBox groupBox3;
-        protected System.Windows.Forms.TextBox tbSeuil;
-        protected System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DateTimePicker dtEdition;
-        private System.Windows.Forms.Label label3;
-        protected System.Windows.Forms.TextBox tbRefImmeuble;
-        protected System.Windows.Forms.Label lblImmeuble;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn relance;
-        private Microsoft.Reporting.WinForms.ReportViewer reportViewer1;
-        private Microsoft.Reporting.WinForms.ReportViewer reportViewer2;
-        private System.Windows.Forms.Button btnEnter;
-        private System.Windows.Forms.Button btnGrid;
-        private System.Windows.Forms.Button btnExport;
+        private GroupBox gbFactures;
+        private DataGridView dataGridView;
+        private ImageList imageList1;
+        private Panel panel1;
+        private Button btnList;
+        private Button btnRelance;
+        private Button btnQuit;
+        protected GroupBox groupBox3;
+        protected TextBox tbSeuil;
+        protected Label label1;
+        private DateTimePicker dtEdition;
+        private Label label3;
+        protected TextBox tbRefImmeuble;
+        protected Label lblImmeuble;
+        private DataGridViewCheckBoxColumn relance;
+        private ReportViewer reportViewer1;
+        private ReportViewer reportViewer2;
+        private Button btnEnter;
+        private Button btnGrid;
+        private Button btnExport;
         //private System.Windows.Forms.CheckBox ckAll;
-        private System.Windows.Forms.Label lblRel3;
-        private System.Windows.Forms.Label lblRel2;
-        private System.Windows.Forms.Label lblRel1;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem nePasRelancerToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem générer1ereRelanceToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem générer2ndeRelnceToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem envoyerMiseEnDemeureToolStripMenuItem;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox cbFiltre;
-        private System.Windows.Forms.ToolStripMenuItem effacerLaRelanceToolStripMenuItem;
-        private System.Windows.Forms.CheckBox ckActif;
+        private Label lblRel3;
+        private Label lblRel2;
+        private Label lblRel1;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem nePasRelancerToolStripMenuItem;
+        private ToolStripMenuItem générer1ereRelanceToolStripMenuItem;
+        private ToolStripMenuItem générer2ndeRelnceToolStripMenuItem;
+        private ToolStripMenuItem envoyerMiseEnDemeureToolStripMenuItem;
+        private Label label2;
+        private ComboBox cbFiltre;
+        private ToolStripMenuItem effacerLaRelanceToolStripMenuItem;
+        private CheckBox ckActif;
     }
 }

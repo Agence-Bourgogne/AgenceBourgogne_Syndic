@@ -1,46 +1,46 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows.Forms;
+using CommonProjectsPartners.Utils;
 using SyndicData.Controller;
 using SyndicData.Entites;
-using CommonProjectsPartners.Utils;
-namespace EspaceSyndic.Impressions.Convocations
+
+namespace EspaceSyndic.Impressions.Convocations;
+
+public partial class PvAssembleeForm : Form
 {
-    public partial class PvAssembleeForm : Form
+    private ImmeubleEntite immeuble;
+    private readonly string TitreForm;
+    public PvAssembleeForm()
     {
-        ImmeubleEntite immeuble;
-        string TitreForm;
-        public PvAssembleeForm()
-        {
-            InitializeComponent();
-            TitreForm = Text;
-        }
+        InitializeComponent();
+        TitreForm = Text;
+    }
 
-        private void immeubleUserControl1_ValidatingControle(object sender, CancelEventArgs e)
+    private void immeubleUserControl1_ValidatingControle(object sender, CancelEventArgs e)
+    {
+        immeuble = ImmeubleController.getController().getEntiteFromField("reference", immeubleUserControl.Reference);
+        if (immeuble != null)
         {
-            immeuble = ImmeubleController.getController().getEntiteFromField("reference", immeubleUserControl.Reference);
-            if (immeuble != null)
-            {
-                immeubleUserControl.Invalid = false;
-                Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
-            }
-            else
-            {
-                if ( immeubleUserControl.tbRefImmeuble.Text != "")
-                    immeubleUserControl.Invalid = true;
-                Text = TitreForm;
-            }
+            immeubleUserControl.Invalid = false;
+            Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
         }
+        else
+        {
+            if ( immeubleUserControl.tbRefImmeuble.Text != "")
+                immeubleUserControl.Invalid = true;
+            Text = TitreForm;
+        }
+    }
 
-        private void PvAssembleeForm_Load(object sender, EventArgs e)
-        {
-            cbConvoc.SelectedIndex = 0;
-            btnEnter.Width = 0;
-        }
+    private void PvAssembleeForm_Load(object sender, EventArgs e)
+    {
+        cbConvoc.SelectedIndex = 0;
+        btnEnter.Width = 0;
+    }
 
-        private void btnEnter_Click(object sender, EventArgs e)
-        {
-            ControlsWindows.FocusNextTabbedControl(this);
-        }
+    private void btnEnter_Click(object sender, EventArgs e)
+    {
+        ControlsWindows.FocusNextTabbedControl(this);
     }
 }

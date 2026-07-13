@@ -1,19 +1,16 @@
-﻿//using System.Threading.Tasks;
+﻿using EspaceSyndic.Formulaires.Common;
 using SyndicData.Controller;
-using EspaceSyndic.Formulaires.Common;
 using SyndicData.Entites;
 
+namespace EspaceSyndic.Formulaires.Immeubles;
 
-namespace EspaceSyndic.Formulaires.Immeubles
+internal class FindImmeubleCoproprietaireForm : FindStdForm
 {
-    class FindImmeubleCoproprietaireForm : FindStdForm
+    public readonly CoproprietaireEntite coproprietaire = null;
+    public override void FillListFromFilter(string filter)
     {
-        public CoproprietaireEntite coproprietaire = null;
-        public override void FillListFromFilter(string filter)
-        {
-            source = LotDescriptionController.getController().getImmeublesCoproprietaire(coproprietaire.id);
-            base.FillListFromFilter(filter);
-        }
-
+        source = LotDescriptionController.getController().getImmeublesCoproprietaire(coproprietaire.id);
+        base.FillListFromFilter(filter);
     }
+
 }

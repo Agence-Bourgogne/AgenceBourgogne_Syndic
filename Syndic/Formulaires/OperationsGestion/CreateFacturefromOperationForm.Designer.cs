@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.OperationsGestion
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.OperationsGestion
 {
     partial class CreateFacturefromOperationForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -460,38 +463,38 @@
 
         #endregion
 
-        protected System.Windows.Forms.Panel panel1;
-        protected System.Windows.Forms.Button btnEnter;
-        protected System.Windows.Forms.Button btnDelete;
-        protected System.Windows.Forms.Button btnQuit;
-        protected System.Windows.Forms.GroupBox gbFactures;
-        protected System.Windows.Forms.DataGridView dataGridView;
-        protected System.Windows.Forms.GroupBox groupBox1;
-        protected System.Windows.Forms.ComboBox cbReglement;
-        protected System.Windows.Forms.Label label2;
-        protected System.Windows.Forms.Button btnFournisseurAdd;
-        protected System.Windows.Forms.Button btnNatureAdd;
-        protected System.Windows.Forms.TextBox tbComment;
-        protected System.Windows.Forms.TextBox tbCommentaireFournisseur;
-        protected System.Windows.Forms.TextBox tbMontant;
-        protected System.Windows.Forms.TextBox tbNomFournisseur;
-        protected System.Windows.Forms.Label label8;
-        protected System.Windows.Forms.TextBox tbVilleFournisseur;
-        protected System.Windows.Forms.TextBox tbCpFournisseur;
-        protected System.Windows.Forms.TextBox tbAdresseFournisseur;
-        protected System.Windows.Forms.TextBox tbLibNature;
-        protected System.Windows.Forms.TextBox tbBase;
-        protected System.Windows.Forms.Label lblBase;
-        protected System.Windows.Forms.TextBox tbNature;
-        protected System.Windows.Forms.Label lblNature;
-        protected System.Windows.Forms.TextBox tbFournisseur;
-        protected System.Windows.Forms.Label lblFournisseur;
-        protected System.Windows.Forms.Label label3;
-        protected System.Windows.Forms.MaskedTextBox tbDateCreation;
-        protected System.Windows.Forms.TextBox tbRefImmeuble;
-        protected System.Windows.Forms.Label lblImmeuble;
-        protected System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox tbTotal;
+        protected Panel panel1;
+        protected Button btnEnter;
+        protected Button btnDelete;
+        protected Button btnQuit;
+        protected GroupBox gbFactures;
+        protected DataGridView dataGridView;
+        protected GroupBox groupBox1;
+        protected ComboBox cbReglement;
+        protected Label label2;
+        protected Button btnFournisseurAdd;
+        protected Button btnNatureAdd;
+        protected TextBox tbComment;
+        protected TextBox tbCommentaireFournisseur;
+        protected TextBox tbMontant;
+        protected TextBox tbNomFournisseur;
+        protected Label label8;
+        protected TextBox tbVilleFournisseur;
+        protected TextBox tbCpFournisseur;
+        protected TextBox tbAdresseFournisseur;
+        protected TextBox tbLibNature;
+        protected TextBox tbBase;
+        protected Label lblBase;
+        protected TextBox tbNature;
+        protected Label lblNature;
+        protected TextBox tbFournisseur;
+        protected Label lblFournisseur;
+        protected Label label3;
+        protected MaskedTextBox tbDateCreation;
+        protected TextBox tbRefImmeuble;
+        protected Label lblImmeuble;
+        protected ImageList imageList1;
+        private Label label1;
+        private TextBox tbTotal;
     }
 }

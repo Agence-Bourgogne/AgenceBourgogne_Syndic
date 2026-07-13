@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Ecritures
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Ecritures
 {
     partial class FicheFactureForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -778,61 +781,61 @@
 
         #endregion
 
-        private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnQuit;
-        private System.Windows.Forms.GroupBox gbCharges;
-        private System.Windows.Forms.DataGridView dataGridView;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox tbBase;
-        private System.Windows.Forms.Label lblBase;
-        private System.Windows.Forms.TextBox tbNature;
-        private System.Windows.Forms.Label lblNature;
-        private System.Windows.Forms.TextBox tbFournisseur;
-        private System.Windows.Forms.Label lblFournisseur;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.MaskedTextBox tbDateCreation;
-        private System.Windows.Forms.TextBox tbRefImmeuble;
-        private System.Windows.Forms.Label lblImmeuble;
-        private System.Windows.Forms.TextBox tbLibNature;
-        private System.Windows.Forms.TextBox tbMontant;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox tbVilleFournisseur;
-        private System.Windows.Forms.TextBox tbCpFournisseur;
-        private System.Windows.Forms.TextBox tbAdresseFournisseur;
-        private System.Windows.Forms.TextBox tbNomFournisseur;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.TextBox tbTotal;
-        private System.Windows.Forms.Label lblTotal;
-        private System.Windows.Forms.TextBox tbDiff;
-        private System.Windows.Forms.Label lblDiff;
-        private System.Windows.Forms.GroupBox gbFactures;
-        private System.Windows.Forms.DataGridView dataGridViewEcriture;
-        private System.Windows.Forms.TextBox tbCommentaireFournisseur;
-        private System.Windows.Forms.TextBox tbMontantLiasse;
-        private System.Windows.Forms.Label lblLiasse;
-        private System.Windows.Forms.TextBox tbComment;
-        private System.Windows.Forms.Button btnNatureAdd;
-        private System.Windows.Forms.ComboBox cbLiasse;
-        private System.Windows.Forms.Button btnFournisseurAdd;
-        private System.Windows.Forms.ContextMenuStrip RowMenu;
-        private System.Windows.Forms.ToolStripMenuItem supprimerToolStripMenuItem;
-        private System.Windows.Forms.ComboBox cbReglement;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ToolStripMenuItem repartIndividuelleToolStripMenuItem;
-        private System.Windows.Forms.Button btnAdd;
-        private System.Windows.Forms.Button btnValid;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button btnEnter;
-        private System.Windows.Forms.Button btnHelp;
-        private System.Windows.Forms.Button btnRepart;
-        protected System.Windows.Forms.TextBox tbLot;
-        protected System.Windows.Forms.Label lblLot;
-        private System.Windows.Forms.Button btnDel;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem enregistrerLaPrésentationToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem présentationParDéfautToolStripMenuItem;
-        private System.Windows.Forms.Button btnDelLiasse;
-        private System.Windows.Forms.ToolTip toolTip1;
+        private ImageList imageList1;
+        private Panel panel1;
+        private Button btnQuit;
+        private GroupBox gbCharges;
+        private DataGridView dataGridView;
+        private GroupBox groupBox1;
+        private TextBox tbBase;
+        private Label lblBase;
+        private TextBox tbNature;
+        private Label lblNature;
+        private TextBox tbFournisseur;
+        private Label lblFournisseur;
+        private Label label3;
+        private MaskedTextBox tbDateCreation;
+        private TextBox tbRefImmeuble;
+        private Label lblImmeuble;
+        private TextBox tbLibNature;
+        private TextBox tbMontant;
+        private Label label8;
+        private TextBox tbVilleFournisseur;
+        private TextBox tbCpFournisseur;
+        private TextBox tbAdresseFournisseur;
+        private TextBox tbNomFournisseur;
+        private GroupBox groupBox3;
+        private TextBox tbTotal;
+        private Label lblTotal;
+        private TextBox tbDiff;
+        private Label lblDiff;
+        private GroupBox gbFactures;
+        private DataGridView dataGridViewEcriture;
+        private TextBox tbCommentaireFournisseur;
+        private TextBox tbMontantLiasse;
+        private Label lblLiasse;
+        private TextBox tbComment;
+        private Button btnNatureAdd;
+        private ComboBox cbLiasse;
+        private Button btnFournisseurAdd;
+        private ContextMenuStrip RowMenu;
+        private ToolStripMenuItem supprimerToolStripMenuItem;
+        private ComboBox cbReglement;
+        private Label label2;
+        private ToolStripMenuItem repartIndividuelleToolStripMenuItem;
+        private Button btnAdd;
+        private Button btnValid;
+        private Label label4;
+        private Button btnEnter;
+        private Button btnHelp;
+        private Button btnRepart;
+        protected TextBox tbLot;
+        protected Label lblLot;
+        private Button btnDel;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripMenuItem enregistrerLaPrésentationToolStripMenuItem;
+        private ToolStripMenuItem présentationParDéfautToolStripMenuItem;
+        private Button btnDelLiasse;
+        private ToolTip toolTip1;
     }
 }

@@ -1,11 +1,16 @@
-﻿namespace EspaceSyndic.Formulaires.OperationsGestion
+﻿using System;
+using System.ComponentModel;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.OperationsGestion
 {
     partial class DetailReglementForm
     {
         /// <summary>
         /// Variable nécessaire au concepteur.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Nettoyage des ressources utilisées.
@@ -28,16 +33,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DetailReglementForm));
-            this.tbLibCopro = new System.Windows.Forms.TextBox();
-            this.tbCopro = new System.Windows.Forms.TextBox();
-            this.lblCopro = new System.Windows.Forms.Label();
-            this.tbLot = new System.Windows.Forms.TextBox();
-            this.lblLot = new System.Windows.Forms.Label();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.supprimerLélémentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mettreÀJourLidDeSaisieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.components = new Container();
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(DetailReglementForm));
+            this.tbLibCopro = new TextBox();
+            this.tbCopro = new TextBox();
+            this.lblCopro = new Label();
+            this.tbLot = new TextBox();
+            this.lblLot = new Label();
+            this.contextMenuStrip1 = new ContextMenuStrip(this.components);
+            this.supprimerLélémentToolStripMenuItem = new ToolStripMenuItem();
+            this.mettreÀJourLidDeSaisieToolStripMenuItem = new ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -101,7 +106,7 @@
             // 
             // tbNature
             // 
-            this.tbNature.Validating += new System.ComponentModel.CancelEventHandler(this.tbNature_Validating);
+            this.tbNature.Validating += new CancelEventHandler(this.tbNature_Validating);
             // 
             // tbFournisseur
             // 
@@ -113,11 +118,11 @@
             // 
             // tbRefImmeuble
             // 
-            this.tbRefImmeuble.Validating += new System.ComponentModel.CancelEventHandler(this.tbRefImmeuble_Validating);
+            this.tbRefImmeuble.Validating += new CancelEventHandler(this.tbRefImmeuble_Validating);
             // 
             // imageList1
             // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.ImageStream = ((ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
             this.imageList1.Images.SetKeyName(0, "top.png");
             this.imageList1.Images.SetKeyName(1, "bottom.png");
             this.imageList1.Images.SetKeyName(2, "previous.png");
@@ -133,75 +138,75 @@
             // tbLibCopro
             // 
             this.tbLibCopro.Enabled = false;
-            this.tbLibCopro.Location = new System.Drawing.Point(473, 74);
+            this.tbLibCopro.Location = new Point(473, 74);
             this.tbLibCopro.Name = "tbLibCopro";
-            this.tbLibCopro.Size = new System.Drawing.Size(273, 20);
+            this.tbLibCopro.Size = new Size(273, 20);
             this.tbLibCopro.TabIndex = 28;
             this.tbLibCopro.TabStop = false;
             // 
             // tbCopro
             // 
             this.tbCopro.Enabled = false;
-            this.tbCopro.Location = new System.Drawing.Point(373, 74);
+            this.tbCopro.Location = new Point(373, 74);
             this.tbCopro.Name = "tbCopro";
-            this.tbCopro.Size = new System.Drawing.Size(65, 20);
+            this.tbCopro.Size = new Size(65, 20);
             this.tbCopro.TabIndex = 27;
-            this.tbCopro.Validating += new System.ComponentModel.CancelEventHandler(this.tbCopro_Validating);
+            this.tbCopro.Validating += new CancelEventHandler(this.tbCopro_Validating);
             // 
             // lblCopro
             // 
             this.lblCopro.AutoSize = true;
-            this.lblCopro.ForeColor = System.Drawing.Color.Black;
-            this.lblCopro.Location = new System.Drawing.Point(298, 77);
+            this.lblCopro.ForeColor = Color.Black;
+            this.lblCopro.Location = new Point(298, 77);
             this.lblCopro.Name = "lblCopro";
-            this.lblCopro.Size = new System.Drawing.Size(75, 13);
+            this.lblCopro.Size = new Size(75, 13);
             this.lblCopro.TabIndex = 26;
             this.lblCopro.Text = "Co&propriétaire:";
             // 
             // tbLot
             // 
-            this.tbLot.Location = new System.Drawing.Point(86, 74);
+            this.tbLot.Location = new Point(86, 74);
             this.tbLot.Name = "tbLot";
-            this.tbLot.Size = new System.Drawing.Size(65, 20);
+            this.tbLot.Size = new Size(65, 20);
             this.tbLot.TabIndex = 30;
-            this.tbLot.Validating += new System.ComponentModel.CancelEventHandler(this.tbLot_Validating);
+            this.tbLot.Validating += new CancelEventHandler(this.tbLot_Validating);
             // 
             // lblLot
             // 
             this.lblLot.AutoSize = true;
-            this.lblLot.ForeColor = System.Drawing.Color.Blue;
-            this.lblLot.Location = new System.Drawing.Point(11, 77);
+            this.lblLot.ForeColor = Color.Blue;
+            this.lblLot.Location = new Point(11, 77);
             this.lblLot.Name = "lblLot";
-            this.lblLot.Size = new System.Drawing.Size(25, 13);
+            this.lblLot.Size = new Size(25, 13);
             this.lblLot.TabIndex = 29;
             this.lblLot.Text = "&Lot:";
             // 
             // contextMenuStrip1
             // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.contextMenuStrip1.Items.AddRange(new ToolStripItem[] {
             this.supprimerLélémentToolStripMenuItem,
             this.mettreÀJourLidDeSaisieToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(198, 70);
+            this.contextMenuStrip1.Size = new Size(198, 70);
             // 
             // supprimerLélémentToolStripMenuItem
             // 
             this.supprimerLélémentToolStripMenuItem.Name = "supprimerLélémentToolStripMenuItem";
-            this.supprimerLélémentToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.supprimerLélémentToolStripMenuItem.Size = new Size(197, 22);
             this.supprimerLélémentToolStripMenuItem.Text = "Supprimer l\'élément";
-            this.supprimerLélémentToolStripMenuItem.Click += new System.EventHandler(this.supprimerLélémentToolStripMenuItem_Click);
+            this.supprimerLélémentToolStripMenuItem.Click += new EventHandler(this.supprimerLélémentToolStripMenuItem_Click);
             // 
             // mettreÀJourLidDeSaisieToolStripMenuItem
             // 
             this.mettreÀJourLidDeSaisieToolStripMenuItem.Name = "mettreÀJourLidDeSaisieToolStripMenuItem";
-            this.mettreÀJourLidDeSaisieToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.mettreÀJourLidDeSaisieToolStripMenuItem.Size = new Size(197, 22);
             this.mettreÀJourLidDeSaisieToolStripMenuItem.Text = "Mettre à jour l\'id de Saisie";
-            this.mettreÀJourLidDeSaisieToolStripMenuItem.Click += new System.EventHandler(this.mettreÀJourLidDeSaisieToolStripMenuItem_Click);
+            this.mettreÀJourLidDeSaisieToolStripMenuItem.Click += new EventHandler(this.mettreÀJourLidDeSaisieToolStripMenuItem_Click);
             // 
             // DetailReglementForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.ClientSize = new System.Drawing.Size(784, 653);
+            this.AutoScaleDimensions = new SizeF(6F, 13F);
+            this.ClientSize = new Size(784, 653);
             this.Name = "DetailReglementForm";
             this.Text = "Detail Reglement";
             this.Controls.SetChildIndex(this.groupBox1, 0);
@@ -217,13 +222,13 @@
 
         #endregion
 
-        protected System.Windows.Forms.TextBox tbLibCopro;
-        private System.Windows.Forms.TextBox tbCopro;
-        private System.Windows.Forms.Label lblCopro;
-        private System.Windows.Forms.TextBox tbLot;
-        private System.Windows.Forms.Label lblLot;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem supprimerLélémentToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem mettreÀJourLidDeSaisieToolStripMenuItem;
+        protected TextBox tbLibCopro;
+        private TextBox tbCopro;
+        private Label lblCopro;
+        private TextBox tbLot;
+        private Label lblLot;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem supprimerLélémentToolStripMenuItem;
+        private ToolStripMenuItem mettreÀJourLidDeSaisieToolStripMenuItem;
     }
 }

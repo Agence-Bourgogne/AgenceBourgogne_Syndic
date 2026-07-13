@@ -8,37 +8,39 @@
 // </auto-generated>
 
 
+using System;
+using System.CodeDom.Compiler;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.Threading.Tasks;
 
 namespace EspaceSyndic.ServiceReference {
-    using System.Runtime.Serialization;
-    using System;
-    
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="BaseEntitie", Namespace="http://schemas.datacontract.org/2004/07/SyndicDocumentsData.Entities")]
-    [System.SerializableAttribute()]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(EspaceSyndic.ServiceReference.ChildrenEntitie))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(EspaceSyndic.ServiceReference.DocumentEntitie))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(EspaceSyndic.ServiceReference.UserEntitie))]
-    public partial class BaseEntitie : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+    [DebuggerStepThrough()]
+    [GeneratedCode("System.Runtime.Serialization", "4.0.0.0")]
+    [DataContract(Name="BaseEntitie", Namespace="http://schemas.datacontract.org/2004/07/SyndicDocumentsData.Entities")]
+    [Serializable()]
+    [KnownType(typeof(ChildrenEntitie))]
+    [KnownType(typeof(DocumentEntitie))]
+    [KnownType(typeof(UserEntitie))]
+    public partial class BaseEntitie : object, IExtensibleDataObject, INotifyPropertyChanged {
         
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        [NonSerialized()]
+        private ExtensionDataObject extensionDataField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string GuidField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.DateTime audit_createdField;
+        [OptionalField()]
+        private DateTime audit_createdField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Nullable<System.DateTime> audit_updatedField;
+        [OptionalField()]
+        private Nullable<DateTime> audit_updatedField;
         
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+        [Browsable(false)]
+        public ExtensionDataObject ExtensionData {
             get {
                 return this.extensionDataField;
             }
@@ -47,21 +49,21 @@ namespace EspaceSyndic.ServiceReference {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         public string Guid {
             get {
                 return this.GuidField;
             }
             set {
-                if ((object.ReferenceEquals(this.GuidField, value) != true)) {
+                if ((ReferenceEquals(this.GuidField, value) != true)) {
                     this.GuidField = value;
                     this.RaisePropertyChanged("Guid");
                 }
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.DateTime audit_created {
+        [DataMember()]
+        public DateTime audit_created {
             get {
                 return this.audit_createdField;
             }
@@ -73,8 +75,8 @@ namespace EspaceSyndic.ServiceReference {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<System.DateTime> audit_updated {
+        [DataMember()]
+        public Nullable<DateTime> audit_updated {
             get {
                 return this.audit_updatedField;
             }
@@ -86,64 +88,64 @@ namespace EspaceSyndic.ServiceReference {
             }
         }
         
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
             if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+                propertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ChildrenEntitie", Namespace="http://schemas.datacontract.org/2004/07/SyndicDocumentsData.Entities")]
-    [System.SerializableAttribute()]
-    public partial class ChildrenEntitie : EspaceSyndic.ServiceReference.BaseEntitie {
+    [DebuggerStepThrough()]
+    [GeneratedCode("System.Runtime.Serialization", "4.0.0.0")]
+    [DataContract(Name="ChildrenEntitie", Namespace="http://schemas.datacontract.org/2004/07/SyndicDocumentsData.Entities")]
+    [Serializable()]
+    public partial class ChildrenEntitie : BaseEntitie {
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string Copro_idField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string Immeuble_idField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string User_idField;
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         public string Copro_id {
             get {
                 return this.Copro_idField;
             }
             set {
-                if ((object.ReferenceEquals(this.Copro_idField, value) != true)) {
+                if ((ReferenceEquals(this.Copro_idField, value) != true)) {
                     this.Copro_idField = value;
                     this.RaisePropertyChanged("Copro_id");
                 }
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         public string Immeuble_id {
             get {
                 return this.Immeuble_idField;
             }
             set {
-                if ((object.ReferenceEquals(this.Immeuble_idField, value) != true)) {
+                if ((ReferenceEquals(this.Immeuble_idField, value) != true)) {
                     this.Immeuble_idField = value;
                     this.RaisePropertyChanged("Immeuble_id");
                 }
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         public string User_id {
             get {
                 return this.User_idField;
             }
             set {
-                if ((object.ReferenceEquals(this.User_idField, value) != true)) {
+                if ((ReferenceEquals(this.User_idField, value) != true)) {
                     this.User_idField = value;
                     this.RaisePropertyChanged("User_id");
                 }
@@ -151,70 +153,70 @@ namespace EspaceSyndic.ServiceReference {
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="DocumentEntitie", Namespace="http://schemas.datacontract.org/2004/07/SyndicDocumentsData.Entities")]
-    [System.SerializableAttribute()]
-    public partial class DocumentEntitie : EspaceSyndic.ServiceReference.BaseEntitie {
+    [DebuggerStepThrough()]
+    [GeneratedCode("System.Runtime.Serialization", "4.0.0.0")]
+    [DataContract(Name="DocumentEntitie", Namespace="http://schemas.datacontract.org/2004/07/SyndicDocumentsData.Entities")]
+    [Serializable()]
+    public partial class DocumentEntitie : BaseEntitie {
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string copro_idField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string iconField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string immeuble_idField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string textField;
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         public string copro_id {
             get {
                 return this.copro_idField;
             }
             set {
-                if ((object.ReferenceEquals(this.copro_idField, value) != true)) {
+                if ((ReferenceEquals(this.copro_idField, value) != true)) {
                     this.copro_idField = value;
                     this.RaisePropertyChanged("copro_id");
                 }
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         public string icon {
             get {
                 return this.iconField;
             }
             set {
-                if ((object.ReferenceEquals(this.iconField, value) != true)) {
+                if ((ReferenceEquals(this.iconField, value) != true)) {
                     this.iconField = value;
                     this.RaisePropertyChanged("icon");
                 }
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         public string immeuble_id {
             get {
                 return this.immeuble_idField;
             }
             set {
-                if ((object.ReferenceEquals(this.immeuble_idField, value) != true)) {
+                if ((ReferenceEquals(this.immeuble_idField, value) != true)) {
                     this.immeuble_idField = value;
                     this.RaisePropertyChanged("immeuble_id");
                 }
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         public string text {
             get {
                 return this.textField;
             }
             set {
-                if ((object.ReferenceEquals(this.textField, value) != true)) {
+                if ((ReferenceEquals(this.textField, value) != true)) {
                     this.textField = value;
                     this.RaisePropertyChanged("text");
                 }
@@ -222,38 +224,38 @@ namespace EspaceSyndic.ServiceReference {
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="UserEntitie", Namespace="http://schemas.datacontract.org/2004/07/SyndicDocumentsData.Entities")]
-    [System.SerializableAttribute()]
-    public partial class UserEntitie : EspaceSyndic.ServiceReference.BaseEntitie {
+    [DebuggerStepThrough()]
+    [GeneratedCode("System.Runtime.Serialization", "4.0.0.0")]
+    [DataContract(Name="UserEntitie", Namespace="http://schemas.datacontract.org/2004/07/SyndicDocumentsData.Entities")]
+    [Serializable()]
+    public partial class UserEntitie : BaseEntitie {
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string CodeField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string PasswordField;
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         public string Code {
             get {
                 return this.CodeField;
             }
             set {
-                if ((object.ReferenceEquals(this.CodeField, value) != true)) {
+                if ((ReferenceEquals(this.CodeField, value) != true)) {
                     this.CodeField = value;
                     this.RaisePropertyChanged("Code");
                 }
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         public string Password {
             get {
                 return this.PasswordField;
             }
             set {
-                if ((object.ReferenceEquals(this.PasswordField, value) != true)) {
+                if ((ReferenceEquals(this.PasswordField, value) != true)) {
                     this.PasswordField = value;
                     this.RaisePropertyChanged("Password");
                 }
@@ -261,108 +263,108 @@ namespace EspaceSyndic.ServiceReference {
         }
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference.IService")]
+    [GeneratedCode("System.ServiceModel", "4.0.0.0")]
+    [ServiceContract(ConfigurationName="ServiceReference.IService")]
     public interface IService {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/CreateUser", ReplyAction="http://tempuri.org/IService/CreateUserResponse")]
+        [OperationContract(Action="http://tempuri.org/IService/CreateUser", ReplyAction="http://tempuri.org/IService/CreateUserResponse")]
         string CreateUser(string Code, string Password);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/CreateUser", ReplyAction="http://tempuri.org/IService/CreateUserResponse")]
-        System.Threading.Tasks.Task<string> CreateUserAsync(string Code, string Password);
+        [OperationContract(Action="http://tempuri.org/IService/CreateUser", ReplyAction="http://tempuri.org/IService/CreateUserResponse")]
+        Task<string> CreateUserAsync(string Code, string Password);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/UploadPartFile", ReplyAction="http://tempuri.org/IService/UploadPartFileResponse")]
+        [OperationContract(Action="http://tempuri.org/IService/UploadPartFile", ReplyAction="http://tempuri.org/IService/UploadPartFileResponse")]
         void UploadPartFile(string Guid, byte[] filePart);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/UploadPartFile", ReplyAction="http://tempuri.org/IService/UploadPartFileResponse")]
-        System.Threading.Tasks.Task UploadPartFileAsync(string Guid, byte[] filePart);
+        [OperationContract(Action="http://tempuri.org/IService/UploadPartFile", ReplyAction="http://tempuri.org/IService/UploadPartFileResponse")]
+        Task UploadPartFileAsync(string Guid, byte[] filePart);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/CloseFile", ReplyAction="http://tempuri.org/IService/CloseFileResponse")]
+        [OperationContract(Action="http://tempuri.org/IService/CloseFile", ReplyAction="http://tempuri.org/IService/CloseFileResponse")]
         string CloseFile(string text, string Guid, string immeuble_id, string copro_id);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/CloseFile", ReplyAction="http://tempuri.org/IService/CloseFileResponse")]
-        System.Threading.Tasks.Task<string> CloseFileAsync(string text, string Guid, string immeuble_id, string copro_id);
+        [OperationContract(Action="http://tempuri.org/IService/CloseFile", ReplyAction="http://tempuri.org/IService/CloseFileResponse")]
+        Task<string> CloseFileAsync(string text, string Guid, string immeuble_id, string copro_id);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetUserFromCode", ReplyAction="http://tempuri.org/IService/GetUserFromCodeResponse")]
-        EspaceSyndic.ServiceReference.UserEntitie GetUserFromCode(string code);
+        [OperationContract(Action="http://tempuri.org/IService/GetUserFromCode", ReplyAction="http://tempuri.org/IService/GetUserFromCodeResponse")]
+        UserEntitie GetUserFromCode(string code);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetUserFromCode", ReplyAction="http://tempuri.org/IService/GetUserFromCodeResponse")]
-        System.Threading.Tasks.Task<EspaceSyndic.ServiceReference.UserEntitie> GetUserFromCodeAsync(string code);
+        [OperationContract(Action="http://tempuri.org/IService/GetUserFromCode", ReplyAction="http://tempuri.org/IService/GetUserFromCodeResponse")]
+        Task<UserEntitie> GetUserFromCodeAsync(string code);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetUserFromGuid", ReplyAction="http://tempuri.org/IService/GetUserFromGuidResponse")]
-        EspaceSyndic.ServiceReference.UserEntitie GetUserFromGuid(string Guid);
+        [OperationContract(Action="http://tempuri.org/IService/GetUserFromGuid", ReplyAction="http://tempuri.org/IService/GetUserFromGuidResponse")]
+        UserEntitie GetUserFromGuid(string Guid);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetUserFromGuid", ReplyAction="http://tempuri.org/IService/GetUserFromGuidResponse")]
-        System.Threading.Tasks.Task<EspaceSyndic.ServiceReference.UserEntitie> GetUserFromGuidAsync(string Guid);
+        [OperationContract(Action="http://tempuri.org/IService/GetUserFromGuid", ReplyAction="http://tempuri.org/IService/GetUserFromGuidResponse")]
+        Task<UserEntitie> GetUserFromGuidAsync(string Guid);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetAllUsers", ReplyAction="http://tempuri.org/IService/GetAllUsersResponse")]
-        EspaceSyndic.ServiceReference.UserEntitie[] GetAllUsers();
+        [OperationContract(Action="http://tempuri.org/IService/GetAllUsers", ReplyAction="http://tempuri.org/IService/GetAllUsersResponse")]
+        UserEntitie[] GetAllUsers();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetAllUsers", ReplyAction="http://tempuri.org/IService/GetAllUsersResponse")]
-        System.Threading.Tasks.Task<EspaceSyndic.ServiceReference.UserEntitie[]> GetAllUsersAsync();
+        [OperationContract(Action="http://tempuri.org/IService/GetAllUsers", ReplyAction="http://tempuri.org/IService/GetAllUsersResponse")]
+        Task<UserEntitie[]> GetAllUsersAsync();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetUserCoproprietaires", ReplyAction="http://tempuri.org/IService/GetUserCoproprietairesResponse")]
-        EspaceSyndic.ServiceReference.ChildrenEntitie[] GetUserCoproprietaires(string guid);
+        [OperationContract(Action="http://tempuri.org/IService/GetUserCoproprietaires", ReplyAction="http://tempuri.org/IService/GetUserCoproprietairesResponse")]
+        ChildrenEntitie[] GetUserCoproprietaires(string guid);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetUserCoproprietaires", ReplyAction="http://tempuri.org/IService/GetUserCoproprietairesResponse")]
-        System.Threading.Tasks.Task<EspaceSyndic.ServiceReference.ChildrenEntitie[]> GetUserCoproprietairesAsync(string guid);
+        [OperationContract(Action="http://tempuri.org/IService/GetUserCoproprietaires", ReplyAction="http://tempuri.org/IService/GetUserCoproprietairesResponse")]
+        Task<ChildrenEntitie[]> GetUserCoproprietairesAsync(string guid);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetCoproChildrens", ReplyAction="http://tempuri.org/IService/GetCoproChildrensResponse")]
-        EspaceSyndic.ServiceReference.ChildrenEntitie[] GetCoproChildrens(string copro_id);
+        [OperationContract(Action="http://tempuri.org/IService/GetCoproChildrens", ReplyAction="http://tempuri.org/IService/GetCoproChildrensResponse")]
+        ChildrenEntitie[] GetCoproChildrens(string copro_id);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetCoproChildrens", ReplyAction="http://tempuri.org/IService/GetCoproChildrensResponse")]
-        System.Threading.Tasks.Task<EspaceSyndic.ServiceReference.ChildrenEntitie[]> GetCoproChildrensAsync(string copro_id);
+        [OperationContract(Action="http://tempuri.org/IService/GetCoproChildrens", ReplyAction="http://tempuri.org/IService/GetCoproChildrensResponse")]
+        Task<ChildrenEntitie[]> GetCoproChildrensAsync(string copro_id);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/AddCopro", ReplyAction="http://tempuri.org/IService/AddCoproResponse")]
+        [OperationContract(Action="http://tempuri.org/IService/AddCopro", ReplyAction="http://tempuri.org/IService/AddCoproResponse")]
         string AddCopro(string user_id, string immeuble_id, string copro_id, string reference_imm, string adresse_imm, string reference_copro, string nom);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/AddCopro", ReplyAction="http://tempuri.org/IService/AddCoproResponse")]
-        System.Threading.Tasks.Task<string> AddCoproAsync(string user_id, string immeuble_id, string copro_id, string reference_imm, string adresse_imm, string reference_copro, string nom);
+        [OperationContract(Action="http://tempuri.org/IService/AddCopro", ReplyAction="http://tempuri.org/IService/AddCoproResponse")]
+        Task<string> AddCoproAsync(string user_id, string immeuble_id, string copro_id, string reference_imm, string adresse_imm, string reference_copro, string nom);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/DeleteUser", ReplyAction="http://tempuri.org/IService/DeleteUserResponse")]
+        [OperationContract(Action="http://tempuri.org/IService/DeleteUser", ReplyAction="http://tempuri.org/IService/DeleteUserResponse")]
         string DeleteUser(string guid);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/DeleteUser", ReplyAction="http://tempuri.org/IService/DeleteUserResponse")]
-        System.Threading.Tasks.Task<string> DeleteUserAsync(string guid);
+        [OperationContract(Action="http://tempuri.org/IService/DeleteUser", ReplyAction="http://tempuri.org/IService/DeleteUserResponse")]
+        Task<string> DeleteUserAsync(string guid);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/DeleteCopro", ReplyAction="http://tempuri.org/IService/DeleteCoproResponse")]
+        [OperationContract(Action="http://tempuri.org/IService/DeleteCopro", ReplyAction="http://tempuri.org/IService/DeleteCoproResponse")]
         string DeleteCopro(string guid);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/DeleteCopro", ReplyAction="http://tempuri.org/IService/DeleteCoproResponse")]
-        System.Threading.Tasks.Task<string> DeleteCoproAsync(string guid);
+        [OperationContract(Action="http://tempuri.org/IService/DeleteCopro", ReplyAction="http://tempuri.org/IService/DeleteCoproResponse")]
+        Task<string> DeleteCoproAsync(string guid);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetListDocuments", ReplyAction="http://tempuri.org/IService/GetListDocumentsResponse")]
-        EspaceSyndic.ServiceReference.DocumentEntitie[] GetListDocuments(string immeuble_id, string copro_id);
+        [OperationContract(Action="http://tempuri.org/IService/GetListDocuments", ReplyAction="http://tempuri.org/IService/GetListDocumentsResponse")]
+        DocumentEntitie[] GetListDocuments(string immeuble_id, string copro_id);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetListDocuments", ReplyAction="http://tempuri.org/IService/GetListDocumentsResponse")]
-        System.Threading.Tasks.Task<EspaceSyndic.ServiceReference.DocumentEntitie[]> GetListDocumentsAsync(string immeuble_id, string copro_id);
+        [OperationContract(Action="http://tempuri.org/IService/GetListDocuments", ReplyAction="http://tempuri.org/IService/GetListDocumentsResponse")]
+        Task<DocumentEntitie[]> GetListDocumentsAsync(string immeuble_id, string copro_id);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/DeleteDocument", ReplyAction="http://tempuri.org/IService/DeleteDocumentResponse")]
+        [OperationContract(Action="http://tempuri.org/IService/DeleteDocument", ReplyAction="http://tempuri.org/IService/DeleteDocumentResponse")]
         string DeleteDocument(string guid);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/DeleteDocument", ReplyAction="http://tempuri.org/IService/DeleteDocumentResponse")]
-        System.Threading.Tasks.Task<string> DeleteDocumentAsync(string guid);
+        [OperationContract(Action="http://tempuri.org/IService/DeleteDocument", ReplyAction="http://tempuri.org/IService/DeleteDocumentResponse")]
+        Task<string> DeleteDocumentAsync(string guid);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/Connected", ReplyAction="http://tempuri.org/IService/ConnectedResponse")]
+        [OperationContract(Action="http://tempuri.org/IService/Connected", ReplyAction="http://tempuri.org/IService/ConnectedResponse")]
         bool Connected();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/Connected", ReplyAction="http://tempuri.org/IService/ConnectedResponse")]
-        System.Threading.Tasks.Task<bool> ConnectedAsync();
+        [OperationContract(Action="http://tempuri.org/IService/Connected", ReplyAction="http://tempuri.org/IService/ConnectedResponse")]
+        Task<bool> ConnectedAsync();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/UpdateUser", ReplyAction="http://tempuri.org/IService/UpdateUserResponse")]
+        [OperationContract(Action="http://tempuri.org/IService/UpdateUser", ReplyAction="http://tempuri.org/IService/UpdateUserResponse")]
         string UpdateUser(string guid, string Code, string Password);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/UpdateUser", ReplyAction="http://tempuri.org/IService/UpdateUserResponse")]
-        System.Threading.Tasks.Task<string> UpdateUserAsync(string guid, string Code, string Password);
+        [OperationContract(Action="http://tempuri.org/IService/UpdateUser", ReplyAction="http://tempuri.org/IService/UpdateUserResponse")]
+        Task<string> UpdateUserAsync(string guid, string Code, string Password);
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IServiceChannel : EspaceSyndic.ServiceReference.IService, System.ServiceModel.IClientChannel {
+    [GeneratedCode("System.ServiceModel", "4.0.0.0")]
+    public interface IServiceChannel : IService, IClientChannel {
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class ServiceClient : System.ServiceModel.ClientBase<EspaceSyndic.ServiceReference.IService>, EspaceSyndic.ServiceReference.IService {
+    [DebuggerStepThrough()]
+    [GeneratedCode("System.ServiceModel", "4.0.0.0")]
+    public partial class ServiceClient : ClientBase<IService>, IService {
         
         private static Binding CreateBinding()
         {
@@ -412,7 +414,7 @@ namespace EspaceSyndic.ServiceReference {
             return base.Channel.CreateUser(Code, Password);
         }
         
-        public System.Threading.Tasks.Task<string> CreateUserAsync(string Code, string Password) {
+        public Task<string> CreateUserAsync(string Code, string Password) {
             return base.Channel.CreateUserAsync(Code, Password);
         }
         
@@ -420,7 +422,7 @@ namespace EspaceSyndic.ServiceReference {
             base.Channel.UploadPartFile(Guid, filePart);
         }
         
-        public System.Threading.Tasks.Task UploadPartFileAsync(string Guid, byte[] filePart) {
+        public Task UploadPartFileAsync(string Guid, byte[] filePart) {
             return base.Channel.UploadPartFileAsync(Guid, filePart);
         }
         
@@ -428,47 +430,47 @@ namespace EspaceSyndic.ServiceReference {
             return base.Channel.CloseFile(text, Guid, immeuble_id, copro_id);
         }
         
-        public System.Threading.Tasks.Task<string> CloseFileAsync(string text, string Guid, string immeuble_id, string copro_id) {
+        public Task<string> CloseFileAsync(string text, string Guid, string immeuble_id, string copro_id) {
             return base.Channel.CloseFileAsync(text, Guid, immeuble_id, copro_id);
         }
         
-        public EspaceSyndic.ServiceReference.UserEntitie GetUserFromCode(string code) {
+        public UserEntitie GetUserFromCode(string code) {
             return base.Channel.GetUserFromCode(code);
         }
         
-        public System.Threading.Tasks.Task<EspaceSyndic.ServiceReference.UserEntitie> GetUserFromCodeAsync(string code) {
+        public Task<UserEntitie> GetUserFromCodeAsync(string code) {
             return base.Channel.GetUserFromCodeAsync(code);
         }
         
-        public EspaceSyndic.ServiceReference.UserEntitie GetUserFromGuid(string Guid) {
+        public UserEntitie GetUserFromGuid(string Guid) {
             return base.Channel.GetUserFromGuid(Guid);
         }
         
-        public System.Threading.Tasks.Task<EspaceSyndic.ServiceReference.UserEntitie> GetUserFromGuidAsync(string Guid) {
+        public Task<UserEntitie> GetUserFromGuidAsync(string Guid) {
             return base.Channel.GetUserFromGuidAsync(Guid);
         }
         
-        public EspaceSyndic.ServiceReference.UserEntitie[] GetAllUsers() {
+        public UserEntitie[] GetAllUsers() {
             return base.Channel.GetAllUsers();
         }
         
-        public System.Threading.Tasks.Task<EspaceSyndic.ServiceReference.UserEntitie[]> GetAllUsersAsync() {
+        public Task<UserEntitie[]> GetAllUsersAsync() {
             return base.Channel.GetAllUsersAsync();
         }
         
-        public EspaceSyndic.ServiceReference.ChildrenEntitie[] GetUserCoproprietaires(string guid) {
+        public ChildrenEntitie[] GetUserCoproprietaires(string guid) {
             return base.Channel.GetUserCoproprietaires(guid);
         }
         
-        public System.Threading.Tasks.Task<EspaceSyndic.ServiceReference.ChildrenEntitie[]> GetUserCoproprietairesAsync(string guid) {
+        public Task<ChildrenEntitie[]> GetUserCoproprietairesAsync(string guid) {
             return base.Channel.GetUserCoproprietairesAsync(guid);
         }
         
-        public EspaceSyndic.ServiceReference.ChildrenEntitie[] GetCoproChildrens(string copro_id) {
+        public ChildrenEntitie[] GetCoproChildrens(string copro_id) {
             return base.Channel.GetCoproChildrens(copro_id);
         }
         
-        public System.Threading.Tasks.Task<EspaceSyndic.ServiceReference.ChildrenEntitie[]> GetCoproChildrensAsync(string copro_id) {
+        public Task<ChildrenEntitie[]> GetCoproChildrensAsync(string copro_id) {
             return base.Channel.GetCoproChildrensAsync(copro_id);
         }
         
@@ -476,7 +478,7 @@ namespace EspaceSyndic.ServiceReference {
             return base.Channel.AddCopro(user_id, immeuble_id, copro_id, reference_imm, adresse_imm, reference_copro, nom);
         }
         
-        public System.Threading.Tasks.Task<string> AddCoproAsync(string user_id, string immeuble_id, string copro_id, string reference_imm, string adresse_imm, string reference_copro, string nom) {
+        public Task<string> AddCoproAsync(string user_id, string immeuble_id, string copro_id, string reference_imm, string adresse_imm, string reference_copro, string nom) {
             return base.Channel.AddCoproAsync(user_id, immeuble_id, copro_id, reference_imm, adresse_imm, reference_copro, nom);
         }
         
@@ -484,7 +486,7 @@ namespace EspaceSyndic.ServiceReference {
             return base.Channel.DeleteUser(guid);
         }
         
-        public System.Threading.Tasks.Task<string> DeleteUserAsync(string guid) {
+        public Task<string> DeleteUserAsync(string guid) {
             return base.Channel.DeleteUserAsync(guid);
         }
         
@@ -492,15 +494,15 @@ namespace EspaceSyndic.ServiceReference {
             return base.Channel.DeleteCopro(guid);
         }
         
-        public System.Threading.Tasks.Task<string> DeleteCoproAsync(string guid) {
+        public Task<string> DeleteCoproAsync(string guid) {
             return base.Channel.DeleteCoproAsync(guid);
         }
         
-        public EspaceSyndic.ServiceReference.DocumentEntitie[] GetListDocuments(string immeuble_id, string copro_id) {
+        public DocumentEntitie[] GetListDocuments(string immeuble_id, string copro_id) {
             return base.Channel.GetListDocuments(immeuble_id, copro_id);
         }
         
-        public System.Threading.Tasks.Task<EspaceSyndic.ServiceReference.DocumentEntitie[]> GetListDocumentsAsync(string immeuble_id, string copro_id) {
+        public Task<DocumentEntitie[]> GetListDocumentsAsync(string immeuble_id, string copro_id) {
             return base.Channel.GetListDocumentsAsync(immeuble_id, copro_id);
         }
         
@@ -508,7 +510,7 @@ namespace EspaceSyndic.ServiceReference {
             return base.Channel.DeleteDocument(guid);
         }
         
-        public System.Threading.Tasks.Task<string> DeleteDocumentAsync(string guid) {
+        public Task<string> DeleteDocumentAsync(string guid) {
             return base.Channel.DeleteDocumentAsync(guid);
         }
         
@@ -516,7 +518,7 @@ namespace EspaceSyndic.ServiceReference {
             return base.Channel.Connected();
         }
         
-        public System.Threading.Tasks.Task<bool> ConnectedAsync() {
+        public Task<bool> ConnectedAsync() {
             return base.Channel.ConnectedAsync();
         }
         
@@ -524,7 +526,7 @@ namespace EspaceSyndic.ServiceReference {
             return base.Channel.UpdateUser(guid, Code, Password);
         }
         
-        public System.Threading.Tasks.Task<string> UpdateUserAsync(string guid, string Code, string Password) {
+        public Task<string> UpdateUserAsync(string guid, string Code, string Password) {
             return base.Channel.UpdateUserAsync(guid, Code, Password);
         }
     }

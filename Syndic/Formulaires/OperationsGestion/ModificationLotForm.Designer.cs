@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.OperationsGestion
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.OperationsGestion
 {
     partial class ModificationLotForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -167,13 +170,13 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnValid;
-        public System.Windows.Forms.Button btnQuit;
-        private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.ComboBox cbLot;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox tbRefImmeuble;
-        private System.Windows.Forms.Label lblImmeuble;
+        private Panel panel1;
+        private Button btnValid;
+        public Button btnQuit;
+        private ImageList imageList1;
+        private ComboBox cbLot;
+        private Label label1;
+        private TextBox tbRefImmeuble;
+        private Label lblImmeuble;
     }
 }

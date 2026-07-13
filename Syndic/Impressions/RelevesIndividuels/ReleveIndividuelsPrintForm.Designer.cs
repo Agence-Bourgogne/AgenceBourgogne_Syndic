@@ -1,11 +1,15 @@
-﻿namespace EspaceSyndic.Impressions.RelevesIndividuels
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using Microsoft.Reporting.WinForms;
+
+namespace EspaceSyndic.Impressions.RelevesIndividuels
 {
     partial class ReleveIndividuelsPrintForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -326,24 +330,24 @@
 
         #endregion
 
-        protected System.Windows.Forms.GroupBox groupBox3;
-        protected System.Windows.Forms.TextBox tbLot;
-        private System.Windows.Forms.Label lblLot;
-        private System.Windows.Forms.DateTimePicker dtEdition;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.DateTimePicker dtFin;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.DateTimePicker dtDebut;
-        private System.Windows.Forms.Label label1;
-        protected System.Windows.Forms.TextBox tbRefImmeuble;
-        protected System.Windows.Forms.Label lblImmeuble;
-        private Microsoft.Reporting.WinForms.ReportViewer reportViewer1;
-        private System.Windows.Forms.Panel panelButton;
-        private System.Windows.Forms.Button btnEnter;
-        private System.Windows.Forms.Button btnRapport;
-        private System.Windows.Forms.Button btnQuit;
-        protected System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.CheckBox ckDetail;
-        private System.Windows.Forms.Button btnExport;
+        protected GroupBox groupBox3;
+        protected TextBox tbLot;
+        private Label lblLot;
+        private DateTimePicker dtEdition;
+        private Label label3;
+        private DateTimePicker dtFin;
+        private Label label2;
+        private DateTimePicker dtDebut;
+        private Label label1;
+        protected TextBox tbRefImmeuble;
+        protected Label lblImmeuble;
+        private ReportViewer reportViewer1;
+        private Panel panelButton;
+        private Button btnEnter;
+        private Button btnRapport;
+        private Button btnQuit;
+        protected ImageList imageList1;
+        private CheckBox ckDetail;
+        private Button btnExport;
     }
 }

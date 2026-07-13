@@ -1,11 +1,15 @@
-﻿namespace EspaceSyndic.Impressions.Convocations
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using EspaceSyndic.Formulaires.Controles;
+
+namespace EspaceSyndic.Impressions.Convocations
 {
     partial class PvAssembleeForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -324,27 +328,27 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
-        private Formulaires.Controles.ImmeubleUserControl immeubleUserControl;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.DataGridView dataGridView;
-        private System.Windows.Forms.Panel panelButton;
-        private System.Windows.Forms.Button btnRepart;
-        private System.Windows.Forms.Button btnWord;
-        private System.Windows.Forms.Button btnEnter;
-        private System.Windows.Forms.Button btnRapport;
-        private System.Windows.Forms.Button btnQuit;
-        protected System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DateTimePicker dtDateEntete;
-        protected System.Windows.Forms.Label label3;
-        private System.Windows.Forms.DateTimePicker dtDateAssemblee;
-        protected System.Windows.Forms.Label label2;
-        protected System.Windows.Forms.Label label5;
-        protected System.Windows.Forms.MaskedTextBox tbHeure;
-        protected System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox cbConvoc;
-        private System.Windows.Forms.TextBox tbLieu;
-        protected System.Windows.Forms.Label label4;
+        private GroupBox groupBox1;
+        private ImmeubleUserControl immeubleUserControl;
+        private ComboBox comboBox1;
+        private DataGridView dataGridView;
+        private Panel panelButton;
+        private Button btnRepart;
+        private Button btnWord;
+        private Button btnEnter;
+        private Button btnRapport;
+        private Button btnQuit;
+        protected ImageList imageList1;
+        private Label label1;
+        private DateTimePicker dtDateEntete;
+        protected Label label3;
+        private DateTimePicker dtDateAssemblee;
+        protected Label label2;
+        protected Label label5;
+        protected MaskedTextBox tbHeure;
+        protected Label label6;
+        private ComboBox cbConvoc;
+        private TextBox tbLieu;
+        protected Label label4;
     }
 }

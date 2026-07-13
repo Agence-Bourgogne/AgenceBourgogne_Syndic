@@ -1,11 +1,16 @@
-﻿namespace EspaceSyndic.Formulaires.OperationsGestion
+﻿using System;
+using System.ComponentModel;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.OperationsGestion
 {
     partial class DetailFactureForm
     {
         /// <summary>
         /// Variable nécessaire au concepteur.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Nettoyage des ressources utilisées.
@@ -28,16 +33,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DetailFactureForm));
-            this.btnRecalc = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.tbTotal = new System.Windows.Forms.TextBox();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.supprimerLélémentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mettreÀJourLidDeSaisieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tbLot = new System.Windows.Forms.TextBox();
-            this.lblLot = new System.Windows.Forms.Label();
+            this.components = new Container();
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(DetailFactureForm));
+            this.btnRecalc = new Button();
+            this.label1 = new Label();
+            this.tbTotal = new TextBox();
+            this.contextMenuStrip1 = new ContextMenuStrip(this.components);
+            this.supprimerLélémentToolStripMenuItem = new ToolStripMenuItem();
+            this.mettreÀJourLidDeSaisieToolStripMenuItem = new ToolStripMenuItem();
+            this.tbLot = new TextBox();
+            this.lblLot = new Label();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -104,7 +109,7 @@
             // 
             // tbMontant
             // 
-            this.tbMontant.Location = new System.Drawing.Point(571, 22);
+            this.tbMontant.Location = new Point(571, 22);
             this.tbMontant.TabIndex = 9;
             // 
             // tbNomFournisseur
@@ -113,7 +118,7 @@
             // 
             // label8
             // 
-            this.label8.Location = new System.Drawing.Point(516, 25);
+            this.label8.Location = new Point(516, 25);
             this.label8.TabIndex = 8;
             // 
             // tbVilleFournisseur
@@ -130,14 +135,14 @@
             // 
             // tbBase
             // 
-            this.tbBase.Location = new System.Drawing.Point(376, 22);
+            this.tbBase.Location = new Point(376, 22);
             this.tbBase.TabIndex = 5;
             this.tbBase.Text = "0";
             // 
             // lblBase
             // 
-            this.lblBase.Location = new System.Drawing.Point(348, 25);
-            this.lblBase.Size = new System.Drawing.Size(31, 13);
+            this.lblBase.Location = new Point(348, 25);
+            this.lblBase.Size = new Size(31, 13);
             this.lblBase.TabIndex = 4;
             this.lblBase.Text = "Base";
             // 
@@ -176,11 +181,11 @@
             // 
             // btnEnter
             // 
-            this.btnEnter.Location = new System.Drawing.Point(553, 6);
+            this.btnEnter.Location = new Point(553, 6);
             // 
             // imageList1
             // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.ImageStream = ((ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
             this.imageList1.Images.SetKeyName(0, "top.png");
             this.imageList1.Images.SetKeyName(1, "bottom.png");
             this.imageList1.Images.SetKeyName(2, "previous.png");
@@ -196,79 +201,79 @@
             // 
             // btnRecalc
             // 
-            this.btnRecalc.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnRecalc.ImageAlign = ContentAlignment.MiddleRight;
             this.btnRecalc.ImageKey = "reload.png";
             this.btnRecalc.ImageList = this.imageList1;
-            this.btnRecalc.Location = new System.Drawing.Point(328, 6);
+            this.btnRecalc.Location = new Point(328, 6);
             this.btnRecalc.Name = "btnRecalc";
-            this.btnRecalc.Size = new System.Drawing.Size(100, 25);
+            this.btnRecalc.Size = new Size(100, 25);
             this.btnRecalc.TabIndex = 117;
             this.btnRecalc.Text = "Re&calculer";
-            this.btnRecalc.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnRecalc.TextAlign = ContentAlignment.MiddleLeft;
             this.btnRecalc.UseVisualStyleBackColor = true;
-            this.btnRecalc.Click += new System.EventHandler(this.btnRecalc_Click);
+            this.btnRecalc.Click += new EventHandler(this.btnRecalc_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(643, 25);
+            this.label1.Location = new Point(643, 25);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(31, 13);
+            this.label1.Size = new Size(31, 13);
             this.label1.TabIndex = 10;
             this.label1.Text = "Total";
             // 
             // tbTotal
             // 
-            this.tbTotal.Location = new System.Drawing.Point(681, 22);
+            this.tbTotal.Location = new Point(681, 22);
             this.tbTotal.Name = "tbTotal";
             this.tbTotal.ShortcutsEnabled = false;
-            this.tbTotal.Size = new System.Drawing.Size(65, 20);
+            this.tbTotal.Size = new Size(65, 20);
             this.tbTotal.TabIndex = 11;
             this.tbTotal.TabStop = false;
-            this.tbTotal.Enter += new System.EventHandler(this.tbTotal_Enter);
+            this.tbTotal.Enter += new EventHandler(this.tbTotal_Enter);
             // 
             // contextMenuStrip1
             // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.contextMenuStrip1.Items.AddRange(new ToolStripItem[] {
             this.supprimerLélémentToolStripMenuItem,
             this.mettreÀJourLidDeSaisieToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(198, 48);
+            this.contextMenuStrip1.Size = new Size(198, 48);
             // 
             // supprimerLélémentToolStripMenuItem
             // 
             this.supprimerLélémentToolStripMenuItem.Name = "supprimerLélémentToolStripMenuItem";
-            this.supprimerLélémentToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.supprimerLélémentToolStripMenuItem.Size = new Size(197, 22);
             this.supprimerLélémentToolStripMenuItem.Text = "Supprimer l\'élément";
-            this.supprimerLélémentToolStripMenuItem.Click += new System.EventHandler(this.supprimerLélémentToolStripMenuItem_Click);
+            this.supprimerLélémentToolStripMenuItem.Click += new EventHandler(this.supprimerLélémentToolStripMenuItem_Click);
             // 
             // mettreÀJourLidDeSaisieToolStripMenuItem
             // 
             this.mettreÀJourLidDeSaisieToolStripMenuItem.Name = "mettreÀJourLidDeSaisieToolStripMenuItem";
-            this.mettreÀJourLidDeSaisieToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.mettreÀJourLidDeSaisieToolStripMenuItem.Size = new Size(197, 22);
             this.mettreÀJourLidDeSaisieToolStripMenuItem.Text = "Mettre à jour l\'id de Saisie";
-            this.mettreÀJourLidDeSaisieToolStripMenuItem.Click += new System.EventHandler(this.mettreÀJourLidDeSaisieToolStripMenuItem_Click);
+            this.mettreÀJourLidDeSaisieToolStripMenuItem.Click += new EventHandler(this.mettreÀJourLidDeSaisieToolStripMenuItem_Click);
             // 
             // tbLot
             // 
-            this.tbLot.Location = new System.Drawing.Point(464, 22);
+            this.tbLot.Location = new Point(464, 22);
             this.tbLot.Name = "tbLot";
-            this.tbLot.Size = new System.Drawing.Size(46, 20);
+            this.tbLot.Size = new Size(46, 20);
             this.tbLot.TabIndex = 7;
             // 
             // lblLot
             // 
             this.lblLot.AutoSize = true;
-            this.lblLot.Location = new System.Drawing.Point(435, 25);
+            this.lblLot.Location = new Point(435, 25);
             this.lblLot.Name = "lblLot";
-            this.lblLot.Size = new System.Drawing.Size(22, 13);
+            this.lblLot.Size = new Size(22, 13);
             this.lblLot.TabIndex = 6;
             this.lblLot.Text = "&Lot";
             // 
             // DetailFactureForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.ClientSize = new System.Drawing.Size(784, 653);
+            this.AutoScaleDimensions = new SizeF(6F, 13F);
+            this.ClientSize = new Size(784, 653);
             this.Name = "DetailFactureForm";
             this.Text = "Detail Facture";
             this.Controls.SetChildIndex(this.groupBox1, 0);
@@ -284,13 +289,13 @@
 
         #endregion
 
-        private System.Windows.Forms.Button btnRecalc;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox tbTotal;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem supprimerLélémentToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem mettreÀJourLidDeSaisieToolStripMenuItem;
-        protected System.Windows.Forms.TextBox tbLot;
-        private System.Windows.Forms.Label lblLot;
+        private Button btnRecalc;
+        private Label label1;
+        private TextBox tbTotal;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem supprimerLélémentToolStripMenuItem;
+        private ToolStripMenuItem mettreÀJourLidDeSaisieToolStripMenuItem;
+        protected TextBox tbLot;
+        private Label lblLot;
     }
 }

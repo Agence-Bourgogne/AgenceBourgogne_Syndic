@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Budget
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Budget
 {
     partial class NouvelExerciceForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -227,20 +230,20 @@
 
         #endregion
 
-        private System.Windows.Forms.DateTimePicker dtFin;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.DateTimePicker dtDeb;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox tbReference;
-        private System.Windows.Forms.Label lblBase;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.RadioButton rdReel;
-        private System.Windows.Forms.RadioButton rdVote;
-        private System.Windows.Forms.RadioButton rdNone;
-        private System.Windows.Forms.Button btnOk;
-        private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.TextBox tbCoeff;
-        private System.Windows.Forms.Label label1;
+        private DateTimePicker dtFin;
+        private Label label3;
+        private DateTimePicker dtDeb;
+        private Label label2;
+        private GroupBox groupBox1;
+        private TextBox tbReference;
+        private Label lblBase;
+        private GroupBox groupBox2;
+        private RadioButton rdReel;
+        private RadioButton rdVote;
+        private RadioButton rdNone;
+        private Button btnOk;
+        private Button btnCancel;
+        private TextBox tbCoeff;
+        private Label label1;
     }
 }

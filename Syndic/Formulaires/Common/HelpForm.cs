@@ -4,90 +4,88 @@ using System.Linq;
 using System.Windows.Forms;
 using CommonProjectsPartners.Utils;
 
-namespace EspaceSyndic.Formulaires.Common
+namespace EspaceSyndic.Formulaires.Common;
+
+public partial class HelpForm : Form
 {
-    public partial class HelpForm : Form
+    protected readonly string helpKey = "aide";
+
+    private Form formParent;
+    public HelpForm(string key)
     {
-        protected string helpKey = "aide";
+        InitializeComponent();
+        helpKey = key;
+    }
 
-        Form formParent;
-        public HelpForm(string key)
+    protected void HelpForm_FormClosing(object sender, FormClosingEventArgs e)
+    {
+        if (e.CloseReason == CloseReason.UserClosing)
         {
-            InitializeComponent();
-            helpKey = key;
+            e.Cancel = true;
+            CommonRegistry.setRegistryValue(helpKey, "Visible", 0);
+            Hide();
+            formParent?.Activate();
         }
 
-        protected void HelpForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (e.CloseReason == CloseReason.UserClosing)
-            {
-                e.Cancel = true;
-                CommonRegistry.setRegistryValue(helpKey, "Visible", 0);
-                Hide();
-                if (formParent != null)
-                    formParent.Activate();
-            }
+        CommonRegistry.setRegistryValue(helpKey, "Location X", Location.X);
+        CommonRegistry.setRegistryValue(helpKey, "Location Y", Location.Y);
 
-            CommonRegistry.setRegistryValue(helpKey, "Location X", Location.X);
-            CommonRegistry.setRegistryValue(helpKey, "Location Y", Location.Y);
+    }
 
-        }
-
-        private void HelpForm_Load(object sender, EventArgs e)
-        {
-        }
-        public void setLocation(int defPosX, int defPosY)
-        {
-            var newPosX = (int) CommonRegistry.getRegistryValue(helpKey, "Location X", defPosX);
-            var newPosY = (int) CommonRegistry.getRegistryValue(helpKey, "Location Y", defPosY);
+    private void HelpForm_Load(object sender, EventArgs e)
+    {
+    }
+    public void setLocation(int defPosX, int defPosY)
+    {
+        var newPosX = (int) CommonRegistry.getRegistryValue(helpKey, "Location X", defPosX);
+        var newPosY = (int) CommonRegistry.getRegistryValue(helpKey, "Location Y", defPosY);
             
-            Location = new Point (newPosX, newPosY);
-        }
+        Location = new Point (newPosX, newPosY);
+    }
 
-        public void setVisibility(Form parent)
+    public void setVisibility(Form parent)
+    {
+        var visibility = (int)CommonRegistry.getRegistryValue(helpKey, "Visible", 1) == 1 ? true : false;
+        if (tbHelp.Text.Replace("\n", "").Trim() == "")
+            visibility = false;
+        Visible = false;
+        if (visibility)
+            Show(parent);
+        formParent = parent;
+    }
+
+    public virtual void DoFormText(Form parent, string text)
+    {
+        var note = text.Replace("\n", "").Trim();
+
+        tbHelp.Text = text;
+        if (!"".Equals(note))
         {
-            var visibility = ((int)CommonRegistry.getRegistryValue(helpKey, "Visible", 1) == 1) ? true : false;
-            if (tbHelp.Text.Replace("\n", "").Trim() == "")
-                visibility = false;
-            Visible = false;
-            if (visibility)
-                Show(parent);
-            formParent = parent;
-        }
-
-        public virtual void DoFormText(Form parent, String text)
-        {
-            var note = text.Replace("\n", "").Trim();
-
-            tbHelp.Text = text;
-            if (!"".Equals(note))
-            {
-                setVisibility(parent);
-                var lines = text.Split('\n');
-                var nbLines = lines.Count() +1;
-                if (nbLines < 4)
-                    nbLines = 4;
-                var height = nbLines * 15;
-
-                tbHelp.Height = height+10;
-                Height = height;
-
-                var posX = parent.Location.X + (parent.Width - Width) / 2;
-                var posY = parent.Location.Y + parent.Height - height;
-
-                setLocation(posX, posY);                        
-                
-                parent.Activate();
-            }
-            else
-                Visible = false;
-
-        }
-        public void ShowForm(Form parent)
-        {
-            CommonRegistry.setRegistryValue(helpKey, "Visible", 1);
             setVisibility(parent);
-            setLocation(0, 0);
+            var lines = text.Split('\n');
+            var nbLines = lines.Length +1;
+            if (nbLines < 4)
+                nbLines = 4;
+            var height = nbLines * 15;
+
+            tbHelp.Height = height+10;
+            Height = height;
+
+            var posX = parent.Location.X + (parent.Width - Width) / 2;
+            var posY = parent.Location.Y + parent.Height - height;
+
+            setLocation(posX, posY);                        
+                
+            parent.Activate();
         }
+        else
+            Visible = false;
+
+    }
+    public void ShowForm(Form parent)
+    {
+        CommonRegistry.setRegistryValue(helpKey, "Visible", 1);
+        setVisibility(parent);
+        setLocation(0, 0);
     }
 }

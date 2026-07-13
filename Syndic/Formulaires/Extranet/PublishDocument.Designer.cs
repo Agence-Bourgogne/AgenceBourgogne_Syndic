@@ -1,11 +1,15 @@
-﻿namespace EspaceSyndic.Formulaires.Extranet
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using EspaceSyndic.syndicDatasetTableAdapters;
+
+namespace EspaceSyndic.Formulaires.Extranet
 {
     partial class PublishDocument
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -292,22 +296,22 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.ListBox listCopro;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox tbRefImmeuble;
-        private System.Windows.Forms.Label lblImmeuble;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnEnter;
-        private System.Windows.Forms.Button btnQuit;
-        private System.Windows.Forms.Button btnPublish;
-        private System.Windows.Forms.DataGridView ListFilesView;
-        private System.Windows.Forms.PictureBox btnFiles;
-        private System.Windows.Forms.PictureBox btnFolder;
+        private GroupBox groupBox1;
+        private GroupBox groupBox2;
+        private ListBox listCopro;
+        private Label label3;
+        private TextBox tbRefImmeuble;
+        private Label lblImmeuble;
+        private Panel panel1;
+        private Button btnEnter;
+        private Button btnQuit;
+        private Button btnPublish;
+        private DataGridView ListFilesView;
+        private PictureBox btnFiles;
+        private PictureBox btnFolder;
         private syndicDataset syndicDataset;
-        private System.Windows.Forms.BindingSource coproprietaireBindingSource;
-        private syndicDatasetTableAdapters.coproprietaireTableAdapter coproprietaireTableAdapter;
-        private System.Windows.Forms.PictureBox btnDelete;
+        private BindingSource coproprietaireBindingSource;
+        private coproprietaireTableAdapter coproprietaireTableAdapter;
+        private PictureBox btnDelete;
     }
 }

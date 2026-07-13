@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.OperationsGestion
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.OperationsGestion
 {
     partial class ControlDataForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -397,31 +400,31 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.ComboBox cbType;
-        private System.Windows.Forms.Label label1;
-        protected System.Windows.Forms.TextBox tbRefImmeuble;
-        protected System.Windows.Forms.Label lblImmeuble;
-        protected System.Windows.Forms.GroupBox gbFactures;
-        protected System.Windows.Forms.DataGridView dataGridView;
-        protected System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnExport;
-        protected System.Windows.Forms.Button btnEnter;
-        protected System.Windows.Forms.Button btnQuit;
-        private System.Windows.Forms.DataGridViewTextBoxColumn id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn date_ecriture;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nature;
-        private System.Windows.Forms.DataGridViewTextBoxColumn base_repart;
-        private System.Windows.Forms.DataGridViewTextBoxColumn libelle;
-        private System.Windows.Forms.DataGridViewTextBoxColumn montant;
-        private System.Windows.Forms.DataGridViewTextBoxColumn montant_operation;
-        protected System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.Button btnDetail;
-        private System.Windows.Forms.Button btnGrid;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox cbExercice;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem supprimerLesÉlémentsToolStripMenuItem;
-        private System.Windows.Forms.Button button1;
+        private GroupBox groupBox1;
+        private ComboBox cbType;
+        private Label label1;
+        protected TextBox tbRefImmeuble;
+        protected Label lblImmeuble;
+        protected GroupBox gbFactures;
+        protected DataGridView dataGridView;
+        protected Panel panel1;
+        private Button btnExport;
+        protected Button btnEnter;
+        protected Button btnQuit;
+        private DataGridViewTextBoxColumn id;
+        private DataGridViewTextBoxColumn date_ecriture;
+        private DataGridViewTextBoxColumn nature;
+        private DataGridViewTextBoxColumn base_repart;
+        private DataGridViewTextBoxColumn libelle;
+        private DataGridViewTextBoxColumn montant;
+        private DataGridViewTextBoxColumn montant_operation;
+        protected ImageList imageList1;
+        private Button btnDetail;
+        private Button btnGrid;
+        private Label label2;
+        private ComboBox cbExercice;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem supprimerLesÉlémentsToolStripMenuItem;
+        private Button button1;
     }
 }

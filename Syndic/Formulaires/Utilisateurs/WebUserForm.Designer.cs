@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Utilisateurs
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Utilisateurs
 {
     partial class WebUserForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -336,21 +339,21 @@
 
         #endregion
 
-        private System.Windows.Forms.ImageList imageList1;
-        public System.Windows.Forms.Panel panel1;
-        public System.Windows.Forms.ImageList imageList;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.TreeView treeView;
-        private System.Windows.Forms.DataGridView dataGridView;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        public System.Windows.Forms.Button btnNewCopro;
-        public System.Windows.Forms.Button btnDelCopro;
-        public System.Windows.Forms.Button btnAddDoc;
-        public System.Windows.Forms.Button button1;
-        public System.Windows.Forms.Button btnDelUser;
-        public System.Windows.Forms.Button btnNew;
-        private System.Windows.Forms.ListBox listDoc;
-        public System.Windows.Forms.Button btnDelDoc;
-        public System.Windows.Forms.Button btnQuit;
+        private ImageList imageList1;
+        public Panel panel1;
+        public ImageList imageList;
+        private TableLayoutPanel tableLayoutPanel1;
+        private TreeView treeView;
+        private DataGridView dataGridView;
+        private TableLayoutPanel tableLayoutPanel2;
+        public Button btnNewCopro;
+        public Button btnDelCopro;
+        public Button btnAddDoc;
+        public Button button1;
+        public Button btnDelUser;
+        public Button btnNew;
+        private ListBox listDoc;
+        public Button btnDelDoc;
+        public Button btnQuit;
     }
 }

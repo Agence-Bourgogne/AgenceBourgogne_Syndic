@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Immeubles
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Immeubles
 {
     partial class FicheRepartLot
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -407,33 +410,33 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox tbEtage;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox tbBatiment;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox tbCoproprietaire;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox tbEscalier;
-        private System.Windows.Forms.TextBox tbNumLot;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox tbImmeuble;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.DataGridView dataGridView;
-        private System.Windows.Forms.TextBox tbAvance;
-        private System.Windows.Forms.Label lblReference;
-        private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.DataGridView dataGridViewLots;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnQuit;
-        private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.Button btnCoproAdd;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem desactiverLeLotToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem réactiverLeLotToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem supprimerLeLotDéfinitivemantToolStripMenuItem;
+        private GroupBox groupBox1;
+        private Label label10;
+        private TextBox tbEtage;
+        private Label label9;
+        private TextBox tbBatiment;
+        private Label label8;
+        private TextBox tbCoproprietaire;
+        private Label label6;
+        private TextBox tbEscalier;
+        private TextBox tbNumLot;
+        private Label label4;
+        private TextBox tbImmeuble;
+        private Label label2;
+        private GroupBox groupBox2;
+        private GroupBox groupBox3;
+        private DataGridView dataGridView;
+        private TextBox tbAvance;
+        private Label lblReference;
+        private ImageList imageList1;
+        private DataGridView dataGridViewLots;
+        private Panel panel1;
+        private Button btnQuit;
+        private Button btnSave;
+        private Button btnCoproAdd;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem desactiverLeLotToolStripMenuItem;
+        private ToolStripMenuItem réactiverLeLotToolStripMenuItem;
+        private ToolStripMenuItem supprimerLeLotDéfinitivemantToolStripMenuItem;
     }
 }

@@ -1,31 +1,31 @@
-﻿using CommonProjectsPartners.Entites;
-using System.Data;
-namespace CommonProjectsPartners.Controller
+﻿using System.Data;
+using CommonProjectsPartners.Entites;
+
+namespace CommonProjectsPartners.Controller;
+
+public class RolesController : AbstractBaseController<RoleEntite>
 {
-    public class RolesController : AbstractBaseController<RoleEntite>
-    {
-        static RolesController controller = new RolesController();
+    private static readonly RolesController controller = new();
         
-        public override string getTable()
-        {
-            return "roles";
-        }
-        public static RolesController getController()
-        {
-            return controller;
-        }
-        public override string getSchema()
-        {
-            return "";
-        }
-        public override string getSchemaTable()
-        {
-            return getTable();
-        }
-        public DataTable GetComboRoles()
-        {
-            var cmd = $" select id, nom from {getSchemaTable()} ";
-            return getResultSQL(cmd);
-        }
+    public override string getTable()
+    {
+        return "roles";
+    }
+    public static RolesController getController()
+    {
+        return controller;
+    }
+    public override string getSchema()
+    {
+        return "";
+    }
+    public override string getSchemaTable()
+    {
+        return getTable();
+    }
+    public DataTable GetComboRoles()
+    {
+        var cmd = $" select id, nom from {getSchemaTable()} ";
+        return getResultSQL(cmd);
     }
 }

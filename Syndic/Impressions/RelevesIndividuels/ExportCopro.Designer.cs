@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Impressions.RelevesIndividuels
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Impressions.RelevesIndividuels
 {
     partial class ExportCopro
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -67,7 +70,7 @@
 
         #endregion
 
-        public System.Windows.Forms.TextBox textBox1;
+        public TextBox textBox1;
 
     }
 }

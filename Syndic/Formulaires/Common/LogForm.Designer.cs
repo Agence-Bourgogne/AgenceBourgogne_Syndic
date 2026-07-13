@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Common
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Common
 {
     partial class LogForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -63,8 +66,8 @@
 
         #endregion
 
-        public System.Windows.Forms.RichTextBox rtLog;
-        private System.Windows.Forms.Button BtnClose;
+        public RichTextBox rtLog;
+        private Button BtnClose;
 
 
     }

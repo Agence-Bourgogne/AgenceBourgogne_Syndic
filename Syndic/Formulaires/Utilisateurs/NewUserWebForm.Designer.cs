@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Utilisateurs
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Utilisateurs
 {
     partial class NewUserWebForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -146,13 +149,13 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox tbCode;
-        private System.Windows.Forms.TextBox tbPassword;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btnOK;
-        private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Button btnGenerate;
-        private System.Windows.Forms.CheckBox ckSendMail;
+        private Label label1;
+        private TextBox tbCode;
+        private TextBox tbPassword;
+        private Label label2;
+        private Button btnOK;
+        private Button btnCancel;
+        private Button btnGenerate;
+        private CheckBox ckSendMail;
     }
 }

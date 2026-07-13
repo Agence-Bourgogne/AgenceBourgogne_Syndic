@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.OperationsGestion
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.OperationsGestion
 {
     partial class DetailElementOperationForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -377,31 +380,31 @@
 
         #endregion
 
-        protected System.Windows.Forms.GroupBox groupBox1;
-        protected System.Windows.Forms.TextBox tbComment;
-        protected System.Windows.Forms.TextBox tbDebit;
-        protected System.Windows.Forms.Label label8;
-        protected System.Windows.Forms.TextBox tbLibNature;
-        protected System.Windows.Forms.TextBox tbBase;
-        protected System.Windows.Forms.Label lblBase;
-        protected System.Windows.Forms.TextBox tbNature;
-        protected System.Windows.Forms.Label lblNature;
-        protected System.Windows.Forms.Label label3;
-        protected System.Windows.Forms.MaskedTextBox tbDateCreation;
-        protected System.Windows.Forms.TextBox tbRefImmeuble;
-        protected System.Windows.Forms.Label lblImmeuble;
-        protected System.Windows.Forms.TextBox tbLot;
-        protected System.Windows.Forms.Label label1;
-        protected System.Windows.Forms.TextBox tbCredit;
-        protected System.Windows.Forms.Label label2;
-        protected System.Windows.Forms.Panel panel1;
-        protected System.Windows.Forms.Button btnEnter;
-        protected System.Windows.Forms.Button btnDelete;
-        protected System.Windows.Forms.Button btnValid;
-        protected System.Windows.Forms.Button btnQuit;
-        protected System.Windows.Forms.ImageList imageList1;
-        protected System.Windows.Forms.TextBox tbNomCopro;
-        protected System.Windows.Forms.Label label4;
-        protected System.Windows.Forms.TextBox tbRefCopro;
+        protected GroupBox groupBox1;
+        protected TextBox tbComment;
+        protected TextBox tbDebit;
+        protected Label label8;
+        protected TextBox tbLibNature;
+        protected TextBox tbBase;
+        protected Label lblBase;
+        protected TextBox tbNature;
+        protected Label lblNature;
+        protected Label label3;
+        protected MaskedTextBox tbDateCreation;
+        protected TextBox tbRefImmeuble;
+        protected Label lblImmeuble;
+        protected TextBox tbLot;
+        protected Label label1;
+        protected TextBox tbCredit;
+        protected Label label2;
+        protected Panel panel1;
+        protected Button btnEnter;
+        protected Button btnDelete;
+        protected Button btnValid;
+        protected Button btnQuit;
+        protected ImageList imageList1;
+        protected TextBox tbNomCopro;
+        protected Label label4;
+        protected TextBox tbRefCopro;
     }
 }

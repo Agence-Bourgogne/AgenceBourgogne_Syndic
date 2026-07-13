@@ -1,11 +1,15 @@
-﻿namespace EspaceSyndic.Impressions.RelevesComptes
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using Microsoft.Reporting.WinForms;
+
+namespace EspaceSyndic.Impressions.RelevesComptes
 {
     partial class ReleveCompteCoproPrintForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -224,17 +228,17 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox gbParams;
-        private System.Windows.Forms.TextBox tbRefImmeuble;
-        private System.Windows.Forms.Label lblImmeuble;
-        private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnRapport;
-        private System.Windows.Forms.Button btnQuit;
-        private System.Windows.Forms.Button btnEnter;
-        private Microsoft.Reporting.WinForms.ReportViewer reportViewer1;
-        private System.Windows.Forms.ComboBox cbLot;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btnRetard;
+        private GroupBox gbParams;
+        private TextBox tbRefImmeuble;
+        private Label lblImmeuble;
+        private ImageList imageList1;
+        private Panel panel1;
+        private Button btnRapport;
+        private Button btnQuit;
+        private Button btnEnter;
+        private ReportViewer reportViewer1;
+        private ComboBox cbLot;
+        private Label label1;
+        private Button btnRetard;
     }
 }

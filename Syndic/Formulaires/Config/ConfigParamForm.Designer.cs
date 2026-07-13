@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Config
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Config
 {
     partial class ConfigParamForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -201,15 +204,15 @@
 
         #endregion
 
-        private System.Windows.Forms.TabControl tabControl;
-        private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.DataGridView dataGridView;
-        private System.Windows.Forms.ComboBox cbGroupe;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.Button btnQuit;
-        private System.Windows.Forms.Button btnCancel;
+        private TabControl tabControl;
+        private ImageList imageList1;
+        private TabPage tabPage1;
+        private Panel panel1;
+        private DataGridView dataGridView;
+        private ComboBox cbGroupe;
+        private Label label1;
+        private Button btnSave;
+        private Button btnQuit;
+        private Button btnCancel;
     }
 }

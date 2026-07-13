@@ -1,19 +1,19 @@
-﻿using System.Windows.Forms;
+﻿using System.Data;
+using System.Windows.Forms;
 using SyndicData.Entites;
-using System.Data;
-namespace EspaceSyndic.UtilsApp
+
+namespace EspaceSyndic.UtilsApp;
+
+public static class LotsControlsWindows
 {
-    public class LotsControlsWindows
+    public static AutoCompleteStringCollection getLotsAutocomplete(ImmeubleEntite immeuble)
     {
-        public static AutoCompleteStringCollection getLotsAutocomplete(ImmeubleEntite immeuble)
+        var lotAuto = new AutoCompleteStringCollection();
+        var table = immeuble.getListeLots();
+        foreach (DataRow row in table.Rows)
         {
-            var lotAuto = new AutoCompleteStringCollection();
-            var table = immeuble.getListeLots();
-            foreach (DataRow row in table.Rows)
-            {
-                lotAuto.Add(row["numero_lot"].ToString());
-            }
-            return lotAuto;
+            lotAuto.Add(row["numero_lot"].ToString());
         }
+        return lotAuto;
     }
 }

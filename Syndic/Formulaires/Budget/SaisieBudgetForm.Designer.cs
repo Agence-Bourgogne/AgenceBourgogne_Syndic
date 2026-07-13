@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Budget
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Budget
 {
     partial class SaisieBudgetForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -436,33 +439,33 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnAdd;
-        private System.Windows.Forms.Button btnQuit;
-        private System.Windows.Forms.TextBox tbRefImmeuble;
-        private System.Windows.Forms.Label lblImmeuble;
-        private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.GroupBox gbBudget;
-        private System.Windows.Forms.DataGridView dataGridViewBudget;
-        private System.Windows.Forms.TextBox tbNature;
-        private System.Windows.Forms.Label lblNature;
-        private System.Windows.Forms.TextBox tbBase;
-        private System.Windows.Forms.Label lblBase;
-        private System.Windows.Forms.TextBox tbMontant;
-        private System.Windows.Forms.Label label8;
-        protected System.Windows.Forms.Button btnExerciceAdd;
-        private System.Windows.Forms.TextBox tbLibNature;
-        private System.Windows.Forms.Button btnDel;
-        private System.Windows.Forms.Button btnPrint;
-        private System.Windows.Forms.DataGridView dataGridViewExercice;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem cloturerExerciceToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem budget_a_VoterToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem budgetApprouveToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem nouvelExerciceToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem modifierExerciceToolStripMenuItem;
-        private System.Windows.Forms.Button btnEnter;
+        private GroupBox groupBox3;
+        private Panel panel1;
+        private Button btnAdd;
+        private Button btnQuit;
+        private TextBox tbRefImmeuble;
+        private Label lblImmeuble;
+        private ImageList imageList1;
+        private GroupBox gbBudget;
+        private DataGridView dataGridViewBudget;
+        private TextBox tbNature;
+        private Label lblNature;
+        private TextBox tbBase;
+        private Label lblBase;
+        private TextBox tbMontant;
+        private Label label8;
+        protected Button btnExerciceAdd;
+        private TextBox tbLibNature;
+        private Button btnDel;
+        private Button btnPrint;
+        private DataGridView dataGridViewExercice;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem cloturerExerciceToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripMenuItem budget_a_VoterToolStripMenuItem;
+        private ToolStripMenuItem budgetApprouveToolStripMenuItem;
+        private ToolStripMenuItem nouvelExerciceToolStripMenuItem;
+        private ToolStripMenuItem modifierExerciceToolStripMenuItem;
+        private Button btnEnter;
     }
 }

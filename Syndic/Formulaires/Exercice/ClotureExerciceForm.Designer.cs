@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Exercice
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Exercice
 {
     partial class ClotureExerciceForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -495,34 +498,34 @@
 
         #endregion
 
-        private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnEnter;
-        private System.Windows.Forms.Button btnCloture;
-        private System.Windows.Forms.Button btnShowGrid;
-        private System.Windows.Forms.Button btnQuit;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox tbRefImmeuble;
-        private System.Windows.Forms.Label lblImmeuble;
-        private System.Windows.Forms.TextBox tbAdresse;
-        private System.Windows.Forms.TextBox tbNom;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.DateTimePicker dtDeb;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.DataGridView dataGridView;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox cbTypeOpe;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox tbSolde;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DateTimePicker dtFin;
-        private System.Windows.Forms.Button btnDetail;
-        private System.Windows.Forms.Button btnExport;
-        private System.Windows.Forms.Label lblCredit;
-        private System.Windows.Forms.TextBox tbCredit;
-        private System.Windows.Forms.Label lblMontant;
-        private System.Windows.Forms.TextBox tbMontant;
-        private System.Windows.Forms.Button btnExercice;
-        private System.Windows.Forms.Button btnExerciceAdd;
+        private ImageList imageList1;
+        private Panel panel1;
+        private Button btnEnter;
+        private Button btnCloture;
+        private Button btnShowGrid;
+        private Button btnQuit;
+        private GroupBox groupBox1;
+        private TextBox tbRefImmeuble;
+        private Label lblImmeuble;
+        private TextBox tbAdresse;
+        private TextBox tbNom;
+        private Label label2;
+        private DateTimePicker dtDeb;
+        private GroupBox groupBox2;
+        private DataGridView dataGridView;
+        private Label label3;
+        private ComboBox cbTypeOpe;
+        private Label label5;
+        private TextBox tbSolde;
+        private Label label1;
+        private DateTimePicker dtFin;
+        private Button btnDetail;
+        private Button btnExport;
+        private Label lblCredit;
+        private TextBox tbCredit;
+        private Label lblMontant;
+        private TextBox tbMontant;
+        private Button btnExercice;
+        private Button btnExerciceAdd;
     }
 }

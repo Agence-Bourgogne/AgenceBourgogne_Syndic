@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Nature
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Nature
 {
     partial class FicheNatureForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -399,32 +402,32 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox tbRef;
-        private System.Windows.Forms.Label lblReference;
-        private System.Windows.Forms.TextBox tbDeclaration;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox tbPart;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox tbNom;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnQuit;
-        private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.Button btnLast;
-        private System.Windows.Forms.Button btnNext;
-        private System.Windows.Forms.Button btnPrev;
-        private System.Windows.Forms.Button btnFirst;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox tbRefComptable;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Button btnEnter;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.ComboBox cbTypeCharge;
-        private System.Windows.Forms.CheckBox ckBudget;
-        private System.Windows.Forms.TextBox tbNomCompta;
-        private System.Windows.Forms.Label lblNomCompta;
-        private System.Windows.Forms.CheckBox ckDesactiv;
+        private GroupBox groupBox1;
+        private TextBox tbRef;
+        private Label lblReference;
+        private TextBox tbDeclaration;
+        private Label label3;
+        private TextBox tbPart;
+        private Label label1;
+        private TextBox tbNom;
+        private Label label4;
+        private ImageList imageList1;
+        private Panel panel1;
+        private Button btnQuit;
+        private Button btnSave;
+        private Button btnLast;
+        private Button btnNext;
+        private Button btnPrev;
+        private Button btnFirst;
+        private Label label5;
+        private TextBox tbRefComptable;
+        private Label label6;
+        private Button btnEnter;
+        private Label label7;
+        private ComboBox cbTypeCharge;
+        private CheckBox ckBudget;
+        private TextBox tbNomCompta;
+        private Label lblNomCompta;
+        private CheckBox ckDesactiv;
     }
 }

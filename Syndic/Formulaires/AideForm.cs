@@ -1,27 +1,24 @@
 ﻿using System;
-using System.Windows.Forms;
 using System.IO;
 using System.Reflection;
+using System.Windows.Forms;
 
-namespace EspaceSyndic.Formulaires
+namespace EspaceSyndic.Formulaires;
+
+public partial class AideForm : Form
 {
-    public partial class AideForm : Form
+    public AideForm()
     {
-        public AideForm()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        private void AideForm_Load(object sender, EventArgs e)
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            var resourceName = "EspaceSyndic.Formulaires.roadmap.txt";
+    private void AideForm_Load(object sender, EventArgs e)
+    {
+        var assembly = Assembly.GetExecutingAssembly();
+        const string resourceName = "EspaceSyndic.Formulaires.roadmap.txt";
 
-            using (var stream = assembly.GetManifestResourceStream(resourceName))
-            using (var reader = new StreamReader(stream))
-            {
-                tbAide.Text = reader.ReadToEnd();
-            }            
-        }
+        using var stream = assembly.GetManifestResourceStream(resourceName);
+        using var reader = new StreamReader(stream);
+        tbAide.Text = reader.ReadToEnd();
     }
 }

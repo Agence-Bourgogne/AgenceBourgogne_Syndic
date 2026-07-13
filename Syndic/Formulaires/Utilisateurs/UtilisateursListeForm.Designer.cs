@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Utilisateurs
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Utilisateurs
 {
     partial class UtilisateursListeForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -175,12 +178,12 @@
 
         #endregion
 
-        public System.Windows.Forms.DataGridView dataGridView;
-        public System.Windows.Forms.Panel panel1;
-        public System.Windows.Forms.Button btnExport;
-        public System.Windows.Forms.Button btnFiche;
-        public System.Windows.Forms.Button btnNew;
-        public System.Windows.Forms.Button btnQuit;
-        public System.Windows.Forms.ImageList imageList;
+        public DataGridView dataGridView;
+        public Panel panel1;
+        public Button btnExport;
+        public Button btnFiche;
+        public Button btnNew;
+        public Button btnQuit;
+        public ImageList imageList;
     }
 }

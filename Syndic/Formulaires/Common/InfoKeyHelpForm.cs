@@ -1,59 +1,47 @@
-﻿using System.Windows.Forms;
-using System.Data;
-//using EspaceSyndic.Utils;
+﻿using System.Data;
+using System.Windows.Forms;
 using SyndicData.Common;
 
-namespace EspaceSyndic.Formulaires.Common
+namespace EspaceSyndic.Formulaires.Common;
+
+internal class InfoKeyHelpForm : HelpForm
 {
-    class InfoKeyHelpForm : HelpForm
+    public InfoKeyHelpForm(string keyName)
+        : base(keyName)
     {
-        public InfoKeyHelpForm(string keyName)
-            : base(keyName)
+        Text = @"Raccourcis Claviers";
+    }
+    public void DoFormText(Form parent)
+    {
+        var table = ParametresDB.getComboData("KEY_CODE");
+        var note = "";
+        foreach (DataRow row in table.Rows)
         {
-            //InitializeComponent();
-            //this.helpKey = keyName;
-            //this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HelpForm_FormClosing);
-            Text = "Raccourcis Claviers";
+            var str = $"{row["code"]}\t{row["param_1"]}";
+            note += (note == "" ? "": "\n") + str;
         }
-        public void DoFormText(Form parent)
+        if (!"".Equals(note))
         {
-            var table = ParametresDB.getComboData("KEY_CODE");
-            var note = "";
-            foreach (DataRow row in table.Rows)
-            {
-                var str = $"{row["code"]}\t{row["param_1"]}";
-                note += (note == "" ? "": "\n") + str;
-            }
-            if (!"".Equals(note))
-            {
-                base.DoFormText(parent, note);
-                var height = 13 * 15;
-                tbHelp.Height = height + 10;
-                Height = height;
-                parent.Activate();
-            }
-            else
-                Visible = false;
+            base.DoFormText(parent, note);
+            const int height = 13 * 15;
+            tbHelp.Height = height + 10;
+            Height = height;
+            parent.Activate();
         }
-        public override void DoFormText(Form parent, string note)
+        else
+            Visible = false;
+    }
+    public override void DoFormText(Form parent, string note)
+    {
+        if (!"".Equals(note))
         {
-            //DataTable table = ParametresDB.getComboData("KEY_CODE");
-            //string note = "";
-            //foreach (DataRow row in table.Rows)
-            //{
-            //    string str = String.Format("{0}\t{1}", row["code"], row["param_1"]);
-            //    note += (note == "" ? "" : "\n") + str;
-            //}
-            if (!"".Equals(note))
-            {
-                base.DoFormText(parent, note);
-                var height = 13 * 15;
-                tbHelp.Height = height + 10;
-                Height = height;
-                parent.Activate();
-            }
-            else
-                Visible = false;
+            base.DoFormText(parent, note);
+            var height = 13 * 15;
+            tbHelp.Height = height + 10;
+            Height = height;
+            parent.Activate();
         }
+        else
+            Visible = false;
     }
 }

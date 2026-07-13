@@ -1,11 +1,14 @@
-﻿namespace CommonProjectsPartners.Utils
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace CommonProjectsPartners.Utils
 {
     partial class ScanUtilForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -229,21 +232,21 @@
 
         #endregion
 
-        protected System.Windows.Forms.PictureBox pictureBox1;
-        protected System.Windows.Forms.MenuStrip menuStrip1;
-        protected System.Windows.Forms.ToolStripMenuItem rotation90ToolStripMenuItem;
-        protected System.Windows.Forms.ToolStripMenuItem rotation90ToolStripMenuItem1;
-        protected System.Windows.Forms.ToolStripMenuItem rotation90AntiHoraireToolStripMenuItem;
-        protected System.Windows.Forms.ToolStripMenuItem rotation180ToolStripMenuItem;
-        protected System.Windows.Forms.ToolStripMenuItem fichierToolStripMenuItem;
-        protected System.Windows.Forms.Panel panel1;
-        protected System.Windows.Forms.Button btnAcquire;
-        protected System.Windows.Forms.ToolStripMenuItem acquisitionToolStripMenuItem;
-        protected System.Windows.Forms.ToolStripMenuItem modeTwainToolStripMenuItem;
-        protected System.Windows.Forms.ToolStripMenuItem modeWIAToolStripMenuItem;
-        protected System.Windows.Forms.ToolStripMenuItem enregistrerToolStripMenuItem;
-        protected System.Windows.Forms.ToolStripMenuItem ourvirToolStripMenuItem;
-        private System.Windows.Forms.Button btnEnter;
-        private System.Windows.Forms.ToolStripMenuItem imprimerToolStripMenuItem;
+        protected PictureBox pictureBox1;
+        protected MenuStrip menuStrip1;
+        protected ToolStripMenuItem rotation90ToolStripMenuItem;
+        protected ToolStripMenuItem rotation90ToolStripMenuItem1;
+        protected ToolStripMenuItem rotation90AntiHoraireToolStripMenuItem;
+        protected ToolStripMenuItem rotation180ToolStripMenuItem;
+        protected ToolStripMenuItem fichierToolStripMenuItem;
+        protected Panel panel1;
+        protected Button btnAcquire;
+        protected ToolStripMenuItem acquisitionToolStripMenuItem;
+        protected ToolStripMenuItem modeTwainToolStripMenuItem;
+        protected ToolStripMenuItem modeWIAToolStripMenuItem;
+        protected ToolStripMenuItem enregistrerToolStripMenuItem;
+        protected ToolStripMenuItem ourvirToolStripMenuItem;
+        private Button btnEnter;
+        private ToolStripMenuItem imprimerToolStripMenuItem;
     }
 }

@@ -1,11 +1,15 @@
-﻿namespace EspaceSyndic.Impressions.Balances
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using Microsoft.Reporting.WinForms;
+
+namespace EspaceSyndic.Impressions.Balances
 {
     partial class BalanceImmeublePrintForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -329,23 +333,23 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox gbParams;
-        private System.Windows.Forms.DateTimePicker dtAssemblee;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox cbBalance;
-        private System.Windows.Forms.TextBox tbRefImmeuble;
-        private System.Windows.Forms.Label lblImmeuble;
-        private System.Windows.Forms.GroupBox gbFactures;
-        private System.Windows.Forms.DataGridView dataGridView;
-        private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnExport;
-        private System.Windows.Forms.Button btnGrid;
-        private System.Windows.Forms.Button btnQuit;
-        private System.Windows.Forms.Button btnEnter;
-        private Microsoft.Reporting.WinForms.ReportViewer reportViewer1;
-        private System.Windows.Forms.Button btnRapport;
-        private System.Windows.Forms.Button btnCompte;
+        private GroupBox gbParams;
+        private DateTimePicker dtAssemblee;
+        private Label label2;
+        private Label label1;
+        private ComboBox cbBalance;
+        private TextBox tbRefImmeuble;
+        private Label lblImmeuble;
+        private GroupBox gbFactures;
+        private DataGridView dataGridView;
+        private ImageList imageList1;
+        private Panel panel1;
+        private Button btnExport;
+        private Button btnGrid;
+        private Button btnQuit;
+        private Button btnEnter;
+        private ReportViewer reportViewer1;
+        private Button btnRapport;
+        private Button btnCompte;
     }
 }

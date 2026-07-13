@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.Coproprietaire
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.Coproprietaire
 {
     partial class FicheCoproprietaireForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -709,55 +712,55 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox tbPrenom;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox tbVille;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.MaskedTextBox tbCodePostal;
-        private System.Windows.Forms.TextBox tbAdresse;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox tbNom;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox tbRef;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btnQuit;
-        private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.Button btnLast;
-        private System.Windows.Forms.Button btnNext;
-        private System.Windows.Forms.Button btnPrev;
-        private System.Windows.Forms.Button btnFirst;
-        private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.MaskedTextBox tbTel;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.ComboBox cbCivilite;
-        private System.Windows.Forms.CheckBox ckCommerce;
-        private System.Windows.Forms.CheckBox ckDeclaration;
-        private System.Windows.Forms.CheckBox ckVente;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.TextBox tbNomCompte;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.MaskedTextBox tbTelCompte;
-        private System.Windows.Forms.TextBox tbVilleCompte;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.MaskedTextBox tbCodePostalCompte;
-        private System.Windows.Forms.TextBox tbAdresseCompte;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.ComboBox cbCodeEnvoiCompte;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.TextBox tbEmail;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.TextBox tbNote;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.TextBox tbPays;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Button btnEnter;
-        private System.Windows.Forms.CheckBox ckDesactiv;
+        private Label label1;
+        private GroupBox groupBox1;
+        private TextBox tbPrenom;
+        private Label label3;
+        private TextBox tbVille;
+        private Label label7;
+        private Label label6;
+        private MaskedTextBox tbCodePostal;
+        private TextBox tbAdresse;
+        private Label label5;
+        private TextBox tbNom;
+        private Label label4;
+        private TextBox tbRef;
+        private Label label2;
+        private Button btnQuit;
+        private Button btnSave;
+        private Button btnLast;
+        private Button btnNext;
+        private Button btnPrev;
+        private Button btnFirst;
+        private ImageList imageList1;
+        private Label label8;
+        private MaskedTextBox tbTel;
+        private Label label9;
+        private ComboBox cbCivilite;
+        private CheckBox ckCommerce;
+        private CheckBox ckDeclaration;
+        private CheckBox ckVente;
+        private GroupBox groupBox2;
+        private TextBox tbNomCompte;
+        private Label label10;
+        private Label label13;
+        private MaskedTextBox tbTelCompte;
+        private TextBox tbVilleCompte;
+        private Label label14;
+        private Label label15;
+        private MaskedTextBox tbCodePostalCompte;
+        private TextBox tbAdresseCompte;
+        private Label label12;
+        private Label label11;
+        private ComboBox cbCodeEnvoiCompte;
+        private Panel panel1;
+        private TextBox tbEmail;
+        private Label label17;
+        private TextBox tbNote;
+        private Label label16;
+        private TextBox tbPays;
+        private Label label18;
+        private Button btnEnter;
+        private CheckBox ckDesactiv;
     }
 }

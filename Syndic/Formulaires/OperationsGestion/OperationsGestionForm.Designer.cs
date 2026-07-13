@@ -1,11 +1,14 @@
-﻿namespace EspaceSyndic.Formulaires.OperationsGestion
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace EspaceSyndic.Formulaires.OperationsGestion
 {
     partial class OperationsGestionForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -568,46 +571,46 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox gbParams;
-        private System.Windows.Forms.DateTimePicker dateDebut;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox cbTypeOpe;
-        private System.Windows.Forms.TextBox tbRefImmeuble;
-        private System.Windows.Forms.Label lblImmeuble;
-        private System.Windows.Forms.GroupBox gbFactures;
-        private System.Windows.Forms.DataGridView dataGridView;
-        private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnGrid;
-        private System.Windows.Forms.Button btnEnter;
-        protected System.Windows.Forms.TextBox tbLot;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button btnExport;
-        private System.Windows.Forms.DateTimePicker dateFin;
-        protected System.Windows.Forms.TextBox tbNature;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.CheckBox ckFin;
-        private System.Windows.Forms.CheckBox ckDebut;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem annulerToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem modifierToolStripMenuItem;
-        private System.Windows.Forms.Button btnDetail;
-        private System.Windows.Forms.TextBox tbFournisseur;
-        private System.Windows.Forms.Label lblFournisseur;
-        public System.Windows.Forms.Button btnQuit;
-        private System.Windows.Forms.Label label5;
-        protected System.Windows.Forms.TextBox tbMontant;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox tbLibelle;
-        private System.Windows.Forms.CheckBox ckValid;
-        private System.Windows.Forms.Label label6;
-        protected System.Windows.Forms.TextBox tbBase;
-        private System.Windows.Forms.ToolStripMenuItem modifierNumeroLotToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem genererLaFactureToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem gnererLeReglementToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem supprimerLesÉlémentsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem enregistrerLaPrésentationToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem présentationParDéfautToolStripMenuItem;
+        private GroupBox gbParams;
+        private DateTimePicker dateDebut;
+        private Label label1;
+        private ComboBox cbTypeOpe;
+        private TextBox tbRefImmeuble;
+        private Label lblImmeuble;
+        private GroupBox gbFactures;
+        private DataGridView dataGridView;
+        private ImageList imageList1;
+        private Panel panel1;
+        private Button btnGrid;
+        private Button btnEnter;
+        protected TextBox tbLot;
+        private Label label4;
+        private Button btnExport;
+        private DateTimePicker dateFin;
+        protected TextBox tbNature;
+        private Label label3;
+        private CheckBox ckFin;
+        private CheckBox ckDebut;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem annulerToolStripMenuItem;
+        private ToolStripMenuItem modifierToolStripMenuItem;
+        private Button btnDetail;
+        private TextBox tbFournisseur;
+        private Label lblFournisseur;
+        public Button btnQuit;
+        private Label label5;
+        protected TextBox tbMontant;
+        private Label label2;
+        private TextBox tbLibelle;
+        private CheckBox ckValid;
+        private Label label6;
+        protected TextBox tbBase;
+        private ToolStripMenuItem modifierNumeroLotToolStripMenuItem;
+        private ToolStripMenuItem genererLaFactureToolStripMenuItem;
+        private ToolStripMenuItem gnererLeReglementToolStripMenuItem;
+        private ToolStripMenuItem supprimerLesÉlémentsToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripMenuItem enregistrerLaPrésentationToolStripMenuItem;
+        private ToolStripMenuItem présentationParDéfautToolStripMenuItem;
     }
 }

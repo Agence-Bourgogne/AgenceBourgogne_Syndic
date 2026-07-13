@@ -1,11 +1,15 @@
-﻿namespace EspaceSyndic.Impressions
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using Microsoft.Reporting.WinForms;
+
+namespace EspaceSyndic.Impressions
 {
     partial class ImmeublePrintForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -169,16 +173,16 @@
 
         #endregion
 
-        private Microsoft.Reporting.WinForms.ReportViewer reportViewer1;
+        private ReportViewer reportViewer1;
 //        private Datasets.Immeuble immeuble;
-        private System.Windows.Forms.BindingSource immeubleBindingSource;
-        private System.Windows.Forms.GroupBox gbParams;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox tbMonth;
-        private System.Windows.Forms.Panel panelButton;
-        private System.Windows.Forms.Button btnRapport;
-        private System.Windows.Forms.Button btnQuit;
-        protected System.Windows.Forms.ImageList imageList1;
+        private BindingSource immeubleBindingSource;
+        private GroupBox gbParams;
+        private Label label1;
+        private TextBox tbMonth;
+        private Panel panelButton;
+        private Button btnRapport;
+        private Button btnQuit;
+        protected ImageList imageList1;
 //        private Datasets.ImmeubleTableAdapters.immeubleTableAdapter immeubleTableAdapter;
 
 

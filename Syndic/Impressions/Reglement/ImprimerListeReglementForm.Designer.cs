@@ -1,11 +1,15 @@
-﻿namespace EspaceSyndic.Impressions.Reglement
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using Microsoft.Reporting.WinForms;
+
+namespace EspaceSyndic.Impressions.Reglement
 {
     partial class ImprimerListeReglementForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -199,18 +203,18 @@
 
         #endregion
 
-        private Microsoft.Reporting.WinForms.ReportViewer reportViewer1;
-        protected System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Label label4;
-        protected System.Windows.Forms.ComboBox cbLiasse;
-        protected System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.Panel panelButton;
-        private System.Windows.Forms.Button btnQuit;
-        private System.Windows.Forms.Button btnRapport;
+        private ReportViewer reportViewer1;
+        protected GroupBox groupBox3;
+        private Label label4;
+        protected ComboBox cbLiasse;
+        protected ImageList imageList1;
+        private Panel panelButton;
+        private Button btnQuit;
+        private Button btnRapport;
         //private Datasets.Reglements reglements;
-        private System.Windows.Forms.BindingSource saisieremisechequeBindingSource;
-        private System.Windows.Forms.Label label1;
-        protected System.Windows.Forms.ComboBox cbReg;
+        private BindingSource saisieremisechequeBindingSource;
+        private Label label1;
+        protected ComboBox cbReg;
         //private Datasets.ReglementsTableAdapters.saisie_remise_chequeTableAdapter saisie_remise_chequeTableAdapter;
     }
 }

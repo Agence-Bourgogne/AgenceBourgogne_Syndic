@@ -1,29 +1,28 @@
-﻿//using System.Threading.Tasks;
+﻿
+
 using System.Windows.Forms;
-using SyndicData.Controller;
 using EspaceSyndic.Formulaires.Common;
+using SyndicData.Controller;
 
-namespace EspaceSyndic.Formulaires.Nature
+namespace EspaceSyndic.Formulaires.Nature;
+
+internal class FindNatureForm : FindStdForm
 {
-    class FindNatureForm : FindStdForm
+    public readonly NatureController controller = new();
+
+    public FindNatureForm()
     {
-        public NatureController controller = new NatureController();
 
-        public FindNatureForm()
-            : base()
-        {
+    }
 
-        }
+    public FindNatureForm(TextBox tbResult)
+        : base(tbResult)
+    {
 
-        public FindNatureForm(TextBox tbResult)
-            : base(tbResult)
-        {
-
-        }
-        public override void FillListFromFilter(string filter)
-        {
-            source = controller.GetFindList(filter);
-            base.FillListFromFilter(filter);
-        }
+    }
+    public override void FillListFromFilter(string filter)
+    {
+        source = controller.GetFindList(filter);
+        base.FillListFromFilter(filter);
     }
 }

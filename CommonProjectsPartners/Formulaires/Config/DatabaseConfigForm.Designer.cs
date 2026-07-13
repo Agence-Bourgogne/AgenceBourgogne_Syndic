@@ -1,11 +1,14 @@
-﻿namespace CommonProjectsPartners.Formulaires.Config
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace CommonProjectsPartners.Formulaires.Config
 {
     partial class DatabaseConfigForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -188,18 +191,18 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox tbServeur;
-        private System.Windows.Forms.TextBox tbPort;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox tbUser;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox tbPassword;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox tbSchema;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button btnOk;
-        private System.Windows.Forms.Button btnCancel;
-        protected System.Windows.Forms.CheckBox ckAlternateCnx;
+        private Label label1;
+        private TextBox tbServeur;
+        private TextBox tbPort;
+        private Label label2;
+        private TextBox tbUser;
+        private Label label3;
+        private TextBox tbPassword;
+        private Label label4;
+        private TextBox tbSchema;
+        private Label label5;
+        private Button btnOk;
+        private Button btnCancel;
+        protected CheckBox ckAlternateCnx;
     }
 }

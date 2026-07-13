@@ -1,11 +1,15 @@
-﻿namespace EspaceSyndic.Impressions.Budget
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using Microsoft.Reporting.WinForms;
+
+namespace EspaceSyndic.Impressions.Budget
 {
     partial class ImprimerBudgetForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -302,23 +306,23 @@
 
         #endregion
 
-        protected System.Windows.Forms.ImageList imageList1;
-        protected System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.DateTimePicker dtEdition;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.DateTimePicker dtFin;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.DateTimePicker dtDeb;
-        private System.Windows.Forms.Label label1;
-        protected System.Windows.Forms.TextBox tbRefImmeuble;
-        protected System.Windows.Forms.Label lblImmeuble;
-        private Microsoft.Reporting.WinForms.ReportViewer reportViewer1;
-        private System.Windows.Forms.Panel panelButton;
-        private System.Windows.Forms.Button btnEnter;
-        private System.Windows.Forms.Button btnRapport;
-        private System.Windows.Forms.Button btnQuit;
-        private System.Windows.Forms.ComboBox cbExercice;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button button1;
+        protected ImageList imageList1;
+        protected GroupBox groupBox3;
+        private DateTimePicker dtEdition;
+        private Label label3;
+        private DateTimePicker dtFin;
+        private Label label2;
+        private DateTimePicker dtDeb;
+        private Label label1;
+        protected TextBox tbRefImmeuble;
+        protected Label lblImmeuble;
+        private ReportViewer reportViewer1;
+        private Panel panelButton;
+        private Button btnEnter;
+        private Button btnRapport;
+        private Button btnQuit;
+        private ComboBox cbExercice;
+        private Label label4;
+        private Button button1;
     }
 }
