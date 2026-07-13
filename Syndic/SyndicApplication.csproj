@@ -20,8 +20,8 @@
 		<AssemblyTitle>EspaceSyndic</AssemblyTitle>
 		<Product>EspaceSyndic</Product>
 
-		<AssemblyVersion>1.0.0.97</AssemblyVersion>
-		<FileVersion>1.0.0.97</FileVersion>
+		<AssemblyVersion>2.0.0</AssemblyVersion>
+		<FileVersion>2.0.0</FileVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
