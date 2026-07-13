@@ -1,17 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
-
-		<RootNamespace>SyndicDocumentsData</RootNamespace>
-		<AssemblyName>SyndicDocumentsData</AssemblyName>
-
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<TargetFramework>net48</TargetFramework>
 		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="EntityFramework" Version="6.2.0" />
+		<PackageReference Include="EntityFramework" Version="6.5.2" />
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
 	</ItemGroup>
 
