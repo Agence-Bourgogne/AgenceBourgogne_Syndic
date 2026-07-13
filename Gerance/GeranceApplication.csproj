@@ -1,878 +1,119 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{ABACAD94-73BA-4BE8-9987-57B69BF921C9}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Gerance</RootNamespace>
-    <AssemblyName>Gerance</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <TargetFrameworkProfile />
-    <PublishUrl>C:\publication\gerance\1.0.0.47\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>false</MapFileExtensions>
-    <ProductName>Gérance de Biens</ProductName>
-    <PublisherName>Projects-Partners</PublisherName>
-    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>47</ApplicationRevision>
-    <ApplicationVersion>1.0.0.47</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <CreateDesktopShortcut>true</CreateDesktopShortcut>
-    <PublishWizardCompleted>true</PublishWizardCompleted>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ManifestCertificateThumbprint>9FDAD060FFA693A3B2263BB44605C7D25F230E23</ManifestCertificateThumbprint>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ManifestKeyFile>GeranceApplication_TemporaryKey.pfx</ManifestKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignManifests>false</SignManifests>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>logo-ab2.ico</ApplicationIcon>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>Gerance.GeranceApplication</StartupObject>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.ReportViewer.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ReportViewer.Common.10.0.40219.1\lib\Microsoft.ReportViewer.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.ReportViewer.DataVisualization, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ReportViewer.Common.10.0.40219.1\lib\Microsoft.ReportViewer.DataVisualization.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ReportViewer.Common.10.0.40219.1\lib\Microsoft.ReportViewer.ProcessingObjectModel.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.ReportViewer.WinForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ReportViewer.WinForms.10.0.40219.1\lib\Microsoft.ReportViewer.WinForms.dll</HintPath>
-    </Reference>
-    <Reference Include="Npgsql, Version=3.2.7.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Npgsql.3.2.7\lib\net451\Npgsql.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.3.0\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Formulaires\AideForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\AideForm.Designer.cs">
-      <DependentUpon>AideForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\AppelALoyer\AnnulationQuittanceForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\AppelALoyer\AnnulationQuittanceForm.Designer.cs">
-      <DependentUpon>AnnulationQuittanceForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\AppelALoyer\AppelALoyerFicheForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\AppelALoyer\AppelALoyerFicheForm.Designer.cs">
-      <DependentUpon>AppelALoyerFicheForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\AppelALoyer\AppelALoyerImpressionForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\AppelALoyer\AppelALoyerImpressionForm.Designer.cs">
-      <DependentUpon>AppelALoyerImpressionForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\AppelALoyer\AppelALoyerListeForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\AppelALoyer\AppelALoyerListeForm.Designer.cs">
-      <DependentUpon>AppelALoyerListeForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\AppelALoyer\ImprimerQuittanceForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\AppelALoyer\ImprimerQuittanceForm.Designer.cs">
-      <DependentUpon>ImprimerQuittanceForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\AppelALoyer\ListeQuittanceForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\AppelALoyer\ListeQuittanceForm.Designer.cs">
-      <DependentUpon>ListeQuittanceForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\AppelALoyer\UpdateDossierForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\AppelALoyer\UpdateDossierForm.Designer.cs">
-      <DependentUpon>UpdateDossierForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Biens\BienFicheForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Biens\BienFicheForm.Designer.cs">
-      <DependentUpon>BienFicheForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Biens\BienFindForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Biens\BienFindForm.Designer.cs">
-      <DependentUpon>BienFindForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Biens\BienListeForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Biens\BienListeForm.Designer.cs">
-      <DependentUpon>BienListeForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Biens\LocatairesImmeubleFindForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Common\BaseFicheForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Common\BaseFicheForm.Designer.cs">
-      <DependentUpon>BaseFicheForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Common\CommonGridviewForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Common\CommonGridviewForm.Designer.cs">
-      <DependentUpon>CommonGridviewForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Common\CommonListeForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Common\CommonListeForm.Designer.cs">
-      <DependentUpon>CommonListeForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Common\CommonFicheForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Common\CommonFicheForm.Designer.cs">
-      <DependentUpon>CommonFicheForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Common\CommonRapportForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Common\CommonRapportForm.Designer.cs">
-      <DependentUpon>CommonRapportForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Common\CommonFindForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Common\CommonFindForm.Designer.cs">
-      <DependentUpon>CommonFindForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Common\CommonTextForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Common\CommonTextForm.Designer.cs">
-      <DependentUpon>CommonTextForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Common\RechercheMultiForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Common\RechercheMultiForm.Designer.cs">
-      <DependentUpon>RechercheMultiForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Comptables\ComptableFicheForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Comptables\ComptableFicheForm.Designer.cs">
-      <DependentUpon>ComptableFicheForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Comptables\ComptableFindForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Comptables\ComptableFindForm.Designer.cs">
-      <DependentUpon>ComptableFindForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Comptables\ComptableListeForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Comptables\ComptableListeForm.Designer.cs">
-      <DependentUpon>ComptableListeForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Config\ConfigParamForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Config\ConfigParamForm.Designer.cs">
-      <DependentUpon>ConfigParamForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Common\StandardFunctionnalities.cs" />
-    <Compile Include="Formulaires\Documents\DocumentsListeForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Documents\DocumentsListeForm.Designer.cs">
-      <DependentUpon>DocumentsListeForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Factures\FactureDetailForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Factures\FactureDetailForm.Designer.cs">
-      <DependentUpon>FactureDetailForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Factures\FactureForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Factures\FactureForm.Designer.cs">
-      <DependentUpon>FactureForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Factures\FacturesListeForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Factures\FacturesListeForm.Designer.cs">
-      <DependentUpon>FacturesListeForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Fournisseurs\FournisseurFicheForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Fournisseurs\FournisseurFicheForm.Designer.cs">
-      <DependentUpon>FournisseurFicheForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Fournisseurs\FournisseurFindForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Fournisseurs\FournisseurFindForm.Designer.cs">
-      <DependentUpon>FournisseurFindForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Fournisseurs\FournisseurListeForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Fournisseurs\FournisseurListeForm.Designer.cs">
-      <DependentUpon>FournisseurListeForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Indices\IndicesForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Indices\IndicesForm.Designer.cs">
-      <DependentUpon>IndicesForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Indices\UpdateIndiceForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Indices\UpdateIndiceForm.Designer.cs">
-      <DependentUpon>UpdateIndiceForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Locataires\ChargesLocataireForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Locataires\ChargesLocataireForm.Designer.cs">
-      <DependentUpon>ChargesLocataireForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Locataires\EntreeLocataireFicheForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Locataires\EntreeLocataireFicheForm.Designer.cs">
-      <DependentUpon>EntreeLocataireFicheForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Locataires\LocataireFicheForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Locataires\LocataireFicheForm.Designer.cs">
-      <DependentUpon>LocataireFicheForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Locataires\LocataireFindForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Locataires\LocataireFindForm.Designer.cs">
-      <DependentUpon>LocataireFindForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Locataires\LocataireListeForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Locataires\LocataireListeForm.Designer.cs">
-      <DependentUpon>LocataireListeForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Locataires\LocataireLotFindForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Locataires\LocataireLotFindForm.Designer.cs">
-      <DependentUpon>LocataireLotFindForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Natures\NatureFicheForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Natures\NatureFicheForm.Designer.cs">
-      <DependentUpon>NatureFicheForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Natures\NatureFindForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Natures\NatureFindForm.Designer.cs">
-      <DependentUpon>NatureFindForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Natures\NatureListeForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Natures\NatureListeForm.Designer.cs">
-      <DependentUpon>NatureListeForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Proprietaires\ComptesProprietairesForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Proprietaires\ComptesProprietairesForm.Designer.cs">
-      <DependentUpon>ComptesProprietairesForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Proprietaires\CreationFactureHonorairesFraisForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Proprietaires\CreationFactureHonorairesFraisForm.Designer.cs">
-      <DependentUpon>CreationFactureHonorairesFraisForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Proprietaires\SoldeProprio.cs" />
-    <Compile Include="Formulaires\Proprietaires\UpdateSoldeProprietairesForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Proprietaires\UpdateSoldeProprietairesForm.Designer.cs">
-      <DependentUpon>UpdateSoldeProprietairesForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Proprietaires\ProprietaireFicheForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Proprietaires\ProprietaireFicheForm.Designer.cs">
-      <DependentUpon>ProprietaireFicheForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Proprietaires\ProprietaireFindForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Proprietaires\ProprietaireFindForm.Designer.cs">
-      <DependentUpon>ProprietaireFindForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Proprietaires\ProprietaireListeForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Proprietaires\ProprietaireListeForm.Designer.cs">
-      <DependentUpon>ProprietaireListeForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\GeranceMainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\GeranceMainForm.Designer.cs">
-      <DependentUpon>GeranceMainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Proprietaires\ReleveHonorairesProrietairesForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Proprietaires\ReleveHonorairesProrietairesForm.Designer.cs">
-      <DependentUpon>ReleveHonorairesProrietairesForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Proprietaires\TexteReleveForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Proprietaires\TexteReleveForm.Designer.cs">
-      <DependentUpon>TexteReleveForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Reglements\ReglementLocataireForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Reglements\ReglementLocataireForm.Designer.cs">
-      <DependentUpon>ReglementLocataireForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Reglements\ReglementPartielForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Reglements\ReglementPartielForm.Designer.cs">
-      <DependentUpon>ReglementPartielForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Reglements\ReglementPrintForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Reglements\ReglementPrintForm.Designer.cs">
-      <DependentUpon>ReglementPrintForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Reglements\ReglementsListeForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Reglements\ReglementsListeForm.Designer.cs">
-      <DependentUpon>ReglementsListeForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Reglements\RéglementProprietairesSyndicForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Reglements\RéglementProprietairesSyndicForm.Designer.cs">
-      <DependentUpon>RéglementProprietairesSyndicForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Syndic\DatabaseSyndicConfigForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Syndic\SyndicDatabase.cs" />
-    <Compile Include="Formulaires\Taches\DetailTacheMensuelleForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Taches\DetailTacheMensuelleForm.Designer.cs">
-      <DependentUpon>DetailTacheMensuelleForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Taches\SuiviTacheMensuelleForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Taches\SuiviTacheMensuelleForm.Designer.cs">
-      <DependentUpon>SuiviTacheMensuelleForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Utilisateurs\UtilisateurFicheForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Utilisateurs\UtilisateurFicheForm.Designer.cs">
-      <DependentUpon>UtilisateurFicheForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Formulaires\Utilisateurs\UtilisateursListeForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulaires\Utilisateurs\UtilisateursListeForm.Designer.cs">
-      <DependentUpon>UtilisateursListeForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GeranceApplication.cs" />
-    <Compile Include="GeranceDataset.cs">
-      <DependentUpon>GeranceDataset.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="Impressions\CompteLocataire\CompteLocataireForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Impressions\CompteLocataire\CompteLocataireForm.Designer.cs">
-      <DependentUpon>CompteLocataireForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Impressions\CompteProprietaire\ImpressionCompteProprietaireForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Impressions\CompteProprietaire\ImpressionCompteProprietaireForm.Designer.cs">
-      <DependentUpon>ImpressionCompteProprietaireForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Impressions\EtatsFiscaux\ListeLoyerProprietaireForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Impressions\EtatsFiscaux\ListeLoyerProprietaireForm.Designer.cs">
-      <DependentUpon>ListeLoyerProprietaireForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Impressions\EtatsFiscaux\NewListeLoyerProprietaireForm.cs" />
-    <Compile Include="Impressions\EtatsFiscaux\TexteReleveFiscalForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Impressions\EtatsFiscaux\TexteReleveFiscalForm.Designer.cs">
-      <DependentUpon>TexteReleveFiscalForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Impressions\Loyers\ListeLoyerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Impressions\Loyers\ListeLoyerForm.Designer.cs">
-      <DependentUpon>ListeLoyerForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Impressions\Quittances\ListeQuittancesForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Impressions\Quittances\ListeQuittancesForm.Designer.cs">
-      <DependentUpon>ListeQuittancesForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Impressions\ReglementsProprietaire\ImpressionsReglementsProprietaireForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Impressions\ReglementsProprietaire\ImpressionsReglementsProprietaireForm.Designer.cs">
-      <DependentUpon>ImpressionsReglementsProprietaireForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Impressions\ReglementsProprietaire\UpdateHonoraireProprioForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Impressions\ReglementsProprietaire\UpdateHonoraireProprioForm.Designer.cs">
-      <DependentUpon>UpdateHonoraireProprioForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Impressions\Retards\RetardPaiementForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Impressions\Retards\RetardPaiementForm.Designer.cs">
-      <DependentUpon>RetardPaiementForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Formulaires\AideForm.resx">
-      <DependentUpon>AideForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\AppelALoyer\AnnulationQuittanceForm.resx">
-      <DependentUpon>AnnulationQuittanceForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\AppelALoyer\AppelALoyerDetailReport.rdlc" />
-    <EmbeddedResource Include="Formulaires\AppelALoyer\AppelALoyerFicheForm.resx">
-      <DependentUpon>AppelALoyerFicheForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\AppelALoyer\AppelALoyerImpressionForm.resx">
-      <DependentUpon>AppelALoyerImpressionForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\AppelALoyer\AppelALoyerListeForm.resx">
-      <DependentUpon>AppelALoyerListeForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\AppelALoyer\AppelALoyerMasterReport.rdlc" />
-    <EmbeddedResource Include="Formulaires\AppelALoyer\AugmentationMasterReport.rdlc" />
-    <EmbeddedResource Include="Formulaires\AppelALoyer\ImprimerQuittanceForm.resx">
-      <DependentUpon>ImprimerQuittanceForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\AppelALoyer\ListeQuittanceForm.resx">
-      <DependentUpon>ListeQuittanceForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\AppelALoyer\QuittanceLoyerDetailReport.rdlc" />
-    <EmbeddedResource Include="Formulaires\AppelALoyer\QuittanceLoyerMasterReport.rdlc" />
-    <EmbeddedResource Include="Formulaires\AppelALoyer\UpdateDossierForm.resx">
-      <DependentUpon>UpdateDossierForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Biens\BienFicheForm.resx">
-      <DependentUpon>BienFicheForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Biens\BienListeForm.resx">
-      <DependentUpon>BienListeForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Common\BaseFicheForm.resx">
-      <DependentUpon>BaseFicheForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Common\CommonGridviewForm.resx">
-      <DependentUpon>CommonGridviewForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Common\CommonListeForm.resx">
-      <DependentUpon>CommonListeForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Common\CommonFicheForm.resx">
-      <DependentUpon>CommonFicheForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Common\CommonRapportForm.resx">
-      <DependentUpon>CommonRapportForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Common\CommonFindForm.resx">
-      <DependentUpon>CommonFindForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Common\CommonTextForm.resx">
-      <DependentUpon>CommonTextForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Common\RechercheMultiForm.resx">
-      <DependentUpon>RechercheMultiForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Comptables\ComptableFicheForm.resx">
-      <DependentUpon>ComptableFicheForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Comptables\ComptableListeForm.resx">
-      <DependentUpon>ComptableListeForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Config\ConfigParamForm.resx">
-      <DependentUpon>ConfigParamForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Documents\DocumentsListeForm.resx">
-      <DependentUpon>DocumentsListeForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Factures\FactureDetailForm.resx">
-      <DependentUpon>FactureDetailForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Factures\FactureForm.resx">
-      <DependentUpon>FactureForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Factures\FacturesListeForm.resx">
-      <DependentUpon>FacturesListeForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Fournisseurs\FournisseurFicheForm.resx">
-      <DependentUpon>FournisseurFicheForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Fournisseurs\FournisseurListeForm.resx">
-      <DependentUpon>FournisseurListeForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\GeranceMainForm.resx">
-      <DependentUpon>GeranceMainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Indices\IndicesForm.resx">
-      <DependentUpon>IndicesForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Indices\UpdateIndiceForm.resx">
-      <DependentUpon>UpdateIndiceForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Locataires\ChargesLocataireDetailReport.rdlc" />
-    <EmbeddedResource Include="Formulaires\Locataires\ChargesLocataireForm.resx">
-      <DependentUpon>ChargesLocataireForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Locataires\EntreeLocataireFicheForm.resx">
-      <DependentUpon>EntreeLocataireFicheForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Locataires\LocataireFicheForm.resx">
-      <DependentUpon>LocataireFicheForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Locataires\LocataireListeForm.resx">
-      <DependentUpon>LocataireListeForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Locataires\ChargesLocataireReport.rdlc" />
-    <EmbeddedResource Include="Formulaires\Locataires\LocataireQuittanceEntreeReport.rdlc" />
-    <EmbeddedResource Include="Formulaires\Natures\NatureFicheForm.resx">
-      <DependentUpon>NatureFicheForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Natures\NatureListeForm.resx">
-      <DependentUpon>NatureListeForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Proprietaires\CreationFactureHonorairesFraisForm.resx">
-      <DependentUpon>CreationFactureHonorairesFraisForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Proprietaires\Impressions\CompteProprioDetailReport2.rdlc" />
-    <EmbeddedResource Include="Formulaires\Proprietaires\Impressions\ReleveHonorairesProprioMasterReport.rdlc" />
-    <EmbeddedResource Include="Formulaires\Proprietaires\Impressions\CompteProprioMasterReport.rdlc" />
-    <EmbeddedResource Include="Formulaires\Proprietaires\ComptesProprietairesForm.resx">
-      <DependentUpon>ComptesProprietairesForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Proprietaires\UpdateSoldeProprietairesForm.resx">
-      <DependentUpon>UpdateSoldeProprietairesForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Proprietaires\ProprietaireFicheForm.resx">
-      <DependentUpon>ProprietaireFicheForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Proprietaires\ProprietaireListeForm.resx">
-      <DependentUpon>ProprietaireListeForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Proprietaires\Impressions\CompteProprioDetailReport.rdlc" />
-    <EmbeddedResource Include="Formulaires\Proprietaires\ReleveHonorairesProrietairesForm.resx">
-      <DependentUpon>ReleveHonorairesProrietairesForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Proprietaires\TexteReleveForm.resx">
-      <DependentUpon>TexteReleveForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Reglements\ListReglementsReport.rdlc" />
-    <EmbeddedResource Include="Formulaires\Reglements\ReglementLocataireForm.resx">
-      <DependentUpon>ReglementLocataireForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Reglements\ReglementPartielForm.resx">
-      <DependentUpon>ReglementPartielForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Reglements\ReglementPrintForm.resx">
-      <DependentUpon>ReglementPrintForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Reglements\ReglementsListeForm.resx">
-      <DependentUpon>ReglementsListeForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Reglements\RéglementProprietairesSyndicForm.resx">
-      <DependentUpon>RéglementProprietairesSyndicForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Taches\DetailTacheMensuelleForm.resx">
-      <DependentUpon>DetailTacheMensuelleForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Taches\SuiviTacheMensuelleForm.resx">
-      <DependentUpon>SuiviTacheMensuelleForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Utilisateurs\UtilisateurFicheForm.resx">
-      <DependentUpon>UtilisateurFicheForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulaires\Utilisateurs\UtilisateursListeForm.resx">
-      <DependentUpon>UtilisateursListeForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Impressions\CompteLocataire\CompteLocataireForm.resx">
-      <DependentUpon>CompteLocataireForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Impressions\CompteLocataire\CompteLocataireReport.rdlc" />
-    <EmbeddedResource Include="Impressions\CompteProprietaire\ImpressionCompteProprietaireForm.resx">
-      <DependentUpon>ImpressionCompteProprietaireForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Impressions\CompteProprietaire\ImpressionCompteProprietaireReport.rdlc" />
-    <EmbeddedResource Include="Impressions\EtatsFiscaux\ListeLoyerProprietaireForm.resx">
-      <DependentUpon>ListeLoyerProprietaireForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Impressions\EtatsFiscaux\ListeLoyerProprietaireReport.rdlc" />
-    <EmbeddedResource Include="Impressions\EtatsFiscaux\TexteReleveFiscalForm.resx">
-      <DependentUpon>TexteReleveFiscalForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Impressions\Loyers\ListeLoyerForm.resx">
-      <DependentUpon>ListeLoyerForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Impressions\Loyers\ListeLoyerReport.rdlc" />
-    <EmbeddedResource Include="Impressions\Quittances\ListeQuittancesForm.resx">
-      <DependentUpon>ListeQuittancesForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Impressions\Quittances\ListQuittancesReport.rdlc" />
-    <EmbeddedResource Include="Impressions\ReglementsProprietaire\ImpressionsReglementsProprietaireForm.resx">
-      <DependentUpon>ImpressionsReglementsProprietaireForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Impressions\ReglementsProprietaire\ListeVirementsLoyers - Copier %282%29.rdlc" />
-    <EmbeddedResource Include="Impressions\ReglementsProprietaire\ListeVirementsLoyers - Copier.rdlc" />
-    <EmbeddedResource Include="Impressions\ReglementsProprietaire\ListeVirementsLoyers.rdlc" />
-    <EmbeddedResource Include="Impressions\ReglementsProprietaire\UpdateHonoraireProprioForm.resx">
-      <DependentUpon>UpdateHonoraireProprioForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Impressions\Retards\RetardPaiementForm.resx">
-      <DependentUpon>RetardPaiementForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Impressions\Retards\MiseEnDemeureReport.rdlc" />
-    <EmbeddedResource Include="Impressions\Retards\RetardPaiementReport.rdlc" />
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <None Include="GeranceApplication_CléTemporaire.pfx" />
-    <None Include="GeranceApplication_TemporaryKey.pfx" />
-    <None Include="GeranceDataset.xsc">
-      <DependentUpon>GeranceDataset.xsd</DependentUpon>
-    </None>
-    <None Include="GeranceDataset.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="GeranceDataset.xss">
-      <DependentUpon>GeranceDataset.xsd</DependentUpon>
-    </None>
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <PublishFile Include="Microsoft.ReportViewer.Common">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Include</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>Assembly</FileType>
-    </PublishFile>
-    <PublishFile Include="Microsoft.ReportViewer.DataVisualization">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Include</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>Assembly</FileType>
-    </PublishFile>
-    <PublishFile Include="Microsoft.ReportViewer.ProcessingObjectModel">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Include</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>Assembly</FileType>
-    </PublishFile>
-    <PublishFile Include="Microsoft.ReportViewer.WinForms">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Include</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>Assembly</FileType>
-    </PublishFile>
-    <PublishFile Include="Microsoft.SqlServer.Types">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Exclude</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>Assembly</FileType>
-    </PublishFile>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Formulaires\roadmap.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <Content Include="logo-ab2.ico" />
-    <Content Include="scriptsSQL\1.0.0.0_1.0.0.2\1.0.0.0_1.0.0.2.txt" />
-    <Content Include="scriptsSQL\1.0.0.12\agence_1.0.0.12.txt" />
-    <Content Include="scriptsSQL\1.0.0.13\agence_1.0.0.13.txt" />
-    <Content Include="scriptsSQL\1.0.0.22\raz_hono.txt" />
-    <Content Include="scriptsSQL\1.0.0.2_1.0.0.3\agence.txt" />
-    <Content Include="scriptsSQL\1.0.0.2_1.0.0.3\public.txt" />
-    <Content Include="scriptsSQL\1.0.0.33\agence.txt" />
-    <Content Include="scriptsSQL\1.0.0.37\1.0.0.41.txt" />
-    <Content Include="scriptsSQL\1.0.0.37\agence.txt" />
-    <Content Include="scriptsSQL\1.0.0.3_1.0.0.4\agence.txt" />
-    <Content Include="scriptsSQL\1.0.0.3_1.0.0.4\public.txt" />
-    <Content Include="scriptsSQL\1.0.0.47\1.0.0.47.txt" />
-    <Content Include="scriptsSQL\Initiale_1.0.0.0\apres_reprise.txt" />
-    <Content Include="scriptsSQL\Initiale_1.0.0.0\schema_agence.txt" />
-    <None Include="scriptsSQL\Initiale_1.0.0.0\schema_public.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CommonProjectsPartners\CommonProjectsPartners.csproj">
-      <Project>{6736e0fb-3a8e-4b70-8937-bd676f22a007}</Project>
-      <Name>CommonProjectsPartners</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SyndicData\SyndicData.csproj">
-      <Project>{90437aab-c250-472d-ab72-00996b0835ae}</Project>
-      <Name>SyndicData</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GeranceData\GeranceData.csproj">
-      <Project>{199f4a63-0f6c-4fde-95a2-995a6102b270}</Project>
-      <Name>GeranceData</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.5 %28x86 et x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="scriptsSQL\V_1.0.0.41\" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net48</TargetFramework>
+
+		<UseWindowsForms>true</UseWindowsForms>
+
+		<RootNamespace>Gerance</RootNamespace>
+		<AssemblyName>Gerance</AssemblyName>
+
+		<ApplicationIcon>logo-ab2.ico</ApplicationIcon>
+		<StartupObject>Gerance.GeranceApplication</StartupObject>
+
+		<!-- Conserve AssemblyInfo.cs existant -->
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
+		<!-- Compatible WinForms ancien -->
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
+
+
+	<!-- NuGet -->
+	<ItemGroup>
+		<PackageReference Include="Npgsql" Version="3.2.7" />
+		<PackageReference Include="System.Threading.Tasks.Extensions" Version="4.3.0" />
+		<PackageReference Include="Microsoft.ReportingServices.ReportViewerControl.Winforms" Version="150.1652.0" />
+	</ItemGroup>
+
+
+	<!-- Références framework -->
+	<ItemGroup>
+		<Reference Include="System" />
+		<Reference Include="System.Core" />
+		<Reference Include="System.Data" />
+		<Reference Include="System.Data.DataSetExtensions" />
+		<Reference Include="System.Drawing" />
+		<Reference Include="System.Windows.Forms" />
+		<Reference Include="System.Xml" />
+		<Reference Include="System.IO.Compression" />
+	</ItemGroup>
+
+
+	<!-- ReportViewer 10 conservé temporairement -->
+	<ItemGroup>
+		<Reference Include="Microsoft.ReportViewer.Common">
+			<HintPath>..\packages\Microsoft.ReportViewer.Common.10.0.40219.1\lib\Microsoft.ReportViewer.Common.dll</HintPath>
+		</Reference>
+
+		<Reference Include="Microsoft.ReportViewer.DataVisualization">
+			<HintPath>..\packages\Microsoft.ReportViewer.Common.10.0.40219.1\lib\Microsoft.ReportViewer.DataVisualization.dll</HintPath>
+		</Reference>
+
+		<Reference Include="Microsoft.ReportViewer.ProcessingObjectModel">
+			<HintPath>..\packages\Microsoft.ReportViewer.Common.10.0.40219.1\lib\Microsoft.ReportViewer.ProcessingObjectModel.dll</HintPath>
+		</Reference>
+
+		<Reference Include="Microsoft.ReportViewer.WinForms">
+			<HintPath>..\packages\Microsoft.ReportViewer.Common.10.0.40219.1\lib\Microsoft.ReportViewer.WinForms.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+
+	<!-- Ressources WinForms -->
+	<ItemGroup>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+			<CustomToolNamespace>Gerance.Properties</CustomToolNamespace>
+		</EmbeddedResource>
+
+		<Compile Update="Properties\Resources.Designer.cs">
+			<AutoGen>true</AutoGen>
+			<DesignTime>true</DesignTime>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+
+	<!-- Projets internes -->
+	<ItemGroup>
+		<ProjectReference Include="..\CommonProjectsPartners\CommonProjectsPartners.csproj" />
+		<ProjectReference Include="..\SyndicData\SyndicData.csproj" />
+		<ProjectReference Include="..\GeranceData\GeranceData.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="GeranceDataset.xsd">
+			<Generator>MSDataSetGenerator</Generator>
+			<LastGenOutput>GeranceDataset.Designer.cs</LastGenOutput>
+			<SubType>Designer</SubType>
+		</None>
+		<None Update="Properties\Settings.settings">
+		  <Generator>SettingsSingleFileGenerator</Generator>
+		  <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		</None>
+
+		<Compile Update="GeranceDataset.Designer.cs">
+			<AutoGen>true</AutoGen>
+			<DesignTime>true</DesignTime>
+			<DependentUpon>GeranceDataset.xsd</DependentUpon>
+		</Compile>
+
+		<Compile Update="Properties\Settings.Designer.cs">
+		  <DesignTimeSharedInput>True</DesignTimeSharedInput>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Settings.settings</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+
+	<!-- Fichiers non compilés -->
+	<ItemGroup>
+		<None Include="App.config" />
+		<Content Include="logo-ab2.ico" />
+	</ItemGroup>
+
+
 </Project>
