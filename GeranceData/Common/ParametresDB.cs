@@ -104,21 +104,7 @@ namespace GeranceData.Common
 
             return table;
         }
-        public static void bindGridComboColumn(DataGridViewColumnCollection cols, String group, string columnName)
-        {
-            DataGridViewComboBoxColumn cmb = new DataGridViewComboBoxColumn();
-            cmb.DataSource = getComboData(group);
-            cmb.DisplayMember = "code";
-            cmb.ValueMember = "iparam_1";
-            //cmb.Name = columnName;
-            cmb.DataPropertyName = columnName;
-            cmb.Name = columnName + "_cb";
-            cmb.HeaderText = columnName;
-            int idx = cols[columnName].Index;
-            cols.Insert(idx, cmb);
-            cols[columnName].Visible = false;
 
-        }
         public static void FillComboFromParams(ComboBox cb, string groupe, string display = "code", string value = "iparam_1")
         {
             cb.DataSource = getComboData(groupe);

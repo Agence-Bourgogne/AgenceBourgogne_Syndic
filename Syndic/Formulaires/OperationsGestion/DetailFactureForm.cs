@@ -70,7 +70,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
 
             //            btn
         }
-        protected override void FillDataGridView()
+        protected virtual void FillDataGridView()
         {
             DataTable table;
             if (entite.liasse_id.StartsWith("Reprise"))
@@ -110,7 +110,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
                 tbTotal.BackColor = Color.Gray;
         }
 
-        protected override void fillFormFromMaster()
+        protected virtual void fillFormFromMaster()
         {
             ImmeubleEntite immeuble = ImmeubleController.getController().getEntiteById(entite.immeuble_id);
             nature = NatureController.getController().getEntiteById(entite.nature_id);

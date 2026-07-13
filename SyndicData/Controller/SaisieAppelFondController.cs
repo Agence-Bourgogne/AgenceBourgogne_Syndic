@@ -216,13 +216,6 @@ namespace SyndicData.Controller
 
             return sum;
         }
-        public bool DeleteEntite(string saisie_id)
-        {
-            SaisieAppelFondEntite saisie = SaisieAppelFondController.getController().getEntiteById(saisie_id);
-            if (saisie != null)
-                return DeleteEntite(saisie);
-            return true;
-        }
 
         public DataTable GetAllElements()
         {

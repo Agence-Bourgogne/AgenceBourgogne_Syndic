@@ -44,15 +44,7 @@ namespace CommonProjectsPartners.Utils
             string strKey = String.Format("HKEY_CURRENT_USER\\SOFTWARE\\ProjectsPartners\\{0}\\{1}", application, folder);
             Registry.SetValue(strKey, keyName, value);
         }
-        public static void deleteRegistryValue(String folder, String value)
-        {
-            string strKey = String.Format("SOFTWARE\\ProjectsPartners\\{0}\\{1}", currentApp, folder);
-            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(strKey, true))
-            {
-                if (key != null)
-                    key.DeleteValue(value);
-            }
-        }
+
         public static void deleteRegistry(String folder)
         {
             string strKey = String.Format("SOFTWARE\\ProjectsPartners\\{0}", currentApp);

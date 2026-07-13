@@ -110,12 +110,6 @@ namespace EspaceSyndic.Formulaires.Immeubles
         }
 
 
-        private void delCurrentRow(object sender, EventArgs e)
-        {
-            dataGridView.Rows.RemoveAt(dataGridView.SelectedRows[0].Index);
-            updateEditMode(false);
-        }
-
         private void editionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowImmeuble ( dataGridView.SelectedRows[0].Index);

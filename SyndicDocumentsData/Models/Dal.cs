@@ -15,11 +15,7 @@ namespace SyndicDocumentsData.Models
             bdd = new BddContext();
 
         }
-        public bool SaveUser(UserEntitie user)
-        {
-            bdd.SaveChanges();
-            return true;
-        }
+
         public string UpdateUser(string Guid, string CodeUser, String password = "")
         {
             String msg = "";
@@ -116,21 +112,7 @@ namespace SyndicDocumentsData.Models
             }
             return msg;
         }
-        public void CreateImmeuble(string ReferenceImmeuble, String Adresse, string Immeuble_id="")
-        {
-            if (String.IsNullOrWhiteSpace(Immeuble_id))
-                Immeuble_id = Guid.NewGuid().ToString();
-            ImmeubleEntitie obj = bdd.Immeubles.Add ( new ImmeubleEntitie { Reference = ReferenceImmeuble, Immeuble_id = Immeuble_id, Addresse = Adresse });
-            try
-            {
-                bdd.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
-     
+
         public List<DocumentEntitie> GetDocuments(string immeuble_id = "", string copro_id = "")
         {
             if (string.IsNullOrEmpty(immeuble_id) && string.IsNullOrEmpty(copro_id))
@@ -148,11 +130,7 @@ namespace SyndicDocumentsData.Models
             else
                 return new List<DocumentEntitie>();
         }
-        public DocumentEntitie GetDocument(String Guid)
-        {
-            var doc = (from d in bdd.Documents where (d.Guid == Guid) select d).First();
-            return doc;
-        }
+
         public void CreateDocument(string text, String Guid, byte[] content, string immeuble_id, string copro_id)
         {
             var list = (from d in bdd.Documents where (d.text == text && d.immeuble_id == immeuble_id && d.copro_id == copro_id) select d);
@@ -173,10 +151,7 @@ namespace SyndicDocumentsData.Models
         {
             return bdd.Users.ToList();
         }
-        public List<ImmeubleEntitie> GetAllImmeubles()
-        {
-            return bdd.Immeubles.ToList();
-        }
+
         public void Dispose()
         {
             bdd.Dispose();
@@ -232,14 +207,6 @@ namespace SyndicDocumentsData.Models
             return res;
         }
 
-        public ImmeubleEntitie GetImmeubleFromGuid(string guid)
-        {
-            var immeuble = (from i in bdd.Immeubles where i.Immeuble_id == guid select i);
-            if (immeuble.Count() > 0)
-                return immeuble.First();
-            return null;
-        }
-
         public CoproprietaireEntitie GetCoproFromGuid(string guid)
         {
             var copro = (from c in bdd.Coproprietaires where c.Copropriete_id == guid select c);
@@ -247,56 +214,7 @@ namespace SyndicDocumentsData.Models
                 return copro.First();
             return null;
         }
-        public List<ImmeubleEntitie> GetArborescenceImmeuble(String userCode)
-        {
-            List<ImmeubleEntitie> list = new List<ImmeubleEntitie>();
-            var usr = (from u in bdd.Users where u.Code == userCode select u);
-            if ( usr.Count() > 0)
-            {
-                UserEntitie user = usr.First();
-                List<ChildrenEntitie> childrens = GetUserChildrens(user.Guid).OrderBy(x => x.Immeuble_id ).ToList();
-                string immeuble_id = "";
-                ImmeubleEntitie current = null;
-                List<DocumentEntitie> docs = null;
 
-                foreach (ChildrenEntitie child in childrens)
-                {
-                    if (immeuble_id != child.Immeuble_id)
-                    {
-                        current = GetImmeubleFromGuid(child.Immeuble_id);
-                        immeuble_id = child.Immeuble_id;
-                        docs = GetDocumentsFromImmeuble(child.Immeuble_id);
-                        current.children.AddRange(docs.FindAll(x => x.copro_id == ""));
-                        list.Add(current);
-                    }
-                    if (!String.IsNullOrEmpty(child.Copro_id))
-                    {
-                        CoproprietaireEntitie copro = GetCoproFromGuid(child.Copro_id);
-                        copro.children.AddRange(docs.FindAll(x => x.copro_id == child.Copro_id).ToList());
-                        current.children.Add(copro);
-                    }
-                }
-            }
-            return list;
-        }
-        public List<DocumentEntitie> GetDocumentsFromImmeuble(string immeuble_id)
-        {
-            List<DocumentEntitie> docs = new List<DocumentEntitie>();
-            var sqlDocs = (from d in bdd.Documents where d.immeuble_id == immeuble_id select d);
-            if (sqlDocs.Count() > 0)
-            {
-                List<DocumentEntitie> list = new List<DocumentEntitie>();
-                foreach(DocumentEntitie doc in sqlDocs.ToList())
-                {
-                    doc.content = new byte[0];
-                    list.Add(doc);
-                }
-
-                docs.AddRange(list);//sqlDocs.ToList());
-            }
-               
-            return docs;
-        }
         public List<DocumentEntitie> GetDocumentsFromCopro(string copro_id)
         {
             List<DocumentEntitie> docs = new List<DocumentEntitie>();
@@ -312,20 +230,7 @@ namespace SyndicDocumentsData.Models
                 return doc.First();
             return null;
         }
-        public MissingEntitie CreateMissingEntrie(string Email)
-        {
-            MissingEntitie entitie = new MissingEntitie(Email);
-            bdd.MissingEntities.Add(entitie);
-            bdd.SaveChanges();
-            return entitie;
-        }
-        public MissingEntitie GetMissingFromId(String Id)
-        {
-            var missing = (from m in bdd.MissingEntities where m.Guid == Id select m);
-            if (missing.Count() > 0)
-                return missing.First();
-            return null;
-        }
+
         public string DeleteDocument(String Guid)
         {
             String msg = "";

@@ -18,12 +18,7 @@ namespace CommonProjectsPartners.Utils
             //string strKey = String.Format("HKEY_CURRENT_USER\\SOFTWARE\\ProjectsPartners\\{0}\\Database", application);
             //return (string)Registry.GetValue(strKey, "ConnectionDb", null);
         }
-        public static void setConnexionString(string value)
-        {
-            //string strKey = String.Format("HKEY_CURRENT_USER\\SOFTWARE\\ProjectsPartners\\{0}\\Database", application);
-            //Registry.SetValue(strKey, "ConnectionDb", value);
-            CommonRegistry.setRegistryValue("Database", "ConnectionDb", value);
-        }
+
         public static void setConnexionString(string application, string value)
         {
             //string strKey = String.Format("HKEY_CURRENT_USER\\SOFTWARE\\ProjectsPartners\\{0}\\Database", application);

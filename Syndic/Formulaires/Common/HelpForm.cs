@@ -44,10 +44,6 @@ namespace EspaceSyndic.Formulaires.Common
             this.Location = new Point (newPosX, newPosY);
         }
 
-        public void writeVisibility(Form parent)
-        {
-            CommonRegistry.setRegistryValue(helpKey, "Visible", this.Visible ? 1 : 0);
-        }
         public void setVisibility(Form parent)
         {
             bool visibility = ((int)CommonRegistry.getRegistryValue(helpKey, "Visible", 1) == 1) ? true : false;

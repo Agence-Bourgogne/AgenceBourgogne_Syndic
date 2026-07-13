@@ -154,18 +154,6 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
             listDoc.SelectedIndex = -1;
             bInLoad = false;
         }
-        //-----------------------------------------------------------
-        void HideAndResizeColumns(DataGridViewColumnCollection cols)
-        {
-            //cols["id"].Visible = false;
-            cols["guid"].Visible = false;
-            cols["audit_created"].Visible = false;
-            cols["audit_updated"].Visible = false;
-            cols["password"].Visible = false;
-            cols["code"].Width = 240;
-        }
-      
-        //----------------------------------------
         private void btnNewCopro_Click(object sender, EventArgs e)
         {
 

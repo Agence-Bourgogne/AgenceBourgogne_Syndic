@@ -44,16 +44,7 @@ namespace GeranceData.Controller
             
             return true;
         }
-        public DataTable getListeDetail(string workflow_id)
-        {
-            string cmd = String.Format("select * from {0} where workflow_id = @workflow_id", getSchemaTable());
 
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
-            { 
-                new NpgsqlParameter("@workflow_id", workflow_id), 
-            };
-            return getResultSQL(cmd, parameters);
-        }
         public DataTable getListeDetailReglements(string workflow_id)
         {
             string cmd = "select ";

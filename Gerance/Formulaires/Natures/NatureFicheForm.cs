@@ -1,5 +1,4 @@
-﻿using System.Windows.Forms;
-using CommonProjectsPartners.Entites;
+﻿using CommonProjectsPartners.Entites;
 using CommonProjectsPartners.Utils;
 using Gerance.Formulaires.Common;
 using GeranceData.Entites;
@@ -51,16 +50,5 @@ namespace Gerance.Formulaires.Natures
             nature.statut = 1;
             return NatureController.getController().InsertOrUpdate(nature);
         }
-        protected void ShowFindFromReference()
-        {
-            if (DialogResult.OK == ShowFindForm(new NatureFindForm(), tbReference))
-            {
-                nature = NatureController.getController().getEntiteFromField("reference", tbReference.Text);
-                setFicheValues(nature);
-            }
-            else
-                setFicheValues(nature);
-        }
-
     }
 }

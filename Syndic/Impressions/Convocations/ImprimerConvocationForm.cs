@@ -15,7 +15,6 @@ using EspaceSyndic.Formulaires.Common;
 using CommonProjectsPartners.Common;
 using System.IO;
 using System.IO.Compression;
-using System.Net.Http;
 using EspaceSyndic.Formulaires.Config;
 
 namespace EspaceSyndic.Impressions.Convocations
@@ -148,15 +147,6 @@ namespace EspaceSyndic.Impressions.Convocations
            btnPV.Visible = false;
            btnExport.Visible = false;
 #endif
-        }
-
-        private string GetHeureAssemblee()
-        {
-            return "1800";
-        }
-        private string GetDateAssemblee()
-        {
-            return DateTime.Now.ToShortDateString();
         }
 
         private string GetLieuAssemblee()
@@ -572,25 +562,6 @@ namespace EspaceSyndic.Impressions.Convocations
                 MessageBox.Show(ex.Message);
             }
             Cursor.Current = Cursors.Default;
-        }
-        private System.IO.Stream Upload(string actionUrl, string paramString, Stream paramFileStream, byte[] paramFileBytes)
-        {
-            HttpContent stringContent = new StringContent(paramString);
-            HttpContent fileStreamContent = new StreamContent(paramFileStream);
-            HttpContent bytesContent = new ByteArrayContent(paramFileBytes);
-            using (var client = new HttpClient())
-            using (var formData = new MultipartFormDataContent())
-            {
-                formData.Add(stringContent, "param1", "param1");
-                formData.Add(fileStreamContent, "file1", "file1");
-                formData.Add(bytesContent, "file2", "file2");
-                var response = client.PostAsync(actionUrl, formData).Result;
-                if (!response.IsSuccessStatusCode)
-                {
-                    return null;
-                }
-                return response.Content.ReadAsStreamAsync().Result;
-            }
         }
 
         private void decret_Click(object sender, EventArgs e)

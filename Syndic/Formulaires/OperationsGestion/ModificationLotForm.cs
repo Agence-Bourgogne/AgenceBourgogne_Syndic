@@ -8,8 +8,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
     public partial class ModificationLotForm : Form
     {
         ImmeubleEntite immeuble;
-        protected int type_saisie ;
-        
+
         SaisieAppelFondEntite appel = null;
         SaisieFactureEntite facture = null;
 

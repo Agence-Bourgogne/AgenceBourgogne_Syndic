@@ -80,10 +80,6 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
                 row.DefaultCellStyle.BackColor = color;
             }
         }
-        protected virtual void FillDataGridView()
-        {
-
-        }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
@@ -140,9 +136,6 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
         protected virtual void ValidModification()
         {
 
-        }
-        protected virtual void fillFormFromMaster()
-        {
         }
 
         private void btnExport_Click(object sender, EventArgs e)

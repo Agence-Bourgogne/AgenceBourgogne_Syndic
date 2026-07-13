@@ -369,18 +369,6 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             BaseApplication.DataGridToExcel( dataGridView, colsToHide, "", new string[] {"montant", "debit", "credit" });
         }
 
-        void AnnuleOperation(string operation_id)
-        {
-            if (DialogResult.OK != MessageBox.Show("Voulez-vous vraiment annuler cette opération", "Attention", MessageBoxButtons.OKCancel))
-                return;
-            OperationEntite operation = OperationController.getController().getEntiteById(operation_id);
-            if ( operation != null )
-            {
-                operation.statut = (int) GlobalConstantes.StatutOperation.Supprime;
-                OperationController.getController().InsertOrUpdate(operation);
-                commonValidating();
-            }
-        }
         private void EditionOperation()
         {
             if (dataGridView.SelectedRows.Count > 0)

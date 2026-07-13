@@ -13,8 +13,7 @@ namespace SyndicData.Controller
     public class SaisieFactureController : AbstractBaseController<SaisieFactureEntite>
     {
         static SaisieFactureController controller = new SaisieFactureController();
-        static DateTime NullDate = new DateTime(1970, 1, 1);
-       
+
         public override string getTable()
         {
             return "saisie_facture";

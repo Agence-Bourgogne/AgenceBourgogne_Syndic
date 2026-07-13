@@ -22,8 +22,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
         public List<ImmeubleEntite> listeImmeubles = new List<ImmeubleEntite>();
         public List<CoproprietaireEntite> listeCopros = new List<CoproprietaireEntite>();
         TextBox tbResult = null;
-        public EspaceSyndic.ServiceReference.UserEntitie CurrentUsr;
-        string urlWeb = "";
+
         //------------------------------------
         public FindUser()
         {
@@ -33,7 +32,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
             cbTypeUser.Items.Add("Tous");
             cbTypeUser.Items.Add("Gerant");
             cbTypeUser.SelectedIndex = 0;
-            urlWeb  = SyndicData.Common.ParametresDB.getParam1("SERVEUR", "ADDRESSE CONNECTION");
+            SyndicData.Common.ParametresDB.getParam1("SERVEUR", "ADDRESSE CONNECTION");
             cbTypeUser.SelectedIndexChanged += cbTypeUser_SelectedIndexChanged;
             FillListFromFilter();
             bInLoad = false;
@@ -46,17 +45,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
             FillListFromFilter();
             bInLoad = false;
         }
-        //----------------------------------
-        private void AdapteControls()
-        {
-            int decal = 168;
-            System.Drawing.Size size = dataGridView.Size;
-            dataGridView.Size = new System.Drawing.Size(size.Width + decal, size.Height);
-            dataGridView.TabIndex = 6;
-            valid.TabIndex = 7;
-            cancel.TabIndex = 8;
-        }
-        //----------------------------------
+
         public void FillListFromFilter()
         {
             filter = " 1=1 ";
@@ -100,41 +89,12 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
                 //  cols["statut"].Visible = false;
             }
         }
-        //------------------------------------
-        private void dataGridView_DoubleClick(object sender, EventArgs e)
-        {
-            //DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
-            //reference = row["reference"].ToString();
-            //this.Close();
-            setReferenceFromRow(dataGridView.SelectedRows[0].Index);
-        }
-        //------------------------------------
         private void FindStdForm_Load(object sender, EventArgs e)
         {
             btnEnter.Width = 0;
         }
         //------------------------------------
-        private void setReferenceFromRow(int index)
-        {
-            DataRowView row = (DataRowView)dataGridView.Rows[index].DataBoundItem;
-            if (row != null)
-            {
-                email = row["trimmed_email"].ToString();
-                reference = row["reference"].ToString();
-                if (tbResult != null)
-                    tbResult.Text = reference;
-            }
-        }
-        //------------------------------------
-        private void dataGridView_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == 0x0D)
-            {
-                e.Handled = true;
-                setReferenceFromRow(dataGridView.SelectedRows[0].Index - 1);
-            }
-        }
-        //------------------------------------
+
         private void tbRef_TextChanged(object sender, EventArgs e)
         {
             FillListFromFilter();

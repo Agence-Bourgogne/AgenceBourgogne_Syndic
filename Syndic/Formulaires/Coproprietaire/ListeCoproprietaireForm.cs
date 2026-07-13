@@ -117,13 +117,7 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
             dataGridView.ReadOnly = !bEdit;
             BtnSave.Enabled = bEdit;
         }
-        //-----------------------------------------------------------------------
-        private void delCurrentRow(object sender, EventArgs e)
-        {
-            dataGridView.Rows.RemoveAt(dataGridView.SelectedRows[0].Index);
-            updateEditMode(false);
-        }
-        //-----------------------------------------------------------------------
+
         private void editerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowCopro(dataGridView.SelectedRows[0].Index);

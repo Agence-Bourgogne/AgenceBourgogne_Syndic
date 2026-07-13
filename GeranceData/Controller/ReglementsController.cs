@@ -95,29 +95,7 @@ namespace GeranceData.Controller
             Console.WriteLine(cmd);
             return getResultSQL(cmd, parameters);
         }
-        public DataTable getReleveCompteProprioVide(string proprietaire_id)
-        {
-            string cmd = "select now() as date_reglement, l.nom as l_nom, l.reference as l_reference, '' as libelle, 0.0 as base_honoraire, 0.0 as charges, 0.0 as valeur_taxe, ";
-            cmd += " p.reference as p_reference, trim(concat(pa.code, ' ', p.nom, ' ', p.prenom)) as p_nom , p.adresse as p_adresse, p.ville as p_ville, p.codepostal as p_codepostal,";
-            cmd += " b.adresse as b_adresse, b.nom as b_nom, b.ville as b_ville, b.codepostal as b_codepostal,";
-            cmd += "'div1' as divers1, 0.0 as montant_divers1, 'div2' as divers2, 0.0 as montant_divers2, 'div3' as divers3, 0.0 as montant_divers3, ";
-            cmd += "'div4' as divers4, 0.0 as montant_divers4, 'div5' as divers5, 0.0 as montant_divers5  ";
 
-            cmd += string.Format(" FROM {0}.biens b ", getSchema());
-            cmd += string.Format(" join {0}.locataire l on l.id = b.locataire_id", getSchema());
-            cmd += string.Format(" join {0}.proprietaire p on p.id = b.proprietaire_id", getSchema());
-            cmd += " left join (SELECT groupe, code, iparam_1 FROM  parametres WHERE (groupe = 'CIVILITE')) pa on pa.iparam_1 = p.civilite";
-
-            if (proprietaire_id != "")
-                cmd += " WHERE p.id = @proprietaire_id";
-
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>{
-                new NpgsqlParameter("proprietaire_id", proprietaire_id),
-                new NpgsqlParameter("statut_del", (int) GlobalConstantes.StatutOperation.Supprime),
-            };
-            Console.WriteLine(cmd);
-            return getResultSQL(cmd, parameters);
-        }
         public DataTable getReleveCompteProprio(DateTime dtDeb, DateTime dtFin, string proprietaire_id = "")
         {
             string cmd = "select r.date_reglement, l.nom as l_nom, l.reference as l_reference, r.libelle, r.base_honoraire, r.charges, r.valeur_taxe, ";
@@ -144,35 +122,6 @@ namespace GeranceData.Controller
                 new NpgsqlParameter("dtDeb", dtDeb),
                 new NpgsqlParameter("dtFin", dtFin),
                 new NpgsqlParameter("proprietaire_id", proprietaire_id),
-                new NpgsqlParameter("statut_del", (int) GlobalConstantes.StatutOperation.Supprime),
-            };
-            Console.WriteLine(cmd);
-            return getResultSQL(cmd, parameters);
-        }
-        public DataTable getHdrReleveCompteProprioVide(DateTime dtDeb, DateTime dtFin, string ref_proprietaire = "")
-        {
-            string cmd = "select ";
-            cmd += " p.reference as p_reference, trim(concat(pa.code, ' ', p.nom, ' ', p.prenom)) as p_nom , p.adresse as p_adresse, p.ville as p_ville, p.codepostal as p_codepostal,";
-            cmd += " b.adresse as b_adresse, b.nom as b_nom, b.ville as b_ville, b.codepostal as b_codepostal";
-            cmd += string.Format(" from {0} r ", getSchemaTable());
-            cmd += string.Format(" join {0}.locataire l on l.id = r.locataire_id", getSchema());
-            cmd += string.Format(" join {0}.proprietaire p on p.id = r.proprietaire_id", getSchema());
-            cmd += string.Format(" join {0}.biens b on b.id = r.bien_id", getSchema());
-            cmd += " left join (SELECT groupe, code, iparam_1 FROM  parametres WHERE (groupe = 'CIVILITE')) pa on pa.iparam_1 = p.civilite";
-
-            if (ref_proprietaire != "")
-                cmd += " and p.reference = @ref_proprietaire";
-
-            //cmd += " where date_reglement >= @dtDeb and date_reglement <= @dtFin";
-            //cmd += " and r.statut != @statut_del";
-
-            cmd += " group by 1,2,3,4,5,6,7,8,9 ";
-            cmd += " order by 1";
-
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>{
-                new NpgsqlParameter("dtDeb", dtDeb),
-                new NpgsqlParameter("dtFin", dtFin),
-                new NpgsqlParameter("ref_proprietaire", ref_proprietaire),
                 new NpgsqlParameter("statut_del", (int) GlobalConstantes.StatutOperation.Supprime),
             };
             Console.WriteLine(cmd);
@@ -223,34 +172,6 @@ namespace GeranceData.Controller
             return getResultSQL(cmd, parameters);
         }
 
-        public DataTable getHdrReleveCompteProprio(DateTime dtDeb, DateTime dtFin, string ref_proprietaire = "")
-        {
-            string cmd = "select ";
-            cmd += " p.reference as p_reference, trim(concat(pa.code, ' ', p.nom, ' ', p.prenom)) as p_nom , p.adresse as p_adresse, p.ville as p_ville, p.codepostal as p_codepostal,";
-            cmd += " b.adresse as b_adresse, b.nom as b_nom, b.ville as b_ville, b.codepostal as b_codepostal";
-            cmd += string.Format(" from {0} r ", getSchemaTable());
-            cmd += string.Format(" join {0}.locataire l on l.id = r.locataire_id", getSchema());
-            cmd += string.Format(" join {0}.proprietaire p on p.id = r.proprietaire_id", getSchema());
-            cmd += string.Format(" join {0}.biens b on b.id = r.bien_id", getSchema());
-            cmd += " left join (SELECT groupe, code, iparam_1 FROM  parametres WHERE (groupe = 'CIVILITE')) pa on pa.iparam_1 = p.civilite";
-
-            cmd += " where date_reglement >= @dtDeb and date_reglement <= @dtFin";
-            if (ref_proprietaire != "")
-                cmd += " and p.reference = @ref_proprietaire";
-            cmd += " and r.statut != @statut_del";
-
-            cmd += " group by 1,2,3,4,5,6,7,8,9 ";
-            cmd += " order by 1";
-
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>{
-                new NpgsqlParameter("dtDeb", dtDeb),
-                new NpgsqlParameter("dtFin", dtFin),
-                new NpgsqlParameter("ref_proprietaire", ref_proprietaire),
-                new NpgsqlParameter("statut_del", (int) GlobalConstantes.StatutOperation.Supprime),
-            };
-
-            return getResultSQL(cmd, parameters);
-        }
         public DataTable getReleveHonorairesProprietaires(DateTime dtDeb, DateTime dtFin, string proprietaire_id = "")
         {
             // TODO Parametrage Nature

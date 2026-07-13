@@ -311,20 +311,6 @@ namespace EspaceSyndic.Impressions.RetardsPaiements
             }            
         }
 
-        private DataTable DuplicateAgences(DataTable table, List<String> duplicatas)
-        {
-            DataTable tableDst = new DataTable(table.TableName);
-            tableDst = table.Clone();
-            foreach ( DataRow row in table.Rows )
-            {
-                if ( duplicatas.Contains(row["copro_id"].ToString()) )
-                    tableDst.ImportRow(row);
-                tableDst.ImportRow(row);
-            }
-            tableDst.DefaultView.Sort = "ReferenceImmeuble, ReferenceCoproprietaire";
-            return tableDst.DefaultView.ToTable();
-        }
-
         private void dataGridView_DoubleClick(object sender, EventArgs e)
         {
             MainForm frm = new MainForm();

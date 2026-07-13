@@ -315,22 +315,7 @@ namespace SyndicData.Controller
             }
             return bAllValide;
         }
-        public DataTable GetListFactureBrouillon(ImmeubleEntite entite)
-        {
-            return null;
-        }
-        public DataTable GetListFactureBrouillon(FournisseurEntite entite)
-        {
-            return null;
-        }
-        public DataTable GetListFactureBrouillon(string poste)
-        {
-            return null;
-        }
-        public DataTable GetListFactureBrouillon()
-        {
-            return null;
-        }
+
         public DataTable getCoproprietaireOperation(string immeuble_id, string coproprietaire_id, DateTime dtDeb, DateTime dtFin)
         {
             string cmd = "select immeuble_id, coproprietaire_id , libelle, ";
@@ -729,39 +714,6 @@ namespace SyndicData.Controller
             }
 
             return depense;
-        }
-        public decimal getOperationReglement(string immeuble_id, DateTime dtDeb, DateTime dtFin, string copro_id = "")
-        {
-            //GVI
-            decimal reglements = 0;
-
-            //reglements
-            string cmd = String.Format("select coalesce(sum(credit)-sum(debit),0) as reglements from {0} o ", getSchemaTable());
-            cmd += string.Format(" left join {0}.nature n on n.id = nature_id ", getSchema());
-            cmd += string.Format(" left join {0}.coproprietaire c on c.id = coproprietaire_id ", getSchema());
-            cmd += " where immeuble_id = @immeuble_id ";
-            if (copro_id != "")
-                cmd += " and c.id = @copro_id";
-            cmd += " and ( type_mouvement =@recette ) ";
-            cmd += " and n.reference not in (  '140', '145' )";
-            cmd += " and o.statut != @statut and date_reference >= @dtDeb and date_reference <= @dtFin";
-
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
-            {
-                new NpgsqlParameter("@immeuble_id", immeuble_id),
-                new NpgsqlParameter("@copro_id", copro_id),
-                new NpgsqlParameter("@statut", (int) GlobalConstantes.StatutOperation.Supprime),
-                new NpgsqlParameter("@recette", GlobalConstantes.TypeMouvement.Recette.ToString() ),
-                new NpgsqlParameter("@dtDeb", dtDeb),
-                new NpgsqlParameter("@dtFin", dtFin)
-            };
-
-            DataTable table = getResultSQL(cmd, parameters);
-            if (table != null && table.Rows.Count > 0)
-            {
-                reglements = (decimal) table.Rows[0]["reglements"];
-            }
-            return reglements;
         }
 
         public decimal getOperationAppel(string immeuble_id, DateTime dtDeb, DateTime dtFin, string copro_id = "")
@@ -1180,41 +1132,7 @@ namespace SyndicData.Controller
                 }
             return table;
         }
-        public DataTable getNativeAppelDeFondOperations(SaisieAppelFondEntite appel)
-        {
-            string schema = getSchema();
-            string cmd = String.Format(" select * from {0} o ", getSchemaTable());
 
-            cmd += " where o.immeuble_id = @immeuble_id and type_mouvement=@type_mouvement and nature_id = @nature_id ";
-            cmd += " and date_reference = @date_reference and trim(libelle) = @libelle and o.statut!= @statut and base_repart=@base_repart";//and global = @montant ";
-
-            if (appel.base_repart == "80")
-            {
-                if (appel.lot_id != null)
-                {
-                    cmd += " and lot_id = @lot_id";
-                }
-                else
-                    if (appel.montant < 0)
-                        cmd += " and credit = @montant";
-                    else
-                        cmd += " and debit = @montant";
-            }
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
-            {
-                new NpgsqlParameter("@immeuble_id", appel.immeuble_id),
-                new NpgsqlParameter("@type_mouvement", GlobalConstantes.TypeMouvement.Recette.ToString() ),
-                new NpgsqlParameter("@nature_id", appel.nature_id),
-                new NpgsqlParameter("@date_reference", appel.date_reference ),
-                new NpgsqlParameter("@base_repart", appel.base_repart),
-                new NpgsqlParameter("@libelle", appel.libelle.Trim()),
-                new NpgsqlParameter("@lot_id", appel.lot_id ),
-                new NpgsqlParameter("@statut", (int) GlobalConstantes.StatutOperation.Supprime ),
-                new NpgsqlParameter("@montant", appel.montant  ),
-            };
-//            Console.WriteLine(cmd);
-            return getResultSQL(cmd, parameters);
-        }
         public DataTable getSaisieOperations(string saisie_id)
         {
             string schema = getSchema();

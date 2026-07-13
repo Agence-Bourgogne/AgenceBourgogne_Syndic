@@ -79,10 +79,5 @@ namespace Gerance.Formulaires.Config
         {
             ParametreController.controller.SaveList((DataTable)dataGridView.DataSource, false);
         }
-
-        private void btnOk_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }

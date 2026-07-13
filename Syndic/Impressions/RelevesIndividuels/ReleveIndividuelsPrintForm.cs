@@ -13,15 +13,12 @@ using Microsoft.Reporting.WinForms;
 using CommonProjectsPartners.Common;
 using EspaceSyndic.Formulaires.Coproprietaire;
 using EspaceSyndic.Formulaires.Exercice;
-using System.IO;
-using System.Reflection;
 
 namespace EspaceSyndic.Impressions.RelevesIndividuels
 {
     public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
     {
         public ImmeubleEntite immeuble = null;
-        BindingSource immeubleSource = new BindingSource();
         AutoCompleteStringCollection lotsString = new AutoCompleteStringCollection();
         String TitreForm;
         private BindingSource immeuble_copro = new BindingSource();
@@ -29,7 +26,6 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
         private BindingSource releve_soldes = new BindingSource();
         private BindingSource releve_appel_fond = new BindingSource();
         private DataTable tableImmeuble_copro, table_soldes, table_appel_fond;
-        private BindingSource etat_financier = new BindingSource();
         BindingSource base_descr = new BindingSource();
         DataTable solde_bidon;
         DataTable tableCondense = new DataTable();
@@ -313,28 +309,7 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels
             }
 
         }
-        //------------------------------------------
-        void LoadReport()
-        {
-     
-            string resourceName = "EspaceSyndic.Impressions.RelevesIndividuels.ReleveIndivMasterReport.rdlc";
-            Assembly assembly = Assembly.GetExecutingAssembly();
 
-            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
-            {
-                if (stream != null)
-                {
-                    this.reportViewer1.LocalReport.LoadReportDefinition(stream);
-                    Console.WriteLine($"La ressource '{resourceName}' existe.");
-                }
-                else
-                {
-                    Console.WriteLine($"La ressource '{resourceName}' n'existe pas.");
-                }
-            }
-        }
-
-        //------------------------------------------
         void CreateReport( String num_lot)
         {
             tableImmeuble_copro = ImmeubleController.getController().GetDescriptionCoproprietairesImmeubleReleveIndividuel(immeuble.id, num_lot);

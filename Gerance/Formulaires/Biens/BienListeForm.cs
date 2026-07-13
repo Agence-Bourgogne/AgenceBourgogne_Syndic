@@ -18,10 +18,6 @@ namespace Gerance.Formulaires.Biens
             regKey = "listes\\biens";
         }
 
-        void ckValidOnly_CheckedChanged(object sender, EventArgs e)
-        {
-            FillDataGrid();
-        }
         protected override DataTable getFormListe()
         {
            return BienController.getController().GetList();

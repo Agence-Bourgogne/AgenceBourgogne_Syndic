@@ -21,8 +21,6 @@ namespace EspaceSyndic.Formulaires.Budget
         ImmeubleEntite immeuble;
         NatureEntite nature;
 
-        AutoCompleteStringCollection baseAuto = new AutoCompleteStringCollection();
-
         public SaisieBudgetForm()
         {
             InitializeComponent();

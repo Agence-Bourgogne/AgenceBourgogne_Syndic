@@ -74,25 +74,6 @@ namespace Gerance.Formulaires.Factures
             else
                 tbNature.BackColor = Color.Red;
         }
-        private void tbFournisseur_Validating(object sender, CancelEventArgs e)
-        {
-            tbFournisseur.BackColor = Color.White;
-            tbNomFournisseur.Text = "";
-            tbDesiFournisseur.Text = "";
-
-            if (tbFournisseur.Text == "")
-                return;
-
-            FournisseurEntite entite = FournisseurController.getController().getEntiteFromField("reference", tbFournisseur.Text);
-
-            if (entite != null)
-            {
-                tbNomFournisseur.Text = entite.nom;
-                tbDesiFournisseur.Visible = (entite.reference == "999");
-            }
-            else
-                tbNature.BackColor = Color.Red;
-        }
 
         private void ShowInfoProprio(ProprietaireEntite proprio)
         {

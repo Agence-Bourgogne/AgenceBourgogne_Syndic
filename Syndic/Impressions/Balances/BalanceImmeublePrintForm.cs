@@ -24,11 +24,7 @@ namespace EspaceSyndic.Impressions.Balances
         {
             InitializeComponent();
         }
-        public BalanceImmeublePrintForm(int type)
-        {
-            InitializeComponent();
-            typeBalance = type;
-        }
+
         public void RefreshTypeReport ( int type )
         {
             cbBalance.SelectedIndex = typeBalance = type;

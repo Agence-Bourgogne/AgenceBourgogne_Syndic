@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Npgsql;
 
 using System.Data;
-using GeranceData.Entites;
+
 namespace GeranceData.Controller
 {
     public class ImmeubleController :BienController
@@ -43,20 +43,6 @@ namespace GeranceData.Controller
                 new NpgsqlParameter("bien_reference", bien_reference),
             };
             return getResultSQL(cmd, parameters);
-        }
-        public LocataireEntite getLocataire(string bien_reference, int numero_lot)
-        {
-            string cmd = String.Format(" select l.* from {0} b join {1}.locataire l on l.id = b.locataire_id where b.reference = @bien_reference and b.numero_lot = @numero_lot order by 1", getSchemaTable(), getSchema());
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>{
-                new NpgsqlParameter("bien_reference", bien_reference),
-                new NpgsqlParameter("numero_lot", numero_lot),
-            };
-            DataTable table = getResultSQL(cmd, parameters);
-            if (table != null)
-            {
-                return new LocataireEntite(table.Rows[0]);
-            }
-            return null;
         }
     }
 }

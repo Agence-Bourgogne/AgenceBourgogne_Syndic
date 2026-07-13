@@ -60,22 +60,6 @@ namespace EspaceSyndic.Impressions
         }
 
 
-        private void tbHelpBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-
-            if (Control.ModifierKeys == Keys.Control)
-                if (e.KeyChar == ' ')
-                {
-                    e.Handled = true;
-                    if (sender.Equals(tbRefImmeuble))
-                        lblImmeuble_Click(sender, null);
-                    //if (sender.Equals(tbNature))
-                    //    lblNature_Click(null, null);
-                    //if (sender.Equals(tbFournisseur))
-                    //    lblFournisseur_Click(null, null);
-                }
-        }
-
         private void EtiquettePrintForm_Load(object sender, EventArgs e)
         {
             btnEnter.Width = 0;

@@ -69,45 +69,6 @@ namespace GeranceData.Controller
             return getResultSQL(cmd, parameters);
         }
 
-        public DataTable getListeLocataireFromBiens()
-        {
-            string cmd = " select ";
-            cmd += "l.id, l.reference as locataire, trim(concat(pa.code, ' ', l.nom, ' ', l.prenom)) as nom_locataire, l.adresse adresse_loca,  concat( l.codepostal, ' ', l.ville) as ville_loca, ";
-            cmd += "b.reference as ref_bien, b.nom as nom_bien";
-
-            cmd += String.Format(" from {0} l", getSchemaTable());
-            cmd += String.Format(" join {0}.biens b on l.id = b.locataire_id", getSchema());
-            cmd += " left join (SELECT groupe, code, iparam_1 FROM  parametres WHERE (groupe = 'CIVILITE')) pa on pa.iparam_1 = l.civilite";
-            cmd += " order by l.reference";
-
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>{
-                //new NpgsqlParameter("dtDeb", dtDeb),
-                //new NpgsqlParameter("dtFin", dtFin),
-                //new NpgsqlParameter("proprietaire_id", proprietaire_id),
-            };
-            return getResultSQL(cmd, parameters);
-        }
-        public LocataireEntite getFirstLocataireFromBiens()
-        {
-            string cmd = " select l.* ";
-            cmd += String.Format(" from {0} l", getSchemaTable());
-            cmd += String.Format(" join {0}.biens b on l.id = b.locataire_id", getSchema());
-            cmd += " order by l.reference limit 1";
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>
-            {
-                //new NpgsqlParameter("dtDeb", dtDeb),
-                //new NpgsqlParameter("dtFin", dtFin),
-                //new NpgsqlParameter("proprietaire_id", proprietaire_id),
-            };
-            Console.WriteLine(cmd);
-            LocataireEntite entite = null;
-            DataTable table = getResultSQL(cmd, parameters);
-            if (table != null)
-                if (table.Rows.Count > 0)
-                    entite = new LocataireEntite(table.Rows[0]);
-
-            return entite;
-        }
         public LocataireEntite getLocataireBien(string where, List<NpgsqlParameter> parameters = null)
         {
             LocataireEntite entite = default(LocataireEntite);

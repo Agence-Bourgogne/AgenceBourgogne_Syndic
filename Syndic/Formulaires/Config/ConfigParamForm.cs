@@ -103,11 +103,6 @@ namespace EspaceSyndic.Formulaires.Config
             ParametreController.controller.SaveList((DataTable)dataGridView.DataSource, false);
         }
 
-        private void btnOk_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void dataGridView_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
         }

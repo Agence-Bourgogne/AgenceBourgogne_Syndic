@@ -22,18 +22,5 @@ namespace EspaceSyndic.Formulaires.Immeubles
             source = controller.GetFindList(filter);
             base.FillListFromFilter(filter);
         }
-
-        private void InitializeComponent()
-        {
-            this.SuspendLayout();
-            // 
-            // FindImmeubleForm
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.ClientSize = new System.Drawing.Size(345, 413);
-            this.Name = "FindImmeubleForm";
-            this.ResumeLayout(false);
-
-        }
     }
 }

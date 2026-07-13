@@ -10,7 +10,6 @@ namespace EspaceSyndic.Impressions.Facture
 {
     public partial class ImprimerListeFacturationForm : Form
     {
-        public string liasse_id = "";
         public List<string> liasses = new List<string>();
 
         public ImprimerListeFacturationForm()

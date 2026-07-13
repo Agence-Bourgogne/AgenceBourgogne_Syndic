@@ -111,16 +111,5 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
         {
             this.Close();
         }
-
-        private void dataGridView_ColumnDisplayIndexChanged(object sender, DataGridViewColumnEventArgs e)
-        {
-            if (!bLoading)
-            {
-                if (regKey != "")
-                    CommonRegistry.setRegistryValue(regKey, e.Column.Name, e.Column.DisplayIndex);
-            }
-        }
-
-
     }
 }

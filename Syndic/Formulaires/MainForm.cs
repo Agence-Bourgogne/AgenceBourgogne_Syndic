@@ -608,10 +608,6 @@ namespace EspaceSyndic.Formulaires
             ShowForm("EspaceSyndic.Impressions.Bilan.ImprimerBilanComptableForm");
         }
 
-        private void editionRelancesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        }
-
         private void retardDePaiementsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowForm("EspaceSyndic.Impressions.RetardsPaiements.RetardsPaiementsForm");
@@ -715,10 +711,6 @@ namespace EspaceSyndic.Formulaires
             {
                 MessageBox.Show(ex.Message);
             }
-        }
-
-        private void testToolStripMenuItem_Click(object sender, EventArgs e)
-        {
         }
 
         private void quitterToolStripMenuItem1_Click(object sender, EventArgs e)

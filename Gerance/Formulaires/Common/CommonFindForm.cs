@@ -33,12 +33,6 @@ namespace Gerance.Formulaires.Common
             setReferenceFromRow(dataGridView.SelectedRows[0].Index);
         }
 
-        private void cancel_Click(object sender, EventArgs e)
-        {
-            reference = "";
-            this.DialogResult = DialogResult.Cancel;
-        }
-
         private void dataGridView_DoubleClick(object sender, EventArgs e)
         {
             setReferenceFromRow(dataGridView.SelectedRows[0].Index);

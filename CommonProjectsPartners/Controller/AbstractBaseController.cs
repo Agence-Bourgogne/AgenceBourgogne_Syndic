@@ -193,11 +193,6 @@ namespace CommonProjectsPartners.Controller
             return getEntite(String.Format(" where {0} = @value", field),
                         new List<NpgsqlParameter> { new NpgsqlParameter("@value", value) });
         }
-        public TENTITE getEntiteFromField(string field, int value)
-        {
-            return getEntite(String.Format(" where {0} = @value", field),
-                        new List<NpgsqlParameter> { new NpgsqlParameter("@value", value) });
-        }
 
         public TENTITE getEntite(string where, List<NpgsqlParameter> parameters = null)
         {
@@ -430,18 +425,7 @@ namespace CommonProjectsPartners.Controller
 
             return valeur;
         }
-        public virtual int getCurrentNumeroOperation(string liasse_id)
-        {
-            int valeur = 1;
-            string cmd = String.Format("select numero_operation as valeur from {0} where liasse_id = @liasse_id", getSchemaTable());
-            DataTable table = getResultSQL(cmd, new List<NpgsqlParameter> { new NpgsqlParameter("@liasse_id", liasse_id) });
-            if (table != null)
-            {
-                if ( table.Rows.Count > 0 )
-                    valeur = (int)table.Rows[0]["valeur"];
-            }
-            return valeur;
-        }
+
         public DataTable getListeSaisiesNonValidees(string liasse_id, int statutOperation)
         {
             string cmd = String.Format("select * from {0} ", getSchemaTable());

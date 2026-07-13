@@ -20,12 +20,6 @@ namespace GeranceData.Controller
             return "biens";
         }
 
-        public DataTable GetCompeleteListe()
-        {
-            string cmd = string.Format("select * from {0} b ", getSchemaTable());
-            cmd += String.Format(" order by {0}",  ORDER);
-            return getResultSQL(cmd);
-        }
         public static BienController getController()
         {
 //            return new BienController ();

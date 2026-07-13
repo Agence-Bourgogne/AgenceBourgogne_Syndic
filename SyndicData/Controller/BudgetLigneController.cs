@@ -18,31 +18,6 @@ namespace SyndicData.Controller
         public static BudgetLigneController getController()
         {
             return controller;
-//            return new BudgetLigneController();
-        }
-        //public BudgetLigneController()
-        //{
-        //    //DefaultOrder = "reference";
-        //}
-        public DataTable getDescriptionBudget(string budget_id)
-        {
-            string cmd = "select ";
-
-            cmd += " b.id, b.base_repart as base, n.reference as compte, n.nom as nature, ";
-            //cmd += " 0 as precedent_approuve, 0 as clos_vote, 0 as clos_realise,";
-            cmd += " b.montant as prevu ";
-            cmd += String.Format(" from {0} b ", getSchemaTable());
-            cmd += String.Format(" left join {0}.nature n on n.id = b.nature_id ", getSchema() );
-            cmd += " where budget_id = @budget_id and b.statut != @statut ";
-            cmd += " order by n.reference, b.base_repart";
-
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter>
-            {
-                new NpgsqlParameter ("@budget_id", budget_id),
-                new NpgsqlParameter ("@statut", (int) GlobalConstantes.StatutBudget.Supprime),
-            };
-
-            return getResultSQL(cmd, parameters);
         }
         public DataTable getDescriptionLignesBudgetPrevu(string exercice_id)
         {

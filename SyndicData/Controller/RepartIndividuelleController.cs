@@ -58,19 +58,7 @@ namespace SyndicData.Controller
             };
             return getResultSQL(cmd, parameters);
         }
-        public DataTable getLastRepartAllFromSaisie(string immeuble_id, string base_repart, GlobalConstantes.TypeSaisie saisie)
-        {
-            string where = string.Format("select saisie_id from {0} where immeuble_id = @immeuble_id and reference = @base_repart and type_saisie = @saisie order by audit_created desc ", getSchemaTable());
-            string cmd = string.Format("select * from {0} where statut != @statut and saisie_id = ({1})", getSchemaTable(), where);
-            List<NpgsqlParameter> parameters = new List<NpgsqlParameter> 
-            {
-                new NpgsqlParameter("@immeuble_id", immeuble_id),
-                new NpgsqlParameter("@base_repart", base_repart),
-                new NpgsqlParameter("@saisie", (int) saisie),
-                new NpgsqlParameter("@statut", (int) GlobalConstantes.StatutOperation.Supprime),
-            };
-            return getResultSQL(cmd, parameters);
-        }
+
         public bool InsertRepartIndividuelleFromSaisie(OperationEntite operation, RepartIndividuelleEntite oldRepart, decimal index, decimal ancien, decimal nouveau, decimal global, GlobalConstantes.TypeSaisie type, int ref_cpt = 1)
         {
             bool rc = false;

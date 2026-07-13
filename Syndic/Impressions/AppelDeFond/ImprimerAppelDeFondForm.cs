@@ -183,22 +183,6 @@ namespace EspaceSyndic.Impressions.AppelDeFond
         private void reportViewer1_ReportExport(object sender, ReportExportEventArgs e)
         {
         }
-        private void pleinÉcranToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            reportViewer1.Dock = DockStyle.Fill;
-        }
-        private void réduireToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            reportViewer1.Dock = DockStyle.None;
-        }
-        private void quitterToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-        private void btnExport_Click(object sender, EventArgs e)
-        {
-            btnPrint_Click(null, null);
-        }
 
         private void reportViewer1_RenderingComplete(object sender, RenderingCompleteEventArgs e)
         {

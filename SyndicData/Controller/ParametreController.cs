@@ -19,14 +19,6 @@ namespace SyndicData.Controller
         {
             return "public";
         }
-        public ParametreController getController()
-        {
-            return controller;
-        }
-        //public virtual string getSchemaTable()
-        //{
-        //    return String.Format(String.Format("{0}.{1}", getSchema(), getTable()));
-        //}
 
         public DataTable getListFromEntiteGroupe(ParametreEntite groupe)
         {

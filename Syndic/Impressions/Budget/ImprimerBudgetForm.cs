@@ -4,7 +4,6 @@ using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.Reporting.WinForms;
-using CommonProjectsPartners.Utils;
 using SyndicData.Controller;
 using SyndicData.Entites;
 using EspaceSyndic.Formulaires.Immeubles;
@@ -83,11 +82,6 @@ namespace EspaceSyndic.Impressions.Budget
                 if (!"".Equals(tbRefImmeuble.Text))
                     tbRefImmeuble.BackColor = Color.Red;
             }
-        }
-
-        private void btnEnter_Click(object sender, EventArgs e)
-        {
-            ControlsWindows.FocusNextTabbedControl(this);
         }
 
         private void btnRapport_Click(object sender, EventArgs e)

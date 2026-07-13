@@ -8,7 +8,6 @@ using SyndicData.Entites;
 using CommonProjectsPartners.Utils;
 using Npgsql;
 using SyndicData.Common;
-using EspaceSyndic.Formulaires.Nature;
 using EspaceSyndic.Formulaires.Fournisseur;
 namespace EspaceSyndic.Formulaires.OperationsGestion
 {
@@ -162,17 +161,6 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
                 tbCpFournisseur.Text = "";
             }
 
-        }
-
-        private void lblNature_Click(object sender, EventArgs e)
-        {
-            FindNatureForm form = new FindNatureForm();
-            form.ShowDialog();
-            if (!"".Equals(form.reference))
-            {
-                tbNature.Text = form.reference;
-                tbNature_Validating(null, null);
-            }
         }
 
         private void lblFournisseur_Click(object sender, EventArgs e)

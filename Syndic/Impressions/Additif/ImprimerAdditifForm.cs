@@ -43,10 +43,7 @@ namespace EspaceSyndic.Impressions.Additif
         {
             return "1800";
         }
-        private string GetDateAssemblee()
-        {
-            return DateTime.Now.ToShortDateString();
-        }
+
         private string GetLieuAssemblee()
         {
             string lieu = "";
@@ -108,7 +105,7 @@ namespace EspaceSyndic.Impressions.Additif
                 {
                     dtDateAssemblee.Value = immeuble.dateass;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
 
                 }

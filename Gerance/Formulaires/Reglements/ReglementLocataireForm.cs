@@ -367,59 +367,7 @@ namespace Gerance.Formulaires.Reglements
             else
                 tbRefLocataire.BackColor = Color.White;
         }
-        // TODO a nettoyer
-        private void oldbtnDelete_Click(object sender, EventArgs e)
-        {
-            LocataireEntite locataire = LocataireController.getController().getEntiteFromField("reference", tbRefLocataire.Text);
-            if (locataire == null)
-            {
-                MessageBox.Show("reference locataire invalide");
-                return ;
-            }
-            if (locataire.Bien == null)
-            {
-                MessageBox.Show("Ce locataire n'est défini sur aucun bien");
-                return ;
-            }
-            ReglementEntite reglement = new ReglementEntite();
-            Decimal oldTotal_du = 0;
 
-            if (dataGridView.SelectedRows.Count > 0)
-            {
-                DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
-                reglement = ReglementsController.getController().getEntiteById(row["id"].ToString());
-                oldTotal_du = reglement.credit;
-            }
-            else
-                return;
-
-            if (DialogResult.Yes != MessageBox.Show("Cette Opération est irréversible\r\nVoulez-vous continuer", "Attention", MessageBoxButtons.YesNo, MessageBoxIcon.Stop))
-                return;
-            decimal total_du = locataire.total_du + oldTotal_du;
-            NpgsqlConnection cnx = Database.GetInstance();
-            NpgsqlTransaction trx = cnx.BeginTransaction();
-
-            try
-            {
-                reglement.statut = (int)GlobalConstantes.StatutOperation.Supprime;
-                if (!ReglementsController.getController().InsertOrUpdate(reglement))
-                    throw new Exception("Erreur Reglement");
-
-                locataire.total_du = total_du;
-                
-                if (!LocataireController.getController().InsertOrUpdate(locataire))
-                    throw new Exception("Erreur Locataire");
-
-                trx.Commit();
-                FillDataGrid();
-                ShowFicheValues(null);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                trx.Rollback();
-            }
-        }
         private void btnDelete_Click(object sender, EventArgs e)
         {
             if (dataGridView.SelectedRows.Count > 0)

@@ -308,11 +308,6 @@ namespace Gerance.Formulaires.AppelALoyer
                 }
         }
 
-        private void ckNullLoyer_CheckedChanged(object sender, EventArgs e)
-        {
-            FillDataGrid();
-        }
-
         private void ckNullLoyer_CheckedChanged_1(object sender, EventArgs e)
         {
             FillDataGrid();

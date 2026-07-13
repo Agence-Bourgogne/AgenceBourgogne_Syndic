@@ -14,19 +14,5 @@ namespace EspaceSyndic.Formulaires.Coproprietaire
             source = LotDescriptionController.getController().getListeCoproprietaires(immeuble);
             base.FillListFromFilter(filter);
         }
-
-        private void InitializeComponent()
-        {
-            this.SuspendLayout();
-            // 
-            // FindCoproprietaireImmeubleForm
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.ClientSize = new System.Drawing.Size(349, 413);
-            this.Name = "FindCoproprietaireImmeubleForm";
-            this.ResumeLayout(false);
-
-        }
-
     }
 }

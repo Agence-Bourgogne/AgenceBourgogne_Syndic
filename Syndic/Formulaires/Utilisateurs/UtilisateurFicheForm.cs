@@ -21,26 +21,12 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
             InitializeComponent();
             this.entite_id = entite_id;
         }
-        private void tbReference_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Control)
-                if (e.KeyCode == Keys.Space)
-                {
-                    e.Handled = true;
-                    e.SuppressKeyPress = true;
-                    lblReference_Click(null, null);
-                }
 
-        }
         protected void InitializeCombos()
         {
             cbRole.DataSource = RolesController.getController().GetComboRoles();
             cbRole.ValueMember = "id";
             cbRole.DisplayMember = "nom";
-
-        }
-        private void lblReference_Click(object sender, EventArgs e)
-        {
 
         }
 

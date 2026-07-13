@@ -17,7 +17,6 @@ namespace EspaceSyndic.Impressions.RelevesComptes
     public partial class ReleveCompteCoproPrintForm : Form, ICommonChangedListener
     {
         ImmeubleEntite immeuble;
-        AutoCompleteStringCollection lotsString = new AutoCompleteStringCollection();
         BindingSource sourceData = new BindingSource();
         String TitreForm;
         public ReleveCompteCoproPrintForm()
@@ -118,7 +117,7 @@ namespace EspaceSyndic.Impressions.RelevesComptes
                     this.reportViewer1.RefreshReport();
 
                 }
-                catch (Exception ex )
+                catch (Exception)
                 {
                 }
             }

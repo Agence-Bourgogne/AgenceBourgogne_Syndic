@@ -79,12 +79,6 @@ namespace EspaceSyndic.Formulaires.Extranet
                 }
             }
         }
-        //-----------------------------------------------------------------
-        private void lblImmeuble_Click(object sender, EventArgs e)
-        {
-
-        }
-        //-----------------------------------------------------------------
         private void tbRefImmeuble_DoubleClick(object sender, EventArgs e)
         {
             FindImmeubleForm form = new FindImmeubleForm();

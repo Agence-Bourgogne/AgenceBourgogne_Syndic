@@ -79,9 +79,7 @@ namespace GeranceData.Controller
 
             if (workflow == null)
                 workflow = new WorkflowEntite(reference, date_reference);
-            
-            workflow.revision++;
-            
+
             if (!doInsertOrUpdate(workflow))
                 throw new Exception("Mise à Jour Tache");
 

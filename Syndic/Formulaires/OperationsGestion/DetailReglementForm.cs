@@ -52,7 +52,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             fillFormFromMaster();
   //          tbMontant.Enabled = true;
         }
-        protected override void fillFormFromMaster()
+        protected virtual void fillFormFromMaster()
         {
             immeuble = ImmeubleController.getController().getEntiteById(entite.immeuble_id);
             nature = NatureController.getController().getEntiteById(entite.nature_id);
@@ -79,7 +79,7 @@ namespace EspaceSyndic.Formulaires.OperationsGestion
             tbDateCreation.Text = entite.date_reference.ToShortDateString();
             FillDataGridView();
         }
-        protected override void FillDataGridView()
+        protected virtual void FillDataGridView()
         {
             DataTable table;
             if (entite.liasse_id.StartsWith("Reprise"))

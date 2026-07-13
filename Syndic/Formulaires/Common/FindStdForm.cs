@@ -44,11 +44,6 @@ namespace EspaceSyndic.Formulaires.Common
             setReferenceFromRow(dataGridView.SelectedRows[0].Index);
         }
 
-        private void cancel_Click(object sender, EventArgs e)
-        {
-            reference = "";
-        }
-
         private void dataGridView_DoubleClick(object sender, EventArgs e)
         {
             //DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;

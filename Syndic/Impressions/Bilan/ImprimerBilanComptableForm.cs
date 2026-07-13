@@ -99,12 +99,7 @@ namespace EspaceSyndic.Impressions.Bilan
             isTravaux = natTravaux.Find(x=>x.reference == nature)  != null;
             return isTravaux;
         }
-        private bool isNatureSolde(string nature)
-        {
-            bool isNatureSolde = false;
-            isNatureSolde = natSolde.Find(x => x.reference == nature) != null;
-            return isNatureSolde;
-        }
+
         private void Cumuls()
         {
             chargesNormales= chargesTravaux= chargesPrivatives = depenses= soldeBilan = reglements = 0;

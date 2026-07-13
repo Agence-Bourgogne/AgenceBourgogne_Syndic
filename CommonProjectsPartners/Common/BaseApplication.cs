@@ -142,17 +142,7 @@ namespace CommonProjectsPartners.Common
             ws.Columns.AutoFit();
             Cursor.Current = Cursors.Default;
         }
-        public static void ExcelOpenFile(string fileName)
-        {
-            Microsoft.Office.Interop.Excel.Application xlApp = BaseApplication.GetExcelInstance();
-            Workbook wb = xlApp.ActiveWorkbook;
-            if (wb == null)
-            {
-                wb = xlApp.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
-//                ws = wb.Worksheets[1];
-            }
-            wb.MergeWorkbook(fileName);
-        }
+
         public static object DataGridToExcel(DataGridView datagrid, List<string> colsToHide, string checkColumn = "", string [] colToSum = null)
         {
             Cursor.Current = Cursors.WaitCursor;
@@ -301,25 +291,6 @@ namespace CommonProjectsPartners.Common
             if (!ext.StartsWith("."))
                 ext = "." + ext;
             return System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ext;
-        }
-        public static void InsertFileEnd(String docName, String DocToInsert)
-        {
-            Word.Application wrdApp = BaseApplication.GetWordInstance();
-            try
-            {
-                string FileTemp = GetTempFileName(Path.GetExtension(docName));
-                Word.Document doc = wrdApp.Documents.Add(docName);
-                doc.Words.Last.InsertFile(DocToInsert);
-                ((Microsoft.Office.Interop.Word._Document)doc).SaveAs2(FileTemp);
-                ((Microsoft.Office.Interop.Word._Document)doc).Close();
-
-                File.Copy(FileTemp, docName, true);
-                File.Delete(FileTemp);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
         }
 
         public static void MergeFiles(string outputFile, List<String> files, bool bDelete = true)
