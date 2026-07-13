@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio Version 18
+VisualStudioVersion = 18.7.11925.98 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyndicApplication", "Syndic\SyndicApplication.csproj", "{D8B32ACF-AF80-4EE0-AC27-916CCCEF8824}"
 EndProject
@@ -10,8 +10,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonProjectsPartners", "CommonProjectsPartners\CommonProjectsPartners.csproj", "{6736E0FB-3A8E-4B70-8937-BD676F22A007}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyndicWordAddIn", "SyndicWordAddIn\SyndicWordAddIn.csproj", "{ED77AD9C-AA41-4F34-B198-F15EF52A397D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestScan", "TestScan\TestScan.csproj", "{F827683B-AB0F-4BE5-B6A5-5225CFCC39F2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeranceApplication", "Gerance\GeranceApplication.csproj", "{ABACAD94-73BA-4BE8-9987-57B69BF921C9}"
 EndProject
@@ -67,16 +65,6 @@ Global
 		{ED77AD9C-AA41-4F34-B198-F15EF52A397D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{ED77AD9C-AA41-4F34-B198-F15EF52A397D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{ED77AD9C-AA41-4F34-B198-F15EF52A397D}.Release|x86.ActiveCfg = Release|Any CPU
-		{F827683B-AB0F-4BE5-B6A5-5225CFCC39F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F827683B-AB0F-4BE5-B6A5-5225CFCC39F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F827683B-AB0F-4BE5-B6A5-5225CFCC39F2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{F827683B-AB0F-4BE5-B6A5-5225CFCC39F2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{F827683B-AB0F-4BE5-B6A5-5225CFCC39F2}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{F827683B-AB0F-4BE5-B6A5-5225CFCC39F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F827683B-AB0F-4BE5-B6A5-5225CFCC39F2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F827683B-AB0F-4BE5-B6A5-5225CFCC39F2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{F827683B-AB0F-4BE5-B6A5-5225CFCC39F2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{F827683B-AB0F-4BE5-B6A5-5225CFCC39F2}.Release|x86.ActiveCfg = Release|Any CPU
 		{ABACAD94-73BA-4BE8-9987-57B69BF921C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ABACAD94-73BA-4BE8-9987-57B69BF921C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABACAD94-73BA-4BE8-9987-57B69BF921C9}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
