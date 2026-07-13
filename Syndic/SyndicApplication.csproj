@@ -50,7 +50,6 @@
 	<ItemGroup>
 		<ProjectReference Include="..\CommonProjectsPartners\CommonProjectsPartners.csproj" />
 		<ProjectReference Include="..\SyndicData\SyndicData.csproj" />
-		<ProjectReference Include="..\GeranceData\GeranceData.csproj" />
 	</ItemGroup>
 
 </Project>

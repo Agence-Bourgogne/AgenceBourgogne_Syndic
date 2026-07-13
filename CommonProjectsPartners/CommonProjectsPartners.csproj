@@ -6,8 +6,13 @@
 		<RootNamespace>CommonProjectsPartners</RootNamespace>
 		<AssemblyName>CommonProjectsPartners</AssemblyName>
 		<LangVersion>latest</LangVersion>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<UseWindowsForms>true</UseWindowsForms>
+		<AssemblyTitle>CommonProjectsPartners</AssemblyTitle>
+		<Product>CommonProjectsPartners</Product>
+		<Copyright>Copyright © 2014</Copyright>
+		<AssemblyVersion>1.0.0.0</AssemblyVersion>
+		<FileVersion>1.0.0.0</FileVersion>
+		<ComVisible>false</ComVisible>
 	</PropertyGroup>
 
 	<ItemGroup>
