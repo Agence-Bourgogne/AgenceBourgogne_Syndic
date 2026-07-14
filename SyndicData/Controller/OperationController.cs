@@ -37,7 +37,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
         return null;
     }
 
-    public ImmeubleRepartitionEntite getRepartitionImmeuble(DataTable immeubles, string base_repart)
+    private static ImmeubleRepartitionEntite getRepartitionImmeuble(DataTable immeubles, string base_repart)
     {
         if (base_repart == "0")
             base_repart = "10";
@@ -103,7 +103,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
         var controller = getController();
 
         var appel = new SaisieAppelFondEntite(saisiesAppel.Rows[0]);
-        var table_immrepart = ImmeubleRepartitionController.getController().getRepartitionImmeuble(appel.immeuble_id);;
+        var table_immrepart = ImmeubleRepartitionController.getController().getRepartitionImmeuble(appel.immeuble_id);
         var table_lotsrepart = LotRepartitionController.getController().GetLotsRepartition(appel.immeuble_id);
         var table_lotdesc = LotDescriptionController.getController().getListeLot(appel.immeuble_id);
 
@@ -246,7 +246,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
                 var facture = new SaisieFactureEntite(row);
                 var numero_ligne = 1;
 
-                var table_immrepart = ImmeubleRepartitionController.getController().getRepartitionImmeuble(facture.immeuble_id); ;
+                var table_immrepart = ImmeubleRepartitionController.getController().getRepartitionImmeuble(facture.immeuble_id);
                 var table_lotsrepart = LotRepartitionController.getController().GetLotsRepartition(facture.immeuble_id);
                 var table_lotdesc = LotDescriptionController.getController().getListeLot(facture.immeuble_id);
 
@@ -943,7 +943,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
 
     public DataTable getSoldesBidon()
     {
-        var cmd = "SELECT 'xx' as coproprietaire_id, 0 as  debit, 0 as credit ,1 as ordre, 'test' as libelle from agence.operation limit 1";
+        const string cmd = "SELECT 'xx' as coproprietaire_id, 0 as  debit, 0 as credit ,1 as ordre, 'test' as libelle from agence.operation limit 1";
         return getResultSQL(cmd);
     }
 
@@ -1264,7 +1264,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
 
         return lot_num;
     }
-    public bool DeleteElements(DataTable table)
+    public void DeleteElements(DataTable table)
     {
         foreach (DataRow row in table.Rows)
         {
@@ -1275,10 +1275,9 @@ public class OperationController : AbstractBaseController<OperationEntite>
             if (!doInsertOrUpdate(ope))
                 throw new Exception("Annulation operation Failed");
         }
-        return true;
     }
 
-    public bool DeleteEntite(string id)
+    public void DeleteEntite(string id)
     {
         var ope = getEntiteById(id);
         if ( ope == null )
@@ -1286,7 +1285,6 @@ public class OperationController : AbstractBaseController<OperationEntite>
         ope.statut = (int)GlobalConstantes.StatutOperation.Supprime;
         if (!doInsertOrUpdate(ope))
             throw new Exception("Annulation operation Failed");
-        return true;
     }
 
     public DataTable getOperationRepriseReglement()

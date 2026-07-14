@@ -43,10 +43,8 @@ public class ScanUtils
         }
     }
 
-    public bool TwainAcquire(IntPtr handle)
+    public void TwainAcquire(IntPtr handle)
     {
-        var rc = false;
-
         var id = TWIdentity.CreateFromAssembly(DataGroups.Image, Assembly.GetExecutingAssembly());
         ITwainSession session = new TwainSession(id);
         session.Open(new WindowsFormsMessageLoopHook(handle));
@@ -80,7 +78,5 @@ public class ScanUtils
         {
             MessageBox.Show(ex.Message);
         }
-
-        return rc;
     }
 }

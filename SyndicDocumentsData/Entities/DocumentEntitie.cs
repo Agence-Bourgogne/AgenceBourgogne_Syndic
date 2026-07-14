@@ -6,7 +6,6 @@ namespace SyndicDocumentsData.Entities;
 [Table("Documents")]
 public class DocumentEntitie : BaseEntitie
 {
-//        public int id { get; set; }
     public string text { get; set; }
     public string immeuble_id { get; set; }
     public string copro_id { get; set; }

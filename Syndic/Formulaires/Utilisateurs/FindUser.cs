@@ -115,16 +115,15 @@ public partial class FindUser : Form
             return;
         if (dataGridView.SelectedRows.Count > 0)
         {
-            CoproprietaireEntite coproprietaire = null;
             var rowView = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
             if (rowView["id"].ToString() != "")
             {
                 listeCopros = [];
-                coproprietaire = CoproprietaireController.getController().getEntiteById(rowView["id"].ToString());
+                var coproprietaire = CoproprietaireController.getController().getEntiteById(rowView["id"].ToString());
                 tbCode.Text = coproprietaire.email;
                 listeCopros.Add(coproprietaire);
                 var TmplisteCopros = FillListImmeubleByMail(coproprietaire);
-                if (TmplisteCopros != null && TmplisteCopros.Count > 0)
+                if (TmplisteCopros is { Count: > 0 })
                     listeCopros.AddRange(TmplisteCopros);
                 FillTreeView();
             }
@@ -159,8 +158,6 @@ public partial class FindUser : Form
             var parent = new TreeNode { Text = "Immeubles", ImageIndex = 0 };
             var iNode = treeView.Nodes.Add(parent);
             treeView.Nodes[iNode].Checked = true;
-            var immeuble_id = "";
-            TreeNode current = null;
             foreach(var copro in listeCopros)
             {
                 if (copro != null && copro.Immeuble != null && !listeImmeubles.Contains(copro.Immeuble))
@@ -171,8 +168,7 @@ public partial class FindUser : Form
             }
             foreach (var immeuble in listeImmeubles)
             {
-                immeuble_id = immeuble.id;
-                current = new TreeNode { Text = immeuble.nom, ImageIndex = 1, Tag = immeuble.id };
+                var current = new TreeNode { Text = immeuble.nom, ImageIndex = 1, Tag = immeuble.id };
                 var ImmeubleNode = parent.Nodes.Add(current);
                 parent.Nodes[ImmeubleNode].Checked = true;
                 foreach (var copro in listeCopros.FindAll(x => x.Immeuble.id == immeuble.id))

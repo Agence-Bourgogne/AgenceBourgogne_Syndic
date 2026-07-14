@@ -132,7 +132,6 @@ public partial class ReleveCompteCoproPrintForm : Form, ICommonChangedListener
         FillComboLot();
         cbLot.SelectedValue = e.newRef2;
         commonValidating();
-//            tbRefImmeuble_Validating(null, null);
     }
     private void cbLot_SelectedIndexChanged(object sender, EventArgs e)
     {

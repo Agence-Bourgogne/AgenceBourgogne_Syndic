@@ -12,7 +12,7 @@ namespace EspaceSyndic.Formulaires.Fournisseur;
 
 public partial class ListeFournisseurForm : Form
 {
-    public readonly FournisseurController controller = new();
+    private readonly FournisseurController controller = new();
     private bool bLoading;
     private readonly string regKey;
 
@@ -58,7 +58,8 @@ public partial class ListeFournisseurForm : Form
         updateEditMode(false);
         bLoading = false;
     }
-    protected virtual void OrderColumns()
+
+    private void OrderColumns()
     {
         if (regKey == "")
             return;
@@ -76,7 +77,6 @@ public partial class ListeFournisseurForm : Form
             if (regKey != "")
                 CommonRegistry.setRegistryValue(regKey, e.Column.Name, e.Column.DisplayIndex);
         }
-
     }
 
     private void ListeFournisseurForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -98,18 +98,17 @@ public partial class ListeFournisseurForm : Form
     private void updateEditMode(bool bEdit)
     {
         dataGridView.AllowUserToAddRows = bEdit;
-        //            dataGridView.AllowUserToDeleteRows = bEdit;
         dataGridView.ReadOnly = !bEdit;
         BtnSave.Enabled = bEdit;
     }
 
-    private void editerToolStripMenuItem_Click(object
-        sender, EventArgs e)
+    private void editerToolStripMenuItem_Click(object sender, EventArgs e)
     {
         if (!dataGridView.ReadOnly)
         {
             return;
         }
+
         if (controller.SaveList((DataTable)dataGridView.DataSource))
         {
             updateEditMode(false);

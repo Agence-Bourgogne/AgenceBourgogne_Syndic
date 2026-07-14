@@ -148,13 +148,14 @@ public partial class PublishDocument : Form
         var result = fbd.ShowDialog();
         if (result == DialogResult.OK)
         {
-            var FilterFiles = from file in Directory.EnumerateFiles(fbd.SelectedPath)
+            var filterFiles = (from file in Directory.EnumerateFiles(fbd.SelectedPath)
                 let extension = Path.GetExtension(file)
                 where extension.Equals(".pdf")
-                select file;
-            if(FilterFiles.Any())
+                select file).ToArray();
+
+            if(filterFiles.Length > 0)
             {
-                var files = FilterFiles.ToArray();
+                var files = filterFiles.ToArray();
                 FillDataGridView(files);
             }
             else
@@ -253,6 +254,6 @@ public partial class PublishDocument : Form
 }
 public class FilesList
 {
-    public string Fichier { get; set; }
-    public string Titre { get; set; }
+    public string Fichier { get; init; }
+    public string Titre { get; init; }
 }

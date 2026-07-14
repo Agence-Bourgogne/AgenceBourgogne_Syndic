@@ -36,8 +36,6 @@ public partial class FeuillePresencePrintForm : Form
             new("DateAssemblee", dtAssemblee.Value.ToShortDateString())
         };
 
-//            this.tableCoproImmeubleBindingSource.DataSource = CoproprietaireController.getController().CoproprietaireImmeubleDescription(immeuble.id, true);
-        //this.tableCoproImmeubleBindingSource.DataSource = CoproprietaireController.getController().CoproprietaireImmeubleDescription(immeuble.id, dtAssemblee.Value.ToShortDateString(), cbAssemblee.SelectedItem.ToString());
         reportViewer1.LocalReport.DataSources.Clear();
         reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("CoproImmeubleDSet", CoproprietaireController.getController().CoproprietaireImmeubleDescription(immeuble.id)));
         reportViewer1.LocalReport.SetParameters(parameters);

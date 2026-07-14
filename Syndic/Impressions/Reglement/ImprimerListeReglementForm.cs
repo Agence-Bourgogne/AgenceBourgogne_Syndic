@@ -36,7 +36,7 @@ public partial class ImprimerListeReglementForm : Form
         reportViewer1.RefreshReport();
     }
 
-    private void SubreportProcessingEventHandler(object sender, SubreportProcessingEventArgs e)
+    private static void SubreportProcessingEventHandler(object sender, SubreportProcessingEventArgs e)
     {
         var liasse_id = e.Parameters[0].Values[0];
         var nature_id = e.Parameters[1].Values[0];

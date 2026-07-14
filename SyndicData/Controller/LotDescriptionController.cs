@@ -130,22 +130,7 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
         }
         return getDataGridListeLotDescription(immeuble, false, false);
     }
-    public DataTable getImmeublesCoproprietaire(string coproprietaire_id)
-    {
-        var cmd = $"select id, reference, nom from {getSchema()}.immeuble i ";
-        cmd +=
-            $" where i.id in (select immeuble_id from {getSchema()}.lot_description where coproprietaire_id = @coproprietaire_id ) ";
-        return getResultSQL(cmd, [new NpgsqlParameter("@coproprietaire_id", coproprietaire_id)]);
-    }
 
-    public DataTable getListeCoproprietaires(ImmeubleEntite immeuble)
-    {
-        if (immeuble == null)
-            return null;
-        var cmd = $"select id, reference, concat(nom, ' ', prenom) as nom from {getSchema()}.coproprietaire c ";
-        cmd += $" where c.id in (select coproprietaire_id from {getSchema()}.lot_description ) ";
-        return getResultSQL(cmd);
-    }
     public DataTable getListeLotCoproprietaires(ImmeubleEntite immeuble, CoproprietaireEntite copro = null)
     {
         if (immeuble == null) // || copro == null)

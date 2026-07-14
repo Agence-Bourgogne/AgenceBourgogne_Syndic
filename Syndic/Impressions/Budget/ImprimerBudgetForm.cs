@@ -15,7 +15,6 @@ namespace EspaceSyndic.Impressions.Budget;
 public partial class ImprimerBudgetForm : Form
 {
     private ImmeubleEntite immeuble;
-    //string immeuble_id;
     private readonly string exercice_id;
     public ImprimerBudgetForm(ImmeubleEntite immeuble, string exercice_id)
     {
@@ -114,7 +113,6 @@ public partial class ImprimerBudgetForm : Form
     private void button1_Click(object sender, EventArgs e)
     {
         if (immeuble == null) return;
-        // List<LotDescriptionEntite> lots = LotDescriptionController.getController().getListeLotDescription(immeuble.id);
         var dlg = new ExportCopro();
         try
         {

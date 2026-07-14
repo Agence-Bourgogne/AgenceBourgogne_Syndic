@@ -6,10 +6,9 @@ using SyndicDocumentsData.Models;
 
 namespace ServiceDocuments
 {
-    // REMARQUE : vous pouvez utiliser la commande Renommer du menu Refactoriser pour changer le nom de classe "Service" dans le code, le fichier svc et le fichier de configuration.
     public class PartsFile
     {
-        public readonly string Key = "";
+        public readonly string Key;
         public byte[] Content;
         public PartsFile(string Key)
         {
@@ -22,9 +21,8 @@ namespace ServiceDocuments
 
         public string CreateUser(string Code, string Password = "")
         {
-            var msg = "";
             IDal dal = new Dal(HostingEnvironment.ApplicationPhysicalPath);
-            msg = dal.CreateUser(Code, Password);
+            var msg = dal.CreateUser(Code, Password);
             return msg;
         }
         public string DeleteUser(string Guid)
@@ -41,8 +39,7 @@ namespace ServiceDocuments
         }
         public void UploadPartFile(string Guid, byte[] filePart)
         {
-            //Console.WriteLine("Uploaded file {0} with {1} bytes", fileName, totalBytesRead);
-            PartsFile part = null;
+            PartsFile part;
             var offset = 0;
             if (parts.Exists(x => x.Key == Guid))
             {
@@ -62,7 +59,7 @@ namespace ServiceDocuments
         }
         public string CloseFile(string text, string Guid, string immeuble_id, string copro_id)
         {
-            var resText = "";
+            string resText;
             if (parts.Exists(x => x.Key == Guid))
             {
                 try
@@ -128,9 +125,8 @@ namespace ServiceDocuments
         }
         public string UpdateUser(string Guid, string Code, string Password = "")
         {
-            var msg = "";
             IDal dal = new Dal(HostingEnvironment.ApplicationPhysicalPath);
-            msg = dal.UpdateUser(Guid, Code, Password);
+            var msg = dal.UpdateUser(Guid, Code, Password);
             return msg;
         }
         public List<DocumentEntitie> GetListDocuments(string immeuble_id = "", string copro_id ="")
@@ -140,9 +136,8 @@ namespace ServiceDocuments
         }
         public string DeleteDocument(string Guid)
         {
-            var msg = "";
             IDal dal = new Dal(HostingEnvironment.ApplicationPhysicalPath);
-            msg = dal.DeleteDocument(Guid);
+            var msg = dal.DeleteDocument(Guid);
             return msg;
         }
     

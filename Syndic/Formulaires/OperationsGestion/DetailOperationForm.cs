@@ -70,13 +70,13 @@ public partial class DetailOperationForm : Form
         foreach (DataGridViewRow row in dataGridView.Rows)
         {
             var statut = (int)row.Cells["statut"].Value;
-            var color = Color.White;
-            switch (statut)
+            var color = statut switch
             {
-                case 0: color = Color.Gray; break;
-                case 8: color = Color.LightGreen; break;
-                case 9: color = Color.Red; break;
-            }
+                0 => Color.Gray,
+                8 => Color.LightGreen,
+                9 => Color.Red,
+                _ => Color.White
+            };
             row.DefaultCellStyle.BackColor = color;
         }
     }

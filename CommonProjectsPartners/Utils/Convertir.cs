@@ -26,7 +26,6 @@ public static class Convertir
     public static decimal ToDecimal(object value)
     {
         if (value == null) return 0;
-//            return (decimal)System.Convert.ToDouble(value.ToString().Replace(".", ","));
         if (value.ToString() == "") return 0;
         var valeur = (decimal)Convert.ToDouble(value.ToString().Replace(".", ",").Replace("-", ""));
         if (value.ToString().Trim().StartsWith("-"))

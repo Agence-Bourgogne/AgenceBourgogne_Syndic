@@ -8,9 +8,8 @@ namespace CommonProjectsPartners.Formulaires.Logon;
 
 public partial class LogonForm : Form
 {
-//        public string user = "";
-private bool bClose;
-private UserEntite userConnected;
+    private bool bClose;
+    private UserEntite userConnected;
     public LogonForm()
     {
         InitializeComponent();

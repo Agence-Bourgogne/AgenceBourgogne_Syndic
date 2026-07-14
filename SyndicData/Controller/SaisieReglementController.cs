@@ -298,12 +298,14 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
         return rc;
     }
 
-    public bool AnnuleElement(string element_id)
+    public void AnnuleElement(string element_id)
     {
         var entite = getController().getEntiteById(element_id);
         if ( entite != null )
-            return AnnuleElement(entite);
-        return false;
+        {
+            AnnuleElement(entite);
+            return;
+        }
     }
 
     public bool AnnuleElement(SaisieReglementEntite entite)

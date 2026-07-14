@@ -15,7 +15,6 @@ public class AideImmeubleController : AbstractBaseController<AideImmeubleEntite>
 
     public static AideImmeubleController getController()
     {
-//            return new AideImmeubleController();
         return controller;
     }
 

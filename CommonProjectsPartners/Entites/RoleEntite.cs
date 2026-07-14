@@ -12,10 +12,7 @@ public class RoleEntite : AbstractBaseEntite
         id = "";
         setValues(null);
     }
-    public RoleEntite(DataRow row)
-    {
-        setValues(row);
-    }
+
     public override void setValues(DataRow row)
     {
         var members = GetType().GetFields();

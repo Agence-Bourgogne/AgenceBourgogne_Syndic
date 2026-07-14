@@ -30,15 +30,12 @@ public partial class TitreRepartImmeubleForm : Form
 
             cells[0].Value = row["reference"];
 
-            switch ((int)row["type_ventilation"])
+            cells[1].Value = (int)row["type_ventilation"] switch
             {
-                case (int) GlobalConstantes.TypeRepartition.Millieme:
-                    cells[1].Value = GlobalConstantes.TypeRepartition.Millieme;
-                    break;
-                case (int)GlobalConstantes.TypeRepartition.Individuelle:
-                    cells[1].Value = GlobalConstantes.TypeRepartition.Individuelle;
-                    break;
-            }
+                (int)GlobalConstantes.TypeRepartition.Millieme => GlobalConstantes.TypeRepartition.Millieme,
+                (int)GlobalConstantes.TypeRepartition.Individuelle => GlobalConstantes.TypeRepartition.Individuelle,
+                _ => cells[1].Value
+            };
             cells[1].Tag = (int)row["type_ventilation"];
             cells[2].Value = row["nom"];
             cells[3].Value = row["ligne"];

@@ -138,7 +138,8 @@ public partial class FicheReglementForm : Form
             tbCopro_Validating(tbCopro, null);
         }
     }
-    public virtual GlobalConstantes.TypeOperation getTypeEcriture()
+
+    private GlobalConstantes.TypeOperation getTypeEcriture()
     {
         return GlobalConstantes.TypeOperation.Tresorerie;
     }
@@ -384,33 +385,18 @@ public partial class FicheReglementForm : Form
             }
             numero_operation = SaisieReglementController.getController().getNextNumeroOperation(Convert.ToDateTime(tbDate.Text));
 
-//TODO Revoir cette saisie pour gérer les payements sur plusieurs Lots
-            
             var immeuble_id = "";
             var compte_banque = "";
-            var lot_id = "";
 
             if (dataGridViewLots.Rows.Count > 0)
             {
                 var row = (DataRowView)dataGridViewLots.Rows[0].DataBoundItem;
                 immeuble_id = row["immeuble_id"].ToString();
                 compte_banque = row["comptebanque"].ToString();
-                lot_id = row["lot_id"].ToString();
             }
             else
             {
-                //LotDescriptionEntite lot = LotDescriptionController.getController().getEntiteFromField("coproprietaire_id", coproprietaire.id);
-                //if (lot == null)
-                //{
-                //    throw new Exception("Attention Coproprietaire non Affecté à un lot");
-                //}
                 immeuble_id = lot.immeuble_id;
-                lot_id = lot.id;
-                //ImmeubleEntite immeuble = ImmeubleController.getController().getEntiteById(immeuble_id);
-                //if (immeuble == null)
-                //{
-                //    throw new Exception("Lot coproprietaire sans immeuble");
-                //}
                 compte_banque = immeuble.comptebanque;
             }
             
@@ -452,7 +438,6 @@ public partial class FicheReglementForm : Form
     private void WriteSaisieInOperation(SaisieReglementEntite entite)
     {
         var numero_ligne = 1;
-        var allValide = true;
 
         var controller = OperationController.getController();
         foreach (DataGridViewRow rowGrid in dataGridViewLots.Rows)
@@ -474,18 +459,17 @@ public partial class FicheReglementForm : Form
             operation.lot_id = row["lot_id"].ToString();
             operation.nature_id = entite.nature_id;
             operation.base_repart = "10";
-//                operation.date_reference = entite.date_reference;
             operation.libelle = entite.libelle;
             operation.credit = Convertir.ToDecimal(rowGrid.Cells["reglement"].Value);
             operation.statut = (int)GlobalConstantes.StatutOperation.Brouillon;
             operation.global = entite.montant;
             if (!controller.InsertOrUpdate(operation))
             {
-                allValide = false;
                 break;
             }
         }
     }
+
     private bool UpdateSaisieInOperation(SaisieReglementEntite saisie)
     {
         var allValide = true;
@@ -496,9 +480,6 @@ public partial class FicheReglementForm : Form
         {
             var row = (DataRowView)rowGrid.DataBoundItem;
 
-            //Console.WriteLine(saisie.id);
-            //Console.WriteLine(row["immeuble_id"].ToString());
-            //Console.WriteLine(row["lot_id"].ToString());
             var parameters = new List<NpgsqlParameter> 
             {
                 new("@saisie_id", saisie.id),
@@ -515,7 +496,6 @@ public partial class FicheReglementForm : Form
                         nature_id = saisie.nature_id
                     };
                     operation.date_reference = operation.date_operation = saisie.date_reference;
-//                        operation.date_operation = saisie.date_reference;
                     operation.libelle = saisie.libelle;
                     operation.credit = Convertir.ToDecimal(rowGrid.Cells["reglement"].Value);
                     if (!controller.InsertOrUpdate(operation))
@@ -542,7 +522,7 @@ public partial class FicheReglementForm : Form
         }
     }
 
-    protected void FillDatagridEcritures()
+    private void FillDatagridEcritures()
     {
 
         bLoadEcriture = true;
@@ -605,8 +585,6 @@ public partial class FicheReglementForm : Form
                     lblCopro_Click(sender, null);
                 if (sender.Equals(tbNature))
                     lblNature_Click(null, null);
-                //if (sender.Equals(tbFournisseur))
-                //    lblFournisseur_Click(null, null);
             }
     }
 
@@ -658,10 +636,9 @@ public partial class FicheReglementForm : Form
 
     private void btnHelp_Click(object sender, EventArgs e)
     {
-//            infoForm.ShowForm(this);
         infoKey.ShowForm(this);
     }
-    // 
+
     private void btnDelete_Click(object sender, EventArgs e)
     {
         if (dataGridViewEcriture.SelectedRows.Count > 0)

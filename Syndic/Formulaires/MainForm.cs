@@ -461,7 +461,7 @@ public partial class MainForm : Form
         }
         Activate();
     }
-    private void GenericBtnCancel_Click(object sender, EventArgs e)
+    private static void GenericBtnCancel_Click(object sender, EventArgs e)
     {
         var btn = (Button)sender;
 
@@ -509,7 +509,7 @@ public partial class MainForm : Form
             if (form.CancelButton != null)
             {
                 var btn = (Button) form.CancelButton;
-                btn.Click += GenericBtnCancel_Click; ;
+                btn.Click += GenericBtnCancel_Click;
             }
 
             form.Show();

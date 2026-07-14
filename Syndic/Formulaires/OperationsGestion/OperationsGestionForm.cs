@@ -33,20 +33,15 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
     {
         commonValidating();
     }
-    protected virtual void OrderColumns()
+
+    private void OrderColumns()
     {
         if (regKey == "")
             return;
         var widthForm = (int)CommonRegistry.getRegistryValue(regKey, "width", -1);
         var heightForm = (int)CommonRegistry.getRegistryValue(regKey, "height", -1);
-        if (widthForm != -1)
-            Width = widthForm;
-        else
-            Width = stdWidth;
-        if (heightForm != -1)
-            Height = heightForm;
-        else
-            Height = stdHeight;
+        Width = widthForm != -1 ? widthForm : stdWidth;
+        Height = heightForm != -1 ? heightForm : stdHeight;
         CenterToScreen();
         foreach (DataGridViewColumn col in dataGridView.Columns)
         {
@@ -57,22 +52,19 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
             if (width != -1)
                 col.Width = width;
         }
-        //System.Windows.Forms.SortOrder sortOrder = dataGridView.SortOrder;
-        //if (sortOrder == System.Windows.Forms.SortOrder.None)
-        {
-            var newOrder = (SortOrder)CommonRegistry.getRegistryValue(regKey, "SortOrder", 0);
-            var SortedColumn = (string) CommonRegistry.getAppRegistryValue(regKey, "SortedColumn", "");
-            if (newOrder != SortOrder.None && !string.IsNullOrEmpty(SortedColumn))
-            {
-                var cols = dataGridView.Columns;
-                if (newOrder == SortOrder.Ascending)
-                    dataGridView.Sort(cols[SortedColumn], ListSortDirection.Ascending);
-                if (newOrder == SortOrder.Descending)
-                    dataGridView.Sort(cols[SortedColumn], ListSortDirection.Descending);
-            }
-        }
 
+        var newOrder = (SortOrder)CommonRegistry.getRegistryValue(regKey, "SortOrder", 0);
+        var SortedColumn = (string) CommonRegistry.getAppRegistryValue(regKey, "SortedColumn", "");
+        if (newOrder != SortOrder.None && !string.IsNullOrEmpty(SortedColumn))
+        {
+            var cols = dataGridView.Columns;
+            if (newOrder == SortOrder.Ascending)
+                dataGridView.Sort(cols[SortedColumn], ListSortDirection.Ascending);
+            if (newOrder == SortOrder.Descending)
+                dataGridView.Sort(cols[SortedColumn], ListSortDirection.Descending);
+        }
     }
+
     private void dataGridView_ColumnDisplayIndexChanged(object sender, DataGridViewColumnEventArgs e)
     {
         if (!bLoading)
@@ -236,13 +228,13 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
         foreach (DataGridViewRow row in dataGridView.Rows)
         {
             var statut = (int) row.Cells["statut"].Value;
-            var color = Color.White;
-            switch (statut )
+            var color = statut switch
             {
-                case 0: color = Color.Gray; break;
-                case 8: color = Color.LightGreen; break;
-                case 9: color = Color.Red; break;
-            }
+                0 => Color.Gray,
+                8 => Color.LightGreen,
+                9 => Color.Red,
+                _ => Color.White
+            };
             row.DefaultCellStyle.BackColor = color;
         }
     }
@@ -253,7 +245,6 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
             immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
             if (immeuble != null)
                 Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
-//                this.Text = String.Format("{0} pour l'immeuble : {1} ({2})", TitreForm, immeuble.nom, immeuble.ExerciceCourant.date_deb.ToShortDateString());
         }
         else
             Text = TitreForm;
@@ -265,7 +256,7 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
             if (row != null)
                 selected_id = row["id"].ToString();
         }
-        if (/*immeuble != null & */cbTypeOpe.SelectedIndex >= 0)
+        if (cbTypeOpe.SelectedIndex >= 0)
         {
             switch ( cbTypeOpe.SelectedIndex )
             {
@@ -375,25 +366,15 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
         {
             var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
             var index = dataGridView.SelectedRows[0].Index;
-            Form form = null;
-            switch (cbTypeOpe.SelectedIndex)
+            Form form = cbTypeOpe.SelectedIndex switch
             {
-                case 5:
-                case 4:
-                case 3:
-                    //AnnuleOperation(row["id"].ToString());
-                    form = new DetailElementOperationForm(row["id"].ToString());
-                    break;
-                case 2:
-                    form = new DetailReglementForm(row["id"].ToString());
-                    break;
-                case 1:
-                    form = new DetailAppelDeFondForm(row["id"].ToString());
-                    break;
-                case 0:
-                    form = new DetailFactureForm(row["id"].ToString());
-                    break;
-            }
+                5 or 4 or 3 =>
+                    new DetailElementOperationForm(row["id"].ToString()),
+                2 => new DetailReglementForm(row["id"].ToString()),
+                1 => new DetailAppelDeFondForm(row["id"].ToString()),
+                0 => new DetailFactureForm(row["id"].ToString()),
+                _ => null
+            };
             if (form != null)
             {
                 form.ShowDialog();
@@ -403,7 +384,6 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
                     index--;
                 if ( index >= 0)
                     dataGridView.Rows[index].Selected = true;
-//                    dataGridView.SelectedRows[0].Index = index;
             }
         }
 
@@ -525,10 +505,7 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
                 if (row["base_repart"].ToString() == "80")
                     modifierNumeroLotToolStripMenuItem.Enabled = true;
             }
-            if (cbTypeOpe.SelectedIndex > 2)
-            {
-//                    genererLaFactureToolStripMenuItem.Enabled = true;
-            }
+
             if (dataGridView.SelectedRows.Count > 0)
             {
                 supprimerLesÉlémentsToolStripMenuItem.Enabled = true;

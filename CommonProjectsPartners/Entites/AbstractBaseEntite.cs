@@ -57,8 +57,7 @@ public abstract class AbstractBaseEntite : IAuditable
     }
     public virtual string GetInsertOrUdpateCommand(string schemaTable)
     {
-        var cmd = "";
-//            if (!"".Equals(id))
+        string cmd;
         if ( !isNew )
         {
             cmd = $"update {schemaTable} set ";
@@ -70,7 +69,7 @@ public abstract class AbstractBaseEntite : IAuditable
 
                 if (curr_value == null)
                 {
-                    if (curr_value!=old_value)
+                    if (old_value!=null)
                         cmd += $"{field.Name}=@{field.Name}, ";
 
                 }
@@ -147,12 +146,11 @@ public abstract class AbstractBaseEntite : IAuditable
                 if (curr_value == null)
                 {
                     if ( old_value != null )
-                        changes.Add(new AuditChange(field.Name, fieldupd.typeinfo, curr_value, old_value));
+                        changes.Add(new AuditChange(field.Name, fieldupd.typeinfo, null, old_value));
                 }
                 else
                 if (!curr_value.Equals(old_value))
                     changes.Add(new AuditChange(field.Name, fieldupd.typeinfo, curr_value, old_value));
-//                            field.GetValue(this), field.GetValue(old_entite)));
             }
         }
         return changes;
@@ -169,16 +167,13 @@ public class UpdateField
     public bool Updatable { get; set; }
     public FieldInfo fieldinfo;
     public string typeinfo ;
-    public UpdateField(string name, bool auditable, FieldInfo[] members, string type)
-    {
-        setValues(name, auditable,members);
-        typeinfo = type;
-    }
+
     public UpdateField(string name, bool auditable, FieldInfo[] members)
     {
         setValues(name, auditable,members);
     }
-    public void setValues(string name, bool auditable, FieldInfo[] members, bool updatable = true)
+
+    private void setValues(string name, bool auditable, FieldInfo[] members, bool updatable = true)
     {
         try
         {

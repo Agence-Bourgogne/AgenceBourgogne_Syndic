@@ -11,7 +11,7 @@ namespace EspaceSyndic.Formulaires.Immeubles;
 
 public partial class ListeImmeubleForm : Form
 {
-    public readonly ImmeubleController controller = new();
+    private readonly ImmeubleController controller = new();
     private bool bLoading;
     private readonly string regKey;
     public ListeImmeubleForm()
@@ -26,17 +26,13 @@ public partial class ListeImmeubleForm : Form
     private void FillDataGrid() 
     {
         bLoading = true;
-//            dataGridView.DataSource = controller.GetList();
-        if (ckActif.Checked)
-            dataGridView.DataSource = controller.GetList();
-        else
-            dataGridView.DataSource = controller.GetAllEntite();
+
+        dataGridView.DataSource = ckActif.Checked ? controller.GetList() : controller.GetAllEntite();
             
         if (dataGridView.DataSource != null)
         {
             var cols = dataGridView.Columns;
             cols["id"].Visible = false;
-//                cols["agence"].Visible = false;
             cols["audit_created"].Visible = false;
             cols["audit_created_by"].Visible = false;
             cols["audit_updated"].Visible = false;
@@ -61,8 +57,6 @@ public partial class ListeImmeubleForm : Form
             cols["soldefin"].HeaderText = "Solde Final";
             cols["comptebanque"].HeaderText = "N° Compte";
 
-
-
             ControlsWindows.ToTitleCase(cols);
             OrderColumns();
         }
@@ -71,7 +65,8 @@ public partial class ListeImmeubleForm : Form
         BtnSave.Enabled = false;
         bLoading = false;
     }
-    protected virtual void OrderColumns()
+
+    private void OrderColumns()
     {
         if (regKey == "")
             return;
@@ -103,7 +98,6 @@ public partial class ListeImmeubleForm : Form
     private void updateEditMode(bool bEdit)
     {
         dataGridView.AllowUserToAddRows = bEdit;
-//            dataGridView.AllowUserToDeleteRows = bEdit;
         dataGridView.ReadOnly = !bEdit;
         BtnSave.Enabled = bEdit;
     }
@@ -146,8 +140,6 @@ public partial class ListeImmeubleForm : Form
             form.ControlBox = true;
             form.Show();
 
-//                form.ShowDialog();
-//                dataGridView.DataSource = controller.GetList();
             FillDataGrid();
         }
         catch (Exception ex)
@@ -155,6 +147,7 @@ public partial class ListeImmeubleForm : Form
             MessageBox.Show(ex.Message);
         }
     }
+
     private void dataGridView_KeyPress(object sender, KeyPressEventArgs e)
     {
         if (Convert.ToInt16(e.KeyChar) == 32)
@@ -184,7 +177,7 @@ public partial class ListeImmeubleForm : Form
     private void btnFiltre_Click(object sender, EventArgs e)
     {
         var form = new FindImmeubleForm();
-        var source = new BindingSource();// (BindingSource)dataGridView.DataSource;
+        var source = new BindingSource();
         source.DataSource = dataGridView.DataSource;
         if (DialogResult.Cancel != form.ShowDialog())
         {
@@ -209,12 +202,10 @@ public partial class ListeImmeubleForm : Form
             if (regKey != "")
                 CommonRegistry.setRegistryValue(regKey, e.Column.Name, e.Column.DisplayIndex);
         }
-
     }
 
     private void ckActif_CheckedChanged(object sender, EventArgs e)
     {
         FillDataGrid();
     }
-
 }

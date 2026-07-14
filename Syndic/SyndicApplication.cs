@@ -13,16 +13,13 @@ namespace EspaceSyndic;
 internal static class SyndicApplication 
 {
     public const string CURRENT_APPLICATION = "syndic";
-    /// <summary>
-    /// Point d'entrée principal de l'application.
-    /// </summary>
+
     [STAThread]
     private static void Main()
     {
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
 
-        //BaseApplication.ComputerName = System.Windows.Forms.SystemInformation.ComputerName;
         CommonRegistry.setCurrentApp(CURRENT_APPLICATION);
         try
         {

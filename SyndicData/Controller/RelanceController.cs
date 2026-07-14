@@ -9,32 +9,23 @@ namespace SyndicData.Controller;
 
 public static class RelanceController
 {
-//        public static decimal[] montant_relance = new decimal[] { 0, (decimal)15.32, (decimal)51.07, (decimal)51.07 };
-//        public static string[] texte_relance = new string[] { "1er Rappel", "2eme Rappel", "Mise en demeure", "Mise en Demeure." };
-
     public static string getTexteRelance(int type_relance)
     {
-        switch ( type_relance )
+        return type_relance switch
         {
-            case 0 :
-                return ParametresDB.getParam1("RELANCE", "TEXTE RELANCE 1");
-            case 1:
-                return ParametresDB.getParam1("RELANCE", "TEXTE RELANCE 2");
-            default:
-                return ParametresDB.getParam1("RELANCE", "TEXTE RELANCE 3");
-        }
+            0 => ParametresDB.getParam1("RELANCE", "TEXTE RELANCE 1"),
+            1 => ParametresDB.getParam1("RELANCE", "TEXTE RELANCE 2"),
+            _ => ParametresDB.getParam1("RELANCE", "TEXTE RELANCE 3")
+        };
     }
     public static string getLibelleEcritureRelance(int type_relance)
     {
-        switch (type_relance)
+        return type_relance switch
         {
-            case 0:
-                return ParametresDB.getParam1("RELANCE", "ECRITURE RELANCE 1");
-            case 1:
-                return ParametresDB.getParam1("RELANCE", "ECRITURE RELANCE 2");
-            default:
-                return ParametresDB.getParam1("RELANCE", "ECRITURE RELANCE 3");
-        }
+            0 => ParametresDB.getParam1("RELANCE", "ECRITURE RELANCE 1"),
+            1 => ParametresDB.getParam1("RELANCE", "ECRITURE RELANCE 2"),
+            _ => ParametresDB.getParam1("RELANCE", "ECRITURE RELANCE 3")
+        };
     }
     public static NatureEntite getNatureRelance()
     {
@@ -48,22 +39,14 @@ public static class RelanceController
     }
     public static decimal getMontantRelance(int type_relance)
     {
-        var montant = "";
-        switch ( type_relance)
+        var montant = type_relance switch
         {
-            case 0:
-                montant = ParametresDB.getParam1("RELANCE", "FRAIS 1");
-                break;
-            case 1:
-                montant = ParametresDB.getParam1("RELANCE", "FRAIS 2");
-                break;
-            default:
-                montant = ParametresDB.getParam1("RELANCE", "FRAIS 3");
-                break;
-        }
+            0 => ParametresDB.getParam1("RELANCE", "FRAIS 1"),
+            1 => ParametresDB.getParam1("RELANCE", "FRAIS 2"),
+            _ => ParametresDB.getParam1("RELANCE", "FRAIS 3")
+        };
         return Convertir.ToDecimal(montant);
     }
-
 
     public static bool GenerateRelance(List<RelanceEntite>[] relances, DateTime dt)
     {

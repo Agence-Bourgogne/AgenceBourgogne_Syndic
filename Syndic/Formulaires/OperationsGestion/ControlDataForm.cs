@@ -401,7 +401,7 @@ public partial class ControlDataForm : Form
         Cursor.Current = Cursors.Default;
     }
 
-    private void AllImmeuble(string fileName)
+    private static void AllImmeuble(string fileName)
     {
         Cursor.Current = Cursors.WaitCursor;
 
@@ -496,26 +496,18 @@ public partial class ControlDataForm : Form
         {
             //DataRowView row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
             var row = dataGridView.SelectedRows[0];
-            Form form = null;
-            switch (cbType.SelectedIndex)
+            Form form = cbType.SelectedIndex switch
             {
-                case 5:
-                case 4:
-                case 3:
+                5 or 4 or 3 =>
                     //AnnuleOperation(row["id"].ToString());
-                    form = new DetailElementOperationForm(row.Cells["id"].Value.ToString());
-                    break;
-                case 1:
-                    form = new DetailReglementForm(row.Cells["id"].Value.ToString());
-                    break;
-                case 2:
-                    form = new DetailAppelDeFondForm(row.Cells["id"].Value.ToString());
-                    break;
-                case 0:
+                    new DetailElementOperationForm(row.Cells["id"].Value.ToString()),
+                1 => new DetailReglementForm(row.Cells["id"].Value.ToString()),
+                2 => new DetailAppelDeFondForm(row.Cells["id"].Value.ToString()),
+                0 =>
                     //Console.WriteLine(row.Cells["id"].Value.ToString());
-                    form = new DetailFactureForm(row.Cells["id"].Value.ToString());
-                    break;
-            }
+                    new DetailFactureForm(row.Cells["id"].Value.ToString()),
+                _ => null
+            };
 
             form?.ShowDialog();
             //FillD

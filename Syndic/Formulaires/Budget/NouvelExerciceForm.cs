@@ -10,7 +10,7 @@ namespace EspaceSyndic.Formulaires.Budget;
 
 public partial class NouvelExerciceForm : Form
 {
-    private readonly string immeuble_id = "";
+    private readonly string immeuble_id;
     public string exercice_id = "";
     public NouvelExerciceForm(string immeuble_id)
     {
@@ -52,7 +52,6 @@ public partial class NouvelExerciceForm : Form
     }
     private bool GenerateBudget()
     {
-//            NpgsqlConnection cnx= Database.Begin();
         var trx = Database.BeginTransaction();
         try
         {
@@ -93,7 +92,6 @@ public partial class NouvelExerciceForm : Form
                     throw new Exception("New budget");
                 }
             }
-            //this.exercice_id = budget.id;
 
             var controller = BudgetLigneController.getController();
 
@@ -144,7 +142,6 @@ public partial class NouvelExerciceForm : Form
                 var coeff = Convertir.ToDecimal(tbCoeff.Text);
                 foreach (DataRow row in prevu.Rows)
                 {
-                    //                        SaisieFactureEntite facture = new SaisieFactureEntite(row);
                     var budgetLigne = new BudgetLigneEntite();
                     var montant = (decimal)row["montant"];
                     budgetLigne.budget_id = budget.id;

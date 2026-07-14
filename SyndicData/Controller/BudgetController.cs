@@ -29,7 +29,7 @@ public class BudgetController : AbstractBaseController<BudgetEntite>
 
     public DataTable getViewBudgets( string immeuble_id, string exercice_id)
     {
-        string exercice_precedent_id = "", exercice_suivant_id = "", exercice_n_2_id = ""; ;
+        string exercice_precedent_id = "", exercice_suivant_id = "", exercice_n_2_id = "";
         var schema = getSchema();
         {
             var table = ExerciceComptableController.getController().getExercicePrecedent(exercice_id);
@@ -165,7 +165,7 @@ public class BudgetController : AbstractBaseController<BudgetEntite>
         return budgetPresent;
     }
 
-    public bool UpdateStatus(string budget_id, GlobalConstantes.StatutBudget new_statut)
+    public void UpdateStatus(string budget_id, GlobalConstantes.StatutBudget new_statut)
     {
         var rc = false;
 
@@ -212,7 +212,6 @@ public class BudgetController : AbstractBaseController<BudgetEntite>
         {
             trx.Rollback();
             MessageBox.Show(ex.Message);
-        }            
-        return rc;
+        }
     }
 }

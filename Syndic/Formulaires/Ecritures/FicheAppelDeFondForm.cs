@@ -19,10 +19,10 @@ namespace EspaceSyndic.Formulaires.Ecritures;
 
 public partial class FicheAppelDeFondForm : Form
 {
-    protected ImmeubleEntite immeuble;
-    protected NatureEntite nature;
-    protected AutoCompleteStringCollection baseAuto = new();
-    protected bool bLoadEcriture;
+    private ImmeubleEntite immeuble;
+    private NatureEntite nature;
+    private AutoCompleteStringCollection baseAuto = new();
+    private bool bLoadEcriture;
     private readonly HelpForm infoForm = new("aide_appelfond");
     private readonly InfoKeyHelpForm infoKey = new("aide_clavier_appelfond");
     private readonly string TitreForm;
@@ -36,7 +36,6 @@ public partial class FicheAppelDeFondForm : Form
     private void Form_Load(object sender, EventArgs e)
     {
         RepartitionControlsWindows.initGridRepartition(dataGridView);
-        //            EnableSaisieEcriture(false);
         var dt = DateTime.Now;
         tbDateCreation.Text = dt.ToShortDateString();
 
@@ -49,9 +48,7 @@ public partial class FicheAppelDeFondForm : Form
         ControlsWindows.setTooltip(tbComment, "Libellé Appel de Fond");
         FillComboLiasse();
         tbRefImmeuble.Focus();
-//            this.MinimumSize = this.MaximumSize = this.Size;
         btnEnter.Width = 0;
-        // TODO Paramétrer
         lblDiff.Visible = tbDiff.Visible = lblTotal.Visible = tbTotal.Visible = lblLiasse.Visible = tbMontantLiasse.Visible = false;
         tbNature.Text = "145";
         tbNature_Validating(null, null);
@@ -65,7 +62,8 @@ public partial class FicheAppelDeFondForm : Form
         cbLiasse.Enabled = true;
         cbLiasse_SelectedIndexChanged(null, null);
     }
-    protected void EnableSaveAction()
+
+    private void EnableSaveAction()
     {
         var enable = true;
 
@@ -77,7 +75,8 @@ public partial class FicheAppelDeFondForm : Form
         btnAdd.Enabled = enable;
         btnSave.Enabled = dataGridViewEcriture.Rows.Count > 0;
     }
-    protected void cbLiasse_SelectedIndexChanged(object sender, EventArgs e)
+
+    private void cbLiasse_SelectedIndexChanged(object sender, EventArgs e)
     {
         if (!cbLiasse.Enabled) return;
         var row = (DataRowView)cbLiasse.SelectedItem;
@@ -109,12 +108,13 @@ public partial class FicheAppelDeFondForm : Form
         }
     }
 
-    protected void tbTotal_TextChanged(object sender, EventArgs e)
+    private void tbTotal_TextChanged(object sender, EventArgs e)
     {
         var total = Convertir.ToFloat(tbTotal.Text);
         EnableSaisieEcriture(total != 0);
     }
-    protected virtual void EnableSaisieEcriture(bool saisie)
+
+    private void EnableSaisieEcriture(bool saisie)
     {
         tbRefImmeuble.Enabled = saisie;
         tbDateCreation.Enabled = saisie;
@@ -122,11 +122,13 @@ public partial class FicheAppelDeFondForm : Form
         tbMontant.Enabled = saisie;
         tbBase.Enabled = immeuble != null;
     }
-    public virtual GlobalConstantes.TypeOperation getTypeEcriture()
+
+    private GlobalConstantes.TypeOperation getTypeEcriture()
     {
         return GlobalConstantes.TypeOperation.AppelDeFond;
     }
-    protected void FillDatagridEcritures()
+
+    private void FillDatagridEcritures()
     {
         bLoadEcriture = true;
         var liasse_id = cbLiasse.SelectedValue.ToString();
@@ -147,15 +149,11 @@ public partial class FicheAppelDeFondForm : Form
             cols["nature"].Visible = false;
                 
             cols["Immeuble"].MinimumWidth = cols["Immeuble"].Width = 220;
-            //cols["Nature"].MinimumWidth = cols["Nature"].Width = 180;
             cols["Libellé Ecriture"].MinimumWidth = cols["Libellé Ecriture"].Width = 240;
             cols["base"].Width = 40;
             cols["lot"].Width = 40;
             cols["montant"].Width = 60;
             cols["Date Ecriture"].Width = 80;
-            //if (source.Rows.Count < 1)
-            //else
-            //    dataGridViewEcriture.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
         }
         float current = 0;
         foreach (DataRow row in source.Rows)
@@ -301,10 +299,9 @@ public partial class FicheAppelDeFondForm : Form
 
     private void tbMontantFac_TextChanged(object sender, EventArgs e)
     {
-        float montant = 0;
         if (tbMontant.Text != "")
         {
-            montant = Convertir.ToFloat(tbMontant.Text.Replace(".", ","));
+            var montant = Convertir.ToFloat(tbMontant.Text.Replace(".", ","));
             if (montant == 0)
             {
                 tbMontant.BackColor = Color.Red;
@@ -479,7 +476,6 @@ public partial class FicheAppelDeFondForm : Form
         LiasseEntite liasse = null;
         if (LiasseEntite.NOUVELLE_ID.Equals(liasse_id))
         {
-            //LiasseEntite liasse = new LiasseEntite();
             liasse = new LiasseEntite
             {
                 isNew = true,
@@ -488,7 +484,6 @@ public partial class FicheAppelDeFondForm : Form
                 statut = (int)GlobalConstantes.StatutOperation.Brouillon,
                 reference = $"{BaseApplication.ComputerName} pour {immeuble.reference} du {DateTime.Now}"
             };
-            //LiasseController.getController().InsertOrUpdate(liasse);
             liasse_id = liasse.id = liasse.get_uuid();
             bNewLiasse = true;
         }
@@ -545,7 +540,6 @@ public partial class FicheAppelDeFondForm : Form
 
     private void FicheAppelDeFondForm_FormClosing(object sender, FormClosingEventArgs e)
     {
-//            infoForm.Hide();
         e.Cancel = false;
     }
 

@@ -15,10 +15,6 @@ public class BudgetEntite : AbstractBaseEntite
         setValues(null);
 
     }
-    public BudgetEntite(DataRow row)
-    {
-        setValues(row);
-    }
 
     public override void setValues(DataRow row)
     {

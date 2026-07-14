@@ -116,7 +116,7 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
         return table;
     }
 
-    public string listToCotedString(List<string> list)
+    private static string listToCotedString(List<string> list)
     {
         var strList = "";
 
@@ -135,7 +135,6 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
         cmd += " join ( select  groupe, nom, iparam_1 from parametres where groupe='FACTURE_REGLEMENT' ) p on coalesce(f.reglement, 0 ) = iparam_1 ";
 
         cmd += $" where liasse_id in ({listToCotedString(liasses)}) ";
-//            cmd += " and e.statut = @statut ";
         cmd += " group by 1, 2, 3, 4 order by 2 ";
 
         return getResultSQL(cmd);
@@ -438,9 +437,8 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
         }
         return rc;
     }
-    public bool UpdateSaisieAndLot(SaisieFactureEntite saisie, string immeuble_id, string refLot, decimal montant)
+    public void UpdateSaisieAndLot(SaisieFactureEntite saisie, string immeuble_id, string refLot, decimal montant)
     {
-        var rc = false;
         OperationController.getController().getNumeroLotFromSaisie(saisie.id);
         var lot = LotDescriptionController.getController().getLotFromReference(immeuble_id, refLot);
         if (lot == null)
@@ -486,7 +484,6 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
                     throw new Exception("Creation repartition Individuelle");
 
                 trx.Commit();
-                rc = true;
             }
             catch (Exception ex)
             {
@@ -494,18 +491,15 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
                 MessageBox.Show(ex.Message);
             }
         }
-        return rc;
     }
 
-    public bool RecalcRepartitionBilan(SaisieFactureEntite entite, bool bUseTransaction)
+    public static void RecalcRepartitionBilan(SaisieFactureEntite entite, bool bUseTransaction)
     {
-        var rc = false;
         var repart = LotDescriptionController.getController().getListeLot(entite.immeuble_id);
         var numero_ligne = 0;
         var dtDeb= entite.date_reference;
         var exercice = ExerciceComptableController.getController().getExerciceFromDate(entite.immeuble_id, dtDeb);
-        if (exercice == null)
-            return false;
+        if (exercice == null) return;
         NpgsqlTransaction trx = null;
         if (bUseTransaction)
             trx = Database.BeginTransaction();
@@ -550,7 +544,7 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
                         throw new Exception("Creation Operation");
                 }
             }
-            rc = true;
+
             trx?.Commit();
         }
         catch (Exception ex)
@@ -558,16 +552,12 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
             trx?.Rollback();
             MessageBox.Show(ex.Message);
         }
-        return rc;
     }
-    public bool RecalcRepartition(SaisieFactureEntite entite, bool bUseTransaction)
+    public void RecalcRepartition(SaisieFactureEntite entite, bool bUseTransaction)
     {
-        var rc = false;
-        if (entite.base_repart == "0")
-            return false;
+        if (entite.base_repart == "0") return;
         var repartImm = ImmeubleRepartitionController.getController().getRepartFromImmeubleBase(entite.immeuble_id, entite.base_repart);
-        if (entite.base_repart == "0")
-            return false;
+        if (entite.base_repart == "0") return;
         var repart = LotRepartitionController.getController().GetLotsRepartitionFromBase(entite.immeuble_id, entite.base_repart);
         DataTable operations;
 
@@ -577,8 +567,7 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
             operations = OperationController.getController().getNativeSaisieOperations(entite.id);
 
         decimal valeur_imm = repartImm.valeur;
-        if (valeur_imm == 0)
-            return false;
+        if (valeur_imm == 0) return;
         var montant = entite.montant;
 
         NpgsqlTransaction trx = null;
@@ -641,7 +630,6 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
                     throw new Exception("Mise à jour Facture");
             }
 
-            rc = true;
             trx?.Commit();
         }
         catch (Exception ex)
@@ -649,6 +637,5 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
             trx?.Rollback();
             MessageBox.Show(ex.Message);
         }
-        return rc;
     }
 }

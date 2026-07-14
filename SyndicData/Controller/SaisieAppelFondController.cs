@@ -258,9 +258,8 @@ public class SaisieAppelFondController :AbstractBaseController<SaisieAppelFondEn
 
         return rc;
     }
-    public bool UpdateSaisieAndLot( SaisieAppelFondEntite saisie, string immeuble_id, string refLot, decimal montant)
+    public void UpdateSaisieAndLot(SaisieAppelFondEntite saisie, string immeuble_id, string refLot, decimal montant)
     {
-        var rc=false;
         OperationController.getController().getNumeroLotFromSaisie(saisie.id);
         var lot = LotDescriptionController.getController().getLotFromReference(immeuble_id, refLot);
         if (lot == null)
@@ -307,36 +306,27 @@ public class SaisieAppelFondController :AbstractBaseController<SaisieAppelFondEn
                     throw new Exception("Creation repartition Individuelle");
 
                 trx.Commit();
-                rc = true;
             }
             catch (Exception ex)
             {
                 trx.Rollback();
                 MessageBox.Show(ex.Message);
             }
-        } 
-        return rc;
+        }
     }
-    public bool RecalcRepartition(SaisieAppelFondEntite entite, bool bUseTransaction)
+    public void RecalcRepartition(SaisieAppelFondEntite entite, bool bUseTransaction)
     {
-        var rc = false;
-
         var repartImm = ImmeubleRepartitionController.getController().getRepartFromImmeubleBase(entite.immeuble_id, entite.base_repart);
         var repart = LotRepartitionController.getController().GetLotsRepartitionFromBase(entite.immeuble_id, entite.base_repart);
         DataTable operations;
 
-        //if (entite.liasse_id.StartsWith("Reprise"))
-        //    operations = OperationController.getController().getNativeAppelDeFondOperations(entite);
-        //else
-        //    operations = OperationController.getController().getNativeSaisieOperations(entite.id);
         if (entite.liasse_id.StartsWith("Reprise"))
             operations = OperationController.getController().getAppelDeFondOperations(entite);
         else
             operations = OperationController.getController().getSaisieOperations(entite.id);
 
         decimal valeur_imm = repartImm.valeur;
-        if (valeur_imm == 0)
-            return false ;
+        if (valeur_imm == 0) return;
         var montant = entite.montant;
 
         NpgsqlTransaction trx  = null; 
@@ -380,7 +370,7 @@ public class SaisieAppelFondController :AbstractBaseController<SaisieAppelFondEn
                 if (!InsertOrUpdate(entite))
                     throw new Exception("Mise à jour Appel de Fond");
             }
-            rc = true;
+
             trx?.Commit();
         }
         catch (Exception ex)
@@ -388,7 +378,6 @@ public class SaisieAppelFondController :AbstractBaseController<SaisieAppelFondEn
             trx?.Rollback();
             MessageBox.Show(ex.Message);
         }
-        return rc;
     }
     public DataTable getSaisieAppel(OperationEntite operation)
     {

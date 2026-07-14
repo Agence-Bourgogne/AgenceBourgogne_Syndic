@@ -358,15 +358,11 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
                     break;
             }
         }
-        decimal soldes = 0, reglement = 0, releve = 0, appel = 0;
+
         foreach (var etat in finance)
         {
             var cumul = etat.solde + etat.reglement + etat.releve;
 
-            soldes += etat.solde;
-            reglement += etat.reglement;
-            releve += etat.releve;
-            appel += etat.appel;
             if (cumul < 0)
                 sommes += cumul;
             else

@@ -5,13 +5,9 @@ using System.Windows.Forms;
 
 namespace CommonProjectsPartners.Utils;
 
-public delegate void SaveEventHandler(object sender, EventArgs e);
-public delegate void LoadEventHandler(object sender, EventArgs e);
 public enum ScanMethod { WIA=0, TWAIN=1}
 public partial class ScanUtilForm : Form
 {
-    public event SaveEventHandler SavePicture;
-    public event LoadEventHandler LoadPicture;
     private ScanMethod scanMethod;
 
     public ScanUtilForm()
@@ -21,27 +17,17 @@ public partial class ScanUtilForm : Form
 
     private void enregistrerToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        if (SavePicture != null)
-            SavePicture(this, e);
-        else
-        {
-            var fd = new SaveFileDialog();
-            if (fd.ShowDialog() == DialogResult.OK)
-                pictureBox1.Image.Save(fd.FileName);
-        }
+        var fd = new SaveFileDialog();
+        if (fd.ShowDialog() == DialogResult.OK)
+            pictureBox1.Image.Save(fd.FileName);
     }
 
     private void ourvirToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        if (LoadPicture != null)
-            LoadPicture(this, e);
-        else
-        {
-            var fd = new OpenFileDialog();
+        var fd = new OpenFileDialog();
 
-            if (fd.ShowDialog() == DialogResult.OK)
-                pictureBox1.ImageLocation = fd.FileName;
-        }
+        if (fd.ShowDialog() == DialogResult.OK)
+            pictureBox1.ImageLocation = fd.FileName;
     }
     private void DataTransferred(object sender, EventArgs e)
     {

@@ -51,7 +51,7 @@ public partial class FicheFactureForm : Form
             Height = height;
     }
 
-    protected virtual void OrderColumns()
+    private void OrderColumns()
     {
         foreach (DataGridViewColumn col in dataGridViewEcriture.Columns)
         {
@@ -209,8 +209,6 @@ public partial class FicheFactureForm : Form
 
     private void tbFournisseur_Validating(object sender, CancelEventArgs e)
     {
-//            tbCommentaireFournisseur.Visible = tbFournisseur.Text == fournisseur_divers;
-
         fournisseur = FournisseurController.getController().getEntiteFromField("reference", tbFournisseur.Text);
         if (fournisseur != null)
         {
@@ -337,7 +335,8 @@ public partial class FicheFactureForm : Form
         else
             saveEcriture();
     }
-    public virtual GlobalConstantes.TypeOperation getTypeEcriture()
+
+    private GlobalConstantes.TypeOperation getTypeEcriture()
     {
         return GlobalConstantes.TypeOperation.Facture;
     }
@@ -483,11 +482,9 @@ public partial class FicheFactureForm : Form
                 statut = (int)GlobalConstantes.StatutOperation.Brouillon,
                 reference = $"{BaseApplication.ComputerName} du {DateTime.Now}"
             };
-            //                LiasseController.getController().InsertOrUpdate(liasse);
             liasse_id = liasse.id = liasse.get_uuid();
             liasse.statut = (int)GlobalConstantes.StatutOperation.Brouillon;
             bNewLiasse = true;
-//                selectComboLiasse(liasse.id);
         }
 
         numero_operation = SaisieFactureController.getController().getNextNumeroOperation(Convert.ToDateTime(tbDateCreation.Text));
@@ -516,7 +513,6 @@ public partial class FicheFactureForm : Form
                     var multiCpt = LotRepartitionController.getController().GetLotRepartitionHaveMultiCompteur(immeuble.id, saisie.base_repart);
 
                     if (ParametresDB.IsBaseCompteur(tbBase.Text) && multiCpt != null && multiCpt.Rows.Count > 0)
-//                        if (false)
                     {
                         var form = new FicheFactureRepartitionIndividuelleMultiCpt();
                         form.saisie = saisie;
@@ -623,7 +619,6 @@ public partial class FicheFactureForm : Form
                 {
                     var facture = SaisieFactureController.getController().getEntiteById(row["id"].ToString());
                     SaisieFactureController.getController().DeleteEntite(facture);
-                    //SaisieFactureController.getController().deleteEntite(row["id"].ToString());
                 }
 
                 FillDatagridEcritures();
@@ -638,7 +633,6 @@ public partial class FicheFactureForm : Form
         if (row != null)
             if (row.Row.RowState != DataRowState.Detached)
             {
-//                    DataRowView row = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
                 var saisie = SaisieFactureController.getController().getEntiteById(row["id"].ToString());
                 var multiCpt = LotRepartitionController.getController().GetLotRepartitionHaveMultiCompteur(immeuble.id, saisie.base_repart);
 
@@ -695,8 +689,7 @@ public partial class FicheFactureForm : Form
                     lblFournisseur_Click(null, null);
                 if (sender.Equals(tbLot))
                     lblLot_Click(null, null);
-            }
-//            Console.WriteLine(e.KeyChar);                
+            }       
     }
 
     private void ShowOldLot()
@@ -730,18 +723,12 @@ public partial class FicheFactureForm : Form
                     tbFournisseur.Text = row["ref_fournisseur"].ToString();
                     tbMontant.Text = row["montant"].ToString();
                     tbComment.Text = row["libelle"].ToString();
-//                        tbCommentaireFournisseur.Text = row["fournisseur"].ToString();
                     tbCommentaireFournisseur.Text = row["comment_fournisseur"].ToString();
                     tbRefImmeuble_Validating(null, null);
                     tbNature_Validating(null, null);
                     tbFournisseur_Validating(null, null);
                     cbReglement.SelectedValue = Convertir.ToInt(row["reglement"]);
 
-
-                    //if (tbBase.Text == "80")
-                    //{
-                    //    tbLot.Text = OperationController.getController().getNumeroLotFromSaisie(row["id"].ToString());
-                    //}
                     ShowOldLot();
                     btnAdd.Text = "&Modifier";
                     tbBase_TextChanged(null, null);
@@ -800,7 +787,7 @@ public partial class FicheFactureForm : Form
                 else
                 {
                     var form = new FicheFactureRepartitionIndividuelle();
-                    form.saisie = saisie; //SaisieFactureController.getController().getEntiteById(row["id"].ToString());
+                    form.saisie = saisie;
                     form.immeuble = ImmeubleController.getController().getEntiteById(row["immeuble_id"].ToString());
                     form.ShowDialog();
 
@@ -898,5 +885,4 @@ public partial class FicheFactureForm : Form
             FillComboLiasse();
         }
     }
-
 }

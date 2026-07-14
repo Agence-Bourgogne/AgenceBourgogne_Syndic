@@ -173,7 +173,7 @@ public partial class UtilisateurFicheForm : Form
     private void BaseFicheForm_FormClosing(object sender, FormClosingEventArgs e)
     {
         if (saveForm(true, false) == DialogResult.Cancel)
-            e.Cancel = true; ;
+            e.Cancel = true;
     }
 
     private void UtilisateurFicheForm_Load(object sender, EventArgs e)

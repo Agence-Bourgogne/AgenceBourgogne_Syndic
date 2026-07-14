@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
@@ -334,7 +333,7 @@ public partial class ImprimerConvocationForm : Form
         reportViewer1.RefreshReport();
     }
 
-    private List<string[]> GetTablePresence(DataTable table)
+    private static List<string[]> GetTablePresence(DataTable table)
     {
         var datas =new List<string[]>();
 
@@ -345,14 +344,14 @@ public partial class ImprimerConvocationForm : Form
                 $"{row["Civilite"]} {row["coproprietaire"]}\r\n{row["adressecoproprietaire"]}\r\n{row["codepostalcoproprietaire"]} {row["villecoproprietaire"]}";
             data[1] = row["referencecoproprietaire"].ToString();
             data[2] = "";
-            data[3] = row["valeur"].ToString();// +"/ " + repart.valeur;
+            data[3] = row["valeur"].ToString();
             datas.Add(data);
         }
 
         return datas;
     }
 
-    private string GetDocOrdreDuJour()
+    private static string GetDocOrdreDuJour()
     {
         var dlg = new OpenFileDialog();
         dlg.Filter = "Document Word (*.docx)|*.docx|Tous les fichiers|*.*";

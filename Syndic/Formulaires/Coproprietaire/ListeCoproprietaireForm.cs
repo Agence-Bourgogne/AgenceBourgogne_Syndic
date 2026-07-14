@@ -13,7 +13,7 @@ namespace EspaceSyndic.Formulaires.Coproprietaire;
 
 public partial class ListeCoproprietaireForm : Form
 {
-    public readonly CoproprietaireController controller = new();
+    private readonly CoproprietaireController controller = new();
     private readonly string regKey;
     private bool bLoading;
     public ListeCoproprietaireForm()
@@ -28,10 +28,9 @@ public partial class ListeCoproprietaireForm : Form
     private void FillDataGrid()
     {
         bLoading = true;
-        if (ckActif.Checked)
-            dataGridView.DataSource = controller.GetListCopro();
-        else
-            dataGridView.DataSource = controller.GetListCopro(false);
+
+        dataGridView.DataSource = ckActif.Checked ? controller.GetListCopro() : controller.GetListCopro(false);
+
         if (dataGridView.DataSource != null)
         {
             var cols = dataGridView.Columns;
@@ -73,7 +72,7 @@ public partial class ListeCoproprietaireForm : Form
         bLoading = false;
     }
 
-    protected virtual void OrderColumns()
+    private void OrderColumns()
     {
         if (regKey == "")
             return;
@@ -110,7 +109,6 @@ public partial class ListeCoproprietaireForm : Form
     private void updateEditMode(bool bEdit)
     {
         dataGridView.AllowUserToAddRows = bEdit;
-        //            dataGridView.AllowUserToDeleteRows = bEdit;
         dataGridView.ReadOnly = !bEdit;
         BtnSave.Enabled = bEdit;
     }
@@ -144,14 +142,12 @@ public partial class ListeCoproprietaireForm : Form
             form.entite = entite;
             if (!"".Equals(entite.id))
                 form.entite = controller.getEntiteById(entite.id);
-            //form.ShowDialog();
 
             form.StartPosition = FormStartPosition.CenterScreen;
             form.Icon = Icon;
             form.ControlBox = true;
             form.Show();
 
-//                dataGridView.DataSource = controller.GetList();
             FillDataGrid();
         }
         catch (Exception ex)
@@ -191,7 +187,6 @@ public partial class ListeCoproprietaireForm : Form
         
     private void btnExport_Click(object sender, EventArgs e)
     {
-
         var type = (int) CommonRegistry.getRegistryValue("export_copro", "type", 0);
             
         var table = CoproprietaireController.getController().getListeCoproForExport(type == 1);
@@ -222,23 +217,13 @@ public partial class ListeCoproprietaireForm : Form
     private void btnFiltre_Click(object sender, EventArgs e)
     {
         var form = new FindCoproprietaireForm();
-        var source = new BindingSource();// (BindingSource)dataGridView.DataSource;
+        var source = new BindingSource();
         source.DataSource = dataGridView.DataSource;
         if (DialogResult.Cancel != form.ShowDialog())
         {
             var fiche = new FicheCoproprietaireForm();
             fiche.entite = controller.getEntiteFromField("reference", form.reference);
             fiche.ShowDialog();
-
-            //int action = (int) CommonRegistry.getRegistryValue("Parametres" ,"ActionFiltre", 0);
-            //if ( action == 0)
-            //    source.Filter = String.Format("reference = '{0}'", form.reference);  //form.filter;
-            //else
-            //{
-            //    FicheCoproprietaireForm fiche = new FicheCoproprietaireForm();
-            //    fiche.entite = controller.getEntiteFromField("reference", form.reference);
-            //    fiche.ShowDialog();
-            //}
         }
         else
             source.Filter = "";
@@ -251,7 +236,6 @@ public partial class ListeCoproprietaireForm : Form
             if (regKey != "")
                 CommonRegistry.setRegistryValue(regKey, e.Column.Name, e.Column.DisplayIndex);
         }
-
     }
         
     private void ckActif_CheckedChanged(object sender, EventArgs e)

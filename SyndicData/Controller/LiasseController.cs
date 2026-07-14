@@ -41,18 +41,15 @@ public class LiasseController : AbstractBaseController<LiasseEntite>
                 var row = table.NewRow();
                 row["id"] = LiasseEntite.NOUVELLE_ID;
                 row["reference"] = LiasseEntite.NOUVELLE_DESI;
-                switch (type_ecriture)
+                row["montant"] = type_ecriture switch
                 {
-                    case GlobalConstantes.TypeOperation.Facture:
-                        row["montant"] = ParametresDB.getParam1("MONTANT_DEFAULT", "ECRITURE");
-                        break;
-                    case GlobalConstantes.TypeOperation.AppelDeFond:
-                        row["montant"] = ParametresDB.getParam1("MONTANT_DEFAULT", "APPEL_FOND");
-                        break;
-                    case GlobalConstantes.TypeOperation.Tresorerie:
-                        row["montant"] = ParametresDB.getParam1("MONTANT_DEFAULT", "TRESORERIE");
-                        break;
-                }
+                    GlobalConstantes.TypeOperation.Facture => ParametresDB.getParam1("MONTANT_DEFAULT", "ECRITURE"),
+                    GlobalConstantes.TypeOperation.AppelDeFond => ParametresDB.getParam1("MONTANT_DEFAULT",
+                        "APPEL_FOND"),
+                    GlobalConstantes.TypeOperation.Tresorerie =>
+                        ParametresDB.getParam1("MONTANT_DEFAULT", "TRESORERIE"),
+                    _ => row["montant"]
+                };
                 row["type_ecriture"] = type_ecriture;
                 table.Rows.InsertAt(row, 0);
             }

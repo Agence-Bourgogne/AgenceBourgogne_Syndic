@@ -103,7 +103,6 @@ public partial class ImprimerAppelDeFondForm : Form
             new("TexteDate", immeuble.texte_date)
         };
         reportViewer1.LocalReport.SetParameters(parameters);
-        // reportViewer1.LocalReport.DataSources.Clear();
         immeubleSource.DataSource = ImmeubleController.getController().GetDescriptionCoproprietairesImmeubleAF(immeuble.id, num_lot, false, saisie);
         immeubleSource.Filter = "";
         immeublecoproBindingSource.DataSource = immeubleSource;
@@ -267,8 +266,6 @@ public partial class ImprimerAppelDeFondForm : Form
         var dlg = new ExportCopro();
         try
         {
-            //string serveur = SyndicData.Common.ParametresDB.getParam1("SERVEUR", "ADDRESSE");
-            //ServiceReference.ServiceClient sc = new ServiceReference.ServiceClient("BasicHttpBinding_IService", serveur);
             dlg.Show(this);
             dlg.Activate();
             if (!string.IsNullOrEmpty(tbLot.Text) && lots.Exists(x => x.numero_lot.ToString() == tbLot.Text))
@@ -287,7 +284,6 @@ public partial class ImprimerAppelDeFondForm : Form
             }
             else
             {
-                //  CreateReport("");
                 foreach (var lot in lots)
                 {
                     if (lot != null && lot.Coproprietaire != null)

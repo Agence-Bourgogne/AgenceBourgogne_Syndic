@@ -25,10 +25,7 @@ public class FournisseurEntite : AbstractBaseEntite
         id = "";
         setValues(null);
     }
-    public FournisseurEntite(DataRow data)
-    {
-        setValues(data);
-    }
+
     public override void setValues(DataRow row)
     {
         var members = GetType().GetFields();

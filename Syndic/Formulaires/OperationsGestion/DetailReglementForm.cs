@@ -18,8 +18,9 @@ public partial class DetailReglementForm : DetailOperationForm
     private ImmeubleEntite immeuble;
 
     private SaisieReglementEntite entite;
-//        CoproprietaireEntite coproprietaire;
-private bool bInitialized;
+
+    private bool bInitialized;
+
     public DetailReglementForm()
     {
         InitializeComponent();
@@ -38,13 +39,9 @@ private bool bInitialized;
         tbBase.Visible = false;
 
 
-        var bEnabled = entite.statut <= (int)GlobalConstantes.StatutOperation.Valide;//&& !facture.liasse_id.StartsWith("Reprise");
-        if (BaseApplication.userConnected.reference == "GVI")
-        {
-            bEnabled = true;
-            //lblBase.Visible = true;
-            //tbBase.Visible = true;
-        }
+        var bEnabled = entite.statut <= (int)GlobalConstantes.StatutOperation.Valide 
+                       || BaseApplication.userConnected.reference == "GVI";
+
         tbCommentaireFournisseur.Enabled = false;
         ControlsWindows.setTooltip(tbComment, "Libellé Ecriture");
         ControlsWindows.setTooltip(tbCommentaireFournisseur, "Information Fournisseur");
@@ -52,9 +49,9 @@ private bool bInitialized;
         btnValid.Enabled = bEnabled;
 
         fillFormFromMaster();
-        //          tbMontant.Enabled = true;
     }
-    protected virtual void fillFormFromMaster()
+
+    private void fillFormFromMaster()
     {
         immeuble = ImmeubleController.getController().getEntiteById(entite.immeuble_id);
         nature = NatureController.getController().getEntiteById(entite.nature_id);
@@ -81,13 +78,12 @@ private bool bInitialized;
         tbDateCreation.Text = entite.date_reference.ToShortDateString();
         FillDataGridView();
     }
-    protected virtual void FillDataGridView()
+
+    private void FillDataGridView()
     {
-        DataTable table;
-        if (entite.liasse_id.StartsWith("Reprise"))
-            table = OperationController.getController().getReglementOperations(entite);
-        else
-            table = OperationController.getController().getSaisieOperations(entite.id);
+        var table = entite.liasse_id.StartsWith("Reprise") 
+            ? OperationController.getController().getReglementOperations(entite) 
+            : OperationController.getController().getSaisieOperations(entite.id);
 
         dataGridView.DataSource = table;
         if (BaseApplication.userConnected.reference == "GVI")
@@ -111,17 +107,15 @@ private bool bInitialized;
         cols["saisie_id"].Visible = false;
         dataGridView.ClearSelection();
         setRowIndicators();
-//            tbMontant.Enabled = dataGridView.Rows.Count == 1;
         bInitialized = true;
         if (dataGridView.Rows.Count > 0 )
             dataGridView.Rows[0].Selected = true;
     }
+
     protected override void DeleteEntite()
     {
         if (DialogResult.Yes == MessageBox.Show("L'annulation d'un règlement et de ses éléments est irréversible\nVoulez vous continuer ?", "Attention", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
         {
-            //if (entite.liasse_id.StartsWith("Reprise"))
-            //    ValidModification();
             if (SaisieReglementController.getController().AnnuleElement(entite))
                 FillDataGridView();
         }
@@ -179,7 +173,6 @@ private bool bInitialized;
                 entite.comptebanque = immeuble.comptebanque;
 
 
-                //entite.banque = coproprietaire.codecomp;
                 entite.emetteur = coproprietaire.nomcomp;
                 if (entite.emetteur == "")
                     entite.emetteur = coproprietaire.nom;
@@ -188,13 +181,10 @@ private bool bInitialized;
                 if (table != null && table.Rows.Count > 0)
                 {
                     operation = OperationController.getController().getEntiteById(table.Rows[0]["id"].ToString());
-//                        operation = new OperationEntite(table.Rows[0]);
                     operation.setValue(entite);
                 }
                 else
                     operation = new OperationEntite(entite);
-                //operation.debit = montant < 0 ? montant * (decimal)(-1.0) : (decimal)0.0;
-                //operation.credit = montant > 0 ? montant : (decimal)0.0;
                 operation.lot_id = lot.id;
                 operation.coproprietaire_id = coproprietaire.id;
 
@@ -235,7 +225,6 @@ private bool bInitialized;
                 tbCopro.Text = copro.reference;
                 tbLibCopro.Text = $"{copro.nom.Trim()} {copro.prenom}";
             }
-            //Console.WriteLine("dataGridView_SelectionChanged");
         }
     }
 
@@ -246,7 +235,6 @@ private bool bInitialized;
         if ( lot != null )
         {
             var copro = CoproprietaireController.getController().getEntiteById(lot.coproprietaire_id);
-//                    tbLot.Text = lot.numero_lot.ToString();
             tbCopro.Text = copro.reference;
             tbLibCopro.Text = $"{copro.nom.Trim()} {copro.prenom}";
         }
@@ -258,7 +246,6 @@ private bool bInitialized;
         if (immeuble != null)
         {
             tbRefImmeuble.BackColor = Color.White;
-//                tbBase.Enabled = true;
 
         }
         else
@@ -266,7 +253,6 @@ private bool bInitialized;
             if (!"".Equals(tbRefImmeuble.Text))
                 tbRefImmeuble.BackColor = Color.Red;
             tbBase.Text = "";
-//                tbBase.Enabled = false;
         }
             
     }
@@ -274,13 +260,7 @@ private bool bInitialized;
     private void tbNature_Validating(object sender, CancelEventArgs e)
     {
         var nature = NatureController.getController().getEntiteFromField("reference", tbNature.Text);
-        if (nature != null)
-        {
-            tbLibNature.Text = nature.nom;
-        }
-        else
-            tbLibNature.Text = "";
-            
+        tbLibNature.Text = nature != null ? nature.nom : "";
     }
     private void supprimerLélémentToolStripMenuItem_Click(object sender, EventArgs e)
     {
@@ -342,6 +322,5 @@ private bool bInitialized;
             }
             FillDataGridView();
         }
-
     }
 }

@@ -30,7 +30,6 @@ public class Dal : IDal
                 user.Code = CodeUser;
                 user.Password = password;
                 user.audit_updated = DateTime.Now;
-//                    bdd.Users.Add(new UserEntitie { Code = CodeUser, Password = password });
                 bdd.SaveChanges();
                 msg = "0";
             }
@@ -41,7 +40,6 @@ public class Dal : IDal
         }
         else
             msg = "Code utilisateur in  existant";
-        //            if ( bdd.User)
         return msg;
     }
     public string CreateUser(string CodeUser, string password = "")
@@ -65,7 +63,6 @@ public class Dal : IDal
         }
         else
             msg = "Code utilisateur existant";
-//            if ( bdd.User)
         return msg;
     }
 
@@ -128,7 +125,7 @@ public class Dal : IDal
 
         if (!string.IsNullOrEmpty(immeuble_id) && !string.IsNullOrEmpty(copro_id))
         {
-            return bdd.Documents.Where(x => x.immeuble_id == immeuble_id && x.copro_id == copro_id).ToList(); ;
+            return bdd.Documents.Where(x => x.immeuble_id == immeuble_id && x.copro_id == copro_id).ToList();
         }
 
         return [];
@@ -210,7 +207,7 @@ public class Dal : IDal
         return res;
     }
 
-    public CoproprietaireEntitie GetCoproFromGuid(string guid)
+    private CoproprietaireEntitie GetCoproFromGuid(string guid)
     {
         var copro = from c in bdd.Coproprietaires where c.Copropriete_id == guid select c;
         if (copro.Any())
@@ -218,7 +215,7 @@ public class Dal : IDal
         return null;
     }
 
-    public List<DocumentEntitie> GetDocumentsFromCopro(string copro_id)
+    private List<DocumentEntitie> GetDocumentsFromCopro(string copro_id)
     {
         var docs = new List<DocumentEntitie>();
         var sqlDocs = from d in bdd.Documents where d.copro_id == copro_id select d;
@@ -226,7 +223,8 @@ public class Dal : IDal
             docs.AddRange(sqlDocs.ToList());
         return docs;
     }
-    public DocumentEntitie GetDocumentFromGuid(string Guid)
+
+    private DocumentEntitie GetDocumentFromGuid(string Guid)
     {
         var doc = from d in bdd.Documents where d.Guid == Guid select d;
         if (doc.Any())

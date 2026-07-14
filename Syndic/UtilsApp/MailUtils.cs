@@ -17,11 +17,11 @@ public static class MailUtils
         try
         {
             urlWeb = ParametresDB.getParam1("SERVEUR", "ADDRESSE CONNECTION");
-            var hostSrv = ParametresDB.getParam1("SERVEUR", "HOTE SMTP"); //"smtp.gmail.com";
-            var uPort = int.Parse(ParametresDB.getParam1("SERVEUR", "PORT SMTP")); // 587;
-            var strUser = ParametresDB.getParam1("SERVEUR", "USER SMTP"); //"racattac13@gmail.com";
+            var hostSrv = ParametresDB.getParam1("SERVEUR", "HOTE SMTP");
+            var uPort = int.Parse(ParametresDB.getParam1("SERVEUR", "PORT SMTP"));
+            var strUser = ParametresDB.getParam1("SERVEUR", "USER SMTP");
             var strPswd = ParametresDB.getParam1("SERVEUR", "PASS GMAIL");
-            var testMode = int.Parse(ParametresDB.getParam1("SERVEUR", "TEST MODE")); // 587;
+            var testMode = int.Parse(ParametresDB.getParam1("SERVEUR", "TEST MODE"));
             var strTo = testMode == 1 ? ParametresDB.getParam1("SERVEUR", "TEST MAIL") : mailTo;
             if (RegexUtils.IsValidEmail(strTo) && RegexUtils.IsValidEmail(strUser))
             {

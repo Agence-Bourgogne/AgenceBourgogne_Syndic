@@ -40,10 +40,9 @@ public abstract class AbstractBaseController<TENTITE> where TENTITE : AbstractBa
         TimestampServer = time;
     }
 
-    public DateTime setTimestampServer()
+    public void setTimestampServer()
     {
         TimestampServer = Database.GetTimestampServer();
-        return TimestampServer;
     }
     public DataTable GetTableList()
     {
@@ -330,7 +329,7 @@ public abstract class AbstractBaseController<TENTITE> where TENTITE : AbstractBa
         }
         return source;
     }
-    public bool deleteEntite(AbstractBaseEntite entite)
+    public void deleteEntite(AbstractBaseEntite entite)
     {
         var rc = false;
         var cmd = $"delete from {getSchemaTable()} where id = @id";
@@ -348,7 +347,6 @@ public abstract class AbstractBaseController<TENTITE> where TENTITE : AbstractBa
         {
             MessageBox.Show(e.Message);
         }
-        return rc;
     }
 
     public bool ExecuteNonQuery(string cmd, List<NpgsqlParameter> parameters = null)
@@ -389,10 +387,9 @@ public abstract class AbstractBaseController<TENTITE> where TENTITE : AbstractBa
             }
         }
         var table = new DataTable();
-        int c;
         try
         {
-            c = adapter.Fill(table);
+            adapter.Fill(table);
         }
         catch (Exception e)
         {

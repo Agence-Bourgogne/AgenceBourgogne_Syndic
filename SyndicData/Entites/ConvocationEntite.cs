@@ -20,10 +20,7 @@ public class ConvocationEntite : AbstractBaseEntite
         id = "";
         setValues(null);
     }
-    public ConvocationEntite(DataRow row)
-    {
-        setValues(row);
-    }
+
     public override void setValues(DataRow row)
     {
         var members = GetType().GetFields();

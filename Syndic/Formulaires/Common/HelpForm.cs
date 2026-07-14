@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 using CommonProjectsPartners.Utils;
 
@@ -8,7 +7,7 @@ namespace EspaceSyndic.Formulaires.Common;
 
 public partial class HelpForm : Form
 {
-    protected readonly string helpKey = "aide";
+    private readonly string helpKey;
 
     private Form formParent;
     public HelpForm(string key)

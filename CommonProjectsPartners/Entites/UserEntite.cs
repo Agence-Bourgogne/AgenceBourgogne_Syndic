@@ -19,10 +19,7 @@ public class UserEntite : AbstractBaseEntite
         id = "";
         setValues(null);
     }
-    public UserEntite(DataRow row)
-    {
-        setValues(row);
-    }
+
     public override void setValues(DataRow row)
     {
         var members = GetType().GetFields();

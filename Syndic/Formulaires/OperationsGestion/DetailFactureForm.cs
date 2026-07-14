@@ -68,21 +68,18 @@ public partial class DetailFactureForm : DetailOperationForm
 
         fillFormFromMaster();
 
-        //            btn
     }
-    protected virtual void FillDataGridView()
+
+    private void FillDataGridView()
     {
-        DataTable table;
-        if (entite.liasse_id.StartsWith("Reprise"))
-            table = OperationController.getController().getFactureOperations(entite);
-        else
-            table = OperationController.getController().getSaisieOperations(entite.id);
+        var table = entite.liasse_id.StartsWith("Reprise") 
+            ? OperationController.getController().getFactureOperations(entite) 
+            : OperationController.getController().getSaisieOperations(entite.id);
 
         dataGridView.DataSource = table;
 
         var cols = dataGridView.Columns;
         ControlsWindows.ToTitleCase(cols);
-        //cols["base_repart"].Width = 40;
         cols["ref_nature"].Width = 40;
         cols["nature"].MinimumWidth = 140;
         cols["libelle"].MinimumWidth = 160;
@@ -110,7 +107,7 @@ public partial class DetailFactureForm : DetailOperationForm
             tbTotal.BackColor = Color.Gray;
     }
 
-    protected virtual void fillFormFromMaster()
+    private void fillFormFromMaster()
     {
         var immeuble = ImmeubleController.getController().getEntiteById(entite.immeuble_id);
         nature = NatureController.getController().getEntiteById(entite.nature_id);
@@ -150,7 +147,6 @@ public partial class DetailFactureForm : DetailOperationForm
                 ValidModification();
             bCheckLot = true;
             if (SaisieFactureController.getController().DeleteEntite(entite))
-                //FillDataGridView();
                 Close();
         }
     }
@@ -181,7 +177,7 @@ public partial class DetailFactureForm : DetailOperationForm
                 
         }
 
-        if (old_nature != null && old_nature.reference == "140")
+        if (old_nature is { reference: "140" })
             bRepartChanged = false;
         else
             bRepartChanged |= montant != entite.montant;
@@ -202,7 +198,7 @@ public partial class DetailFactureForm : DetailOperationForm
                 if (fournisseur == null)
                     throw new Exception("Fournisseur invalide");
 
-                if (dataGridView.Rows.Count == 1 || (old_nature != null && old_nature.reference == "140"))
+                if (dataGridView.Rows.Count == 1 || old_nature is { reference: "140" })
                     entite.montant = montant;
                     
                 if (lot != null)
@@ -288,7 +284,7 @@ public partial class DetailFactureForm : DetailOperationForm
         if (entite != null)
         {
             if (entite.base_repart == "0")
-                SaisieFactureController.getController().RecalcRepartitionBilan(entite, true);
+                SaisieFactureController.RecalcRepartitionBilan(entite, true);
             else
                 SaisieFactureController.getController().RecalcRepartition(entite, true);
         }

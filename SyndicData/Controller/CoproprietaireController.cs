@@ -292,28 +292,22 @@ public class CoproprietaireController : AbstractBaseController<CoproprietaireEnt
     public bool MiseAjourDateRelances(string copro_ids, DateTime daterel, int type)
     {
         var cmd = $"update {getSchemaTable()} ";
-        switch ( type )
+        cmd += type switch
         {
-            case 0:
-                cmd += " set daterel1 = @daterel , daterel2 = null, daterel3 = null";
-                break;
-            case 1:
-                cmd += " set daterel2 = @daterel , daterel3 = null";
-                break;
-            default:
-                cmd += " set daterel3 = @daterel ";
-                break;
-        }
+            0 => " set daterel1 = @daterel , daterel2 = null, daterel3 = null",
+            1 => " set daterel2 = @daterel , daterel3 = null",
+            _ => " set daterel3 = @daterel "
+        };
         cmd += $" where id in ({copro_ids})";
 
         var parameters = new List<NpgsqlParameter> 
         {
             new("@daterel", daterel)
         };
-        //Console.WriteLine(cmd.Replace("@daterel", daterel.ToString()));
+
         return ExecuteNonQuery(cmd, parameters);
     }
-    public bool resetDatesRelance()
+    public void resetDatesRelance()
     {
         var cmd = $"update {getSchemaTable()} set daterel1 = null, daterel2=null, daterel3 = null where id in ";
         cmd += $" (select coproprietaire_id from {getSchema()}.operation o ";
@@ -325,9 +319,9 @@ public class CoproprietaireController : AbstractBaseController<CoproprietaireEnt
             new("@statut", (int) GlobalConstantes.StatutOperation.Valide)
         };
 
-        return ExecuteNonQuery(cmd, parameters);
+        ExecuteNonQuery(cmd, parameters);
     }
-    public bool resetDatesRelance(string coproRef)
+    public void resetDatesRelance(string coproRef)
     {
         var cmd =
             $"update {getSchemaTable()} set daterel1 = null, daterel2=null, daterel3 = null where reference = @coproref ";
@@ -336,6 +330,6 @@ public class CoproprietaireController : AbstractBaseController<CoproprietaireEnt
             new("@coproref", coproRef)
         };
 
-        return ExecuteNonQuery(cmd, parameters);
+        ExecuteNonQuery(cmd, parameters);
     }
 }

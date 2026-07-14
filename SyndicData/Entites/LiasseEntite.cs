@@ -19,10 +19,7 @@ public class LiasseEntite :AbstractBaseEntite
         id = "";
         setValues(null);
     }
-    public LiasseEntite(DataRow data)
-    {
-        setValues(data);
-    }
+    
     public override void setValues(DataRow row)
     {
         var members = GetType().GetFields();

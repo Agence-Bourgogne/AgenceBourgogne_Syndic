@@ -9,7 +9,7 @@ namespace EspaceSyndic.Impressions.Facture;
 
 public partial class ImprimerListeFacturationForm : Form
 {
-    public readonly List<string> liasses = [];
+    private readonly List<string> liasses = [];
 
     public ImprimerListeFacturationForm()
     {
@@ -39,7 +39,6 @@ public partial class ImprimerListeFacturationForm : Form
             cbLiasse.DisplayMember = "reference";
             cbLiasse.ValueMember = "Id";
             bLoading = false;
-            //                reportViewer1.
         }
         reportViewer1.LocalReport.SubreportProcessing += SubreportProcessingEventHandler;
         DoRapport();
@@ -89,5 +88,4 @@ public partial class ImprimerListeFacturationForm : Form
             DoRapport();
         }
     }
-
 }

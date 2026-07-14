@@ -475,19 +475,13 @@ public partial class ClotureExerciceForm : Form
         if (dataGridView.SelectedRows.Count > 0)
         {
             var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
-            Form form = null;
-            switch (cbTypeOpe.SelectedIndex)
+            Form form = cbTypeOpe.SelectedIndex switch
             {
-                case 2:
-                    form = new DetailReglementForm(row["id"].ToString());
-                    break;
-                case 1:
-                    form = new DetailAppelDeFondForm(row["id"].ToString());
-                    break;
-                case 0:
-                    form = new DetailFactureForm(row["id"].ToString());
-                    break;
-            }
+                2 => new DetailReglementForm(row["id"].ToString()),
+                1 => new DetailAppelDeFondForm(row["id"].ToString()),
+                0 => new DetailFactureForm(row["id"].ToString()),
+                _ => null
+            };
             if (form != null)
             {
                 form.ShowDialog();

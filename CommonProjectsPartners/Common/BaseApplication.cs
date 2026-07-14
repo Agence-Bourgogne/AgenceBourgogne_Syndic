@@ -44,7 +44,8 @@ public static class BaseApplication
 
         return wrdApp;
     }
-    public static Application GetExcelInstance()
+
+    private static Application GetExcelInstance()
     {
         if (excelApp == null)
             excelApp = new Application();
@@ -135,7 +136,7 @@ public static class BaseApplication
         Cursor.Current = Cursors.Default;
     }
 
-    public static object DataGridToExcel(DataGridView datagrid, List<string> colsToHide, string checkColumn = "", string [] colToSum = null)
+    public static void DataGridToExcel(DataGridView datagrid, List<string> colsToHide, string checkColumn = "", string[] colToSum = null)
     {
         Cursor.Current = Cursors.WaitCursor;
 
@@ -217,33 +218,8 @@ public static class BaseApplication
         ws.Activate();
         ws.Columns.AutoFit();
         Cursor.Current = Cursors.Default;
-        return ws;
     }
-    public static void ColumnFormula(object wsObject, int colDesti , string colFormula, string colName, int colStop)
-    {
-        var ws = (_Worksheet)wsObject;
-        try
-        {
-            var range = ws.Rows;
-            var nbRows = range.Rows.Count;
 
-            ws.Cells[1, colDesti].Value = colName;
-            for (var iRow = 2; iRow < nbRows; iRow++)
-            {
-                Range cell = ws.Cells[iRow, colStop];
-                if (cell.Value == null)
-                    break;
-                var colChar = (char)('A' + colDesti);
-                cell = ws.Cells[iRow, colDesti];
-                var formula = string.Format(colFormula, iRow, colChar );
-                cell.Formula = formula;
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
-    }
     public static void OpenWordFile(string fileName)
     {
         var wrdApp = GetWordInstance();
@@ -298,7 +274,6 @@ public static class BaseApplication
                     var newDoc = wrdApp.Documents.Add(file);
                     var wrdRange = doc.Content;
 
-                    Word.Section sec;
                     if (bFirst)
                     {
                         wrdRange.PageSetup.TopMargin = newDoc.PageSetup.TopMargin;
@@ -309,7 +284,7 @@ public static class BaseApplication
                     }
                     else
                     {
-                        sec = wrdRange.Sections.Add();
+                        var sec = wrdRange.Sections.Add();
                         sec.PageSetup.TopMargin = newDoc.PageSetup.TopMargin;
                         sec.PageSetup.BottomMargin = newDoc.PageSetup.BottomMargin;
                         sec.PageSetup.LeftMargin = newDoc.PageSetup.LeftMargin;
@@ -455,30 +430,13 @@ public static class BaseApplication
             var docMailing = wrdApp.Documents.Add(modele);
             var merge = docMailing.MailMerge;
 
-            
-            //                string fileName = @"c:\syndic_modeles\csv\etiquettes.csv";
-
             GenerateDataSource(source, fileName);
                 
             merge.MainDocumentType = Word.WdMailMergeMainDocType.wdMailingLabels;
             merge.OpenDataSource(fileName, false);
 
-            //
-            //// Obtenir la source de données
-              
-            // Obtenir la source de données
             var dataSource = docMailing.MailMerge.DataSource.MappedDataFields;
 
-            //    // Définir les mappages souhaités
-            //    var fieldMappings = new Dictionary<string, string>
-            //{
-            //    {"Nom", "NOM"},
-            //    {"Prénom", "PRENOM"},
-            //    {"Adresse1", "ADRESSE"},
-            //    {"CodePostal", "CP"},
-            //    {"Ville", "VILLE"},
-            //    {"Pays", "PAYS"}
-            //};
             dataSource[Word.WdMappedDataFields.wdCourtesyTitle].DataFieldIndex = 1;
             dataSource[Word.WdMappedDataFields.wdLastName].DataFieldIndex = 2;
             dataSource[Word.WdMappedDataFields.wdFirstName].DataFieldIndex = 4;
@@ -486,15 +444,7 @@ public static class BaseApplication
             dataSource[Word.WdMappedDataFields.wdPostalCode].DataFieldIndex =6;
             dataSource[Word.WdMappedDataFields.wdCity].DataFieldIndex = 7;
 
-            // Mettre à jour tous les champs du document
             docMailing.Fields.Update();
-
-            // Sauvegarder les modifications
-            // docMailing.Save();
-
-
-            //-
-
 
             merge.Execute();
             merge.ViewMailMergeFieldCodes = 0;
@@ -505,11 +455,9 @@ public static class BaseApplication
         {
             MessageBox.Show(ex.Message);                
         } 
-
     }
-    public static bool GenerateDataSource(DataTable source, string fileName, Encoding encoding = null)
+    public static void GenerateDataSource(DataTable source, string fileName, Encoding encoding = null)
     {
-        var retValue = false;
         try
         {
             if (source != null)
@@ -527,7 +475,6 @@ public static class BaseApplication
         {
             MessageBox.Show(e.Message);
         }
-        return retValue;
     }
 
     public static void CloseOfficeInstance()

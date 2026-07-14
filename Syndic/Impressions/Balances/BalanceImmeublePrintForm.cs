@@ -71,15 +71,12 @@ public partial class BalanceImmeublePrintForm : Form
 
     private void loadData()
     {
-        switch (cbBalance.SelectedIndex)
+        sourceData.DataSource = cbBalance.SelectedIndex switch
         {
-            case 0:
-                sourceData.DataSource = SaisieFactureController.getController().GetBalanceReglementsFactures(immeuble.id);
-                break;
-            case 1:
-                sourceData.DataSource = OperationController.getController().GetBalanceReglementAppelsDeFond(immeuble.id);
-                break;
-        }
+            0 => SaisieFactureController.getController().GetBalanceReglementsFactures(immeuble.id),
+            1 => OperationController.getController().GetBalanceReglementAppelsDeFond(immeuble.id),
+            _ => sourceData.DataSource
+        };
     }
 
     private void btnRapport_Click(object sender, EventArgs e)

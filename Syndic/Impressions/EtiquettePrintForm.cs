@@ -52,10 +52,6 @@ public partial class EtiquettePrintForm : Form
 
     private void btnRapport_Click(object sender, EventArgs e)
     {
-        //tableCoproImmeubleBindingSource.DataSource = 
-        //    CoproprietaireController.getController().CoproprietaireImmeubleDescription(immeuble.id);
-
-        // reportViewer1.RefreshReport();
         var modele = ParametresDB.getParam1("MODELES", "ETIQUETTES");
         BaseApplication.PublipostageEtiquetteWord(CoproprietaireController.getController().CoproprietaireImmeubleDescriptionEtiquettes(immeuble.id), modele);
     }
@@ -70,5 +66,4 @@ public partial class EtiquettePrintForm : Form
     {
         ControlsWindows.FocusNextTabbedControl(this);
     }
-
 }

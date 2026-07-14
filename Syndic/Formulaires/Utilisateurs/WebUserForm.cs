@@ -50,9 +50,8 @@ public partial class WebUserForm : Form
     }
 
 
-    private void HideAndResizeColumns(DataGridViewColumnCollection cols)
+    private static void HideAndResizeColumns(DataGridViewColumnCollection cols)
     {
-        //cols["id"].Visible = false;
         cols["guid"].Visible = false;
         cols["audit_created"].Visible = false;
         cols["audit_updated"].Visible = false;

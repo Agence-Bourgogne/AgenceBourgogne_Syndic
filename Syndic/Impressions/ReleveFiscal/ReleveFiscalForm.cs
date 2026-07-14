@@ -17,7 +17,7 @@ namespace EspaceSyndic.Impressions.ReleveFiscal;
 
 public partial class ReleveFiscalForm : Form
 {
-    public ImmeubleEntite immeuble;
+    private ImmeubleEntite immeuble;
     private readonly BindingSource immeubleSource = new();
     private readonly AutoCompleteStringCollection lotsString = new();
     private readonly string TitreForm;
@@ -113,10 +113,7 @@ public partial class ReleveFiscalForm : Form
     private void tbLot_Validating(object sender, CancelEventArgs e)
     {
         if (tbLot.Text != "")
-            if (lotsString.Contains(tbLot.Text))
-                tbLot.BackColor = Color.White;
-            else
-                tbLot.BackColor = Color.Red;
+            tbLot.BackColor = lotsString.Contains(tbLot.Text) ? Color.White : Color.Red;
         else
             tbLot.BackColor = Color.White;
     }
@@ -142,7 +139,6 @@ public partial class ReleveFiscalForm : Form
     {
         if (immeuble != null)
         {
-//                immeubleSource.DataSource = ImmeubleController.getController().GetDescriptionCoproprietairesImmeuble(immeuble.id, tbLot.Text, true);
             immeubleSource.DataSource = ImmeubleController.getController().GetDescriptionCoproprietairesImmeuble(immeuble.id, lot, true);
             immeubleSource.Filter = "";
             immeublecoproBindingSource.DataSource = immeubleSource;
@@ -159,18 +155,15 @@ public partial class ReleveFiscalForm : Form
                 new("Header_Agence", hdr_agence)
             };
             reportViewer1.LocalReport.SetParameters(parameters);
-//                reportViewer1.RefreshReport();
         }
     }
 
     private void btnExport_Click(object sender, EventArgs e)
     {
-//            CreateReport();
         var lots = LotDescriptionController.getController().getListeLotDescriptionFiscaux(immeuble.id);
         var dlg = new ExportCopro();
         try
         {
-//                MessageBox.Show(UtilsApp.ServiceReferenceUtils.SendReportPDF(reportViewer1, "Releve Fiscal " + dtDebut.Value.Year, Guid.NewGuid().ToString(), immeuble.id, ""));
             dlg.Show(this);
             dlg.Activate();
             foreach (var lot in lots)

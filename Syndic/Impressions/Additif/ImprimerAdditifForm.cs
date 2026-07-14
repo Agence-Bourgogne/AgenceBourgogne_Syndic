@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Globalization;
 using System.Windows.Forms;
 using CommonProjectsPartners.Common;
 using CommonProjectsPartners.Utils;
@@ -32,7 +31,7 @@ public partial class ImprimerAdditifForm : Form
     private void ImprimerConvocationForm_Load(object sender, EventArgs e)
     {
         btnRapport.Enabled = btnWord.Enabled = false;
-        //DateTime dt = DateTime.Now;
+         //DateTime dt = DateTime.Now;
         //tbDateEntete.Text = dt.ToShortDateString();
         //tbDateAssemblee.Text = GetDateAssemblee();
         tbLieu.Text = GetLieuAssemblee();
@@ -41,7 +40,7 @@ public partial class ImprimerAdditifForm : Form
         btnEnter.Width = 0;
 
     }
-    private string GetHeureAssemblee()
+    private static string GetHeureAssemblee()
     {
         return "1800";
     }

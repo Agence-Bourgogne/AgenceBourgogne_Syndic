@@ -60,7 +60,7 @@ public static class CryptoUtils
         tdes.Clear();
         return Convert.ToBase64String(resultArray, 0, resultArray.Length);
     }
-    //  Géneration du password pour l'utilisateur web
+
     public static string CreatePassword(int length)
     {
         var valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";

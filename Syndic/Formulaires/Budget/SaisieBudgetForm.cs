@@ -115,7 +115,7 @@ public partial class SaisieBudgetForm : Form
     private void btnExerciceAdd_Click(object sender, EventArgs e)
     {
         var form = new NouvelExerciceForm(immeuble.id);
-        form.exercice_id = getExerciceSelected(); ;
+        form.exercice_id = getExerciceSelected();
         form.ShowDialog();
         if ( form.exercice_id != "")
         {

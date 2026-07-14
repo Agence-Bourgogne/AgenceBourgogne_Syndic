@@ -14,15 +14,11 @@ public class ConvocationDescriptionEntite : AbstractBaseEntite
     public int refuses;
     public int statut;
 
-    public ConvocationDescriptionEntite()
-    {
-        id = "";
-        setValues(null);
-    }
     public ConvocationDescriptionEntite(DataRow row)
     {
         setValues(row);
     }
+
     public override void setValues(DataRow row)
     {
         var members = GetType().GetFields();

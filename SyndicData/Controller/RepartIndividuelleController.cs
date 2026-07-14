@@ -95,7 +95,7 @@ public class RepartIndividuelleController : AbstractBaseController<RepartIndivid
 
         return rc;
     }
-    public bool DeleteElements(DataTable table)
+    public void DeleteElements(DataTable table)
     {
         foreach (DataRow row in table.Rows)
         {
@@ -106,6 +106,5 @@ public class RepartIndividuelleController : AbstractBaseController<RepartIndivid
             if (!doInsertOrUpdate(ope))
                 throw new Exception("Annulation Repartition");
         }
-        return true;
     }
 }

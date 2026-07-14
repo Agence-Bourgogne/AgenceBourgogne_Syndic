@@ -287,7 +287,7 @@ public partial class FicheRepartLot : Form
 
                         entite.immeuble_id = immeuble.id;
                         entite.lot_id = currentLot["id"].ToString();
-                        entite.ligne = row.Index + 1; ;
+                        entite.ligne = row.Index + 1;
                         entite.colonne = cell.ColumnIndex -1;
                         entite.reference = $"{entite.ligne}{entite.colonne}";
                         if (cell.Value == null || cell.Value.Equals(""))
@@ -304,7 +304,7 @@ public partial class FicheRepartLot : Form
             }
         }
     }
-    private bool saveLot()
+    private void saveLot()
     {
 
         //LotDescriptionEntite entite = new LotDescriptionEntite();
@@ -322,7 +322,7 @@ public partial class FicheRepartLot : Form
             {
                 MessageBox.Show(@"Référence Copropriétaire Invalide");
                 tbCoproprietaire.Focus();
-                return false;
+                return;
             }
             copro_id = copro.id;
         }
@@ -342,9 +342,8 @@ public partial class FicheRepartLot : Form
             SaveRepartitionLot();
             FillDataGridViewLot(currentLot["id"].ToString());
 
-            return true;
+            return;
         }
-        return false;
     }
     private void FillDataGridViewLot(string oldSelect)
     {
