@@ -30,14 +30,14 @@ public partial class DetailAppelDeFondForm : DetailOperationForm
         tbRefImmeuble.Enabled = false;
         tbBase.Enabled = false;
 
-        var bEnabled = entite.statut <= (int)GlobalConstantes.StatutOperation.Valide;//&& !facture.liasse_id.StartsWith("Reprise");
+        var bEnabled = entite.statut <= (int)GlobalConstantes.StatutOperation.Valide;
 
         tbNature.Enabled = false;
         tbFournisseur.Enabled = bEnabled;
         tbDateCreation.Enabled = bEnabled;
         tbComment.Enabled = bEnabled;
         tbCommentaireFournisseur.Enabled = false;
-        tbMontant.Enabled = false;//bEnabled;
+        tbMontant.Enabled = false;
 
 
         ControlsWindows.setTooltip(tbComment, "Libellé Ecriture");

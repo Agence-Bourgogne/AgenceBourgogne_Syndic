@@ -54,10 +54,8 @@ public partial class WebUserCoproprietaire : Form
             var parent = new TreeNode { Text = "Immeubles", ImageIndex = 0 };
             treeView.Nodes.Add(parent);
 
-            //     EspaceSyndic.ServiceReference.UserEntitie usr = (EspaceSyndic.ServiceReference.UserEntitie)dataGridView.SelectedRows[0].DataBoundItem;
             var immeubles = ServiceReferenceUtils.GetInstance().GetCoproChildrens(currentCoproprietaire.id).OrderBy(x => x.Immeuble_id).ToList();
 
-            //   List<EspaceSyndic.ServiceReference.ChildrenEntitie> immeubles = ServiceReferenceUtils.GetInstance().GetUserCoproprietaires(_currentUsr.Guid).OrderBy(x => x.Immeuble_id).ToList();
             var immeuble_id = "";
             TreeNode current = null;
             foreach (var child in immeubles)
@@ -84,7 +82,6 @@ public partial class WebUserCoproprietaire : Form
         }
         bInLoad = false;
     }
-    //---
     private void FillLvDocs()
     {
         bInLoad = true;
@@ -100,7 +97,7 @@ public partial class WebUserCoproprietaire : Form
         if (current != null && current.Tag != null)
         {
             var immeublesByUsers = ServiceReferenceUtils.GetInstance().GetCoproChildrens(currentCoproprietaire.id).OrderBy(x => x.Immeuble_id).ToList();
-            //List<EspaceSyndic.ServiceReference.ChildrenEntitie> immeublesByUsers = ServiceReferenceUtils.GetInstance().GetUserCoproprietaires(_currentUsr.Guid).OrderBy(x => x.Immeuble_id).ToList();
+            
             if (current.Tag is ImmeubleEntite immeuble)
             {
                 immeuble_id = immeuble.getId();
@@ -111,9 +108,6 @@ public partial class WebUserCoproprietaire : Form
                         if(doc.immeuble_id == immeuble_id && ( doc.copro_id == "" || immeublesByUsers.Exists(x=>x.Immeuble_id == immeuble_id && x.Copro_id == doc.copro_id )) )
                             listdocs.Add(doc);
                     }
-                    //if (docs.Exists(x => x.immeuble_id == immeuble_id))
-                    //    listdocs = docs.FindAll(x => x.immeuble_id == immeuble_id );
-
                 }
                    
             }
@@ -128,12 +122,7 @@ public partial class WebUserCoproprietaire : Form
                         if(doc.immeuble_id == immeuble_id &&  immeublesByUsers.Exists(x=>x.Immeuble_id == immeuble_id && x.Copro_id == doc.copro_id ))
                             listdocs.Add(doc);
                     }
-                    //if (docs.Exists(x => x.immeuble_id == immeuble_id))
-                    //    listdocs = docs.FindAll(x => x.immeuble_id == immeuble_id );
-
                 }
-                //if (docs.Exists(x => x.immeuble_id == immeuble_id && x.copro_id == copro_id ))
-                //    listdocs = docs.FindAll(x => x.immeuble_id == immeuble_id && x.copro_id == copro_id);
             }
         }
 
@@ -157,7 +146,7 @@ public partial class WebUserCoproprietaire : Form
         var form = new FindCoproprietaireForm();
         if (DialogResult.Cancel != form.ShowDialog())
         {
-            UserEntitie usr = null;// (EspaceSyndic.ServiceReference.UserEntitie)dataGridView.SelectedRows[0].DataBoundItem;
+            UserEntitie usr = null;
             var entite = CoproprietaireController.getController().getEntiteFromField("reference", form.reference);
             try
             {
@@ -180,7 +169,6 @@ public partial class WebUserCoproprietaire : Form
         }
 
     }
-    //-----
 
     private void btnDelCopro_Click(object sender, EventArgs e)
     {
@@ -193,9 +181,7 @@ public partial class WebUserCoproprietaire : Form
                 RefreshAll();
             }
         }
-
     }
-    //-----
     private void treeView_AfterSelect(object sender, TreeViewEventArgs e)
     {
         if (bInLoad)
@@ -207,20 +193,6 @@ public partial class WebUserCoproprietaire : Form
             btnDelCopro.Enabled = true;
         FillLvDocs();
     }
-
-    //private void UpdateUser(object sender, EventArgs e)
-    //{
-    //    EspaceSyndic.ServiceReference.UserEntitie usr = (EspaceSyndic.ServiceReference.UserEntitie)dataGridView.SelectedRows[0].DataBoundItem;
-    //    if (usr != null)
-    //    {
-    //        NewUserWebForm form = new NewUserWebForm(usr, "Modifier l'utilisateur");
-    //        if (form.ShowDialog() == DialogResult.OK)
-    //            RefreshAll();
-    //        //                MessageBox.Show(ServiceReferenceUtils.UpateUser(usr.Guid));
-    //        RefreshAll();
-    //    }
-
-    //}
 
     private void listDoc_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -271,5 +243,4 @@ public partial class WebUserCoproprietaire : Form
     {
         tbPassword.Text = CryptoUtils.CreatePassword(8);
     }
-
 }

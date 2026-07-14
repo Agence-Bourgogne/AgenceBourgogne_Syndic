@@ -128,7 +128,7 @@ public partial class BalanceImmeublePrintForm : Form
 
     private void btnCompte_Click(object sender, EventArgs e)
     {
-        var form = (ReleveCompteCoproPrintForm) MainForm.getInstance().ShowForm("EspaceSyndic.Impressions.RelevesComptes.ReleveCompteCoproPrintForm");
+        var form = MainForm.getInstance().ShowForm<ReleveCompteCoproPrintForm>();
         form.RefreshImmeuble(immeuble.reference);
         form.Activate();
     }

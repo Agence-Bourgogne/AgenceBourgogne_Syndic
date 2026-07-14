@@ -8,6 +8,7 @@ using CommonProjectsPartners.Common;
 using CommonProjectsPartners.Utils;
 using EspaceSyndic.Formulaires;
 using EspaceSyndic.Formulaires.Immeubles;
+using EspaceSyndic.Impressions.RelevesComptes;
 using Microsoft.Reporting.WinForms;
 using SyndicData.Common;
 using SyndicData.Controller;
@@ -317,7 +318,7 @@ public partial class RetardsPaiementsForm : Form
     private void dataGridView_DoubleClick(object sender, EventArgs e)
     {
         var frm = new MainForm();
-        frm.ShowForm("EspaceSyndic.Impressions.RelevesComptes.ReleveCompteCoproPrintForm");
+        frm.ShowForm<ReleveCompteCoproPrintForm>();
            
         var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
         MainForm.syndicEvent.FireChanged(this, new CommonEventArgs(row["ref_immeuble"].ToString(), row["numero_lot"].ToString()));

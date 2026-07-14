@@ -410,9 +410,6 @@ namespace EspaceSyndic.Impressions.AppelDeFond
         protected Label label3;
         private RichTextBox tbText;
         private ReportViewer reportViewer1;
-        //private System.Windows.Forms.BindingSource coproImmeubleOperationDataTableBindingSource;
-        //private Datasets.EspaceSyndic.coproImmeubleOperation;
-        //private Datasets.EspaceSyndic.CoproImmeubleOperationDataTableTableAdapter coproImmeubleOperationDataTableTableAdapter;
         protected TextBox tbRefImmeuble;
         protected Label lblImmeuble;
         protected ImageList imageList1;

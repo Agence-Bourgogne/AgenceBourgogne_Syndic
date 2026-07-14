@@ -1,21 +1,40 @@
-﻿using System;
+﻿using CommonProjectsPartners.Common;
+using CommonProjectsPartners.Formulaires.Config;
+using CommonProjectsPartners.Formulaires.Logon;
+using CommonProjectsPartners.Utils;
+using EspaceSyndic.Formulaires.Budget;
+using EspaceSyndic.Formulaires.Config;
+using EspaceSyndic.Formulaires.Coproprietaire;
+using EspaceSyndic.Formulaires.Ecritures;
+using EspaceSyndic.Formulaires.Exercice;
+using EspaceSyndic.Formulaires.Extranet;
+using EspaceSyndic.Formulaires.Fournisseur;
+using EspaceSyndic.Formulaires.Immeubles;
+using EspaceSyndic.Formulaires.Nature;
+using EspaceSyndic.Formulaires.OperationsGestion;
+using EspaceSyndic.Formulaires.Utilisateurs;
+using EspaceSyndic.Impressions;
+using EspaceSyndic.Impressions.Additif;
+using EspaceSyndic.Impressions.AppelDeFond;
+using EspaceSyndic.Impressions.Balances;
+using EspaceSyndic.Impressions.Bilan;
+using EspaceSyndic.Impressions.Convocations;
+using EspaceSyndic.Impressions.Facture;
+using EspaceSyndic.Impressions.Reglement;
+using EspaceSyndic.Impressions.ReleveFiscal;
+using EspaceSyndic.Impressions.RelevesComptes;
+using EspaceSyndic.Impressions.RelevesIndividuels;
+using EspaceSyndic.Impressions.RemiseDeCles;
+using EspaceSyndic.Impressions.RetardsPaiements;
+using SyndicData.Common;
+using SyndicData.Controller;
+using SyndicData.Entites;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
-using CommonProjectsPartners.Common;
-using CommonProjectsPartners.Formulaires.Config;
-using CommonProjectsPartners.Formulaires.Logon;
-using CommonProjectsPartners.Utils;
-using EspaceSyndic.Formulaires.Config;
-using EspaceSyndic.Formulaires.Extranet;
-using EspaceSyndic.Formulaires.Immeubles;
-using EspaceSyndic.Impressions.Balances;
-using EspaceSyndic.Impressions.Facture;
-using SyndicData.Common;
-using SyndicData.Controller;
-using SyndicData.Entites;
 
 namespace EspaceSyndic.Formulaires;
 
@@ -32,8 +51,7 @@ public partial class MainForm : Form
         
     private void MainForm_Load(object sender, EventArgs e)
     {
-        Text = Text +" "+ Assembly.GetEntryAssembly().GetName().Version;//" 1.0.0.66";
-        //this.Text = this.Text + " "+ Application.ProductVersion;
+        Text = Text +" "+ Assembly.GetEntryAssembly().GetName().Version;
         btnCancel.Width = 0;
 
         var lbl1 = ParametresDB.getParam1("PRESENTATION", "LABEL1", "AGENCE");
@@ -458,15 +476,18 @@ public partial class MainForm : Form
             }
         }
     }
-    public Form ShowForm(string className)
+    public TForm ShowForm<TForm>() where TForm : Form
     {
+        var formType = typeof(TForm);
+        var className = formType.FullName;
+
         try
         {
-            Form form;
+            TForm form;
             if (!dicoForms.TryGetValue(className, out var dicoForm))
             {
-                var obj = Activator.CreateInstance("SyndicApplication", className);
-                form = (Form)obj.Unwrap();
+                var obj = Activator.CreateInstance(formType);
+                form = (TForm)obj;
                 dicoForms.Add(className, form);
                 form.FormClosed += GenericForm_FormClosed;
                 if (form is ICommonChangedListener listener)
@@ -475,7 +496,7 @@ public partial class MainForm : Form
                 }
             }
             else
-                form = dicoForm;
+                form = (TForm) dicoForm;
 
             if (form.WindowState == FormWindowState.Minimized)
                 form.WindowState = FormWindowState.Normal;
@@ -503,51 +524,6 @@ public partial class MainForm : Form
         return null;
     }
 
-    private void immeublesToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm("EspaceSyndic.Formulaires.Immeubles.ListeImmeubleForm");
-    }
-
-    private void copropriétairesToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm("EspaceSyndic.Formulaires.Coproprietaire.ListeCoproprietaireForm");
-    }
-
-    private void fournisseursToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm("EspaceSyndic.Formulaires.Fournisseur.ListeFournisseurForm");
-    }
-
-    private void naturesToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm("EspaceSyndic.Formulaires.Nature.ListeNatureForm");
-    }
-
-    private void saisieToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm("EspaceSyndic.Formulaires.Ecritures.FicheFactureForm");
-    }
-
-    private void appelDeFondsToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm("EspaceSyndic.Formulaires.Ecritures.FicheAppelDeFondForm");
-    }
-
-    private void feuillesDePrésenceToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm("EspaceSyndic.Impressions.FeuillePresencePrintForm");
-    }
-
-    private void immeublesToolStripMenuItem1_Click(object sender, EventArgs e)
-    {
-        ShowForm("EspaceSyndic.Impressions.ImmeublePrintForm");
-    }
-
-    private void saisieReglementCoproproToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm("EspaceSyndic.Formulaires.Ecritures.FicheReglementForm");
-    }
-
     private void commentairesToolStripMenuItem_Click(object sender, EventArgs e)
     {
         var form = new FicheAideImmeubleForm();
@@ -561,9 +537,155 @@ public partial class MainForm : Form
         }
     }
 
+    private void immeublesToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<ListeImmeubleForm>();
+    }
+
+    private void copropriétairesToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<ListeCoproprietaireForm>();
+    }
+
+    private void fournisseursToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<ListeFournisseurForm>();
+    }
+
+    private void naturesToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<ListeNatureForm>();
+    }
+
+    private void saisieToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<FicheFactureForm>();
+    }
+
+    private void appelDeFondsToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<FicheAppelDeFondForm>();
+    }
+
+    private void feuillesDePrésenceToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<FeuillePresencePrintForm>();
+    }
+
+    private void immeublesToolStripMenuItem1_Click(object sender, EventArgs e)
+    {
+        ShowForm<ImmeublePrintForm>();
+    }
+
+    private void saisieReglementCoproproToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<FicheReglementForm>();
+    }
+
     private void appelDeFondDunimmeubleToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        ShowForm("EspaceSyndic.Impressions.AppelDeFond.ImprimerAppelDeFondForm");
+        ShowForm<ImprimerAppelDeFondForm>();
+    }
+
+    private void bordereauRemiseDeChèquesToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<ImprimerListeReglementForm>();
+    }
+
+    private void validationToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<ValidationFactureForm>();
+    }
+
+    private void tableauRemiseDeClefsToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<ImprimerRemiseDeClesForm>();
+    }
+
+    private void convocationsToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<ImprimerConvocationForm>();
+    }
+
+    private void editionEtiquettesToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<EtiquettePrintForm>();
+    }
+
+    private void bilanGénéralEtCompteExploitationToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<ImprimerBilanComptableForm>();
+    }
+
+    private void retardDePaiementsToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<RetardsPaiementsForm>();
+    }
+
+    private void editionComptesFiscauxParImmeublesToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<ReleveFiscalForm>();
+    }
+
+    private void balanceReglementsAppelsDeFondImmeubleToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        var form = ShowForm<BalanceImmeublePrintForm>();
+        form.RefreshTypeReport(1);
+    }
+
+    private void balanceReglementsFacturesPourUnImmeubleToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<BalanceImmeublePrintForm>();
+    }
+
+    private void visualisationOperationDeGestionToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<OperationsGestionForm>();
+    }
+
+    private void consultationComptesPropriétairesToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<ReleveCompteCoproPrintForm>();
+    }
+
+    private void relevesIndividuelsToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<ReleveIndividuelsPrintForm>();
+    }
+
+    private void budgetPrévisionnelToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<BudgetSruForm>();
+    }
+
+    private void additifsToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<ImprimerAdditifForm>();
+    }
+
+    private void clotureExerciceToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<ClotureExerciceForm>();
+    }
+
+    private void utilisateursToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<UtilisateursListeForm>();
+    }
+
+    private void impressionRéglementsToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<ImprimerListeReglementForm>();
+    }
+
+    private void controleDesDonnéesToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<ControlDataForm>();
+    }
+
+    private void utilisateursWebToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<WebUserForm>();
     }
 
     private void parametresToolStripMenuItem_Click(object sender, EventArgs e)
@@ -579,101 +701,6 @@ public partial class MainForm : Form
         }
     }
 
-    private void bordereauRemiseDeChèquesToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm("EspaceSyndic.Impressions.Reglement.ImprimerListeReglementForm");
-    }
-
-    private void validationToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm("EspaceSyndic.Formulaires.Ecritures.ValidationFactureForm");
-        //ValidationFactureForm form = new ValidationFactureForm();
-        //try
-        //{
-        //    form.ShowDialog();
-        //}
-        //catch (Exception ex)
-        //{
-        //    MessageBox.Show(ex.Message);
-        //}
-    }
-
-    private void tableauRemiseDeClefsToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm("EspaceSyndic.Impressions.RemiseDeCles.ImprimerRemiseDeClesForm");
-    }
-
-    private void convocationsToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm("EspaceSyndic.Impressions.Convocations.ImprimerConvocationForm");
-    }
-
-    private void editionEtiquettesToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm("EspaceSyndic.Impressions.EtiquettePrintForm");
-    }
-
-
-    private void bilanGénéralEtCompteExploitationToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm("EspaceSyndic.Impressions.Bilan.ImprimerBilanComptableForm");
-    }
-
-    private void retardDePaiementsToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm("EspaceSyndic.Impressions.RetardsPaiements.RetardsPaiementsForm");
-    }
-
-    private void editionComptesFiscauxParImmeublesToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm("EspaceSyndic.Impressions.ReleveFiscal.ReleveFiscalForm");
-    }
-
-    private void balanceReglementsAppelsDeFondImmeubleToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        var form =  (BalanceImmeublePrintForm ) ShowForm("EspaceSyndic.Impressions.Balances.BalanceImmeublePrintForm");
-        form.RefreshTypeReport(1);
-    }
-    private void balanceReglementsFacturesPourUnImmeubleToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm("EspaceSyndic.Impressions.Balances.BalanceImmeublePrintForm");
-        //BalanceImmeublePrintForm form = new BalanceImmeublePrintForm(0);
-        //try
-        //{
-        //    form.ShowDialog();
-        //}
-        //catch (Exception ex)
-        //{
-        //    MessageBox.Show(ex.Message);
-        //}
-    }
-
-    private void visualisationOperationDeGestionToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm("EspaceSyndic.Formulaires.OperationsGestion.OperationsGestionForm");
-    }
-
-    private void consultationComptesPropriétairesToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm("EspaceSyndic.Impressions.RelevesComptes.ReleveCompteCoproPrintForm");
-    }
-
-    private void relevesIndividuelsToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm("EspaceSyndic.Impressions.RelevesIndividuels.ReleveIndividuelsPrintForm");
-    }
-
-    private void budgetPrévisionnelToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-//            ShowForm("EspaceSyndic.Formulaires.Budget.SaisieBudgetForm");
-        ShowForm("EspaceSyndic.Formulaires.Budget.BudgetSruForm");
-    }
-
-    private void additifsToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm("EspaceSyndic.Impressions.Additif.ImprimerAdditifForm");
-    }
-
     private void parametresGenerauxToolStripMenuItem_Click(object sender, EventArgs e)
     {
         var form = new ConfigParamForm();
@@ -685,12 +712,6 @@ public partial class MainForm : Form
         {
             MessageBox.Show(ex.Message);
         }
-
-    }
-
-    private void clotureExerciceToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm("EspaceSyndic.Formulaires.Exercice.ClotureExerciceForm");
     }
 
     private static MainForm instance;
@@ -742,11 +763,6 @@ public partial class MainForm : Form
         }
     }
 
-    private void utilisateursToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm("EspaceSyndic.Formulaires.Utilisateurs.UtilisateursListeForm");
-    }
-
     private void facturesToolStripMenuItem_Click(object sender, EventArgs e)
     {
         verifFactures(false);
@@ -793,10 +809,7 @@ public partial class MainForm : Form
         verifOperationAppel(false);
     }
 
-    private void controleDesDonnéesToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm("EspaceSyndic.Formulaires.OperationsGestion.ControlDataForm");
-    }
+    
 
     private void transfertAppelDeFondsSurGéranceToolStripMenuItem_Click(object sender, EventArgs e)
     {
@@ -809,11 +822,6 @@ public partial class MainForm : Form
         form.ShowDialog();
     }
 
-    private void impressionRéglementsToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm("EspaceSyndic.Impressions.Reglement.ImprimerListeReglementForm");
-    }
-
     private void modèlesDeDocumentsToolStripMenuItem_Click(object sender, EventArgs e)
     {
         Form form = new ModelesDocumentsForm();
@@ -824,11 +832,6 @@ public partial class MainForm : Form
     {
         var form = new ImprimerListeFacturationForm();
         form.ShowDialog();
-    }
-
-    private void utilisateursWebToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm("EspaceSyndic.Formulaires.Utilisateurs.WebUserForm");
     }
 
     private void publicationDeDocumentsToolStripMenuItem_Click(object sender, EventArgs e)
