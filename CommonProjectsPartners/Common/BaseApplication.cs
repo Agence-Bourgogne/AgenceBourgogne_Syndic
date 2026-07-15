@@ -75,12 +75,12 @@ public static class BaseApplication
         if (wb == null)
         {
             wb = xlApp.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
-            ws = wb.Worksheets[1];
+            ws = (Worksheet) wb.Worksheets[1];
         }
         else
         {
-            Worksheet last = wb.Worksheets[wb.Worksheets.Count];
-            ws = wb.Sheets.Add(oMissing, last);
+            var last = (Worksheet) wb.Worksheets[wb.Worksheets.Count];
+            ws = (Worksheet) wb.Sheets.Add(oMissing, last);
         }
 
         var bind = new BindingSource();
@@ -108,7 +108,7 @@ public static class BaseApplication
                 {
                     if (!colsToHide.Contains(col.ColumnName))
                     {
-                        Range range = cells[iRow, iCol++];
+                        var range = (Range) cells[iRow, iCol++];
 
                         var value = row[idxCol];
                         if (value is decimal)
@@ -146,12 +146,12 @@ public static class BaseApplication
         if (wb == null)
         {
             wb = xlApp.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
-            ws = wb.Worksheets[1];
+            ws = (Worksheet) wb.Worksheets[1];
         }
         else
         {
-            Worksheet last = wb.Worksheets[wb.Worksheets.Count];
-            ws = wb.Sheets.Add(oMissing, last);
+            var last = (Worksheet) wb.Worksheets[wb.Worksheets.Count];
+            ws = (Worksheet) wb.Sheets.Add(oMissing, last);
         }
 
         xlApp.Visible = false;
@@ -183,7 +183,7 @@ public static class BaseApplication
 
                     if (!colsToHide.Contains(col.Name) && col.Visible)
                     {
-                        Range range = ws.Cells[iRow, iCol++];
+                        var range = (Range) ws.Cells[iRow, iCol++];
                         if (cell.Value  is  decimal)
                             range.Value = cell.Value;
                         else
@@ -206,7 +206,7 @@ public static class BaseApplication
                 if (col != null)
                 {
                     var colChar = (char)('A' + col.Index - 1);
-                    Range r = ws.Cells[iRow, col.Index];
+                    var r = (Range) ws.Cells[iRow, col.Index];
                     r.Formula = string.Format("=SUM({0}2:{0}{1})", colChar, iRow - 1);
                 }
             }
