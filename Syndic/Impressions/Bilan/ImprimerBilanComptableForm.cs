@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using CommonProjectsPartners.Utils;
 using EspaceSyndic.Formulaires.Exercice;
 using EspaceSyndic.Formulaires.Immeubles;
-using EspaceSyndic.UtilsApp;
 using Microsoft.Reporting.WinForms;
 using Npgsql;
 using SyndicData.Common;
@@ -26,15 +25,12 @@ public partial class ImprimerBilanComptableForm : Form
     private readonly List<string> baseIndividuelle = ["80"];
 
     private readonly List<string> excludeNature = ["090", "091", "092", "093"];
-//        List<string> baseIndividuelle = new List<string> { "80", "81", "82", "83", "84", "85", "86", "87" };
-    //List<string> baseIndividuelle = new List<string> { "81", "82", "83", "84", "85", "86", "87" };
+
     private readonly string TitreForm;
     public ImprimerBilanComptableForm()
     {
         InitializeComponent();
         TitreForm = Text;
-        if ( ServiceReferenceUtils.ServiceClientIsConfigured() )
-            btnExport.Visible = true;
     }
 
     private void lblImmeuble_Click(object sender, EventArgs e)
@@ -44,7 +40,6 @@ public partial class ImprimerBilanComptableForm : Form
         if (!"".Equals(form.reference))
         {
             tbRefImmeuble.Text = form.reference;
-//                tbRefImmeuble_Validating(null, null);
         }
     }
 
@@ -69,7 +64,6 @@ public partial class ImprimerBilanComptableForm : Form
     private void ImprimerBilanComptableForm_Load(object sender, EventArgs e)
     {
         btnRapport.Enabled = false;
-        btnExport.Enabled = false;
         var dt = DateTime.Now;
         dt = dt.AddDays(-dt.DayOfYear +1);
         dtDebut.Value = dt;
@@ -77,7 +71,6 @@ public partial class ImprimerBilanComptableForm : Form
         btnEnter.Width = 0;
         var natures = NatureController.getController().GetListEntite();
         natTravaux = natures.FindAll(x=> (x.type_charge & 2) == 2);
-//            natSolde = natures.FindAll(x=> (x.type_charge & 5) == 5);
         natSolde = [getNatureCloture()];
         var excl = ParametresDB.getParam1("NATURE", "PAS PRIVATIVES");
         if ( !string.IsNullOrEmpty(excl))
@@ -236,7 +229,6 @@ public partial class ImprimerBilanComptableForm : Form
             }
             tbRefImmeuble.BackColor = Color.White;
             btnRapport.Enabled = true;
-            btnExport.Enabled = true;
         }
         else
         {
@@ -245,7 +237,6 @@ public partial class ImprimerBilanComptableForm : Form
             if (!"".Equals(tbRefImmeuble.Text))
                 tbRefImmeuble.BackColor = Color.Red;
             btnRapport.Enabled = false;
-            btnExport.Enabled = false;
         }
     }
 
@@ -261,18 +252,5 @@ public partial class ImprimerBilanComptableForm : Form
         var form = new ReferenceExerciceForm(immeuble);
         form.ShowDialog();
         tbRefImmeuble_Validating(null, null);
-    }
-
-    private void btnExport_Click(object sender, EventArgs e)
-    {
-        CreateReport();
-        try
-        {
-            MessageBox.Show(ServiceReferenceUtils.SendReportPDF(reportViewer1, "Bilan Comptable " + dtDebut.Value.Year, Guid.NewGuid().ToString(), immeuble.id, ""));
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.Message);
-        }
     }
 }

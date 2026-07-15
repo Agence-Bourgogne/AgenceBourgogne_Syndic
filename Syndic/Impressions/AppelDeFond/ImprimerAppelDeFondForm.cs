@@ -11,7 +11,6 @@ using EspaceSyndic.Formulaires.Coproprietaire;
 using EspaceSyndic.Formulaires.Exercice;
 using EspaceSyndic.Formulaires.Immeubles;
 using EspaceSyndic.Impressions.RelevesIndividuels;
-using EspaceSyndic.UtilsApp;
 using Microsoft.Reporting.WinForms;
 using SyndicData.Common;
 using SyndicData.Controller;
@@ -254,60 +253,5 @@ public partial class ImprimerAppelDeFondForm : Form
     private void ckFerie_CheckedChanged(object sender, EventArgs e)
     {
         tbText.Text = GetTextAppelFond();
-    }
-
-    private void button1_Click(object sender, EventArgs e)
-    {
-        if (immeuble == null) return;
-        var lots = LotDescriptionController.getController().getListeLotDescription(immeuble.id);
-        if (lots == null || lots.Count == 0) return;
-
-        Enabled = false;
-        var dlg = new ExportCopro();
-        try
-        {
-            dlg.Show(this);
-            dlg.Activate();
-            if (!string.IsNullOrEmpty(tbLot.Text) && lots.Exists(x => x.numero_lot.ToString() == tbLot.Text))
-            {
-                var lot = lots.FirstOrDefault(x => x.numero_lot.ToString() == tbLot.Text);
-                if (lot.Coproprietaire != null)
-                {
-                    var copro = CoproprietaireController.getController().getEntiteById(lot.coproprietaire_id);
-                    var monthName = new DateTime(2010, 8, 1).ToString("MMM", CultureInfo.CurrentCulture);
-                    var rapportName = "Appel de Fonds " + copro.nom + "_" + monthName + "-" + dtFin.Value.Year;
-                    dlg.textBox1.Text = $"Export Appel de Fonds lot : {lot.numero_lot}";
-                    dlg.textBox1.Refresh();
-                    CreateReport(lot.numero_lot.ToString());
-                    ServiceReferenceUtils.SendReportPDF(reportViewer1, rapportName, Guid.NewGuid().ToString(), lot.immeuble_id, lot.coproprietaire_id);
-                }
-            }
-            else
-            {
-                foreach (var lot in lots)
-                {
-                    if (lot != null && lot.Coproprietaire != null)
-                    {
-                        var copro = CoproprietaireController.getController().getEntiteById(lot.coproprietaire_id);
-                        var monthName = new DateTime(2010, 8, 1).ToString("MMM", CultureInfo.InvariantCulture);
-                        var rapportName = "Appel de Fonds " + copro.nom + "_" + monthName + "-" + dtFin.Value.Year;
-                        dlg.textBox1.Text = $"Export Appel de Fonds lot : {lot.numero_lot}";
-                        dlg.textBox1.Refresh();
-                        CreateReport(lot.numero_lot.ToString());
-                        ServiceReferenceUtils.SendReportPDF(reportViewer1, rapportName, Guid.NewGuid().ToString(), lot.immeuble_id, lot.coproprietaire_id);
-                    }
-                }
-                CreateReport();
-            }
-
-            dlg.Close();
-        }
-        catch (Exception ex)
-        {
-            dlg.Close();
-            MessageBox.Show(ex.Message);
-        }
-        Enabled = true;
-        Activate();
     }
 }

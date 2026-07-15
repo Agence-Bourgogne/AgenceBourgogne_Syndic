@@ -7,7 +7,6 @@ using EspaceSyndic.Formulaires.Config;
 using EspaceSyndic.Formulaires.Coproprietaire;
 using EspaceSyndic.Formulaires.Ecritures;
 using EspaceSyndic.Formulaires.Exercice;
-using EspaceSyndic.Formulaires.Extranet;
 using EspaceSyndic.Formulaires.Fournisseur;
 using EspaceSyndic.Formulaires.Immeubles;
 using EspaceSyndic.Formulaires.Nature;
@@ -683,11 +682,6 @@ public partial class MainForm : Form
         ShowForm<ControlDataForm>();
     }
 
-    private void utilisateursWebToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm<WebUserForm>();
-    }
-
     private void parametresToolStripMenuItem_Click(object sender, EventArgs e)
     {
         var form = new DatabaseConfigForm(SyndicApplication.CURRENT_APPLICATION);
@@ -827,11 +821,4 @@ public partial class MainForm : Form
         var form = new ImprimerListeFacturationForm();
         form.ShowDialog();
     }
-
-    private void publicationDeDocumentsToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        var form = new PublishDocument();
-        form.ShowDialog();
-    }
-
 }

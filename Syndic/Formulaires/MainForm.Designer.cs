@@ -39,7 +39,6 @@ namespace EspaceSyndic.Formulaires
             fournisseursToolStripMenuItem = new ToolStripMenuItem();
             naturesToolStripMenuItem = new ToolStripMenuItem();
             commentairesToolStripMenuItem = new ToolStripMenuItem();
-            utilisateursWebToolStripMenuItem = new ToolStripMenuItem();
             ecrituresToolStripMenuItem = new ToolStripMenuItem();
             saisieToolStripMenuItem = new ToolStripMenuItem();
             validationToolStripMenuItem = new ToolStripMenuItem();
@@ -73,11 +72,9 @@ namespace EspaceSyndic.Formulaires
             balanceReglementsFacturesPourUnImmeubleToolStripMenuItem = new ToolStripMenuItem();
             balanceReglementsAppelsDeFondImmeubleToolStripMenuItem = new ToolStripMenuItem();
             balanceReglementsFacturesPourLeCompteSyndicToolStripMenuItem = new ToolStripMenuItem();
-            publicationDeDocumentsToolStripMenuItem = new ToolStripMenuItem();
             outilsToolStripMenuItem = new ToolStripMenuItem();
             parametresToolStripMenuItem = new ToolStripMenuItem();
             parametresGenerauxToolStripMenuItem = new ToolStripMenuItem();
-            utilisateursToolStripMenuItem = new ToolStripMenuItem();
             modèlesDeDocumentsToolStripMenuItem = new ToolStripMenuItem();
             quitterToolStripMenuItem = new ToolStripMenuItem();
             deconnexionToolStripMenuItem = new ToolStripMenuItem();
@@ -98,6 +95,7 @@ namespace EspaceSyndic.Formulaires
             label2 = new Label();
             label3 = new Label();
             btnCancel = new Button();
+            utilisateursToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -113,7 +111,7 @@ namespace EspaceSyndic.Formulaires
             // 
             // fichiersToolStripMenuItem
             // 
-            fichiersToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { immeublesToolStripMenuItem, copropriétairesToolStripMenuItem, fournisseursToolStripMenuItem, naturesToolStripMenuItem, commentairesToolStripMenuItem, utilisateursWebToolStripMenuItem });
+            fichiersToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { immeublesToolStripMenuItem, copropriétairesToolStripMenuItem, fournisseursToolStripMenuItem, naturesToolStripMenuItem, commentairesToolStripMenuItem });
             fichiersToolStripMenuItem.Name = "fichiersToolStripMenuItem";
             fichiersToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
             fichiersToolStripMenuItem.Text = "&Fichiers";
@@ -152,13 +150,6 @@ namespace EspaceSyndic.Formulaires
             commentairesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             commentairesToolStripMenuItem.Text = "Aides Immeubles";
             commentairesToolStripMenuItem.Click += commentairesToolStripMenuItem_Click;
-            // 
-            // utilisateursWebToolStripMenuItem
-            // 
-            utilisateursWebToolStripMenuItem.Name = "utilisateursWebToolStripMenuItem";
-            utilisateursWebToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            utilisateursWebToolStripMenuItem.Text = "Utilisateurs Web";
-            utilisateursWebToolStripMenuItem.Click += utilisateursWebToolStripMenuItem_Click;
             // 
             // ecrituresToolStripMenuItem
             // 
@@ -350,7 +341,7 @@ namespace EspaceSyndic.Formulaires
             // 
             // utilitairesToolStripMenuItem
             // 
-            utilitairesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { immeublesToolStripMenuItem1, editionEtiquettesToolStripMenuItem, editionComptesFiscauxParImmeublesToolStripMenuItem, tableauRemiseDeClefsToolStripMenuItem, balanceReglementsFacturesPourUnImmeubleToolStripMenuItem, balanceReglementsAppelsDeFondImmeubleToolStripMenuItem, balanceReglementsFacturesPourLeCompteSyndicToolStripMenuItem, publicationDeDocumentsToolStripMenuItem });
+            utilitairesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { immeublesToolStripMenuItem1, editionEtiquettesToolStripMenuItem, editionComptesFiscauxParImmeublesToolStripMenuItem, tableauRemiseDeClefsToolStripMenuItem, balanceReglementsFacturesPourUnImmeubleToolStripMenuItem, balanceReglementsAppelsDeFondImmeubleToolStripMenuItem, balanceReglementsFacturesPourLeCompteSyndicToolStripMenuItem });
             utilitairesToolStripMenuItem.Name = "utilitairesToolStripMenuItem";
             utilitairesToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
             utilitairesToolStripMenuItem.Text = "Utilitaires";
@@ -405,13 +396,6 @@ namespace EspaceSyndic.Formulaires
             balanceReglementsFacturesPourLeCompteSyndicToolStripMenuItem.Size = new System.Drawing.Size(351, 22);
             balanceReglementsFacturesPourLeCompteSyndicToolStripMenuItem.Text = "Balance Règlements-Factures Pour le compte Syndic";
             // 
-            // publicationDeDocumentsToolStripMenuItem
-            // 
-            publicationDeDocumentsToolStripMenuItem.Name = "publicationDeDocumentsToolStripMenuItem";
-            publicationDeDocumentsToolStripMenuItem.Size = new System.Drawing.Size(351, 22);
-            publicationDeDocumentsToolStripMenuItem.Text = "Publication de Documents";
-            publicationDeDocumentsToolStripMenuItem.Click += publicationDeDocumentsToolStripMenuItem_Click;
-            // 
             // outilsToolStripMenuItem
             // 
             outilsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { parametresToolStripMenuItem, parametresGenerauxToolStripMenuItem, utilisateursToolStripMenuItem, modèlesDeDocumentsToolStripMenuItem });
@@ -434,13 +418,6 @@ namespace EspaceSyndic.Formulaires
             parametresGenerauxToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
             parametresGenerauxToolStripMenuItem.Text = "Paramètres Généraux";
             parametresGenerauxToolStripMenuItem.Click += parametresGenerauxToolStripMenuItem_Click;
-            // 
-            // utilisateursToolStripMenuItem
-            // 
-            utilisateursToolStripMenuItem.Name = "utilisateursToolStripMenuItem";
-            utilisateursToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
-            utilisateursToolStripMenuItem.Text = "Utilisateurs";
-            utilisateursToolStripMenuItem.Click += utilisateursToolStripMenuItem_Click;
             // 
             // modèlesDeDocumentsToolStripMenuItem
             // 
@@ -600,6 +577,13 @@ namespace EspaceSyndic.Formulaires
             btnCancel.Text = "button1";
             btnCancel.UseVisualStyleBackColor = true;
             // 
+            // utilisateursToolStripMenuItem
+            // 
+            utilisateursToolStripMenuItem.Name = "utilisateursToolStripMenuItem";
+            utilisateursToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
+            utilisateursToolStripMenuItem.Text = "Utilisateurs";
+            utilisateursToolStripMenuItem.Click += utilisateursToolStripMenuItem_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -677,7 +661,6 @@ namespace EspaceSyndic.Formulaires
         private ToolStripMenuItem clotureExerciceToolStripMenuItem;
         private ToolStripMenuItem deconnexionToolStripMenuItem;
         private ToolStripMenuItem quitterToolStripMenuItem1;
-        private ToolStripMenuItem utilisateursToolStripMenuItem;
         private ToolStripMenuItem controlesDBToolStripMenuItem;
         private ToolStripMenuItem facturesToolStripMenuItem;
         private ToolStripMenuItem reglementsToolStripMenuItem;
@@ -694,7 +677,6 @@ namespace EspaceSyndic.Formulaires
         private ToolStripMenuItem impressionRéglementsToolStripMenuItem;
         private ToolStripMenuItem modèlesDeDocumentsToolStripMenuItem;
         private ToolStripMenuItem impressionListeFacturesToolStripMenuItem;
-        private ToolStripMenuItem utilisateursWebToolStripMenuItem;
-        private ToolStripMenuItem publicationDeDocumentsToolStripMenuItem;
+        private ToolStripMenuItem utilisateursToolStripMenuItem;
     }
 }

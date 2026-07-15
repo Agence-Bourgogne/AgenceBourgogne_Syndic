@@ -5,8 +5,6 @@ using CommonProjectsPartners.Common;
 using CommonProjectsPartners.Utils;
 using EspaceSyndic.Formulaires.Common;
 using EspaceSyndic.Formulaires.Immeubles;
-using EspaceSyndic.Impressions.RelevesIndividuels;
-using EspaceSyndic.UtilsApp;
 using Microsoft.Reporting.WinForms;
 using Npgsql;
 using SyndicData.Common;
@@ -31,9 +29,6 @@ public partial class ImprimerAdditifForm : Form
     private void ImprimerConvocationForm_Load(object sender, EventArgs e)
     {
         btnRapport.Enabled = btnWord.Enabled = false;
-         //DateTime dt = DateTime.Now;
-        //tbDateEntete.Text = dt.ToShortDateString();
-        //tbDateAssemblee.Text = GetDateAssemblee();
         tbLieu.Text = GetLieuAssemblee();
         tbHeure.Text = GetHeureAssemblee();
         cbConvoc.SelectedIndex = 0;
@@ -78,10 +73,6 @@ public partial class ImprimerAdditifForm : Form
                 e.Handled = true;
                 if (sender.Equals(tbRefImmeuble))
                     lblImmeuble_Click(sender, null);
-                //if (sender.Equals(tbNature))
-                //    lblNature_Click(null, null);
-                //if (sender.Equals(tbFournisseur))
-                //    lblFournisseur_Click(null, null);
             }
     }
 
@@ -188,35 +179,5 @@ public partial class ImprimerAdditifForm : Form
     private void ImprimerAdditifForm_FormClosing(object sender, FormClosingEventArgs e)
     {
         e.Cancel = false;
-    }
-
-    private void button1_Click(object sender, EventArgs e)
-    {
-        if (immeuble == null) return;
-        var lots = LotDescriptionController.getController().getListeLotDescription(immeuble.id);
-        var dlg = new ExportCopro();
-        try
-        {
-            dlg.Show(this);
-            dlg.Activate();
-            foreach (var lot in lots)
-            {
-                if (lot is { Coproprietaire: not null })
-                {
-                    var rapportName = "Additif convocation " + cbConvoc.SelectedItem + " " + dtDateEntete.Value.Year;
-                    dlg.textBox1.Text = $"Export Additif convocation lot : {lot.numero_lot}";
-                    dlg.textBox1.Refresh();
-                    CreateReport(lot.numero_lot.ToString());
-                    ServiceReferenceUtils.SendReportPDF(reportViewer1, rapportName, Guid.NewGuid().ToString(), lot.immeuble_id, lot.coproprietaire_id);
-                }
-            }
-            CreateReport();
-            dlg.Close();
-        }
-        catch (Exception ex)
-        {
-            dlg.Close();
-            MessageBox.Show(ex.Message);
-        }
     }
 }

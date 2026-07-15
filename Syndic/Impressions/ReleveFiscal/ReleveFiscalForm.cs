@@ -6,8 +6,6 @@ using System.Windows.Forms;
 using CommonProjectsPartners.Utils;
 using EspaceSyndic.Formulaires.Coproprietaire;
 using EspaceSyndic.Formulaires.Immeubles;
-using EspaceSyndic.Impressions.RelevesIndividuels;
-using EspaceSyndic.UtilsApp;
 using Microsoft.Reporting.WinForms;
 using SyndicData.Common;
 using SyndicData.Controller;
@@ -155,34 +153,6 @@ public partial class ReleveFiscalForm : Form
                 new("Header_Agence", hdr_agence)
             };
             reportViewer1.LocalReport.SetParameters(parameters);
-        }
-    }
-
-    private void btnExport_Click(object sender, EventArgs e)
-    {
-        var lots = LotDescriptionController.getController().getListeLotDescriptionFiscaux(immeuble.id);
-        var dlg = new ExportCopro();
-        try
-        {
-            dlg.Show(this);
-            dlg.Activate();
-            foreach (var lot in lots)
-            {
-                if (string.IsNullOrEmpty(tbLot.Text) || lot.numero_lot.ToString() == tbLot.Text)
-                {
-                    dlg.textBox1.Text = $"Export releve Fiscal lot : {lot.numero_lot}";
-                    dlg.textBox1.Refresh();
-                    CreateReport(lot.numero_lot.ToString());
-                    ServiceReferenceUtils.SendReportPDF(reportViewer1, "Releve Fiscal " + dtDebut.Value.Year, Guid.NewGuid().ToString(), lot.immeuble_id, lot.coproprietaire_id);
-                }
-            }
-            CreateReport("");
-            dlg.Close();
-        }
-        catch (Exception ex)
-        {
-            dlg.Close();
-            MessageBox.Show(ex.Message);
         }
     }
 }

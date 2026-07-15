@@ -32,279 +32,279 @@ namespace EspaceSyndic.Impressions.ReleveFiscal
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            Microsoft.Reporting.WinForms.ReportDataSource reportDataSource1 = new Microsoft.Reporting.WinForms.ReportDataSource();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReleveFiscalForm));
-            this.immeublecoproBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.syndicDataset = new EspaceSyndic.syndicDataset();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.tbLot = new System.Windows.Forms.TextBox();
-            this.lblLot = new System.Windows.Forms.Label();
-            this.dtEdition = new System.Windows.Forms.DateTimePicker();
-            this.label3 = new System.Windows.Forms.Label();
-            this.dtFin = new System.Windows.Forms.DateTimePicker();
-            this.label2 = new System.Windows.Forms.Label();
-            this.dtDebut = new System.Windows.Forms.DateTimePicker();
-            this.label1 = new System.Windows.Forms.Label();
-            this.tbRefImmeuble = new System.Windows.Forms.TextBox();
-            this.lblImmeuble = new System.Windows.Forms.Label();
-            this.reportViewer1 = new Microsoft.Reporting.WinForms.ReportViewer();
-            this.panelButton = new System.Windows.Forms.Panel();
-            this.btnEnter = new System.Windows.Forms.Button();
-            this.btnRapport = new System.Windows.Forms.Button();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.btnQuit = new System.Windows.Forms.Button();
-            this.btn_export = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.immeublecoproBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.syndicDataset)).BeginInit();
-            this.groupBox3.SuspendLayout();
-            this.panelButton.SuspendLayout();
-            this.SuspendLayout();
+            components = new Container();
+            ReportDataSource reportDataSource1 = new ReportDataSource();
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(ReleveFiscalForm));
+            immeublecoproBindingSource = new BindingSource(components);
+            syndicDataset = new syndicDataset();
+            groupBox3 = new GroupBox();
+            tbLot = new TextBox();
+            lblLot = new Label();
+            dtEdition = new DateTimePicker();
+            label3 = new Label();
+            dtFin = new DateTimePicker();
+            label2 = new Label();
+            dtDebut = new DateTimePicker();
+            label1 = new Label();
+            tbRefImmeuble = new TextBox();
+            lblImmeuble = new Label();
+            reportViewer1 = new ReportViewer();
+            panelButton = new Panel();
+            imageList1 = new ImageList(components);
+            btnEnter = new Button();
+            btnRapport = new Button();
+            btnQuit = new Button();
+            ((ISupportInitialize)immeublecoproBindingSource).BeginInit();
+            ((ISupportInitialize)syndicDataset).BeginInit();
+            groupBox3.SuspendLayout();
+            panelButton.SuspendLayout();
+            SuspendLayout();
             // 
             // immeublecoproBindingSource
             // 
-            this.immeublecoproBindingSource.DataMember = "immeuble_copro";
-            this.immeublecoproBindingSource.DataSource = this.syndicDataset;
+            immeublecoproBindingSource.DataMember = "immeuble_copro";
+            immeublecoproBindingSource.DataSource = syndicDataset;
             // 
             // syndicDataset
             // 
-            this.syndicDataset.DataSetName = "syndicDataset";
-            this.syndicDataset.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            syndicDataset.DataSetName = "syndicDataset";
+            syndicDataset.Namespace = "http://tempuri.org/syndicDataset.xsd";
+            syndicDataset.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // groupBox3
             // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox3.Controls.Add(this.tbLot);
-            this.groupBox3.Controls.Add(this.lblLot);
-            this.groupBox3.Controls.Add(this.dtEdition);
-            this.groupBox3.Controls.Add(this.label3);
-            this.groupBox3.Controls.Add(this.dtFin);
-            this.groupBox3.Controls.Add(this.label2);
-            this.groupBox3.Controls.Add(this.dtDebut);
-            this.groupBox3.Controls.Add(this.label1);
-            this.groupBox3.Controls.Add(this.tbRefImmeuble);
-            this.groupBox3.Controls.Add(this.lblImmeuble);
-            this.groupBox3.Location = new System.Drawing.Point(12, 12);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(760, 57);
-            this.groupBox3.TabIndex = 0;
-            this.groupBox3.TabStop = false;
+            groupBox3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox3.Controls.Add(tbLot);
+            groupBox3.Controls.Add(lblLot);
+            groupBox3.Controls.Add(dtEdition);
+            groupBox3.Controls.Add(label3);
+            groupBox3.Controls.Add(dtFin);
+            groupBox3.Controls.Add(label2);
+            groupBox3.Controls.Add(dtDebut);
+            groupBox3.Controls.Add(label1);
+            groupBox3.Controls.Add(tbRefImmeuble);
+            groupBox3.Controls.Add(lblImmeuble);
+            groupBox3.Location = new System.Drawing.Point(14, 14);
+            groupBox3.Margin = new Padding(4, 3, 4, 3);
+            groupBox3.Name = "groupBox3";
+            groupBox3.Padding = new Padding(4, 3, 4, 3);
+            groupBox3.Size = new System.Drawing.Size(887, 66);
+            groupBox3.TabIndex = 0;
+            groupBox3.TabStop = false;
             // 
             // tbLot
             // 
-            this.tbLot.Location = new System.Drawing.Point(188, 19);
-            this.tbLot.Name = "tbLot";
-            this.tbLot.Size = new System.Drawing.Size(71, 20);
-            this.tbLot.TabIndex = 3;
-            this.tbLot.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbRefImmeuble_KeyPress);
-            this.tbLot.Validating += new System.ComponentModel.CancelEventHandler(this.tbLot_Validating);
+            tbLot.Location = new System.Drawing.Point(219, 22);
+            tbLot.Margin = new Padding(4, 3, 4, 3);
+            tbLot.Name = "tbLot";
+            tbLot.Size = new System.Drawing.Size(82, 23);
+            tbLot.TabIndex = 3;
+            tbLot.KeyPress += tbRefImmeuble_KeyPress;
+            tbLot.Validating += tbLot_Validating;
             // 
             // lblLot
             // 
-            this.lblLot.AutoSize = true;
-            this.lblLot.ForeColor = System.Drawing.Color.Blue;
-            this.lblLot.Location = new System.Drawing.Point(160, 22);
-            this.lblLot.Name = "lblLot";
-            this.lblLot.Size = new System.Drawing.Size(22, 13);
-            this.lblLot.TabIndex = 2;
-            this.lblLot.Text = "Lot";
-            this.lblLot.Click += new System.EventHandler(this.lblLot_Click);
+            lblLot.AutoSize = true;
+            lblLot.ForeColor = System.Drawing.Color.Blue;
+            lblLot.Location = new System.Drawing.Point(187, 25);
+            lblLot.Margin = new Padding(4, 0, 4, 0);
+            lblLot.Name = "lblLot";
+            lblLot.Size = new System.Drawing.Size(24, 15);
+            lblLot.TabIndex = 2;
+            lblLot.Text = "Lot";
+            lblLot.Click += lblLot_Click;
             // 
             // dtEdition
             // 
-            this.dtEdition.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtEdition.Location = new System.Drawing.Point(660, 19);
-            this.dtEdition.Name = "dtEdition";
-            this.dtEdition.Size = new System.Drawing.Size(85, 20);
-            this.dtEdition.TabIndex = 9;
+            dtEdition.Format = DateTimePickerFormat.Short;
+            dtEdition.Location = new System.Drawing.Point(770, 22);
+            dtEdition.Margin = new Padding(4, 3, 4, 3);
+            dtEdition.Name = "dtEdition";
+            dtEdition.Size = new System.Drawing.Size(98, 23);
+            dtEdition.TabIndex = 9;
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(615, 22);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(39, 13);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "&Edition";
+            label3.AutoSize = true;
+            label3.Location = new System.Drawing.Point(718, 25);
+            label3.Margin = new Padding(4, 0, 4, 0);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(44, 15);
+            label3.TabIndex = 8;
+            label3.Text = "&Edition";
             // 
             // dtFin
             // 
-            this.dtFin.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtFin.Location = new System.Drawing.Point(524, 19);
-            this.dtFin.Name = "dtFin";
-            this.dtFin.Size = new System.Drawing.Size(85, 20);
-            this.dtFin.TabIndex = 7;
+            dtFin.Format = DateTimePickerFormat.Short;
+            dtFin.Location = new System.Drawing.Point(611, 22);
+            dtFin.Margin = new Padding(4, 3, 4, 3);
+            dtFin.Name = "dtFin";
+            dtFin.Size = new System.Drawing.Size(98, 23);
+            dtFin.TabIndex = 7;
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(490, 25);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(21, 13);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "&Fin";
+            label2.AutoSize = true;
+            label2.Location = new System.Drawing.Point(572, 29);
+            label2.Margin = new Padding(4, 0, 4, 0);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(23, 15);
+            label2.TabIndex = 6;
+            label2.Text = "&Fin";
             // 
             // dtDebut
             // 
-            this.dtDebut.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtDebut.Location = new System.Drawing.Point(329, 19);
-            this.dtDebut.Name = "dtDebut";
-            this.dtDebut.Size = new System.Drawing.Size(85, 20);
-            this.dtDebut.TabIndex = 5;
+            dtDebut.Format = DateTimePickerFormat.Short;
+            dtDebut.Location = new System.Drawing.Point(384, 22);
+            dtDebut.Margin = new Padding(4, 3, 4, 3);
+            dtDebut.Name = "dtDebut";
+            dtDebut.Size = new System.Drawing.Size(98, 23);
+            dtDebut.TabIndex = 5;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(280, 22);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(39, 13);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "&Début ";
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(327, 25);
+            label1.Margin = new Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(42, 15);
+            label1.TabIndex = 4;
+            label1.Text = "&Début ";
             // 
             // tbRefImmeuble
             // 
-            this.tbRefImmeuble.Location = new System.Drawing.Point(64, 19);
-            this.tbRefImmeuble.Name = "tbRefImmeuble";
-            this.tbRefImmeuble.Size = new System.Drawing.Size(71, 20);
-            this.tbRefImmeuble.TabIndex = 1;
-            this.tbRefImmeuble.DoubleClick += new System.EventHandler(this.lblImmeuble_Click);
-            this.tbRefImmeuble.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbRefImmeuble_KeyPress);
-            this.tbRefImmeuble.Validating += new System.ComponentModel.CancelEventHandler(this.tbRefImmeuble_Validating);
+            tbRefImmeuble.Location = new System.Drawing.Point(75, 22);
+            tbRefImmeuble.Margin = new Padding(4, 3, 4, 3);
+            tbRefImmeuble.Name = "tbRefImmeuble";
+            tbRefImmeuble.Size = new System.Drawing.Size(82, 23);
+            tbRefImmeuble.TabIndex = 1;
+            tbRefImmeuble.DoubleClick += lblImmeuble_Click;
+            tbRefImmeuble.KeyPress += tbRefImmeuble_KeyPress;
+            tbRefImmeuble.Validating += tbRefImmeuble_Validating;
             // 
             // lblImmeuble
             // 
-            this.lblImmeuble.AutoSize = true;
-            this.lblImmeuble.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblImmeuble.ForeColor = System.Drawing.Color.Blue;
-            this.lblImmeuble.Location = new System.Drawing.Point(5, 22);
-            this.lblImmeuble.Name = "lblImmeuble";
-            this.lblImmeuble.Size = new System.Drawing.Size(55, 13);
-            this.lblImmeuble.TabIndex = 0;
-            this.lblImmeuble.Text = "&Immeuble:";
-            this.lblImmeuble.Click += new System.EventHandler(this.lblImmeuble_Click);
+            lblImmeuble.AutoSize = true;
+            lblImmeuble.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            lblImmeuble.ForeColor = System.Drawing.Color.Blue;
+            lblImmeuble.Location = new System.Drawing.Point(6, 25);
+            lblImmeuble.Margin = new Padding(4, 0, 4, 0);
+            lblImmeuble.Name = "lblImmeuble";
+            lblImmeuble.Size = new System.Drawing.Size(55, 13);
+            lblImmeuble.TabIndex = 0;
+            lblImmeuble.Text = "&Immeuble:";
+            lblImmeuble.Click += lblImmeuble_Click;
             // 
             // reportViewer1
             // 
-            this.reportViewer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.reportViewer1.IsDocumentMapWidthFixed = true;
+            reportViewer1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            reportViewer1.IsDocumentMapWidthFixed = true;
             reportDataSource1.Name = "immeuble_copro";
-            reportDataSource1.Value = this.immeublecoproBindingSource;
-            this.reportViewer1.LocalReport.DataSources.Add(reportDataSource1);
-            this.reportViewer1.LocalReport.ReportEmbeddedResource = "EspaceSyndic.Impressions.ReleveFiscal.ReleveFiscalMasterReport.rdlc";
-            this.reportViewer1.Location = new System.Drawing.Point(13, 81);
-            this.reportViewer1.Name = "reportViewer1";
-            this.reportViewer1.PageCountMode = Microsoft.Reporting.WinForms.PageCountMode.Actual;
-            this.reportViewer1.ShowFindControls = false;
-            this.reportViewer1.Size = new System.Drawing.Size(759, 531);
-            this.reportViewer1.TabIndex = 8;
+            reportDataSource1.Value = immeublecoproBindingSource;
+            reportViewer1.LocalReport.DataSources.Add(reportDataSource1);
+            reportViewer1.LocalReport.ReportEmbeddedResource = "EspaceSyndic.Impressions.ReleveFiscal.ReleveFiscalMasterReport.rdlc";
+            reportViewer1.Location = new System.Drawing.Point(15, 93);
+            reportViewer1.Margin = new Padding(4, 3, 4, 3);
+            reportViewer1.Name = "reportViewer1";
+            reportViewer1.PageCountMode = PageCountMode.Actual;
+            reportViewer1.ServerReport.BearerToken = null;
+            reportViewer1.ShowFindControls = false;
+            reportViewer1.Size = new System.Drawing.Size(885, 612);
+            reportViewer1.TabIndex = 8;
             // 
             // panelButton
             // 
-            this.panelButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelButton.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panelButton.Controls.Add(this.btn_export);
-            this.panelButton.Controls.Add(this.btnEnter);
-            this.panelButton.Controls.Add(this.btnRapport);
-            this.panelButton.Controls.Add(this.btnQuit);
-            this.panelButton.Location = new System.Drawing.Point(13, 632);
-            this.panelButton.Name = "panelButton";
-            this.panelButton.Size = new System.Drawing.Size(760, 35);
-            this.panelButton.TabIndex = 1;
-            // 
-            // btnEnter
-            // 
-            this.btnEnter.Location = new System.Drawing.Point(341, 4);
-            this.btnEnter.Name = "btnEnter";
-            this.btnEnter.Size = new System.Drawing.Size(75, 23);
-            this.btnEnter.TabIndex = 1;
-            this.btnEnter.Text = "button1";
-            this.btnEnter.UseVisualStyleBackColor = true;
-            this.btnEnter.Click += new System.EventHandler(this.btnEnter_Click);
-            // 
-            // btnRapport
-            // 
-            this.btnRapport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnRapport.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnRapport.ImageIndex = 6;
-            this.btnRapport.ImageList = this.imageList1;
-            this.btnRapport.Location = new System.Drawing.Point(6, 4);
-            this.btnRapport.Name = "btnRapport";
-            this.btnRapport.Size = new System.Drawing.Size(100, 25);
-            this.btnRapport.TabIndex = 0;
-            this.btnRapport.Text = "&Rapport";
-            this.btnRapport.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRapport.UseVisualStyleBackColor = true;
-            this.btnRapport.Click += new System.EventHandler(this.btnRapport_Click);
+            panelButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panelButton.BorderStyle = BorderStyle.Fixed3D;
+            panelButton.Controls.Add(btnEnter);
+            panelButton.Controls.Add(btnRapport);
+            panelButton.Controls.Add(btnQuit);
+            panelButton.Location = new System.Drawing.Point(15, 729);
+            panelButton.Margin = new Padding(4, 3, 4, 3);
+            panelButton.Name = "panelButton";
+            panelButton.Size = new System.Drawing.Size(886, 40);
+            panelButton.TabIndex = 1;
             // 
             // imageList1
             // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Silver;
-            this.imageList1.Images.SetKeyName(0, "top.png");
-            this.imageList1.Images.SetKeyName(1, "bottom.png");
-            this.imageList1.Images.SetKeyName(2, "previous.png");
-            this.imageList1.Images.SetKeyName(3, "next.png");
-            this.imageList1.Images.SetKeyName(4, "save.png");
-            this.imageList1.Images.SetKeyName(5, "quit.png");
-            this.imageList1.Images.SetKeyName(6, "print.png");
+            imageList1.ColorDepth = ColorDepth.Depth8Bit;
+            imageList1.ImageStream = (ImageListStreamer)resources.GetObject("imageList1.ImageStream");
+            imageList1.TransparentColor = System.Drawing.Color.Silver;
+            imageList1.Images.SetKeyName(0, "top.png");
+            imageList1.Images.SetKeyName(1, "bottom.png");
+            imageList1.Images.SetKeyName(2, "previous.png");
+            imageList1.Images.SetKeyName(3, "next.png");
+            imageList1.Images.SetKeyName(4, "save.png");
+            imageList1.Images.SetKeyName(5, "quit.png");
+            imageList1.Images.SetKeyName(6, "print.png");
+            // 
+            // btnEnter
+            // 
+            btnEnter.Location = new System.Drawing.Point(398, 5);
+            btnEnter.Margin = new Padding(4, 3, 4, 3);
+            btnEnter.Name = "btnEnter";
+            btnEnter.Size = new System.Drawing.Size(88, 27);
+            btnEnter.TabIndex = 1;
+            btnEnter.Text = "button1";
+            btnEnter.UseVisualStyleBackColor = true;
+            btnEnter.Click += btnEnter_Click;
+            // 
+            // btnRapport
+            // 
+            btnRapport.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnRapport.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            btnRapport.ImageIndex = 6;
+            btnRapport.ImageList = imageList1;
+            btnRapport.Location = new System.Drawing.Point(7, 5);
+            btnRapport.Margin = new Padding(4, 3, 4, 3);
+            btnRapport.Name = "btnRapport";
+            btnRapport.Size = new System.Drawing.Size(117, 29);
+            btnRapport.TabIndex = 0;
+            btnRapport.Text = "&Rapport";
+            btnRapport.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            btnRapport.UseVisualStyleBackColor = true;
+            btnRapport.Click += btnRapport_Click;
             // 
             // btnQuit
             // 
-            this.btnQuit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnQuit.CausesValidation = false;
-            this.btnQuit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnQuit.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnQuit.ImageIndex = 5;
-            this.btnQuit.ImageList = this.imageList1;
-            this.btnQuit.Location = new System.Drawing.Point(653, 4);
-            this.btnQuit.Name = "btnQuit";
-            this.btnQuit.Size = new System.Drawing.Size(100, 25);
-            this.btnQuit.TabIndex = 2;
-            this.btnQuit.Text = "&Quitter";
-            this.btnQuit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnQuit.UseVisualStyleBackColor = true;
-            // 
-            // btn_export
-            // 
-            this.btn_export.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btn_export.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btn_export.ImageIndex = 4;
-            this.btn_export.ImageList = this.imageList1;
-            this.btn_export.Location = new System.Drawing.Point(112, 6);
-            this.btn_export.Name = "btn_export";
-            this.btn_export.Size = new System.Drawing.Size(100, 25);
-            this.btn_export.TabIndex = 3;
-            this.btn_export.Text = "&Export Serveur";
-            this.btn_export.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_export.UseVisualStyleBackColor = true;
-            this.btn_export.Click += new System.EventHandler(this.btnExport_Click);
+            btnQuit.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnQuit.CausesValidation = false;
+            btnQuit.DialogResult = DialogResult.Cancel;
+            btnQuit.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            btnQuit.ImageIndex = 5;
+            btnQuit.ImageList = imageList1;
+            btnQuit.Location = new System.Drawing.Point(762, 5);
+            btnQuit.Margin = new Padding(4, 3, 4, 3);
+            btnQuit.Name = "btnQuit";
+            btnQuit.Size = new System.Drawing.Size(117, 29);
+            btnQuit.TabIndex = 2;
+            btnQuit.Text = "&Quitter";
+            btnQuit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            btnQuit.UseVisualStyleBackColor = true;
             // 
             // ReleveFiscalForm
             // 
-            this.AcceptButton = this.btnEnter;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.btnQuit;
-            this.ClientSize = new System.Drawing.Size(784, 679);
-            this.Controls.Add(this.panelButton);
-            this.Controls.Add(this.reportViewer1);
-            this.Controls.Add(this.groupBox3);
-            this.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Name = "ReleveFiscalForm";
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Releve Fiscal";
-            this.Load += new System.EventHandler(this.ReleveFiscalForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.immeublecoproBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.syndicDataset)).EndInit();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            this.panelButton.ResumeLayout(false);
-            this.ResumeLayout(false);
+            AcceptButton = btnEnter;
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btnQuit;
+            ClientSize = new System.Drawing.Size(915, 783);
+            Controls.Add(panelButton);
+            Controls.Add(reportViewer1);
+            Controls.Add(groupBox3);
+            ForeColor = System.Drawing.SystemColors.ControlText;
+            Margin = new Padding(4, 3, 4, 3);
+            Name = "ReleveFiscalForm";
+            ShowInTaskbar = false;
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Releve Fiscal";
+            Load += ReleveFiscalForm_Load;
+            ((ISupportInitialize)immeublecoproBindingSource).EndInit();
+            ((ISupportInitialize)syndicDataset).EndInit();
+            groupBox3.ResumeLayout(false);
+            groupBox3.PerformLayout();
+            panelButton.ResumeLayout(false);
+            ResumeLayout(false);
 
         }
 
@@ -329,6 +329,5 @@ namespace EspaceSyndic.Impressions.ReleveFiscal
         private BindingSource immeublecoproBindingSource;
         protected ImageList imageList1;
         private Button btnEnter;
-        private Button btn_export;
     }
 }

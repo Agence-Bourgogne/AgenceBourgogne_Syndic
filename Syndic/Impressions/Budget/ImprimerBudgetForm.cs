@@ -3,8 +3,6 @@ using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 using EspaceSyndic.Formulaires.Immeubles;
-using EspaceSyndic.Impressions.RelevesIndividuels;
-using EspaceSyndic.UtilsApp;
 using Microsoft.Reporting.WinForms;
 using SyndicData.Common;
 using SyndicData.Controller;
@@ -107,25 +105,6 @@ public partial class ImprimerBudgetForm : Form
             reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("BudgetAnnexe3", budgets));
             reportViewer1.LocalReport.SetParameters(parameters);
             reportViewer1.RefreshReport();
-        }
-    }
-
-    private void button1_Click(object sender, EventArgs e)
-    {
-        if (immeuble == null) return;
-        var dlg = new ExportCopro();
-        try
-        {
-            dlg.Show(this);
-            dlg.Activate();
-            CreateReport();
-            ServiceReferenceUtils.SendReportPDF(reportViewer1, "Budget exercice " + cbExercice.Text, Guid.NewGuid().ToString(), immeuble.id, "");
-            dlg.Close();
-        }
-        catch (Exception ex)
-        {
-            dlg.Close();
-            MessageBox.Show(ex.Message);
         }
     }
 }

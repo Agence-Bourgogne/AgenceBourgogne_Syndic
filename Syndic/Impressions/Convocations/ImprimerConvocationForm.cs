@@ -11,8 +11,6 @@ using CommonProjectsPartners.Utils;
 using EspaceSyndic.Formulaires.Common;
 using EspaceSyndic.Formulaires.Config;
 using EspaceSyndic.Formulaires.Immeubles;
-using EspaceSyndic.Impressions.RelevesIndividuels;
-using EspaceSyndic.UtilsApp;
 using Microsoft.Reporting.WinForms;
 using Npgsql;
 using SyndicData.Common;
@@ -23,7 +21,6 @@ namespace EspaceSyndic.Impressions.Convocations;
 
 public partial class ImprimerConvocationForm : Form
 {
-    //===================================================================  modif version 1.0.0.95 chiffre en lettre
     private static readonly string[] units = ["", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf"];
     private static readonly string[] teens = ["", "onze", "douze", "treize", "quatorze", "quinze", "seize", "dix-sept", "dix-huit", "dix-neuf"
     ];
@@ -44,14 +41,6 @@ public partial class ImprimerConvocationForm : Form
 
         var integerPart = (long)Math.Floor(number);
         words = ConvertToWordsInternal(integerPart);
-        //long fractionalPart = (long)(Math.Round((number - integerPart), 2) * 100); // الأجزاء العشرية
-
-        //words = ConvertToWordsInternal(integerPart) + " Dinar ";
-
-        //if (fractionalPart > 0)
-        //{
-        //    words += " et " + ConvertToWordsInternal(fractionalPart) + " Centime ";
-        //}
 
         return words;
     }
@@ -123,7 +112,7 @@ public partial class ImprimerConvocationForm : Form
 
         return words.Trim();
     }
-    //===================================================================  
+
     private ImmeubleEntite immeuble;
     private readonly HelpForm infoForm = new("aide_convocation");
     private readonly string TitreForm;
@@ -136,11 +125,7 @@ public partial class ImprimerConvocationForm : Form
     private void ImprimerConvocationForm_Load(object sender, EventArgs e)
     {
         btnRapport.Enabled = btnWord.Enabled = btnExport.Enabled = false;
-        //DateTime dt = DateTime.Now;
-        //tbDateEntete.Text = dt.ToShortDateString();
-        //tbDateAssemblee.Text = GetDateAssemblee();
         tbLieu.Text = GetLieuAssemblee();
-//            tbHeure.Text = GetHeureAssemblee();
         cbConvoc.SelectedIndex = 0;
         btnEnter.Width = 0;
             
@@ -273,7 +258,6 @@ public partial class ImprimerConvocationForm : Form
         return text;
     }
 
-    // string[] yearText = { "QUATORZE", "QUINZE", "SEIZE", "DIX-SEPT", "DIX-HUIT", "DIX-NEUF", "VINGT", "VINGT ET UN", "VINGT DEUX", "VINGT TROIS" };
     private void btnRapport_Click(object sender, EventArgs e)
     {
         CreateReport();
@@ -285,9 +269,9 @@ public partial class ImprimerConvocationForm : Form
         currentLot = num_lot;
         var yearAss = $" {dtDateAssemblee.Value.Year}";
         var dateAssemblee = dtDateAssemblee.Value.ToLongDateString().Replace(yearAss, "");
-        var anneeAssemblee = ConvertToWords(dtDateAssemblee.Value.Year).ToUpper(); // ConvertAmount(dtDateAssemblee.Value.Year);
-        //--
-        var ordre = tbText.Text;//.Replace("\t", "........");
+        var anneeAssemblee = ConvertToWords(dtDateAssemblee.Value.Year).ToUpper();
+
+        var ordre = tbText.Text;
         if (string.IsNullOrWhiteSpace(tbHeure.Text.Replace(":", "")))
         {
             MessageBox.Show(@"L'heure de convocation n'est pas renseignée");
@@ -314,7 +298,7 @@ public partial class ImprimerConvocationForm : Form
             new("Header_Agence", hdr_agence),
             new("DateAssembleeText", dateAssemblee)
         };
-        //            Console.WriteLine(ordre);
+
         MajdateAssemblee();
 
         if ((int)CommonRegistry.getRegistryValue("convocation", "type_convocation", 0) == 1)
@@ -323,7 +307,7 @@ public partial class ImprimerConvocationForm : Form
                 reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("convocation", CoproprietaireController.getController().CoproprietaireImmeubleDescription(immeuble.id)));
             else
                 reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("convocation", CoproprietaireController.getController().CoproprietaireImmeubleDescriptionByLot(immeuble.id, num_lot)));
-            // reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("convocation", CoproprietaireController.getController().CoproprietaireImmeubleDescription(immeuble.id)));
+            
             reportViewer1.LocalReport.ReportEmbeddedResource = "EspaceSyndic.Impressions.Convocations.ConvocationReport.rdlc";
         }
         else
@@ -367,7 +351,7 @@ public partial class ImprimerConvocationForm : Form
     {
         var yearAss = $" {dtDateAssemblee.Value.Year}";
         var dateAssemblee = dtDateAssemblee.Value.ToLongDateString().Replace(yearAss, "");
-        var anneeAssemblee = ConvertToWords(dtDateAssemblee.Value.Year).ToUpper(); // ConvertAmount(dtDateAssemblee.Value.Year);
+        var anneeAssemblee = ConvertToWords(dtDateAssemblee.Value.Year).ToUpper();
             
         var parameters = new NpgsqlParameter[]{
             new("AnneeAssemblee", anneeAssemblee),
@@ -403,7 +387,6 @@ public partial class ImprimerConvocationForm : Form
         var parameters = new List<NpgsqlParameter>{
             new("DateEntete", dtDateEntete.Value.ToShortDateString()),
             new("DateAssemblee", dtDateAssemblee.Value.ToShortDateString()),
-//                new NpgsqlParameter("DateLimite", dtLimite.Value.ToShortDateString()),
             new("HeureAssemblee", tbHeure.Text.Replace (":", " H ")),
             new("Convocation", cbConvoc.SelectedItem),
             new("LieuAssemblee", tbLieu.Text),
@@ -447,11 +430,8 @@ public partial class ImprimerConvocationForm : Form
 
     private void MajdateAssemblee()
     {
-//            if (DialogResult.Yes == MessageBox.Show("Mettre à jour la date d'assemblée ??", "", MessageBoxButtons.YesNo))
-        {
-            immeuble.dateass = dtDateAssemblee.Value;
-            ImmeubleController.getController().InsertOrUpdate(immeuble);
-        }
+        immeuble.dateass = dtDateAssemblee.Value;
+        ImmeubleController.getController().InsertOrUpdate(immeuble);
     }
 
     private void ImprimerConvocationForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -564,41 +544,6 @@ public partial class ImprimerConvocationForm : Form
         {
             immeuble.lieuconv = tbLieu.Text;
             ImmeubleController.getController().doInsertOrUpdate(immeuble);
-        }
-
-    }
-
-    private void button1_Click(object sender, EventArgs e)
-    {
-        if (immeuble == null) return;
-        var lots = LotDescriptionController.getController().getListeLotDescription(immeuble.id);
-        var dlg = new ExportCopro();
-        try
-        {
-            dlg.Show(this);
-            dlg.Activate();
-
-            foreach (var lot in lots)
-            {
-                if (lot != null && lot.Coproprietaire != null)
-                {
-                    var rapportName = "Convocation " + cbConvoc.SelectedItem + " " + dtDateEntete.Value.Year;
-                    dlg.textBox1.Text = $"Export Convocation lot : {lot.numero_lot}";
-                    dlg.textBox1.Refresh();
-                    CreateReport(lot.numero_lot.ToString());
-                    ServiceReferenceUtils.SendReportPDF(reportViewer1, rapportName, Guid.NewGuid().ToString(), lot.immeuble_id, lot.coproprietaire_id);
-                }
-            }
-
-
-            CreateReport();
-            //UtilsApp.ServiceReferenceUtils.SendReportPDF(reportViewer1, "Convocation " + cbConvoc.SelectedItem + " " + dtDateEntete.Value.Year.ToString(), Guid.NewGuid().ToString(), immeuble.id,"");
-            dlg.Close();
-        }
-        catch (Exception ex)
-        {
-            dlg.Close();
-            MessageBox.Show(ex.Message);
         }
     }
 }

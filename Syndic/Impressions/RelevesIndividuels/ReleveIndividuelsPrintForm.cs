@@ -11,7 +11,6 @@ using CommonProjectsPartners.Utils;
 using EspaceSyndic.Formulaires.Coproprietaire;
 using EspaceSyndic.Formulaires.Exercice;
 using EspaceSyndic.Formulaires.Immeubles;
-using EspaceSyndic.UtilsApp;
 using Microsoft.Reporting.WinForms;
 using SyndicData.Common;
 using SyndicData.Controller;
@@ -39,14 +38,11 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
     {
         InitializeComponent();
         TitreForm = Text;
-        if (ServiceReferenceUtils.ServiceClientIsConfigured())
-            btnExport.Visible = true;
     }
 
     private void ReleveIndividuelsPrintForm_Load(object sender, EventArgs e)
     {
         btnRapport.Enabled = false;
-        btnExport.Enabled = false;
         btnEnter.Width = 0;
         reportViewer1.LocalReport.SubreportProcessing += SubreportProcessingEventHandler;
     }
@@ -88,7 +84,6 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
             }
             ControlsWindows.setAutoControle(tbLot, lotsString);
             btnRapport.Enabled = true;
-            btnExport.Enabled = true;
         }
         else
         {
@@ -96,7 +91,6 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
             if (!"".Equals(tbRefImmeuble.Text))
                 tbRefImmeuble.BackColor = Color.Red;
             btnRapport.Enabled = false;
-            btnExport.Enabled = false;
         }
     }
 
@@ -261,7 +255,6 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
                     {
                         var oldItem = tableCondense.Rows[row2Update].ItemArray;
                         oldItem[7] = Convertir.ToDecimal(oldItem[7]) + Convertir.ToDecimal(rowItem[7]);
-//                            oldItem[8] = Convertir.ToDecimal(oldItem[8]) + Convertir.ToDecimal(newItem[9]);
                         oldItem[9] = Convertir.ToDecimal(oldItem[9]) + Convertir.ToDecimal(rowItem[9]);
                         oldItem[10] = Convertir.ToDecimal(oldItem[10]) + Convertir.ToDecimal(rowItem[10]);
                         oldItem[11] = Convertir.ToDecimal(oldItem[11]) + Convertir.ToDecimal(rowItem[11]);
@@ -287,7 +280,7 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
         } 
         Console.WriteLine("---");
     }
-    //
+
     private void btnRapport_Click(object sender, EventArgs e)
     {
         try
@@ -370,9 +363,6 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
         }
 
         solde = Math.Abs(sommes) - excedents - avance;
-        //Console.WriteLine("{0}", solde);
-        //Console.WriteLine("{0} {1} {2}", sommes, excedents, avance);
-        //Console.WriteLine("{0} {1} {2} {3}",  soldes, reglement, releve, appel);
 
         var table_etat = new DataTable();
         table_etat.Columns.Add("code");
@@ -399,7 +389,7 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
             new("Header_Description", hdr_descr),
             new("Header_Agence", hdr_agence)
         };
-        //     this.reportViewer1.LocalReport.ReportEmbeddedResource = "EspaceSyndic.Impressions.RelevesIndividuels.ReleveIndivMasterReport.rdlc";
+
         Console.WriteLine(" test " + reportViewer1.LocalReport.ReportEmbeddedResource);
            
         reportViewer1.LocalReport.SetParameters(parameters);
@@ -408,7 +398,7 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
         reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("etat_financier", table_etat));
         reportViewer1.RefreshReport();
     }
-    //
+
     private DataTable getTableBase()
     {
         var tv = (DataView)releve_copro.List;
@@ -432,7 +422,6 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
         }
         return table;
     }
-    //
     private EtatFinancier getIndiceCopro(List<EtatFinancier> finance, string copro)
     {
         foreach (var etat in finance )
@@ -442,7 +431,6 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
         }
         return null;
     }
-    //------
     private void SubreportProcessingEventHandler(object sender, SubreportProcessingEventArgs e)
     {
         var coproprietaire_id = e.Parameters[0].Values[0];
@@ -500,67 +488,6 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
         var form = new ReferenceExerciceForm(immeuble);
         form.ShowDialog();
         tbRefImmeuble_Validating(null, null);
-    }
-
-    private void btnExport_Click(object sender, EventArgs e)
-    {
-        if (immeuble == null) return;
-        var lots = LotDescriptionController.getController().getListeLotDescription(immeuble.id);
-        if(lots == null || lots.Count == 0) return;
-        loadDataReleve();
-        table_soldes = OperationController.getController().getSoldesRelevesIndividuels(immeuble.id, dtDebut.Value, dtFin.Value);
-        table_appel_fond = OperationController.getController().getSoldesRelevesIndividuels(immeuble.id, dtDebut.Value, dtFin.Value, true);
-        solde_bidon = OperationController.getController().getSoldesBidon();
-        Enabled = false;
-        var dlg = new ExportCopro();
-        try
-        {
-            //string serveur = SyndicData.Common.ParametresDB.getParam1("SERVEUR", "ADDRESSE");
-            //ServiceReference.ServiceClient sc = new ServiceReference.ServiceClient("BasicHttpBinding_IService", serveur);
-            dlg.Show(this);
-            dlg.Activate();
-            if (!string.IsNullOrEmpty(tbLot.Text) && lots.Exists(x=>x.numero_lot.ToString() == tbLot.Text))
-            {
-                var lot = lots.FirstOrDefault(x=>x.numero_lot.ToString() == tbLot.Text);
-                if(lot.Coproprietaire != null)
-                {
-                    var copro = CoproprietaireController.getController().getEntiteById(lot.coproprietaire_id);
-                    var monthName = new DateTime(2010, 8, 1).ToString("MMM", CultureInfo.CurrentCulture);
-                    var rapportName = "Releve Individuel " + copro.nom + "_" + monthName + "-" + dtFin.Value.Year;
-                    dlg.textBox1.Text = $"Export releve individuel lot : {lot.numero_lot}";
-                    dlg.textBox1.Refresh();
-                    CreateReport(lot.numero_lot.ToString());
-                    ServiceReferenceUtils.SendReportPDF(reportViewer1, rapportName, Guid.NewGuid().ToString(), lot.immeuble_id, lot.coproprietaire_id);
-                }
-            }
-            else
-            {
-                //  CreateReport("");
-                foreach (var lot in lots)
-                {
-                    if(lot != null && lot.Coproprietaire != null)
-                    {
-                        var copro = CoproprietaireController.getController().getEntiteById(lot.coproprietaire_id);
-                        var monthName = new DateTime(2010, 8, 1).ToString("MMM", CultureInfo.InvariantCulture);
-                        var rapportName = "Releve Individuel " + copro.nom + "_" + lot.numero_lot + "_" + monthName + "-" + dtFin.Value.Year;
-                        dlg.textBox1.Text = $"Export releve individuel lot : {lot.numero_lot}";
-                        dlg.textBox1.Refresh();
-                        CreateReport(lot.numero_lot.ToString());
-                        ServiceReferenceUtils.SendReportPDF(reportViewer1, rapportName, Guid.NewGuid().ToString(), lot.immeuble_id, lot.coproprietaire_id);
-                    }
-                }
-                CreateReport("");
-            }
-               
-            dlg.Close();
-        }
-        catch (Exception ex)
-        {
-            dlg.Close();
-            MessageBox.Show(ex.Message);
-        }
-        Enabled = true;
-        Activate();
     }
 }
 
