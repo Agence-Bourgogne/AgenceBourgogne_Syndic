@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Drawing;
-using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 using NTwain;
 using NTwain.Data;
-using WIA;
-using CommonDialog = WIA.CommonDialog;
 
 namespace CommonProjectsPartners.Utils;
 
@@ -15,33 +12,6 @@ public class ScanUtils
 {
     public Image image;
     public DataTransferredEventHandler DataTransferred;
-    public void WIAAcquire()
-    {
-        var cl = new CommonDialog();
-        try
-        {
-            var d = cl.ShowSelectDevice(WiaDeviceType.ScannerDeviceType, true, true);
-            if (d != null)
-            {
-                object result = cl.ShowAcquireImage(WiaDeviceType.ScannerDeviceType, WiaImageIntent.GrayscaleIntent, WiaImageBias.MinimizeSize, FormatID.wiaFormatPNG);
-                if (result != null)
-                {
-                    var img = (ImageFile)result;
-                    image = Image.FromStream(new MemoryStream((byte[])img.FileData.get_BinaryData()));
-                    DataTransferred?.Invoke(this, EventArgs.Empty);
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("{0}", ex.HResult);
-            if (ex.HResult != -2145320860)
-                if (ex.HResult != -2145320939)
-                    MessageBox.Show(ex.Message);
-                else
-                    MessageBox.Show(@"Pas de scanner connecté");
-        }
-    }
 
     public void TwainAcquire(IntPtr handle)
     {

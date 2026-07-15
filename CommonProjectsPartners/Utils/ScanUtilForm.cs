@@ -5,11 +5,8 @@ using System.Windows.Forms;
 
 namespace CommonProjectsPartners.Utils;
 
-public enum ScanMethod { WIA=0, TWAIN=1}
 public partial class ScanUtilForm : Form
 {
-    private ScanMethod scanMethod;
-
     public ScanUtilForm()
     {
         InitializeComponent();
@@ -39,10 +36,7 @@ public partial class ScanUtilForm : Form
     {
         var sc = new ScanUtils();
         sc.DataTransferred += DataTransferred;
-        if (scanMethod == ScanMethod.WIA)
-            sc.WIAAcquire();
-        if (scanMethod == ScanMethod.TWAIN)
-            sc.TwainAcquire(Handle);
+        sc.TwainAcquire(Handle);
     }
     private void RotateImage(RotateFlipType rotate)
     {
@@ -64,18 +58,6 @@ public partial class ScanUtilForm : Form
     private void rotation180ToolStripMenuItem_Click(object sender, EventArgs e)
     {
         RotateImage(RotateFlipType.Rotate180FlipNone);
-    }
-
-    private void modeWIAToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        scanMethod = ScanMethod.WIA;
-        btnAcquire_Click(null, null);
-    }
-
-    private void modeTwainToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        scanMethod = ScanMethod.TWAIN;
-        btnAcquire_Click(null, null);
     }
 
     private void btnEnter_Click(object sender, EventArgs e)

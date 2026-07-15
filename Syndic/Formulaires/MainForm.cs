@@ -816,12 +816,6 @@ public partial class MainForm : Form
 
     }
 
-    private void aideMenuItem_Click(object sender, EventArgs e)
-    {
-        var form = new AideForm();
-        form.ShowDialog();
-    }
-
     private void modèlesDeDocumentsToolStripMenuItem_Click(object sender, EventArgs e)
     {
         Form form = new ModelesDocumentsForm();
