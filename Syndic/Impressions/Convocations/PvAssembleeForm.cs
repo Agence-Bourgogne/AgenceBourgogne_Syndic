@@ -9,8 +9,9 @@ namespace EspaceSyndic.Impressions.Convocations;
 
 public partial class PvAssembleeForm : Form
 {
-    private ImmeubleEntite immeuble;
     private readonly string TitreForm;
+    private ImmeubleEntite immeuble;
+
     public PvAssembleeForm()
     {
         InitializeComponent();
@@ -27,7 +28,7 @@ public partial class PvAssembleeForm : Form
         }
         else
         {
-            if ( immeubleUserControl.tbRefImmeuble.Text != "")
+            if (immeubleUserControl.tbRefImmeuble.Text != "")
                 immeubleUserControl.Invalid = true;
             Text = TitreForm;
         }

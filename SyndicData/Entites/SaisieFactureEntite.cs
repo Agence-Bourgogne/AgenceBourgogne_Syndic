@@ -7,31 +7,56 @@ namespace SyndicData.Entites;
 
 public class SaisieFactureEntite : AbstractBaseEntite
 {
-    public string liasse_id;
+    private ImmeubleEntite _immeuble;
+
+    private NatureEntite _nature;
+    public string base_repart;
+    public string comment_fournisseur;
     public DateTime date_operation;
-    public int numero_operation;
+    public DateTime date_reference;
+    public string fournisseur_id;
 
     public string immeuble_id;
-    public string fournisseur_id;
-    public string nature_id;
+    public string liasse_id;
     public string libelle;
-    public string comment_fournisseur;
-    public DateTime date_reference;
+    public string lot_id;
     public decimal montant;
-    public string base_repart;
+    public string nature_id;
+    public int numero_operation;
     public int reglement;
     public int statut = 0; //(int)GlobalConstantes.StatutOperation.Brouillon;
-    public string lot_id;
 
-    public SaisieFactureEntite ()
+    public SaisieFactureEntite()
     {
         id = "";
         setValues(null);
     }
+
     public SaisieFactureEntite(DataRow data)
     {
         setValues(data);
     }
+
+    public ImmeubleEntite Immeuble
+    {
+        get
+        {
+            if (_immeuble == null)
+                _immeuble = ImmeubleController.getController().getEntiteById(immeuble_id);
+            return _immeuble;
+        }
+    }
+
+    public NatureEntite Nature
+    {
+        get
+        {
+            if (_nature == null)
+                _nature = NatureController.getController().getEntiteById(nature_id);
+            return _nature;
+        }
+    }
+
     public override void setValues(DataRow row)
     {
         var members = GetType().GetFields();
@@ -54,27 +79,5 @@ public class SaisieFactureEntite : AbstractBaseEntite
         updatables.Add(new UpdateField("statut", true, members));
 
         base.setValues(row);
-    }
-
-    private ImmeubleEntite _immeuble;
-    public ImmeubleEntite Immeuble
-    {
-        get
-        {
-            if (_immeuble == null)
-                _immeuble = ImmeubleController.getController().getEntiteById(immeuble_id);
-            return _immeuble;
-        }
-    }
-
-    private NatureEntite _nature;
-    public NatureEntite Nature
-    {
-        get
-        {
-            if (_nature == null)
-                _nature = NatureController.getController().getEntiteById(nature_id);
-            return _nature;
-        }
     }
 }

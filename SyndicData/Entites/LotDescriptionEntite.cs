@@ -7,24 +7,38 @@ namespace SyndicData.Entites;
 
 public class LotDescriptionEntite : AbstractBaseEntite
 {
-    public int numero_lot;
-    public string immeuble_id;
+    private CoproprietaireEntite _coproprietaire;
+    public decimal avance;
     public string coproprietaire_id;
     public DateTime date_changement;
+    public string immeuble_id;
     public string numero_batiment;
     public string numero_escalier;
     public string numero_etage;
-    public decimal avance ;
+    public int numero_lot;
     public int statut;
+
     public LotDescriptionEntite()
     {
         id = "";
         setValues(null);
     }
-    public LotDescriptionEntite (DataRow data)
+
+    public LotDescriptionEntite(DataRow data)
     {
         setValues(data);
     }
+
+    public CoproprietaireEntite Coproprietaire
+    {
+        get
+        {
+            if (_coproprietaire == null)
+                _coproprietaire = CoproprietaireController.getController().getEntiteById(coproprietaire_id);
+            return _coproprietaire;
+        }
+    }
+
     public override void setValues(DataRow row)
     {
         var members = GetType().GetFields();
@@ -43,15 +57,4 @@ public class LotDescriptionEntite : AbstractBaseEntite
 
         base.setValues(row);
     }
-
-    private CoproprietaireEntite _coproprietaire;
-    public CoproprietaireEntite Coproprietaire
-    {
-        get
-        {
-            if (_coproprietaire == null)
-                _coproprietaire = CoproprietaireController.getController().getEntiteById(coproprietaire_id);
-            return _coproprietaire;
-        }
-    }    
 }

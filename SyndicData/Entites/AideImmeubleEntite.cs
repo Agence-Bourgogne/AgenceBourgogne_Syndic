@@ -5,8 +5,8 @@ namespace SyndicData.Entites;
 
 public class AideImmeubleEntite : AbstractBaseEntite
 {
-    public string immeuble_id;
     public string code;
+    public string immeuble_id;
     public string libelle;
 
     public AideImmeubleEntite()
@@ -14,10 +14,12 @@ public class AideImmeubleEntite : AbstractBaseEntite
         id = "";
         setValues(null);
     }
+
     public AideImmeubleEntite(DataRow datas)
     {
         setValues(datas);
     }
+
     public override void setValues(DataRow row)
     {
         var members = GetType().GetFields();
@@ -29,6 +31,4 @@ public class AideImmeubleEntite : AbstractBaseEntite
         updatables.Add(new UpdateField("libelle", true, members));
         base.setValues(row);
     }
-
-
 }

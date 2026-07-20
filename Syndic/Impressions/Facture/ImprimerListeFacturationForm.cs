@@ -11,6 +11,8 @@ public partial class ImprimerListeFacturationForm : Form
 {
     private readonly List<string> liasses = [];
 
+    private bool bLoading;
+
     public ImprimerListeFacturationForm()
     {
         InitializeComponent();
@@ -28,18 +30,18 @@ public partial class ImprimerListeFacturationForm : Form
         this.liasses.AddRange(liasses);
     }
 
-    private bool bLoading;
-
     private void ImprimerListeFacturationForm_Load(object sender, EventArgs e)
     {
-        if ( liasses.Count <= 0 )
+        if (liasses.Count <= 0)
         {
             bLoading = true;
-            cbLiasse.DataSource = LiasseController.getController().GetLiassesValidees(GlobalConstantes.TypeOperation.Facture, " limit 10 ");
+            cbLiasse.DataSource = LiasseController.getController()
+                .GetLiassesValidees(GlobalConstantes.TypeOperation.Facture, " limit 10 ");
             cbLiasse.DisplayMember = "reference";
             cbLiasse.ValueMember = "Id";
             bLoading = false;
         }
+
         reportViewer1.LocalReport.SubreportProcessing += SubreportProcessingEventHandler;
         DoRapport();
     }
@@ -51,15 +53,13 @@ public partial class ImprimerListeFacturationForm : Form
 
     private void DoRapport()
     {
-        if ( liasses.Count <= 0 )
-        {
-            liasses.Add(cbLiasse.SelectedValue.ToString());
-        }
+        if (liasses.Count <= 0) liasses.Add(cbLiasse.SelectedValue.ToString());
         var hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
         var hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
 
 
-        var parameters = new ReportParameter[]{
+        var parameters = new ReportParameter[]
+        {
             new("Header_Description", hdr_descr),
             new("Header_Agence", hdr_agence)
         };

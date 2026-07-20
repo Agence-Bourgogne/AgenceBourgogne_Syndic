@@ -15,20 +15,21 @@ namespace EspaceSyndic.Impressions.Balances;
 
 public partial class BalanceImmeublePrintForm : Form
 {
-    private ImmeubleEntite immeuble;
-    public int typeBalance;
     private readonly BindingSource sourceData = new();
+    private ImmeubleEntite immeuble;
     private string TitreForm;
+    public int typeBalance;
 
     public BalanceImmeublePrintForm()
     {
         InitializeComponent();
     }
 
-    public void RefreshTypeReport ( int type )
+    public void RefreshTypeReport(int type)
     {
         cbBalance.SelectedIndex = typeBalance = type;
     }
+
     private void BalanceImmeubleProntForm_Load(object sender, EventArgs e)
     {
         btnEnter.Width = 0;
@@ -36,10 +37,12 @@ public partial class BalanceImmeublePrintForm : Form
         cbBalance.SelectedIndex = typeBalance;
         reportViewer1.Visible = false;
     }
+
     private void btnEnter_Click(object sender, EventArgs e)
     {
         ControlsWindows.FocusNextTabbedControl(this);
     }
+
     private void lblImmeuble_Click(object sender, EventArgs e)
     {
         var form = new FindImmeubleForm();
@@ -50,6 +53,7 @@ public partial class BalanceImmeublePrintForm : Form
             tbRefImmeuble_Validating(null, null);
         }
     }
+
     private void tbRefImmeuble_Validating(object sender, CancelEventArgs e)
     {
         immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
@@ -88,7 +92,8 @@ public partial class BalanceImmeublePrintForm : Form
         if (cbBalance.SelectedIndex == 1)
             titre = "Balance Règlements Appels de Fond";
 
-        var reportParams = new ReportParameter[]{
+        var reportParams = new ReportParameter[]
+        {
             new("Titre", titre),
             new("RefImmeuble", immeuble.reference)
         };
@@ -119,7 +124,7 @@ public partial class BalanceImmeublePrintForm : Form
     private void btnExport_Click(object sender, EventArgs e)
     {
         dataGridView.DataSource = sourceData;
-        var cols = new List<string>{"type"};
+        var cols = new List<string> { "type" };
         BaseApplication.DataGridToExcel(dataGridView, cols, "", ["debit", "credit"]);
     }
 
@@ -129,5 +134,4 @@ public partial class BalanceImmeublePrintForm : Form
         form.RefreshImmeuble(immeuble.reference);
         form.Activate();
     }
-
 }

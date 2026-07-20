@@ -10,13 +10,15 @@ namespace EspaceSyndic.Formulaires.Immeubles;
 
 public partial class FicheAideImmeubleForm : Form
 {
-    private ImmeubleEntite immeuble;
     private readonly string typeAide = "";
+    private ImmeubleEntite immeuble;
+
     public FicheAideImmeubleForm()
     {
         InitializeComponent();
     }
-    public FicheAideImmeubleForm(ImmeubleEntite immeuble, string  typeAide = "" )
+
+    public FicheAideImmeubleForm(ImmeubleEntite immeuble, string typeAide = "")
     {
         InitializeComponent();
         this.immeuble = immeuble;
@@ -36,6 +38,7 @@ public partial class FicheAideImmeubleForm : Form
             tbRefImmeuble.Text = immeuble.reference;
             tbRefImmeuble_Leave(null, null);
         }
+
 //            cbTypeComment_SelectedIndexChanged(null, null);
         btnEnter.Width = 0;
 //            this.WindowState = FormWindowState.Maximized;
@@ -47,11 +50,12 @@ public partial class FicheAideImmeubleForm : Form
             return;
         var code = cbTypeComment.SelectedValue.ToString();
 
-        var comment = AideImmeubleController.getController().getAideImmeuble(immeuble.id, code) ?? new AideImmeubleEntite
-        {
-            code = code,
-            immeuble_id = immeuble.id
-        };
+        var comment = AideImmeubleController.getController().getAideImmeuble(immeuble.id, code) ??
+                      new AideImmeubleEntite
+                      {
+                          code = code,
+                          immeuble_id = immeuble.id
+                      };
         comment.libelle = tbComment.Text;
         if (AideImmeubleController.getController().InsertOrUpdate(comment))
             Close();
@@ -98,7 +102,7 @@ public partial class FicheAideImmeubleForm : Form
     private void btnEnter_Click(object sender, EventArgs e)
     {
         //Console.WriteLine(sender);
-        if ( !tbComment.Focused)
+        if (!tbComment.Focused)
             ControlsWindows.FocusNextTabbedControl(this);
     }
 
@@ -106,6 +110,7 @@ public partial class FicheAideImmeubleForm : Form
     {
         AcceptButton = null;
     }
+
     private void tbRefImmeuble_Leave(object sender, EventArgs e)
     {
         immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
@@ -123,7 +128,7 @@ public partial class FicheAideImmeubleForm : Form
             tbComment.Enabled = false;
             cbTypeComment.Enabled = false;
         }
+
         cbTypeComment_SelectedIndexChanged(null, null);
     }
-
 }

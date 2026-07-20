@@ -9,7 +9,7 @@ namespace EspaceSyndic.UtilsApp;
 
 internal static class RepartitionControlsWindows
 {
-    public static void initGridRepartition(DataGridView grid,  int baseWidth = 50)
+    public static void initGridRepartition(DataGridView grid, int baseWidth = 50)
     {
         var baseCharge = ParametresDB.getComboData("CODECHARGE");
         var grpCharge = ParametresDB.getComboData("GROUPCHARGE");
@@ -22,7 +22,8 @@ internal static class RepartitionControlsWindows
             ControlsWindows.addColumn(grid, col["nom"].ToString(), baseWidth);
             width += baseWidth;
         }
-        grid.Columns[0].Width =  grid.Width - (width - 5); 
+
+        grid.Columns[0].Width = grid.Width - (width - 5);
         foreach (DataRow row in baseCharge.Rows)
         {
             var rowGrid = new DataGridViewRow();
@@ -36,9 +37,11 @@ internal static class RepartitionControlsWindows
                 cell.Style.BackColor = Color.LightGray;
                 rowGrid.Cells.AddRange(cell);
             }
+
             grid.Rows.Add(rowGrid);
         }
     }
+
     public static AutoCompleteStringCollection ShowRepartitionImmeuble(DataGridView dataGridView, DataTable repartition)
     {
         var baseAuto = new AutoCompleteStringCollection();
@@ -51,7 +54,8 @@ internal static class RepartitionControlsWindows
             c.ToolTipText = "";
             c.Value = "";
         }
-        if ( repartition != null )
+
+        if (repartition != null)
             foreach (DataRow row in repartition.Rows)
             {
                 var entite = new ImmeubleRepartitionEntite(row);
@@ -63,20 +67,22 @@ internal static class RepartitionControlsWindows
                     continue;
                 var valeur = entite.valeur;
                 dataGridView.Rows[ligne - 1].Cells[colonne + 1].Tag = new ImmeubleRepartitionEntite(row);
-                if (valeur > 0 || entite.type_ventilation == (int) GlobalConstantes.TypeRepartition.Individuelle)
+                if (valeur > 0 || entite.type_ventilation == (int)GlobalConstantes.TypeRepartition.Individuelle)
                 {
                     baseAuto.Add(row["reference"].ToString().Replace(";", ""));
                     dataGridView.Rows[ligne - 1].Cells[colonne + 1].Style.BackColor = Color.White;
                     dataGridView.Rows[ligne - 1].Cells[colonne + 1].ToolTipText = row["nom"].ToString();
-                    if ( entite.type_ventilation == (int) GlobalConstantes.TypeRepartition.Individuelle )
+                    if (entite.type_ventilation == (int)GlobalConstantes.TypeRepartition.Individuelle)
                         dataGridView.Rows[ligne - 1].Cells[colonne + 1].Value = "*";
                     else
                         dataGridView.Rows[ligne - 1].Cells[colonne + 1].Value = valeur;
                 }
                 else
+                {
                     dataGridView.Rows[ligne - 1].Cells[colonne + 1].Style.BackColor = Color.LightGray;
+                }
             }
+
         return baseAuto;
     }
-
 }

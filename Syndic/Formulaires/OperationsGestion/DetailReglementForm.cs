@@ -15,20 +15,21 @@ namespace EspaceSyndic.Formulaires.OperationsGestion;
 
 public partial class DetailReglementForm : DetailOperationForm
 {
-    private ImmeubleEntite immeuble;
+    private bool bInitialized;
 
     private SaisieReglementEntite entite;
-
-    private bool bInitialized;
+    private ImmeubleEntite immeuble;
 
     public DetailReglementForm()
     {
         InitializeComponent();
     }
+
     public DetailReglementForm(string entite_id) : base(entite_id)
     {
         InitializeComponent();
     }
+
     protected override void ShowDetail()
     {
         entite = SaisieReglementController.getController().getEntiteById(entite_id);
@@ -39,7 +40,7 @@ public partial class DetailReglementForm : DetailOperationForm
         tbBase.Visible = false;
 
 
-        var bEnabled = entite.statut <= (int)GlobalConstantes.StatutOperation.Valide 
+        var bEnabled = entite.statut <= (int)GlobalConstantes.StatutOperation.Valide
                        || BaseApplication.userConnected.reference == "GVI";
 
         tbCommentaireFournisseur.Enabled = false;
@@ -55,7 +56,8 @@ public partial class DetailReglementForm : DetailOperationForm
     {
         immeuble = ImmeubleController.getController().getEntiteById(entite.immeuble_id);
         nature = NatureController.getController().getEntiteById(entite.nature_id);
-        var lot = LotDescriptionController.getController().getLotFromCopro(entite.immeuble_id, entite.coproprietaire_id);
+        var lot = LotDescriptionController.getController()
+            .getLotFromCopro(entite.immeuble_id, entite.coproprietaire_id);
         if (lot != null)
         {
             tbLot.Text = lot.numero_lot.ToString();
@@ -75,14 +77,15 @@ public partial class DetailReglementForm : DetailOperationForm
             tbCpFournisseur.Text = fournisseur.codepostal;
             tbVilleFournisseur.Text = fournisseur.ville;
         }
+
         tbDateCreation.Text = entite.date_reference.ToShortDateString();
         FillDataGridView();
     }
 
     private void FillDataGridView()
     {
-        var table = entite.liasse_id.StartsWith("Reprise") 
-            ? OperationController.getController().getReglementOperations(entite) 
+        var table = entite.liasse_id.StartsWith("Reprise")
+            ? OperationController.getController().getReglementOperations(entite)
             : OperationController.getController().getSaisieOperations(entite.id);
 
         dataGridView.DataSource = table;
@@ -108,17 +111,17 @@ public partial class DetailReglementForm : DetailOperationForm
         dataGridView.ClearSelection();
         setRowIndicators();
         bInitialized = true;
-        if (dataGridView.Rows.Count > 0 )
+        if (dataGridView.Rows.Count > 0)
             dataGridView.Rows[0].Selected = true;
     }
 
     protected override void DeleteEntite()
     {
-        if (DialogResult.Yes == MessageBox.Show("L'annulation d'un règlement et de ses éléments est irréversible\nVoulez vous continuer ?", "Attention", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
-        {
+        if (DialogResult.Yes ==
+            MessageBox.Show("L'annulation d'un règlement et de ses éléments est irréversible\nVoulez vous continuer ?",
+                "Attention", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
             if (SaisieReglementController.getController().AnnuleElement(entite))
                 FillDataGridView();
-        }
     }
 
     protected override void ValidModification()
@@ -129,15 +132,18 @@ public partial class DetailReglementForm : DetailOperationForm
         var date_reference = DateTime.Parse(tbDateCreation.Text);
         var comment = tbComment.Text;
         var nature = NatureController.getController().getEntiteFromField("reference", ref_nature);
-        var parameters = new List<NpgsqlParameter> { new("@immeuble_id", immeuble.id), new("@numero_lot", Convertir.ToInt(tbLot.Text)) };
-        var lot = LotDescriptionController.getController().getEntite(" where immeuble_id = @immeuble_id and numero_lot = @numero_lot", parameters);
-        if ( lot == null )
+        var parameters = new List<NpgsqlParameter>
+            { new("@immeuble_id", immeuble.id), new("@numero_lot", Convertir.ToInt(tbLot.Text)) };
+        var lot = LotDescriptionController.getController()
+            .getEntite(" where immeuble_id = @immeuble_id and numero_lot = @numero_lot", parameters);
+        if (lot == null)
         {
             MessageBox.Show(@"Numéro de lot Invalide");
             return;
         }
+
         var coproprietaire = CoproprietaireController.getController().getEntiteById(lot.coproprietaire_id);
-        if ( coproprietaire == null )
+        if (coproprietaire == null)
         {
             MessageBox.Show(@"Coproprietaire Invalide");
             return;
@@ -162,7 +168,9 @@ public partial class DetailReglementForm : DetailOperationForm
                     entite.liasse_id = "Correction";
                 }
                 else
+                {
                     table = OperationController.getController().getSaisieOperations(entite.id);
+                }
 
                 entite.montant = montant;
                 entite.immeuble_id = immeuble.id;
@@ -184,7 +192,10 @@ public partial class DetailReglementForm : DetailOperationForm
                     operation.setValue(entite);
                 }
                 else
+                {
                     operation = new OperationEntite(entite);
+                }
+
                 operation.lot_id = lot.id;
                 operation.coproprietaire_id = coproprietaire.id;
 
@@ -211,13 +222,13 @@ public partial class DetailReglementForm : DetailOperationForm
     private void tbCopro_Validating(object sender, CancelEventArgs e)
     {
     }
+
     protected override void dataGridView_SelectionChanged(object sender, EventArgs e)
     {
-        if ( bInitialized)
-        {
-            if ( dataGridView.SelectedRows.Count > 0)
+        if (bInitialized)
+            if (dataGridView.SelectedRows.Count > 0)
             {
-                var row = (DataRowView) dataGridView.SelectedRows[0].DataBoundItem;
+                var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
                 var operation = OperationController.getController().getEntiteById(row["id"].ToString());
                 var lot = LotDescriptionController.getController().getEntiteById(operation.lot_id);
                 var copro = CoproprietaireController.getController().getEntiteById(lot.coproprietaire_id);
@@ -225,14 +236,15 @@ public partial class DetailReglementForm : DetailOperationForm
                 tbCopro.Text = copro.reference;
                 tbLibCopro.Text = $"{copro.nom.Trim()} {copro.prenom}";
             }
-        }
     }
 
     private void tbLot_Validating(object sender, CancelEventArgs e)
     {
-        var  parameters = new List<NpgsqlParameter> { new("@immeuble_id", immeuble.id), new("@numero_lot", Convertir.ToInt(tbLot.Text)) };
-        var lot = LotDescriptionController.getController().getEntite(" where immeuble_id = @immeuble_id and numero_lot = @numero_lot", parameters);
-        if ( lot != null )
+        var parameters = new List<NpgsqlParameter>
+            { new("@immeuble_id", immeuble.id), new("@numero_lot", Convertir.ToInt(tbLot.Text)) };
+        var lot = LotDescriptionController.getController()
+            .getEntite(" where immeuble_id = @immeuble_id and numero_lot = @numero_lot", parameters);
+        if (lot != null)
         {
             var copro = CoproprietaireController.getController().getEntiteById(lot.coproprietaire_id);
             tbCopro.Text = copro.reference;
@@ -246,7 +258,6 @@ public partial class DetailReglementForm : DetailOperationForm
         if (immeuble != null)
         {
             tbRefImmeuble.BackColor = Color.White;
-
         }
         else
         {
@@ -254,7 +265,6 @@ public partial class DetailReglementForm : DetailOperationForm
                 tbRefImmeuble.BackColor = Color.Red;
             tbBase.Text = "";
         }
-            
     }
 
     private void tbNature_Validating(object sender, CancelEventArgs e)
@@ -262,6 +272,7 @@ public partial class DetailReglementForm : DetailOperationForm
         var nature = NatureController.getController().getEntiteFromField("reference", tbNature.Text);
         tbLibNature.Text = nature != null ? nature.nom : "";
     }
+
     private void supprimerLélémentToolStripMenuItem_Click(object sender, EventArgs e)
     {
         if (dataGridView.SelectedRows.Count > 0)
@@ -280,6 +291,7 @@ public partial class DetailReglementForm : DetailOperationForm
                             throw new Exception("Operation");
                     }
                 }
+
                 trx.Commit();
             }
             catch (Exception ex)
@@ -287,6 +299,7 @@ public partial class DetailReglementForm : DetailOperationForm
                 trx.Rollback();
                 MessageBox.Show(ex.Message);
             }
+
             FillDataGridView();
         }
     }
@@ -310,6 +323,7 @@ public partial class DetailReglementForm : DetailOperationForm
                             throw new Exception("Operation");
                     }
                 }
+
                 entite.liasse_id = "Correction";
                 if (!SaisieReglementController.getController().InsertOrUpdate(entite))
                     throw new Exception("Reglement");
@@ -320,6 +334,7 @@ public partial class DetailReglementForm : DetailOperationForm
                 trx.Rollback();
                 MessageBox.Show(ex.Message);
             }
+
             FillDataGridView();
         }
     }

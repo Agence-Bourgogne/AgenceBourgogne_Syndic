@@ -11,7 +11,7 @@ public partial class NouvelExerciceOnlyForm : Form
 {
     private readonly string immeuble_id = "";
     public string exercice_id = "";
-        
+
     public NouvelExerciceOnlyForm()
     {
         InitializeComponent();
@@ -40,6 +40,7 @@ public partial class NouvelExerciceOnlyForm : Form
             tbReference.Text = exercice.reference;
         }
     }
+
     private void btnOk_Click(object sender, EventArgs e)
     {
         if (ActiveControl == btnOk)
@@ -48,13 +49,16 @@ public partial class NouvelExerciceOnlyForm : Form
                 Close();
         }
         else
+        {
             ControlsWindows.FocusNextTabbedControl(this);
+        }
     }
 
     private void dtDeb_ValueChanged(object sender, EventArgs e)
     {
         tbReference.Text = dtDeb.Value.Year.ToString();
     }
+
     private bool GenerateBudget()
     {
         var cnx = Database.GetInstance();
@@ -65,12 +69,10 @@ public partial class NouvelExerciceOnlyForm : Form
             if (exercice_id != "")
                 exercice = ExerciceComptableController.getController().getEntiteById(exercice_id);
             if (exercice == null)
-            {
                 exercice = new ExerciceComptableEntite
                 {
                     statut = (int)GlobalConstantes.StatutExercice.Ouvert
                 };
-            }
 
             exercice.date_deb = dtDeb.Value;
             exercice.date_fin = dtFin.Value;
@@ -78,9 +80,7 @@ public partial class NouvelExerciceOnlyForm : Form
             exercice.reference = tbReference.Text;
             exercice.nom = tbReference.Text;
             if (!ExerciceComptableController.getController().InsertOrUpdate(exercice))
-            {
                 throw new Exception("New Exercice");
-            }
             exercice_id = exercice.id;
 
             var budget = BudgetController.getController().getEntiteFromField("exercice_id", exercice.id);
@@ -93,10 +93,7 @@ public partial class NouvelExerciceOnlyForm : Form
                     reference = exercice.reference,
                     statut = (int)GlobalConstantes.StatutBudget.Brouillard
                 };
-                if (!BudgetController.getController().InsertOrUpdate(budget))
-                {
-                    throw new Exception("New budget");
-                }
+                if (!BudgetController.getController().InsertOrUpdate(budget)) throw new Exception("New budget");
             }
 
             trx.Commit();

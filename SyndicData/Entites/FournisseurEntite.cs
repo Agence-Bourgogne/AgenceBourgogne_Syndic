@@ -5,21 +5,24 @@ namespace SyndicData.Entites;
 
 public class FournisseurEntite : AbstractBaseEntite
 {
+    public string adresse;
+    public string codeape;
+    public string codepostal;
+    public string commentaire;
+    public string interlocuteur;
+    public string nom;
+    public string numsecu;
+
+    public string numurs;
+
     //public int id;
     public string reference;
-    public string nom;
-    public string interlocuteur;
-    public string telephone;
-    public string adresse;
-    public string codepostal;
-    public string ville;
     public int reglement;
-    public string commentaire;
     public string siret;
-    public string numsecu;
-    public string codeape;
-    public string numurs;
     public int statut;
+    public string telephone;
+    public string ville;
+
     public FournisseurEntite()
     {
         id = "";
@@ -45,6 +48,5 @@ public class FournisseurEntite : AbstractBaseEntite
         updatables.Add(new UpdateField("numurs", true, members));
         updatables.Add(new UpdateField("statut", true, members));
         base.setValues(row);
-            
     }
 }

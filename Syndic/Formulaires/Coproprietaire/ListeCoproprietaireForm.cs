@@ -16,15 +16,18 @@ public partial class ListeCoproprietaireForm : Form
     private readonly CoproprietaireController controller = new();
     private readonly string regKey;
     private bool bLoading;
+
     public ListeCoproprietaireForm()
     {
         InitializeComponent();
         regKey = "listes\\coproprietaires";
     }
+
     private void ListeCoproprietaireForm_Load(object sender, EventArgs e)
     {
         FillDataGrid();
     }
+
     private void FillDataGrid()
     {
         bLoading = true;
@@ -55,7 +58,7 @@ public partial class ListeCoproprietaireForm : Form
             cols["adressecomp"].HeaderText = "Adrss Agence";
             cols["villecomp"].HeaderText = "Ville Agence";
             cols["codenvcomp_cb"].HeaderText = "Civilité Agence";
-                
+
             cols["dateappel"].HeaderText = "Dernier Appel";
             cols["daterel1"].HeaderText = "Date Rel. 1";
             cols["daterel2"].HeaderText = "Date Rel. 2";
@@ -64,10 +67,12 @@ public partial class ListeCoproprietaireForm : Form
 
             ControlsWindows.ToTitleCase(cols);
             OrderColumns();
-
         }
         else
+        {
             Close();
+        }
+
         BtnSave.Enabled = false;
         bLoading = false;
     }
@@ -83,29 +88,29 @@ public partial class ListeCoproprietaireForm : Form
                 col.DisplayIndex = index;
         }
     }
-        
+
     private void FormListClosing(object sender, FormClosingEventArgs e)
     {
         if (!controller.SaveList((DataTable)dataGridView.DataSource))
             e.Cancel = true;
     }
-        
+
     private void nouveauToolStripMenuItem_Click(object sender, EventArgs e)
     {
         edition(new CoproprietaireEntite());
     }
-        
+
     private void BtnSave_Click(object sender, EventArgs e)
     {
         controller.SaveList((DataTable)dataGridView.DataSource, false);
         updateEditMode(false);
     }
-        
-    private void BtnEdit_Click(object sender, EventArgs e) 
+
+    private void BtnEdit_Click(object sender, EventArgs e)
     {
         updateEditMode(true);
     }
-        
+
     private void updateEditMode(bool bEdit)
     {
         dataGridView.AllowUserToAddRows = bEdit;
@@ -116,15 +121,11 @@ public partial class ListeCoproprietaireForm : Form
     private void editerToolStripMenuItem_Click(object sender, EventArgs e)
     {
         ShowCopro(dataGridView.SelectedRows[0].Index);
-
     }
-        
+
     private void ShowCopro(int index)
     {
-        if (!dataGridView.ReadOnly)
-        {
-            return;
-        }
+        if (!dataGridView.ReadOnly) return;
 
         if (controller.SaveList((DataTable)dataGridView.DataSource))
         {
@@ -133,7 +134,7 @@ public partial class ListeCoproprietaireForm : Form
                 edition(new CoproprietaireEntite(row.Row));
         }
     }
-        
+
     private void edition(CoproprietaireEntite entite)
     {
         try
@@ -155,7 +156,7 @@ public partial class ListeCoproprietaireForm : Form
             MessageBox.Show(ex.Message);
         }
     }
-        
+
     private void dataGridView_KeyPress(object sender, KeyPressEventArgs e)
     {
         if (Convert.ToInt16(e.KeyChar) == 32)
@@ -163,11 +164,13 @@ public partial class ListeCoproprietaireForm : Form
             e.Handled = true;
             editerToolStripMenuItem_Click(null, null);
         }
+
         if (Convert.ToInt16(e.KeyChar) == 27)
         {
             e.Handled = true;
             updateEditMode(false);
         }
+
         if (e.KeyChar == 0x0D && dataGridView.ReadOnly)
         {
             e.Handled = true;
@@ -176,7 +179,7 @@ public partial class ListeCoproprietaireForm : Form
             ShowCopro(index);
         }
     }
-        
+
     private void ListeCoproprietaireForm_Shown(object sender, EventArgs e)
     {
         var cols = dataGridView.Columns;
@@ -184,21 +187,22 @@ public partial class ListeCoproprietaireForm : Form
         cols["codenvoi"].MinimumWidth = 80;
         dataGridView.Refresh();
     }
-        
+
     private void btnExport_Click(object sender, EventArgs e)
     {
-        var type = (int) CommonRegistry.getRegistryValue("export_copro", "type", 0);
-            
+        var type = (int)CommonRegistry.getRegistryValue("export_copro", "type", 0);
+
         var table = CoproprietaireController.getController().getListeCoproForExport(type == 1);
 
-        if ( type == 1 )
+        if (type == 1)
         {
             var colsToHide = new List<string>();
-            BaseApplication.DataTableToExcel(table, colsToHide); 
+            BaseApplication.DataTableToExcel(table, colsToHide);
         }
         else
         {
-            var fileName = (string) CommonRegistry.getRegistryValue("export_copro", "fichier", (object) "c:\\syndic_modeles\\csv\\copro_export.csv");
+            var fileName = (string)CommonRegistry.getRegistryValue("export_copro", "fichier",
+                (object)"c:\\syndic_modeles\\csv\\copro_export.csv");
             try
             {
                 BaseApplication.GenerateDataSource(table, fileName, Encoding.UTF8);
@@ -213,7 +217,7 @@ public partial class ListeCoproprietaireForm : Form
             }
         }
     }
-        
+
     private void btnFiltre_Click(object sender, EventArgs e)
     {
         var form = new FindCoproprietaireForm();
@@ -226,18 +230,18 @@ public partial class ListeCoproprietaireForm : Form
             fiche.ShowDialog();
         }
         else
+        {
             source.Filter = "";
+        }
     }
-        
+
     private void dataGridView_ColumnDisplayIndexChanged(object sender, DataGridViewColumnEventArgs e)
     {
         if (!bLoading)
-        {
             if (regKey != "")
                 CommonRegistry.setRegistryValue(regKey, e.Column.Name, e.Column.DisplayIndex);
-        }
     }
-        
+
     private void ckActif_CheckedChanged(object sender, EventArgs e)
     {
         FillDataGrid();

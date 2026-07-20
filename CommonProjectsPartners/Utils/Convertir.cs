@@ -13,6 +13,7 @@ public static class Convertir
             valeur *= -1;
         return valeur;
     }
+
     public static float ToFloat(object value)
     {
         if (value == null) return 0;
@@ -23,6 +24,7 @@ public static class Convertir
             valeur *= -1;
         return valeur;
     }
+
     public static decimal ToDecimal(object value)
     {
         if (value == null) return 0;

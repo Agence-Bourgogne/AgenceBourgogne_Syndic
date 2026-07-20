@@ -10,9 +10,10 @@ namespace EspaceSyndic.Formulaires.Immeubles;
 
 public partial class TitreRepartImmeubleForm : Form
 {
-    public string immeuble_id = "";
-    private bool bInit;
     private bool bChangeInProgress;
+    private bool bInit;
+    public string immeuble_id = "";
+
     public TitreRepartImmeubleForm()
     {
         InitializeComponent();
@@ -21,7 +22,7 @@ public partial class TitreRepartImmeubleForm : Form
     private void TitreRepartImmeubleForm_Load(object sender, EventArgs e)
     {
         var repartitions = ImmeubleRepartitionController.getController().getRepartitionImmeuble(immeuble_id);
-        foreach ( DataRow row in repartitions.Rows)
+        foreach (DataRow row in repartitions.Rows)
         {
             var idx = dataGridView.Rows.Add();
             var rowGrid = dataGridView.Rows[idx];
@@ -41,7 +42,8 @@ public partial class TitreRepartImmeubleForm : Form
             cells[3].Value = row["ligne"];
             cells[4].Value = row["colonne"];
         }
-        cbRepart.Items.Add( GlobalConstantes.TypeRepartition.Millieme);
+
+        cbRepart.Items.Add(GlobalConstantes.TypeRepartition.Millieme);
         cbRepart.Items.Add(GlobalConstantes.TypeRepartition.Individuelle);
         bInit = true;
         dataGridView_SelectionChanged(null, null);
@@ -52,7 +54,7 @@ public partial class TitreRepartImmeubleForm : Form
         if (!bInit)
             return;
         var rowGrid = dataGridView.SelectedRows[0];
-        var row = (DataRow) rowGrid.Tag;
+        var row = (DataRow)rowGrid.Tag;
         bChangeInProgress = true;
         tbBase.Text = rowGrid.Cells["reference"].Value.ToString();
         tbTitre.Text = rowGrid.Cells["nom"].Value.ToString();
@@ -61,9 +63,7 @@ public partial class TitreRepartImmeubleForm : Form
         cbRepart.SelectedIndex = (int)rowGrid.Cells["repartition"].Tag;
 
         if (row != null)
-        {
             tbBase.Enabled = tbLigne.Enabled = tbColonne.Enabled = false;
-        }
         else
             tbBase.Enabled = tbLigne.Enabled = tbColonne.Enabled = true;
         bChangeInProgress = false;
@@ -81,20 +81,23 @@ public partial class TitreRepartImmeubleForm : Form
             if (row == null)
             {
                 entite.reference = rowGrid.Cells["reference"].Value.ToString();
-                if (controller.ExistRepartitionReference ( immeuble_id, entite.reference))
+                if (controller.ExistRepartitionReference(immeuble_id, entite.reference))
                 {
-                    MessageBox.Show ( string.Format("Base Existante pour cet immeuble", entite.reference));
+                    MessageBox.Show(string.Format("Base Existante pour cet immeuble", entite.reference));
                     return;
                 }
+
                 if (rowGrid.Cells["reference"].Value.ToString() == "")
                 {
                     MessageBox.Show(@"Vous devez définir la base");
                     return;
                 }
+
                 entite.immeuble_id = immeuble_id;
             }
+
             entite.nom = rowGrid.Cells["nom"].Value.ToString();
-            entite.type_ventilation = (int) rowGrid.Cells["repartition"].Tag;
+            entite.type_ventilation = (int)rowGrid.Cells["repartition"].Tag;
             entite.ligne = Convertir.ToInt(rowGrid.Cells["ligne"].Value.ToString());
             entite.colonne = Convertir.ToInt(rowGrid.Cells["colonne"].Value.ToString());
             if (entite.ligne <= 0)
@@ -103,6 +106,7 @@ public partial class TitreRepartImmeubleForm : Form
             if (!bOk)
                 break;
         }
+
         if (bOk)
             Close();
     }
@@ -115,10 +119,7 @@ public partial class TitreRepartImmeubleForm : Form
         var rowGrid = dataGridView.SelectedRows[0];
 
         rowGrid.Cells["repartition"].Tag = cbRepart.SelectedIndex;
-        if (cbRepart.SelectedIndex >= 0)
-        {
-            rowGrid.Cells["repartition"].Value = cbRepart.SelectedItem.ToString();
-        }
+        if (cbRepart.SelectedIndex >= 0) rowGrid.Cells["repartition"].Value = cbRepart.SelectedItem.ToString();
     }
 
     private void btnAdd_Click(object sender, EventArgs e)
@@ -145,6 +146,7 @@ public partial class TitreRepartImmeubleForm : Form
 
         rowGrid?.Cells["reference"].Value = tbBase.Text;
     }
+
     private void tbTitre_TextChanged(object sender, EventArgs e)
     {
         if (bChangeInProgress || !bInit)

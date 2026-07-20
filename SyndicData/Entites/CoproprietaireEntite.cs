@@ -7,40 +7,76 @@ namespace SyndicData.Entites;
 
 public class CoproprietaireEntite : AbstractBaseEntite
 {
-    public string reference;
-    public string nom;
-    public bool huissier;
-    public string prenom;
-    public string email;
-    public int codenvoi;
+    private ImmeubleEntite _immeuble;
+
+    private LotDescriptionEntite _lot_description;
     public string adresse;
-    public string codepostal;
-    public string ville;
-    public string telephone;
-    public string pays;
-    public string nomcomp;
-    public int codenvcomp;
     public string adressecomp;
-    public string villecomp;
     public string codecomp;
-    public string telcomp;
-    public bool declaration;
-    public string note;
+    public int codenvcomp;
+    public int codenvoi;
+    public string codepostal;
+    public bool commerce;
     public DateTime dateappel;
     public DateTime daterel1;
     public DateTime daterel2;
     public DateTime daterel3;
-    public bool commerce;
+    public bool declaration;
+    public string email;
+    public bool huissier;
+    public string nom;
+    public string nomcomp;
+    public string note;
+    public string pays;
+    public string prenom;
+    public string reference;
     public int statut;
+    public string telcomp;
+    public string telephone;
+    public string ville;
+    public string villecomp;
+
     public CoproprietaireEntite()
     {
         id = "";
         setValues(null);
     }
+
     public CoproprietaireEntite(DataRow data)
     {
         setValues(data);
     }
+
+    public ImmeubleEntite Immeuble
+    {
+        get
+        {
+            if (_immeuble == null)
+                _immeuble = ImmeubleController.getController().getImmeubleFromCopro(id);
+            return _immeuble;
+        }
+    }
+
+    public LotDescriptionEntite LotDescription
+    {
+        get
+        {
+            if (_lot_description == null)
+                _lot_description = LotDescriptionController.getController().getLotFromCopro(id);
+            return _lot_description;
+        }
+    }
+
+    public string NomPrenom
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(prenom))
+                return $"{nom}";
+            return $"{prenom} {nom}";
+        }
+    }
+
     public override void setValues(DataRow row)
     {
         var members = GetType().GetFields();
@@ -72,38 +108,7 @@ public class CoproprietaireEntite : AbstractBaseEntite
         updatables.Add(new UpdateField("daterel3", true, members));
         updatables.Add(new UpdateField("commerce", true, members));
         updatables.Add(new UpdateField("statut", true, members));
-         
+
         base.setValues(row);
-    }
-
-    private ImmeubleEntite _immeuble;
-    public ImmeubleEntite Immeuble 
-    {
-        get
-        {
-            if ( _immeuble == null)
-                _immeuble =  ImmeubleController.getController().getImmeubleFromCopro(id);
-            return _immeuble;
-        }
-    }
-
-    private LotDescriptionEntite _lot_description;
-    public LotDescriptionEntite LotDescription
-    {
-        get
-        {
-            if (_lot_description == null)
-                _lot_description = LotDescriptionController.getController().getLotFromCopro(id);
-            return _lot_description;
-        }
-    }
-    public string NomPrenom
-    {
-        get
-        {
-            if (string.IsNullOrEmpty(prenom))
-                return $"{nom}";
-            return $"{prenom} {nom}";
-        }
     }
 }

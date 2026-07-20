@@ -5,25 +5,27 @@ namespace SyndicData.Entites;
 
 public class ParametreEntite : AbstractBaseEntite
 {
-    public string groupe;
     public string code;
+    public string groupe;
+    public int iparam_1;
+    public int iparam_2;
+    public int iparam_3;
     public string nom;
     public string param_1;
     public string param_2;
     public string param_3;
-    public int iparam_1;
-    public int iparam_2;
-    public int iparam_3;
 
 
     public ParametreEntite()
     {
         setValues(null);
     }
+
     public ParametreEntite(DataRow datas)
     {
         setValues(datas);
     }
+
     public override void setValues(DataRow row)
     {
         var members = GetType().GetFields();

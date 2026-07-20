@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
@@ -22,8 +23,8 @@ public static class BaseApplication
     private static Application excelApp;
 
     public static UserEntite userConnected = null;
-    private static readonly object oMissing = Missing.Value;
-    private static readonly object oFalse = false;
+    private static readonly object OMissing = Missing.Value;
+    private static readonly object OFalse = false;
 
     public static string ComputerName => SystemInformation.ComputerName;
 
@@ -37,7 +38,7 @@ public static class BaseApplication
         {
             _ = wrdApp.Creator;
         }
-        catch (Exception )
+        catch (Exception)
         {
             wrdApp = new Word.Application();
         }
@@ -47,13 +48,11 @@ public static class BaseApplication
 
     private static Application GetExcelInstance()
     {
-        if (excelApp == null)
-            excelApp = new Application();
+        excelApp ??= new Application();
 
         try
         {
             excelApp.MergeInstances = true;
-
         }
         catch (Exception)
         {
@@ -61,7 +60,8 @@ public static class BaseApplication
             {
                 MergeInstances = true
             };
-        } 
+        }
+
         return excelApp;
     }
 
@@ -75,12 +75,12 @@ public static class BaseApplication
         if (wb == null)
         {
             wb = xlApp.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
-            ws = (Worksheet) wb.Worksheets[1];
+            ws = (Worksheet)wb.Worksheets[1];
         }
         else
         {
-            var last = (Worksheet) wb.Worksheets[wb.Worksheets.Count];
-            ws = (Worksheet) wb.Sheets.Add(oMissing, last);
+            var last = (Worksheet)wb.Worksheets[wb.Worksheets.Count];
+            ws = (Worksheet)wb.Sheets.Add(OMissing, last);
         }
 
         var bind = new BindingSource();
@@ -88,42 +88,38 @@ public static class BaseApplication
         xlApp.Visible = false;
         var iCol = 1;
 
-        foreach ( DataColumn col in table.Columns)
-        {
-            if (!colsToHide.Contains(col.ColumnName) )
+        foreach (DataColumn col in table.Columns)
+            if (!colsToHide.Contains(col.ColumnName))
                 ws.Cells[1, iCol++] = col.ColumnName;
-        }
         var iRow = 2;
         var cells = ws.Cells;
         var t = DateTime.Now.TimeOfDay;
         foreach (DataRow row in table.Rows)
         {
-            var bShowRow = true;
-            if (bShowRow)
+            iCol = 1;
+            var idxCol = 0;
+
+            foreach (DataColumn col in table.Columns)
             {
-                iCol = 1;
-                var idxCol = 0;
-
-                foreach (DataColumn col in table.Columns)
+                if (!colsToHide.Contains(col.ColumnName))
                 {
-                    if (!colsToHide.Contains(col.ColumnName))
-                    {
-                        var range = (Range) cells[iRow, iCol++];
+                    var range = (Range)cells[iRow, iCol++];
 
-                        var value = row[idxCol];
-                        if (value is decimal)
-                            range.Value = value;
-                        else
-                        if (value is DateTime time)
-                            range.Value = time.ToShortDateString();
-                        else
-                            range.Value = value.ToString();
-                    }
-                    idxCol++;
+                    var value = row[idxCol];
+                    if (value is decimal)
+                        range.Value = value;
+                    else if (value is DateTime time)
+                        range.Value = time.ToShortDateString();
+                    else
+                        range.Value = value.ToString();
                 }
-                iRow++;
+
+                idxCol++;
             }
+
+            iRow++;
         }
+
         var t2 = DateTime.Now.TimeOfDay;
         var ta = t2 - t;
 
@@ -136,7 +132,8 @@ public static class BaseApplication
         Cursor.Current = Cursors.Default;
     }
 
-    public static void DataGridToExcel(DataGridView datagrid, List<string> colsToHide, string checkColumn = "", string[] colToSum = null)
+    public static void DataGridToExcel(DataGridView datagrid, List<string> colsToHide, string checkColumn = "",
+        string[] colToSum = null)
     {
         Cursor.Current = Cursors.WaitCursor;
 
@@ -146,34 +143,29 @@ public static class BaseApplication
         if (wb == null)
         {
             wb = xlApp.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
-            ws = (Worksheet) wb.Worksheets[1];
+            ws = (Worksheet)wb.Worksheets[1];
         }
         else
         {
-            var last = (Worksheet) wb.Worksheets[wb.Worksheets.Count];
-            ws = (Worksheet) wb.Sheets.Add(oMissing, last);
+            var last = (Worksheet)wb.Worksheets[wb.Worksheets.Count];
+            ws = (Worksheet)wb.Sheets.Add(OMissing, last);
         }
 
         xlApp.Visible = false;
         var iCol = 1;
         foreach (DataGridViewColumn col in datagrid.Columns)
-        {
             if (!colsToHide.Contains(col.Name) && col.Visible)
-            {
                 ws.Cells[1, iCol++] = col.HeaderText;
-            }
-        }
+
         var iRow = 2;
 
         foreach (DataGridViewRow row in datagrid.Rows)
         {
             var bShowRow = true;
             if (checkColumn != "")
-            {
                 if (row.Cells[checkColumn].Value == null || !(bool)row.Cells[checkColumn].Value)
                     bShowRow = false;
-            }
-            if ( bShowRow )
+            if (bShowRow)
             {
                 iCol = 1;
                 var idxCol = 0;
@@ -183,35 +175,34 @@ public static class BaseApplication
 
                     if (!colsToHide.Contains(col.Name) && col.Visible)
                     {
-                        var range = (Range) ws.Cells[iRow, iCol++];
-                        if (cell.Value  is  decimal)
+                        var range = (Range)ws.Cells[iRow, iCol++];
+                        if (cell.Value is decimal)
                             range.Value = cell.Value;
+                        else if (cell.Value is DateTime time)
+                            range.Value = "'" + time.ToShortDateString();
                         else
-                        if (cell.Value is DateTime time)
-                            range.Value = "'"+time.ToShortDateString();
-                        else
-                            range.Value = "'"+ cell.Value;
+                            range.Value = "'" + cell.Value;
                     }
+
                     idxCol++;
                 }
+
                 iRow++;
             }
         }
 
         if (colToSum != null)
-        {
-            foreach ( var colName in colToSum )
+            foreach (var colName in colToSum)
             {
                 var col = datagrid.Columns[colName];
                 if (col != null)
                 {
                     var colChar = (char)('A' + col.Index - 1);
-                    var r = (Range) ws.Cells[iRow, col.Index];
+                    var r = (Range)ws.Cells[iRow, col.Index];
                     r.Formula = string.Format("=SUM({0}2:{0}{1})", colChar, iRow - 1);
                 }
             }
-        }
-            
+
         xlApp.Visible = true;
 
         wb.Activate();
@@ -222,13 +213,13 @@ public static class BaseApplication
 
     public static void OpenWordFile(string fileName)
     {
-        var wrdApp = GetWordInstance();
+        var wordInstance = GetWordInstance();
         try
         {
-            wrdApp.Visible = true;
-            wrdApp.Documents.Add(Missing.Value);
-            wrdApp.Documents.Open(fileName);
-            wrdApp.Activate();
+            wordInstance.Visible = true;
+            wordInstance.Documents.Add(Missing.Value);
+            wordInstance.Documents.Open(fileName);
+            wordInstance.Activate();
         }
         catch (Exception ex)
         {
@@ -236,22 +227,19 @@ public static class BaseApplication
         }
     }
 
-    private static Word.Bookmark GetField(Word.Document doc, string FieldName)
+    private static Word.Bookmark GetField(Word.Document doc, string fieldName)
     {
-        foreach (Word.Bookmark field in doc.Bookmarks)
-        {
-            if ( field.Name == FieldName)
-                return field;
-        }
-        return null;
+        return doc.Bookmarks.Cast<Word.Bookmark>()
+            .FirstOrDefault(field => field.Name == fieldName);
     }
 
     public static void ActivateWord()
     {
-        var wrdApp = GetWordInstance();
-        wrdApp.Visible = true;
-        wrdApp.Activate();
+        var wordInstance = GetWordInstance();
+        wordInstance.Visible = true;
+        wordInstance.Activate();
     }
+
     public static string GetTempFileName(string ext)
     {
         if (!ext.StartsWith("."))
@@ -261,17 +249,16 @@ public static class BaseApplication
 
     public static void MergeFiles(string outputFile, List<string> files, bool bDelete = true)
     {
-        var wrdApp = GetWordInstance();
+        var wordInstance = GetWordInstance();
         try
         {
-            var doc = wrdApp.Documents.Add();
+            var doc = wordInstance.Documents.Add();
             var bFirst = true;
 
             foreach (var file in files)
-            {
                 if (File.Exists(file))
                 {
-                    var newDoc = wrdApp.Documents.Add(file);
+                    var newDoc = wordInstance.Documents.Add(file);
                     var wrdRange = doc.Content;
 
                     if (bFirst)
@@ -290,12 +277,13 @@ public static class BaseApplication
                         sec.PageSetup.LeftMargin = newDoc.PageSetup.LeftMargin;
                         sec.PageSetup.RightMargin = newDoc.PageSetup.RightMargin;
                     }
+
                     doc.Words.Last.InsertFile(file);
                     newDoc.Close();
                     if (bDelete)
                         File.Delete(file);
                 }
-            }
+
             var dir = Path.GetDirectoryName(outputFile);
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
@@ -307,17 +295,22 @@ public static class BaseApplication
         }
     }
 
-    public static void PublipostageLettreWordAndInsertFile(DataTable source, string modele, string DocToInsert, string FieldName, string FileResult = "")
+    public static void PublipostageLettreWordAndInsertFile(
+        DataTable source, 
+        string modele, 
+        string docToInsert,
+        string fieldName, 
+        string fileResult = "")
     {
-        var wrdApp = GetWordInstance();
+        var wordInstance = GetWordInstance();
 
         try
         {
-            var doc = wrdApp.Documents.Add(modele);
+            var doc = wordInstance.Documents.Add(modele);
             var merge = doc.MailMerge;
 
-            var field = GetField(doc, FieldName);
-            field?.Range.InsertFile(DocToInsert);
+            var field = GetField(doc, fieldName);
+            field?.Range.InsertFile(docToInsert);
 
             var fileNameCsv = Path.GetTempPath() + Guid.NewGuid() + ".csv";
             GenerateDataSource(source, fileNameCsv);
@@ -325,12 +318,12 @@ public static class BaseApplication
             merge.OpenDataSource(fileNameCsv, false);
             merge.Execute();
             merge.ViewMailMergeFieldCodes = 0;
-            doc.Close(oFalse);
-                
-            if ( !string.IsNullOrEmpty(FileResult))
-                wrdApp.ActiveDocument.SaveAs2(FileResult);
-                
-            wrdApp.ActiveDocument.Close(oFalse);
+            doc.Close(OFalse);
+
+            if (!string.IsNullOrEmpty(fileResult))
+                wordInstance.ActiveDocument.SaveAs2(fileResult);
+
+            wordInstance.ActiveDocument.Close(OFalse);
 
             File.Delete(fileNameCsv);
         }
@@ -340,13 +333,17 @@ public static class BaseApplication
         }
     }
 
-    public static void PublipostageLettreWordAndFillTable(DataTable source, string modele, List<string[]> datas, int indexTable, string FileResult = "")
+    public static void PublipostageLettreWordAndFillTable(
+        DataTable source, 
+        string modele, 
+        List<string[]> datas,
+        int indexTable, string fileResult = "")
     {
-        var wrdApp = GetWordInstance();
+        var wordInstance = GetWordInstance();
 
         try
         {
-            var doc = wrdApp.Documents.Add(modele);
+            var doc = wordInstance.Documents.Add(modele);
             var merge = doc.MailMerge;
 
             var fileName = Path.GetTempPath() + Guid.NewGuid() + ".csv";
@@ -355,9 +352,9 @@ public static class BaseApplication
             merge.OpenDataSource(fileName, false);
             merge.Execute();
             merge.ViewMailMergeFieldCodes = 0;
-            doc.Close(oFalse);
+            doc.Close(OFalse);
             File.Delete(fileName);
-            var table = wrdApp.ActiveDocument.Tables[indexTable];
+            var table = wordInstance.ActiveDocument.Tables[indexTable];
             var col = 1;
             foreach (var dataColumns in datas)
             {
@@ -369,6 +366,7 @@ public static class BaseApplication
                     col++;
                 }
             }
+
             table.Rows[2].Delete();
             {
                 var row = table.Rows.Add();
@@ -379,13 +377,14 @@ public static class BaseApplication
                     row.Cells[i].Borders[Word.WdBorderType.wdBorderLeft].LineStyle = Word.WdLineStyle.wdLineStyleNone;
                     row.Cells[i].Borders[Word.WdBorderType.wdBorderRight].LineStyle = Word.WdLineStyle.wdLineStyleNone;
                 }
+
                 row.Cells[col - 1].Range.Text = dataRow["valeur"].ToString();
                 row.Cells[col - 1].Borders.OutsideLineStyle = Word.WdLineStyle.wdLineStyleSingle;
             }
-            if (!string.IsNullOrEmpty(FileResult))
-                wrdApp.ActiveDocument.SaveAs2(FileResult);
+            if (!string.IsNullOrEmpty(fileResult))
+                wordInstance.ActiveDocument.SaveAs2(fileResult);
 
-            wrdApp.ActiveDocument.Close(oFalse);
+            wordInstance.ActiveDocument.Close(OFalse);
         }
         catch (Exception ex)
         {
@@ -395,12 +394,12 @@ public static class BaseApplication
 
     public static void PublipostageLettreWord(DataTable source, string modele)
     {
-        var wrdApp = GetWordInstance();
+        var wordInstance = GetWordInstance();
 
         try
         {
-            wrdApp.Visible = true;
-            var docMailing = wrdApp.Documents.Add(modele);
+            wordInstance.Visible = true;
+            var docMailing = wordInstance.Documents.Add(modele);
             var merge = docMailing.MailMerge;
 
             var fileName = Path.GetTempPath() + Guid.NewGuid() + ".csv";
@@ -410,28 +409,29 @@ public static class BaseApplication
             merge.OpenDataSource(fileName, false);
             merge.Execute();
             merge.ViewMailMergeFieldCodes = 0;
-            docMailing.Close(oFalse);
+            docMailing.Close(OFalse);
             File.Delete(fileName);
-            wrdApp.Activate();
+            wordInstance.Activate();
         }
         catch (Exception ex)
         {
             MessageBox.Show(ex.Message);
-        } 
+        }
     }
-    public static void PublipostageEtiquetteWord( DataTable source, string modele)
+
+    public static void PublipostageEtiquetteWord(DataTable source, string modele)
     {
-        var wrdApp = GetWordInstance();
+        var wordInstance = GetWordInstance();
         try
         {
             var fileName = Path.GetTempPath() + Guid.NewGuid() + ".csv";
-            wrdApp.Visible = true;
+            wordInstance.Visible = true;
 
-            var docMailing = wrdApp.Documents.Add(modele);
+            var docMailing = wordInstance.Documents.Add(modele);
             var merge = docMailing.MailMerge;
 
             GenerateDataSource(source, fileName);
-                
+
             merge.MainDocumentType = Word.WdMailMergeMainDocType.wdMailingLabels;
             merge.OpenDataSource(fileName, false);
 
@@ -441,32 +441,29 @@ public static class BaseApplication
             dataSource[Word.WdMappedDataFields.wdLastName].DataFieldIndex = 2;
             dataSource[Word.WdMappedDataFields.wdFirstName].DataFieldIndex = 4;
             dataSource[Word.WdMappedDataFields.wdAddress1].DataFieldIndex = 5;
-            dataSource[Word.WdMappedDataFields.wdPostalCode].DataFieldIndex =6;
+            dataSource[Word.WdMappedDataFields.wdPostalCode].DataFieldIndex = 6;
             dataSource[Word.WdMappedDataFields.wdCity].DataFieldIndex = 7;
 
             docMailing.Fields.Update();
 
             merge.Execute();
             merge.ViewMailMergeFieldCodes = 0;
-            docMailing.Close(oFalse);
+            docMailing.Close(OFalse);
             File.Delete(fileName);
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.Message);                
-        } 
+            MessageBox.Show(ex.Message);
+        }
     }
+
     public static void GenerateDataSource(DataTable source, string fileName, Encoding encoding = null)
     {
         try
         {
             if (source != null)
             {
-                TextWriter file;
-                if (encoding != null)
-                    file = new StreamWriter(fileName, false, encoding);
-                else
-                    file = new StreamWriter(fileName);
+                TextWriter file = encoding != null ? new StreamWriter(fileName, false, encoding) : new StreamWriter(fileName);
                 Database.SerializeCSV(source, file);
                 file.Close();
             }
@@ -490,6 +487,7 @@ public static class BaseApplication
         catch (Exception)
         {
         }
+
         try
         {
             if (excelApp != null)

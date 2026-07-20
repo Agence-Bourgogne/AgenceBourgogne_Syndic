@@ -18,10 +18,14 @@ namespace EspaceSyndic.Formulaires.Exercice;
 
 public partial class ClotureExerciceForm : Form
 {
-    private ImmeubleEntite immeuble;
-    private ExerciceComptableEntite exercice;
     private readonly string TitreForm;
     private readonly HelpForm TotauxForm = new("TotauxCloture");
+
+    private bool bLoading;
+    private ExerciceComptableEntite exercice;
+    private ImmeubleEntite immeuble;
+
+    private NatureEntite nature;
 
     public ClotureExerciceForm()
     {
@@ -53,16 +57,18 @@ public partial class ClotureExerciceForm : Form
             tbNom.Text = immeuble.nom;
             tbAdresse.Text = immeuble.Adresse;
             exercice = immeuble.ExerciceCourant;
-            if ( exercice != null )
+            if (exercice != null)
             {
                 dtDeb.Value = exercice.date_fin.AddDays(1);
                 dtFin.Value = dtDeb.Value.AddYears(1).AddDays(-1);
             }
+
             var datDeb = dtDeb.Value.AddYears(-1);
             var datFin = dtDeb.Value.AddDays(-1);
             Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
 
-            var valueSoldeImm = OperationController.getController().getSoldeImmeuble(immeuble == null ? "" : immeuble.id, datDeb, datFin);
+            var valueSoldeImm = OperationController.getController()
+                .getSoldeImmeuble(immeuble == null ? "" : immeuble.id, datDeb, datFin);
             tbSolde.Text = valueSoldeImm.ToString();
         }
         else
@@ -77,12 +83,12 @@ public partial class ClotureExerciceForm : Form
         FillDataGrid();
         btnDetail.Enabled = dataGridView.SelectedRows.Count > 0;
     }
+
     private void FillDataGrid()
     {
         if (tbRefImmeuble.Text == "")
             return;
-        if (/*immeuble != null & */cbTypeOpe.SelectedIndex >= 0)
-        {
+        if ( /*immeuble != null & */cbTypeOpe.SelectedIndex >= 0)
             switch (cbTypeOpe.SelectedIndex)
             {
                 case 0:
@@ -99,40 +105,38 @@ public partial class ClotureExerciceForm : Form
                     break;
                 case 3:
                     if (immeuble != null)
-                    {
                         FillFromOperations("");
-                    }
                     else
                         dataGridView.DataSource = null;
                     break;
                 case 4:
                     if (immeuble != null)
-                    {
                         FillFromOperations(nameof(GlobalConstantes.TypeMouvement.Depense));
-                    }
                     else
                         dataGridView.DataSource = null;
                     break;
                 case 5:
                     if (immeuble != null)
-                    {
                         FillFromOperations(nameof(GlobalConstantes.TypeMouvement.Recette));
-                    }
                     else
                         dataGridView.DataSource = null;
                     break;
             }
-        }
+
         var datDeb = dtDeb.Value.AddYears(-1);
         var datFin = dtDeb.Value.AddDays(-1);
 
-        if ( immeuble != null )
+        if (immeuble != null)
         {
-            var total_facture = SaisieFactureController.getController().getTotalOperationWithoutSolde(immeuble.id, datDeb, datFin);
+            var total_facture = SaisieFactureController.getController()
+                .getTotalOperationWithoutSolde(immeuble.id, datDeb, datFin);
 //                decimal total_appels = SaisieAppelFondController.getController().getTotalOperationWithoutSolde(immeuble.id, datDeb, datFin);
-            var total_reglements = SaisieReglementController.getController().getTotalOperationWithoutSolde(immeuble.id, datDeb, datFin);
-            var soldeReprise = SaisieFactureController.getController().getSoldeAnterieurImmeuble(immeuble.id, datDeb, datFin);
-            var valueSoldeImm = OperationController.getController().getSoldeImmeuble(immeuble == null ? "" : immeuble.id, datDeb, datFin);
+            var total_reglements = SaisieReglementController.getController()
+                .getTotalOperationWithoutSolde(immeuble.id, datDeb, datFin);
+            var soldeReprise = SaisieFactureController.getController()
+                .getSoldeAnterieurImmeuble(immeuble.id, datDeb, datFin);
+            var valueSoldeImm = OperationController.getController()
+                .getSoldeImmeuble(immeuble == null ? "" : immeuble.id, datDeb, datFin);
             var depenseOperation = OperationController.getController().getOperationDepense(immeuble.id, datDeb, datFin);
             var strTotaux = $"Factures: \t\t {total_facture}\r\n";
             strTotaux += $"Règlements: \t\t {total_reglements}\r\n";
@@ -156,21 +160,20 @@ public partial class ClotureExerciceForm : Form
 //                decimal valueSoldeImm = OperationController.getController().getSoldeImmeuble(immeuble == null ? "" : immeuble.id, datDeb, datFin);
             tbSolde.Text = valueSoldeImm.ToString();
         }
-
     }
 
-    private bool bLoading;
     private void FillFromFacture()
     {
         bLoading = true;
         var datDeb = dtDeb.Value.AddYears(-1);
         var datFin = dtDeb.Value.AddDays(-1);
-            
+
         var sortedCol = dataGridView.SortedColumn;
         var sortOrder = dataGridView.SortOrder;
 
 
-        dataGridView.DataSource = SaisieFactureController.getController().getListeOperations(tbRefImmeuble.Text, "", datDeb, datFin);
+        dataGridView.DataSource = SaisieFactureController.getController()
+            .getListeOperations(tbRefImmeuble.Text, "", datDeb, datFin);
         var cols = dataGridView.Columns;
         ControlsWindows.ToTitleCase(cols);
 
@@ -195,10 +198,11 @@ public partial class ClotureExerciceForm : Form
         //OrderColumns();
         bLoading = false;
     }
+
     private void ShowMontant()
     {
         var nature = ParametresDB.getParam1("NATURE", "SOLDE BILAN");
-            
+
         lblMontant.Text = "Total";
         tbCredit.Visible = lblCredit.Visible = false;
         decimal total = 0;
@@ -206,17 +210,19 @@ public partial class ClotureExerciceForm : Form
         foreach (DataGridViewRow rowGrid in dataGridView.Rows)
         {
             var row = (DataRowView)rowGrid.DataBoundItem;
-            if ( nature != row["ref_nature"].ToString() )
+            if (nature != row["ref_nature"].ToString())
                 total += Convertir.ToDecimal(row["montant"]);
         }
+
         tbMontant.Text = total.ToString();
     }
+
     private void ShowDebitCredit()
     {
         var nature = ParametresDB.getParam1("NATURE", "SOLDE BILAN");
         lblMontant.Text = "Débit";
         tbCredit.Visible = lblCredit.Visible = true;
-        decimal debit = 0, credit = 0 ;
+        decimal debit = 0, credit = 0;
         foreach (DataGridViewRow rowGrid in dataGridView.Rows)
         {
             var row = (DataRowView)rowGrid.DataBoundItem;
@@ -226,9 +232,11 @@ public partial class ClotureExerciceForm : Form
                 credit += Convertir.ToDecimal(row["credit"]);
             }
         }
+
         tbMontant.Text = debit.ToString();
         tbCredit.Text = credit.ToString();
     }
+
     private void FillFromAppelsDeFond()
     {
         bLoading = true;
@@ -238,7 +246,8 @@ public partial class ClotureExerciceForm : Form
         var sortedCol = dataGridView.SortedColumn;
         var sortOrder = dataGridView.SortOrder;
 
-        dataGridView.DataSource = SaisieAppelFondController.getController().getListeOperations(tbRefImmeuble.Text, datDeb, datFin);
+        dataGridView.DataSource = SaisieAppelFondController.getController()
+            .getListeOperations(tbRefImmeuble.Text, datDeb, datFin);
         var cols = dataGridView.Columns;
         ControlsWindows.ToTitleCase(cols);
         cols["statut"].Visible = false;
@@ -257,6 +266,7 @@ public partial class ClotureExerciceForm : Form
         //OrderColumns();
         bLoading = false;
     }
+
     private void FillFromReglements()
     {
         bLoading = true;
@@ -266,7 +276,8 @@ public partial class ClotureExerciceForm : Form
         var sortedCol = dataGridView.SortedColumn;
         var sortOrder = dataGridView.SortOrder;
 
-        dataGridView.DataSource = SaisieReglementController.getController().getListeOperations(tbRefImmeuble.Text, "", datDeb, datFin);
+        dataGridView.DataSource = SaisieReglementController.getController()
+            .getListeOperations(tbRefImmeuble.Text, "", datDeb, datFin);
         var cols = dataGridView.Columns;
         ControlsWindows.ToTitleCase(cols);
         cols["statut"].Visible = false;
@@ -285,6 +296,7 @@ public partial class ClotureExerciceForm : Form
         //OrderColumns();
         bLoading = false;
     }
+
     private void FillFromOperations(string type)
     {
         bLoading = true;
@@ -294,7 +306,8 @@ public partial class ClotureExerciceForm : Form
         var sortedCol = dataGridView.SortedColumn;
         var sortOrder = dataGridView.SortOrder;
 
-        dataGridView.DataSource = OperationController.getController().getListeOperations(immeuble.id, "", type, (int)GlobalConstantes.StatutOperation.Valide, datDeb, datFin, "", "");
+        dataGridView.DataSource = OperationController.getController().getListeOperations(immeuble.id, "", type,
+            (int)GlobalConstantes.StatutOperation.Valide, datDeb, datFin, "", "");
         var cols = dataGridView.Columns;
         ControlsWindows.ToTitleCase(cols);
         cols["statut"].Visible = false;
@@ -334,13 +347,10 @@ public partial class ClotureExerciceForm : Form
 
     private void btnCloture_Click(object sender, EventArgs e)
     {
-
         var exercice_id = exercice.id;
 
-        if (DialogResult.Yes != MessageBox.Show("Cette opération est irreversible\r\nVoulez-vous Continuer", "Attention", MessageBoxButtons.YesNo))
-        {
-            return;
-        }
+        if (DialogResult.Yes != MessageBox.Show("Cette opération est irreversible\r\nVoulez-vous Continuer",
+                "Attention", MessageBoxButtons.YesNo)) return;
 
         if (exercice_id != "")
         {
@@ -355,13 +365,16 @@ public partial class ClotureExerciceForm : Form
             {
                 // TODO Voir pour TimestampServer
                 var exercice_suivant = ExerciceComptableController.getController().createExerciceSuivant(exercice);
-                if ( exercice_suivant != null )
+                if (exercice_suivant != null)
                 {
-                    var soldeImm = SaisieFactureController.getController().getCurrentSoldeImmeuble(exercice_suivant.immeuble_id, exercice_suivant.date_deb, exercice_suivant.date_fin);
+                    var soldeImm = SaisieFactureController.getController()
+                        .getCurrentSoldeImmeuble(exercice_suivant.immeuble_id, exercice_suivant.date_deb,
+                            exercice_suivant.date_fin);
 
                     if (soldeImm.Rows.Count <= 0)
                     {
-                        var valueSoldeImm = OperationController.getController().getSoldeImmeuble(currExercice.immeuble_id, currExercice.date_deb, currExercice.date_fin);
+                        var valueSoldeImm = OperationController.getController()
+                            .getSoldeImmeuble(currExercice.immeuble_id, currExercice.date_deb, currExercice.date_fin);
                         //Console.WriteLine(" Solde immeuble : {0}", valueSoldeImm);
                         var liasse = createLiasseReprise(valueSoldeImm);
 
@@ -376,14 +389,16 @@ public partial class ClotureExerciceForm : Form
                         foreach (DataRow row in repart.Rows)
                         {
                             var repimm = new LotDescriptionEntite(row);
-                            if (repimm.statut == (int)GlobalConstantes.StatutData.Supprime || repimm.coproprietaire_id == "")
+                            if (repimm.statut == (int)GlobalConstantes.StatutData.Supprime ||
+                                repimm.coproprietaire_id == "")
                                 //if (repimm.statut != (int)GlobalConstantes.StatutData.Actif || repimm.coproprietaire_id == "")
                             {
                                 Console.WriteLine("{0}", repimm.numero_lot);
                                 continue;
                             }
 
-                            var soldeCopro = OperationController.getController().getSoldeImmeuble(immeuble.id, currExercice.date_deb, currExercice.date_fin, repimm.coproprietaire_id);
+                            var soldeCopro = OperationController.getController().getSoldeImmeuble(immeuble.id,
+                                currExercice.date_deb, currExercice.date_fin, repimm.coproprietaire_id);
                             var operation = new OperationEntite(facture)
                             {
                                 numero_ligne = numero_ligne++,
@@ -403,7 +418,18 @@ public partial class ClotureExerciceForm : Form
                         }
                     }
 
-                    if (!SaisieFactureController.getController().ChangeEtat(immeuble.id, currExercice.date_deb, currExercice.date_fin, (int)GlobalConstantes.StatutOperation.Cloture, (int)GlobalConstantes.StatutOperation.Supprime) || !SaisieAppelFondController.getController().ChangeEtat(immeuble.id, currExercice.date_deb, currExercice.date_fin, (int)GlobalConstantes.StatutOperation.Cloture, (int)GlobalConstantes.StatutOperation.Supprime) || !SaisieReglementController.getController().ChangeEtat(immeuble.id, currExercice.date_deb, currExercice.date_fin, (int)GlobalConstantes.StatutOperation.Cloture, (int)GlobalConstantes.StatutOperation.Supprime) || !OperationController.getController().ChangeEtat(immeuble.id, currExercice.date_deb, currExercice.date_fin, (int)GlobalConstantes.StatutOperation.Cloture, (int)GlobalConstantes.StatutOperation.Supprime))
+                    if (!SaisieFactureController.getController().ChangeEtat(immeuble.id, currExercice.date_deb,
+                            currExercice.date_fin, (int)GlobalConstantes.StatutOperation.Cloture,
+                            (int)GlobalConstantes.StatutOperation.Supprime) ||
+                        !SaisieAppelFondController.getController().ChangeEtat(immeuble.id, currExercice.date_deb,
+                            currExercice.date_fin, (int)GlobalConstantes.StatutOperation.Cloture,
+                            (int)GlobalConstantes.StatutOperation.Supprime) ||
+                        !SaisieReglementController.getController().ChangeEtat(immeuble.id, currExercice.date_deb,
+                            currExercice.date_fin, (int)GlobalConstantes.StatutOperation.Cloture,
+                            (int)GlobalConstantes.StatutOperation.Supprime) || !OperationController.getController()
+                            .ChangeEtat(immeuble.id, currExercice.date_deb, currExercice.date_fin,
+                                (int)GlobalConstantes.StatutOperation.Cloture,
+                                (int)GlobalConstantes.StatutOperation.Supprime))
                         throw new Exception("Cloture Facture");
 
                     currExercice.statut = (int)GlobalConstantes.StatutExercice.Clos;
@@ -437,7 +463,6 @@ public partial class ClotureExerciceForm : Form
         return liasse;
     }
 
-    private NatureEntite nature;
     private SaisieFactureEntite createFactureReprise(LiasseEntite liasse, DateTime dateDeb, decimal valueSoldeImm)
     {
         var facture = new SaisieFactureEntite
@@ -454,11 +479,13 @@ public partial class ClotureExerciceForm : Form
         facture.statut = (int)GlobalConstantes.StatutOperation.Valide;
         return facture;
     }
+
     private FournisseurEntite getFournisseurCloture()
     {
         var reference = ParametresDB.getParam1("CLOTURE", "FOURNISSEUR");
         return FournisseurController.getController().getEntiteFromField("reference", reference);
     }
+
     private NatureEntite getNatureCloture()
     {
         var reference = ParametresDB.getParam1("CLOTURE", "NATURE");
@@ -470,6 +497,7 @@ public partial class ClotureExerciceForm : Form
         dtFin.Value = dtDeb.Value.AddYears(1).AddDays(-1);
         //Console.WriteLine(dtFin.Value);
     }
+
     private void EditionOperation()
     {
         if (dataGridView.SelectedRows.Count > 0)
@@ -497,8 +525,8 @@ public partial class ClotureExerciceForm : Form
 
     private void btnExport_Click(object sender, EventArgs e)
     {
-        var colsToHide = new List<string>{"id", "statut"};
-        BaseApplication.DataGridToExcel( dataGridView, colsToHide);
+        var colsToHide = new List<string> { "id", "statut" };
+        BaseApplication.DataGridToExcel(dataGridView, colsToHide);
     }
 
     private void btnExercice_Click(object sender, EventArgs e)
@@ -518,9 +546,9 @@ public partial class ClotureExerciceForm : Form
             tbRefImmeuble_Validating(tbRefImmeuble, null);
         }
     }
+
     private void tbHelpBox_KeyPress(object sender, KeyPressEventArgs e)
     {
-
         if (!bLoading)
             if (ModifierKeys == Keys.Control)
                 if (e.KeyChar == ' ')
@@ -547,5 +575,4 @@ public partial class ClotureExerciceForm : Form
         }
 //            FillComboExercice();
     }
-
 }

@@ -8,15 +8,17 @@ namespace EspaceSyndic.Formulaires.Utilisateurs;
 
 public partial class UtilisateurFicheForm : Form
 {
-    private UserEntite user;
-    private bool modified;
     protected readonly string entite_id = "";
+    protected bool bFromEnter;
     protected string currentReference;
+    private bool modified;
+    private UserEntite user;
 
     public UtilisateurFicheForm()
     {
         InitializeComponent();
     }
+
     public UtilisateurFicheForm(string entite_id)
     {
         InitializeComponent();
@@ -28,7 +30,6 @@ public partial class UtilisateurFicheForm : Form
         cbRole.DataSource = RolesController.getController().GetComboRoles();
         cbRole.ValueMember = "id";
         cbRole.DisplayMember = "nom";
-
     }
 
     protected bool saveValue()
@@ -44,7 +45,8 @@ public partial class UtilisateurFicheForm : Form
 
         return UsersController.getController().InsertOrUpdate(user);
     }
-    protected  void setModified(bool bModified)
+
+    protected void setModified(bool bModified)
     {
         modified = bModified;
         if (!modified)
@@ -72,12 +74,12 @@ public partial class UtilisateurFicheForm : Form
         tbNom.Text = user.nom;
         tbPrenom.Text = user.prenom;
         tbPassword.Text = user.Password;
-        if ( user.roles_id != null )
+        if (user.roles_id != null)
             cbRole.SelectedValue = user.roles_id;
         setModified(false);
     }
 
-    protected  DialogResult saveForm(bool bShowMessage = false, bool bShowResult = true)
+    protected DialogResult saveForm(bool bShowMessage = false, bool bShowResult = true)
     {
         if (!modified)
             return DialogResult.OK;
@@ -88,12 +90,14 @@ public partial class UtilisateurFicheForm : Form
             if (result is DialogResult.Cancel or DialogResult.No)
                 return result;
         }
+
         var rc = saveValue();
         if (rc && !bShowResult)
         {
             modified = false;
             return DialogResult.OK;
         }
+
         if (rc && bShowResult)
         {
             MessageBox.Show(@"Modification enregistrées");
@@ -104,7 +108,7 @@ public partial class UtilisateurFicheForm : Form
         return DialogResult.Cancel;
     }
 
-    protected  void getNewEntite(string where, string message)
+    protected void getNewEntite(string where, string message)
     {
         if (saveForm(true, false) == DialogResult.Cancel)
             return;
@@ -114,7 +118,6 @@ public partial class UtilisateurFicheForm : Form
             var entite = getEntite(where);
             if (entite != null)
                 setFicheValues(entite);
-
         }
         catch (Exception)
         {
@@ -131,38 +134,44 @@ public partial class UtilisateurFicheForm : Form
     {
         tbPassword.UseSystemPasswordChar = ckPassword.Checked;
     }
+
     protected AbstractBaseEntite getCurrentEntite(string entite_id)
     {
         return UsersController.getController().getEntiteById(entite_id);
     }
+
     protected AbstractBaseEntite getEntite(string where)
     {
         return UsersController.getController().getEntite(where);
     }
-    protected  void btnFirst_Click(object sender, EventArgs e)
+
+    protected void btnFirst_Click(object sender, EventArgs e)
     {
         getNewEntite("order by reference", "Début de liste atteint");
     }
-    protected  void btnPrev_Click(object sender, EventArgs e)
+
+    protected void btnPrev_Click(object sender, EventArgs e)
     {
         getNewEntite($"where reference < '{currentReference}' order by reference desc", "Début de liste atteint");
     }
-    protected  void btnNext_Click(object sender, EventArgs e)
+
+    protected void btnNext_Click(object sender, EventArgs e)
     {
         getNewEntite($"where reference > '{currentReference}' order by reference ", "Fin de liste atteinte");
     }
-    protected  void btnLast_Click(object sender, EventArgs e)
+
+    protected void btnLast_Click(object sender, EventArgs e)
     {
         getNewEntite("order by reference desc", "Fin de liste atteinte");
     }
 
-    protected  void tbTextChanged(object sender, EventArgs e)
+    protected void tbTextChanged(object sender, EventArgs e)
     {
         modified = true;
         if (!Text.EndsWith("*"))
             Text += " *";
     }
-    protected bool bFromEnter;
+
     private void btnEnter_Click(object sender, EventArgs e)
     {
         bFromEnter = true;

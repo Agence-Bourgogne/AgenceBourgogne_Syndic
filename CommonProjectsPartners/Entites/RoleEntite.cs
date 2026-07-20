@@ -4,8 +4,8 @@ namespace CommonProjectsPartners.Entites;
 
 public class RoleEntite : AbstractBaseEntite
 {
-    public string reference;
     public string nom;
+    public string reference;
 
     public RoleEntite()
     {

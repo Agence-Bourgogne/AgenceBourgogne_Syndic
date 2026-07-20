@@ -10,10 +10,11 @@ namespace EspaceSyndic.Formulaires.Config;
 
 public partial class ConfigParamForm : Form
 {
-    private bool initialized;
     private ParametreEntite groupe;
     public string groupe_selected = "";
+    private bool initialized;
     public string param_selected = "";
+
     public ConfigParamForm()
     {
         InitializeComponent();
@@ -26,7 +27,6 @@ public partial class ConfigParamForm : Form
 
     private void cbGroupe_SelectedIndexChanged(object sender, EventArgs e)
     {
-
         //Console.WriteLine(cbGroupe.SelectedValue);
         if (!initialized)
             return;
@@ -61,34 +61,28 @@ public partial class ConfigParamForm : Form
             else
                 cols[colName].HeaderText = colName;
         }
+
         ControlsWindows.ToTitleCase(cols);
 
         if (param_selected != "")
-        {
             foreach (DataGridViewRow rowGrid in dataGridView.Rows)
             {
                 var data_row = (DataRowView)rowGrid.DataBoundItem;
                 if (data_row != null)
-                {
                     if (data_row["code"].ToString() == param_selected)
                     {
                         dataGridView.ClearSelection();
                         rowGrid.Selected = true;
                         break;
                     }
-                }
             }
-        }
     }
 
     private void ConfigParamForms_Load(object sender, EventArgs e)
     {
         ParametresDB.FillComboFromParams(cbGroupe, "HDR_GROUPE", "nom", "code");
-            
-        if ( groupe_selected != "")
-        {
-            cbGroupe.SelectedValue = groupe_selected;
-        }
+
+        if (groupe_selected != "") cbGroupe.SelectedValue = groupe_selected;
         cbGroupe_SelectedIndexChanged(null, null);
         initialized = true;
     }
@@ -112,16 +106,16 @@ public partial class ConfigParamForm : Form
     {
         Console.WriteLine(e.ColumnIndex);
         var row = dataGridView.Rows[e.RowIndex];
-        if ( row != null )
+        if (row != null)
         {
             var form = new ZoomParamForm();
             form.txtParam = row.Cells[e.ColumnIndex].Value.ToString();
-            if ( form.ShowDialog() == DialogResult.OK )
+            if (form.ShowDialog() == DialogResult.OK)
             {
                 row.Cells[e.ColumnIndex].Value = form.txtParam;
                 var ctx = new DataGridViewDataErrorContexts();
                 dataGridView.CommitEdit(ctx);
-                if ( ((DataTable)dataGridView.DataSource).GetChanges() != null )
+                if (((DataTable)dataGridView.DataSource).GetChanges() != null)
                     Console.WriteLine(((DataTable)dataGridView.DataSource).GetChanges().Rows.Count);
             }
         }

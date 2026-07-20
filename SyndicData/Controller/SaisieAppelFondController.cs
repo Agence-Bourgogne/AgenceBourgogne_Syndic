@@ -10,18 +10,21 @@ using SyndicData.Entites;
 
 namespace SyndicData.Controller;
 
-public class SaisieAppelFondController :AbstractBaseController<SaisieAppelFondEntite>
+public class SaisieAppelFondController : AbstractBaseController<SaisieAppelFondEntite>
 {
     private static readonly SaisieAppelFondController controller = new();
+
     public override string getTable()
     {
         return "saisie_appel_fond";
     }
+
     public static SaisieAppelFondController getController()
     {
         return controller;
         //return new SaisieAppelFondController();
     }
+
     public DataTable GetAllElements(string immeuble_id, DateTime dtDeb, DateTime dtFin)
     {
         var cmd = $"select r.*, i.reference as ref_imm from {getSchemaTable()} r ";
@@ -37,10 +40,10 @@ public class SaisieAppelFondController :AbstractBaseController<SaisieAppelFondEn
             cmd += " and date_reference <= @dtFin";
 
         cmd += " order by i.reference";
-        var parameters = new List<NpgsqlParameter> 
+        var parameters = new List<NpgsqlParameter>
         {
             new("@immeuble_id", immeuble_id),
-            new("@statut", (int) GlobalConstantes.StatutOperation.Supprime),
+            new("@statut", (int)GlobalConstantes.StatutOperation.Supprime),
             new("@dtDeb", dtDeb),
             new("@dtFin", dtFin)
         };
@@ -87,15 +90,19 @@ public class SaisieAppelFondController :AbstractBaseController<SaisieAppelFondEn
             MessageBox.Show(e.Message);
             return null;
         }
+
         return table;
     }
-    public DataTable getListeOperations(string immeuble, DateTime dtDeb , DateTime dtFin, string libelle = "", string montant="", bool bValidOnly = true, string base_repart="")
+
+    public DataTable getListeOperations(string immeuble, DateTime dtDeb, DateTime dtFin, string libelle = "",
+        string montant = "", bool bValidOnly = true, string base_repart = "")
     {
         var schema = getSchema();
         var cmd = "Select ";
 
 //            cmd += " sf.id, i.reference as ref_immeuble, n.reference as ref_nature, n.nom as nature, date_reference, libelle, montant, base_repart, sf.statut ";
-        cmd += " sf.id, i.reference as ref_immeuble, date_reference, n.reference as ref_nature, base_repart, libelle, montant, sf.statut, sf.liasse_id ";
+        cmd +=
+            " sf.id, i.reference as ref_immeuble, date_reference, n.reference as ref_nature, base_repart, libelle, montant, sf.statut, sf.liasse_id ";
         cmd += $" from {getSchemaTable()} sf";
         cmd += $" left join {schema}.nature n on n.id = nature_id ";
         cmd += $" join {schema}.immeuble i on i.id = immeuble_id ";
@@ -112,6 +119,7 @@ public class SaisieAppelFondController :AbstractBaseController<SaisieAppelFondEn
             else
                 cmd += " and date_reference = @dtDeb";
         }
+
         if (dtFin != DateTime.Parse("01/01/1970"))
             cmd += " and date_reference <= @dtFin";
 
@@ -123,27 +131,30 @@ public class SaisieAppelFondController :AbstractBaseController<SaisieAppelFondEn
             cmd += " and sf.statut = @statut";
         if (base_repart != "")
             cmd += " and base_repart = @base_repart";
-        var parameters = new List<NpgsqlParameter> 
+        var parameters = new List<NpgsqlParameter>
         {
             new("@immeuble", immeuble),
             new("@dtDeb", dtDeb),
             new("@dtFin", dtFin),
-            new("@libelle", "%"+libelle+"%"),
+            new("@libelle", "%" + libelle + "%"),
             new("@montant", Convertir.ToDecimal(montant)),
-            new("@statut", (int) GlobalConstantes.StatutOperation.Valide),
+            new("@statut", (int)GlobalConstantes.StatutOperation.Valide),
             new("@base_repart", base_repart)
         };
         Console.WriteLine(cmd);
         return getResultSQL(cmd, parameters);
     }
-    public DataTable getListeViewOperations(string immeuble, DateTime dtDeb, DateTime dtFin, string libelle = "", string montant = "", bool bValidOnly = true, string base_repart = "")
+
+    public DataTable getListeViewOperations(string immeuble, DateTime dtDeb, DateTime dtFin, string libelle = "",
+        string montant = "", bool bValidOnly = true, string base_repart = "")
     {
         var schema = getSchema();
         var cmd = "Select ";
 
         //            cmd += " sf.id, i.reference as ref_immeuble, n.reference as ref_nature, n.nom as nature, date_reference, libelle, montant, base_repart, sf.statut ";
         cmd += " sf.id, i.reference as ref_immeuble, date_reference, n.reference as ref_nature, base_repart, ";
-        cmd += " case when base_repart = '80' then (select numero_lot::character varying from agence.lot_description where id in (select lot_id from agence.operation where saisie_id = sf.id)) else '' end as lot, ";
+        cmd +=
+            " case when base_repart = '80' then (select numero_lot::character varying from agence.lot_description where id in (select lot_id from agence.operation where saisie_id = sf.id)) else '' end as lot, ";
         cmd += " libelle, montant, sf.statut, sf.liasse_id ";
         cmd += $" from {getSchemaTable()} sf";
         cmd += $" left join {schema}.nature n on n.id = nature_id ";
@@ -161,6 +172,7 @@ public class SaisieAppelFondController :AbstractBaseController<SaisieAppelFondEn
             else
                 cmd += " and date_reference = @dtDeb";
         }
+
         if (dtFin != DateTime.Parse("01/01/1970"))
             cmd += " and date_reference <= @dtFin";
 
@@ -172,14 +184,14 @@ public class SaisieAppelFondController :AbstractBaseController<SaisieAppelFondEn
             cmd += " and sf.statut = @statut";
         if (base_repart != "")
             cmd += " and base_repart = @base_repart";
-        var parameters = new List<NpgsqlParameter> 
+        var parameters = new List<NpgsqlParameter>
         {
             new("@immeuble", immeuble),
             new("@dtDeb", dtDeb),
             new("@dtFin", dtFin),
-            new("@libelle", "%"+libelle+"%"),
+            new("@libelle", "%" + libelle + "%"),
             new("@montant", Convertir.ToDecimal(montant)),
-            new("@statut", (int) GlobalConstantes.StatutOperation.Valide),
+            new("@statut", (int)GlobalConstantes.StatutOperation.Valide),
             new("@base_repart", base_repart)
         };
         Console.WriteLine(cmd);
@@ -196,13 +208,13 @@ public class SaisieAppelFondController :AbstractBaseController<SaisieAppelFondEn
         cmd += " where immeuble_id = @immeuble_id and date_reference >= @dtDeb and date_reference <= @dtFin";
         cmd += " and n.reference <> @nature and f.statut != @statut";
 
-        var parameters = new List<NpgsqlParameter> 
+        var parameters = new List<NpgsqlParameter>
         {
             new("@immeuble_id", immeuble_id),
             new("@nature", nature),
             new("@dtDeb", dtDeb),
             new("@dtFin", dtFin),
-            new("@statut", (int) GlobalConstantes.StatutOperation.Supprime)
+            new("@statut", (int)GlobalConstantes.StatutOperation.Supprime)
         };
 
         var table = getResultSQL(cmd, parameters);
@@ -244,7 +256,7 @@ public class SaisieAppelFondController :AbstractBaseController<SaisieAppelFondEn
             opeCtl.DeleteElements(tbOpe);
             repartCtl.DeleteElements(tbRepart);
 
-            saisie.statut = (int) GlobalConstantes.StatutOperation.Supprime;
+            saisie.statut = (int)GlobalConstantes.StatutOperation.Supprime;
             if (!doInsertOrUpdate(saisie))
                 throw new Exception("Annulation Appel de fond");
             trx.Commit();
@@ -258,12 +270,15 @@ public class SaisieAppelFondController :AbstractBaseController<SaisieAppelFondEn
 
         return rc;
     }
+
     public void UpdateSaisieAndLot(SaisieAppelFondEntite saisie, string immeuble_id, string refLot, decimal montant)
     {
         OperationController.getController().getNumeroLotFromSaisie(saisie.id);
         var lot = LotDescriptionController.getController().getLotFromReference(immeuble_id, refLot);
         if (lot == null)
+        {
             MessageBox.Show(@"Lot Invalide");
+        }
         else
         {
             var trx = Database.BeginTransaction();
@@ -298,11 +313,12 @@ public class SaisieAppelFondController :AbstractBaseController<SaisieAppelFondEn
 
                 if (operation == null)
                     operation = new OperationEntite(saisie);
-                    
-                if ( !opeCtl.InsertOperationFromSaisie(saisie, operation, montant, lot.coproprietaire_id, lot.id, 1))
+
+                if (!opeCtl.InsertOperationFromSaisie(saisie, operation, montant, lot.coproprietaire_id, lot.id, 1))
                     throw new Exception("Creation operation");
 
-                if (!repartCtl.InsertRepartIndividuelleFromSaisie(operation, repartition, 0, 0, 0, 0, GlobalConstantes.TypeSaisie.AppelDeFond ))
+                if (!repartCtl.InsertRepartIndividuelleFromSaisie(operation, repartition, 0, 0, 0, 0,
+                        GlobalConstantes.TypeSaisie.AppelDeFond))
                     throw new Exception("Creation repartition Individuelle");
 
                 trx.Commit();
@@ -314,10 +330,13 @@ public class SaisieAppelFondController :AbstractBaseController<SaisieAppelFondEn
             }
         }
     }
+
     public void RecalcRepartition(SaisieAppelFondEntite entite, bool bUseTransaction)
     {
-        var repartImm = ImmeubleRepartitionController.getController().getRepartFromImmeubleBase(entite.immeuble_id, entite.base_repart);
-        var repart = LotRepartitionController.getController().GetLotsRepartitionFromBase(entite.immeuble_id, entite.base_repart);
+        var repartImm = ImmeubleRepartitionController.getController()
+            .getRepartFromImmeubleBase(entite.immeuble_id, entite.base_repart);
+        var repart = LotRepartitionController.getController()
+            .GetLotsRepartitionFromBase(entite.immeuble_id, entite.base_repart);
         DataTable operations;
 
         if (entite.liasse_id.StartsWith("Reprise"))
@@ -329,18 +348,19 @@ public class SaisieAppelFondController :AbstractBaseController<SaisieAppelFondEn
         if (valeur_imm == 0) return;
         var montant = entite.montant;
 
-        NpgsqlTransaction trx  = null; 
-        if ( bUseTransaction ) 
+        NpgsqlTransaction trx = null;
+        if (bUseTransaction)
             trx = Database.BeginTransaction();
         try
         {
             foreach (DataRow rowOpe in operations.Rows)
             {
-                var ope = OperationController.getController().getEntiteById(rowOpe["id"].ToString() );
+                var ope = OperationController.getController().getEntiteById(rowOpe["id"].ToString());
                 ope.statut = (int)GlobalConstantes.StatutOperation.Supprime;
                 if (!OperationController.getController().doInsertOrUpdate(ope))
                     throw new Exception("Operation Delete");
             }
+
             foreach (DataRow row in repart.Rows)
             {
                 var lotRepart = new LotRepartitionEntite(row);
@@ -358,13 +378,14 @@ public class SaisieAppelFondController :AbstractBaseController<SaisieAppelFondEn
                 };
 
                 if (montant_ope == 0 && !operation.isNew)
-                    operation.statut = (int) GlobalConstantes.StatutOperation.Supprime;
+                    operation.statut = (int)GlobalConstantes.StatutOperation.Supprime;
 
-                if ( montant_ope != 0 || !operation.isNew )
+                if (montant_ope != 0 || !operation.isNew)
                     if (!OperationController.getController().doInsertOrUpdate(operation))
                         throw new Exception("Operation update");
             }
-            if ( entite.liasse_id.StartsWith("Reprise"))
+
+            if (entite.liasse_id.StartsWith("Reprise"))
             {
                 entite.liasse_id = "Recalcul";
                 if (!InsertOrUpdate(entite))
@@ -379,18 +400,20 @@ public class SaisieAppelFondController :AbstractBaseController<SaisieAppelFondEn
             MessageBox.Show(ex.Message);
         }
     }
+
     public DataTable getSaisieAppel(OperationEntite operation)
     {
         var cmd = $"select o.* from {getSchemaTable()} o";
         //cmd += " join agence.coproprietaire c on c.id = o.coproprietaire_id ";
-        cmd += " where immeuble_id = @immeuble_id and date_reference = @date_reference and nature_id = @nature_id and trim(libelle) = trim(@libelle)";
+        cmd +=
+            " where immeuble_id = @immeuble_id and date_reference = @date_reference and nature_id = @nature_id and trim(libelle) = trim(@libelle)";
         //cmd += " and montant = @montant";
         var montant = operation.credit;
 
         if (operation.debit != 0)
             montant = operation.debit;
 
-        var parameters = new List<NpgsqlParameter> 
+        var parameters = new List<NpgsqlParameter>
         {
             new("@immeuble_id", operation.immeuble_id),
             new("@coproprietaire_id", operation.coproprietaire_id),
@@ -398,7 +421,6 @@ public class SaisieAppelFondController :AbstractBaseController<SaisieAppelFondEn
             new("@date_reference", operation.date_reference),
             new("@libelle", operation.libelle),
             new("@montant", montant)
-
         };
         return getResultSQL(cmd, parameters);
     }

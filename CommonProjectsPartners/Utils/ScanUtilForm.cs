@@ -26,6 +26,7 @@ public partial class ScanUtilForm : Form
         if (fd.ShowDialog() == DialogResult.OK)
             pictureBox1.ImageLocation = fd.FileName;
     }
+
     private void DataTransferred(object sender, EventArgs e)
     {
         var sc = (ScanUtils)sender;
@@ -38,6 +39,7 @@ public partial class ScanUtilForm : Form
         sc.DataTransferred += DataTransferred;
         sc.TwainAcquire(Handle);
     }
+
     private void RotateImage(RotateFlipType rotate)
     {
         var img = pictureBox1.Image;
@@ -73,7 +75,7 @@ public partial class ScanUtilForm : Form
     private void imprimerToolStripMenuItem_Click(object sender, EventArgs e)
     {
         var pForm = new PrintDialog();
-        if ( pForm.ShowDialog() == DialogResult.OK)
+        if (pForm.ShowDialog() == DialogResult.OK)
         {
             var pd = new PrintDocument();
             pd.PrinterSettings.PrinterName = pForm.PrinterSettings.PrinterName;

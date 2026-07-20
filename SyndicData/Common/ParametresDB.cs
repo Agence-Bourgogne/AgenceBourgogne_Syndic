@@ -4,7 +4,6 @@ using System.Windows.Forms;
 using CommonProjectsPartners.Utils;
 using Npgsql;
 
-
 namespace SyndicData.Common;
 
 public static class ParametresDB
@@ -16,7 +15,7 @@ public static class ParametresDB
         {
             tableParametres = new DataTable();
             const string cmd = "select * from parametres order by groupe, code";
-            try 
+            try
             {
                 var adapter = new NpgsqlDataAdapter();
                 adapter.SelectCommand = new NpgsqlCommand(cmd, Database.GetInstance());
@@ -25,22 +24,21 @@ public static class ParametresDB
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
-            }           
+            }
         }
     }
+
     public static DataRow get(string groupe, string code)
     {
         Load();
         foreach (DataRow currRow in tableParametres.Rows)
-        {
-            if ( currRow["groupe"].ToString() == groupe)
+            if (currRow["groupe"].ToString() == groupe)
                 if (currRow["code"].ToString() == code)
-                {
                     return currRow;
-                }
-        }
+
         return null;
     }
+
     public static string getParam1(string groupe, string code, string default_value = "")
     {
         var row = get(groupe, code);
@@ -48,7 +46,8 @@ public static class ParametresDB
             return row["param_1"].ToString();
         return default_value;
     }
-    public static DataTable getComboData(string groupe, string code = "") 
+
+    public static DataTable getComboData(string groupe, string code = "")
     {
         var table = new DataTable();
         var cmd = "";
@@ -68,12 +67,14 @@ public static class ParametresDB
         catch (Exception e)
         {
             MessageBox.Show(e.Message);
-        }           
+        }
+
         return table;
     }
+
     public static void bindGridComboColumn(DataGridViewColumnCollection cols, string group, string columnName)
     {
-        if ( cols[columnName + "_cb"] == null )
+        if (cols[columnName + "_cb"] == null)
         {
             var cmb = new DataGridViewComboBoxColumn();
             cmb.DataSource = getComboData(group);
@@ -87,7 +88,9 @@ public static class ParametresDB
             cols[columnName].Visible = false;
         }
     }
-    public static void FillComboFromParams(ComboBox cb, string groupe, string display = "code", string value = "iparam_1")
+
+    public static void FillComboFromParams(ComboBox cb, string groupe, string display = "code",
+        string value = "iparam_1")
     {
         cb.DataSource = getComboData(groupe);
         cb.ValueMember = value;
@@ -104,6 +107,7 @@ public static class ParametresDB
             if (base_compteur.Contains(baseToCheck))
                 bCompteur = true;
         }
+
         return bCompteur;
     }
 }

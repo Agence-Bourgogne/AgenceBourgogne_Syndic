@@ -17,7 +17,7 @@ public partial class ImmeublePrintForm : Form
 
     private void btnRapport_Click(object sender, EventArgs e)
     {
-        var source = ImmeubleController.getController().GetListeFromMonthCloture(tbMonth.Text.Replace(".",","));
+        var source = ImmeubleController.getController().GetListeFromMonthCloture(tbMonth.Text.Replace(".", ","));
         immeubleBindingSource.DataSource = source;
         reportViewer1.RefreshReport();
     }

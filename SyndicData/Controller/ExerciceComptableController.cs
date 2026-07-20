@@ -11,19 +11,23 @@ namespace SyndicData.Controller;
 public class ExerciceComptableController : AbstractBaseController<ExerciceComptableEntite>
 {
     private static readonly ExerciceComptableController controller = new();
+
+    public ExerciceComptableController()
+    {
+        DefaultOrder = "reference";
+    }
+
     public override string getTable()
     {
         return "exercice_comptable";
     }
+
     public static ExerciceComptableController getController()
     {
         return controller;
         //return new ExerciceComptableController();
     }
-    public ExerciceComptableController()
-    {
-        DefaultOrder = "reference";
-    }
+
     public DataTable getListExerciceFromImmeuble(string immeuble_id)
     {
         var cmd =
@@ -33,15 +37,16 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
         cmd += " where immeuble_id = @immeuble_id and e.statut != @statut ";
         cmd += " group by 1, 2, 3, 4, 5, 6, 7";
         cmd += " order by date_deb desc";
-        var parameters = new List<NpgsqlParameter> 
+        var parameters = new List<NpgsqlParameter>
         {
             new("@immeuble_id", immeuble_id),
-            new("@statut", (int) GlobalConstantes.StatutExercice.Supprime),
-            new("@statut_budget", (int) GlobalConstantes.StatutBudget.Supprime)
+            new("@statut", (int)GlobalConstantes.StatutExercice.Supprime),
+            new("@statut_budget", (int)GlobalConstantes.StatutBudget.Supprime)
         };
 
         return getResultSQL(cmd, parameters);
     }
+
     public DateTime getNewDateDebutExercice(string immeuble_id)
     {
         var dt = DateTime.Now;
@@ -50,12 +55,12 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
         var cmd =
             $"select date_fin as date_last from {getSchemaTable()} where immeuble_id = @immeuble_id order by date_fin desc limit 1";
 
-        var parameters = new List<NpgsqlParameter> 
+        var parameters = new List<NpgsqlParameter>
         {
             new("@immeuble_id", immeuble_id)
         };
         var table = getResultSQL(cmd, parameters);
-        if (table != null && table.Rows.Count > 0 )
+        if (table != null && table.Rows.Count > 0)
         {
             var row = table.Rows[0];
             if (row[0] != null)
@@ -64,8 +69,10 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
                 dt = dt.AddDays(1);
             }
         }
+
         return dt;
     }
+
     public ExerciceComptableEntite getExerciceFromDate(string immeuble_id, DateTime dtDeb)
     {
         var cmd = " select * ";
@@ -74,7 +81,7 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
         cmd += " where immeuble_id = @immeuble_id and date_deb >= @dtDeb and date_fin <= @dtFin ";
 //            cmd += " where immeuble_id = @immeuble_id and date_deb >= @dtDeb and date_fin <= @dtDeb ";
 
-        var parameters = new List<NpgsqlParameter> 
+        var parameters = new List<NpgsqlParameter>
         {
             new("@immeuble_id", immeuble_id),
             new("@dtDeb", dtDeb),
@@ -83,10 +90,7 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
 
 
         var table = getResultSQL(cmd, parameters);
-        if (table != null && table.Rows.Count > 0)
-        {
-            entite = new ExerciceComptableEntite(table.Rows[0]);
-        }
+        if (table != null && table.Rows.Count > 0) entite = new ExerciceComptableEntite(table.Rows[0]);
         return entite;
     }
 
@@ -102,9 +106,9 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
 //            cmd += " order by date_deb desc limit 1)";
         cmd += " order by date_deb limit 1)";
 
-        var statut = (int) GlobalConstantes.StatutExercice.Ouvert;
+        var statut = (int)GlobalConstantes.StatutExercice.Ouvert;
 
-        var parameters = new List<NpgsqlParameter> 
+        var parameters = new List<NpgsqlParameter>
         {
             new("@immeuble_id", immeuble_id),
             new("@statut", statut)
@@ -113,10 +117,7 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
 //            Console.WriteLine(cmd.Replace("@immeuble_id", String.Format("{0}", immeuble_id)));
 
         var table = getResultSQL(cmd, parameters);
-        if (table != null && table.Rows.Count > 0)
-        {
-            entite = new ExerciceComptableEntite(table.Rows[0]);
-        }
+        if (table != null && table.Rows.Count > 0) entite = new ExerciceComptableEntite(table.Rows[0]);
         return entite;
     }
 
@@ -130,14 +131,15 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
         cmd += $" where date_deb < (select  date_deb from {schema}.exercice_comptable where id = @exercice_id)";
         cmd += $" and immeuble_id = (select  immeuble_id from {schema}.exercice_comptable where id = @exercice_id)";
         cmd += " order by date_deb desc limit 1)";
-            
-        var parameters = new List<NpgsqlParameter> 
+
+        var parameters = new List<NpgsqlParameter>
         {
             new("@exercice_id", exercice_id)
         };
 
         return getResultSQL(cmd, parameters);
     }
+
     public DataTable getExerciceSuivant(string exercice_id)
     {
         var schema = getSchema();
@@ -151,19 +153,22 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
         Console.WriteLine(cmd);
         Console.WriteLine(exercice_id);
 
-        var parameters = new List<NpgsqlParameter> 
+        var parameters = new List<NpgsqlParameter>
         {
             new("@exercice_id", exercice_id)
         };
 
         return getResultSQL(cmd, parameters);
     }
+
     public ExerciceComptableEntite createExerciceSuivant(ExerciceComptableEntite exercice)
     {
         ExerciceComptableEntite exercice_suivant;
         var table = getExerciceSuivant(exercice.id);
         if (table != null && table.Rows.Count > 0)
+        {
             exercice_suivant = new ExerciceComptableEntite(table.Rows[0]);
+        }
         else
         {
             exercice_suivant = new ExerciceComptableEntite
@@ -179,6 +184,7 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
             if (!InsertOrUpdate(exercice_suivant))
                 throw new Exception("Problème durant la création du nouvel exercice");
         }
+
         return exercice_suivant;
     }
 }

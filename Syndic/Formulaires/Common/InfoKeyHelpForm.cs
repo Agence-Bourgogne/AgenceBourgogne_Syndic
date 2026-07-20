@@ -11,6 +11,7 @@ internal class InfoKeyHelpForm : HelpForm
     {
         Text = @"Raccourcis Claviers";
     }
+
     public void DoFormText(Form parent)
     {
         var table = ParametresDB.getComboData("KEY_CODE");
@@ -18,8 +19,9 @@ internal class InfoKeyHelpForm : HelpForm
         foreach (DataRow row in table.Rows)
         {
             var str = $"{row["code"]}\t{row["param_1"]}";
-            note += (note == "" ? "": "\n") + str;
+            note += (note == "" ? "" : "\n") + str;
         }
+
         if (!"".Equals(note))
         {
             base.DoFormText(parent, note);
@@ -29,8 +31,11 @@ internal class InfoKeyHelpForm : HelpForm
             parent.Activate();
         }
         else
+        {
             Visible = false;
+        }
     }
+
     public override void DoFormText(Form parent, string note)
     {
         if (!"".Equals(note))
@@ -42,6 +47,8 @@ internal class InfoKeyHelpForm : HelpForm
             parent.Activate();
         }
         else
+        {
             Visible = false;
+        }
     }
 }

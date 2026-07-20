@@ -10,6 +10,7 @@ public partial class HelpForm : Form
     private readonly string helpKey;
 
     private Form formParent;
+
     public HelpForm(string key)
     {
         InitializeComponent();
@@ -28,18 +29,18 @@ public partial class HelpForm : Form
 
         CommonRegistry.setRegistryValue(helpKey, "Location X", Location.X);
         CommonRegistry.setRegistryValue(helpKey, "Location Y", Location.Y);
-
     }
 
     private void HelpForm_Load(object sender, EventArgs e)
     {
     }
+
     public void setLocation(int defPosX, int defPosY)
     {
-        var newPosX = (int) CommonRegistry.getRegistryValue(helpKey, "Location X", defPosX);
-        var newPosY = (int) CommonRegistry.getRegistryValue(helpKey, "Location Y", defPosY);
-            
-        Location = new Point (newPosX, newPosY);
+        var newPosX = (int)CommonRegistry.getRegistryValue(helpKey, "Location X", defPosX);
+        var newPosY = (int)CommonRegistry.getRegistryValue(helpKey, "Location Y", defPosY);
+
+        Location = new Point(newPosX, newPosY);
     }
 
     public void setVisibility(Form parent)
@@ -62,25 +63,27 @@ public partial class HelpForm : Form
         {
             setVisibility(parent);
             var lines = text.Split('\n');
-            var nbLines = lines.Length +1;
+            var nbLines = lines.Length + 1;
             if (nbLines < 4)
                 nbLines = 4;
             var height = nbLines * 15;
 
-            tbHelp.Height = height+10;
+            tbHelp.Height = height + 10;
             Height = height;
 
             var posX = parent.Location.X + (parent.Width - Width) / 2;
             var posY = parent.Location.Y + parent.Height - height;
 
-            setLocation(posX, posY);                        
-                
+            setLocation(posX, posY);
+
             parent.Activate();
         }
         else
+        {
             Visible = false;
-
+        }
     }
+
     public void ShowForm(Form parent)
     {
         CommonRegistry.setRegistryValue(helpKey, "Visible", 1);

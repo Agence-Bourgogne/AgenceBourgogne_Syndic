@@ -10,6 +10,7 @@ public partial class LogonForm : Form
 {
     private bool bClose;
     private UserEntite userConnected;
+
     public LogonForm()
     {
         InitializeComponent();
@@ -18,24 +19,24 @@ public partial class LogonForm : Form
     private void LogonForm_FormClosing(object sender, FormClosingEventArgs e)
     {
         if (!bClose)
-        {
             if (!ValidUser())
                 e.Cancel = true;
-        }
     }
+
     private bool ValidUser(bool bShowMessage = true)
     {
         userConnected = UsersController.getController().getEntiteFromField("reference", tbUser.Text);
         if (userConnected != null)
         {
             var encryptPassword = tbPassword.Text;
-            if (userConnected.Password == encryptPassword )
+            if (userConnected.Password == encryptPassword)
             {
                 BaseApplication.userConnected = userConnected;
                 return true;
             }
         }
-        if ( bShowMessage)
+
+        if (bShowMessage)
             tbMessage.Text = "Utilisateur ou Mot de passe Invalide";
         return false;
     }
@@ -50,7 +51,9 @@ public partial class LogonForm : Form
                 Close();
         }
         else
+        {
             Close();
+        }
     }
 
     private void pictureBox1_Click(object sender, EventArgs e)

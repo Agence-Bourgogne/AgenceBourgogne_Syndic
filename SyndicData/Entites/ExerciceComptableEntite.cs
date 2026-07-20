@@ -6,21 +6,24 @@ namespace SyndicData.Entites;
 
 public class ExerciceComptableEntite : AbstractBaseEntite
 {
-    public string immeuble_id;
-    public string reference;
-    public string nom;
     public DateTime date_deb;
     public DateTime date_fin;
+    public string immeuble_id;
+    public string nom;
+    public string reference;
     public int statut;
+
     public ExerciceComptableEntite()
     {
         id = "";
         setValues(null);
     }
+
     public ExerciceComptableEntite(DataRow data)
     {
         setValues(data);
     }
+
     public override void setValues(DataRow row)
     {
         var members = GetType().GetFields();
@@ -35,5 +38,4 @@ public class ExerciceComptableEntite : AbstractBaseEntite
         updatables.Add(new UpdateField("statut", true, members));
         base.setValues(row);
     }
-
 }

@@ -14,6 +14,7 @@ public class ImmeubleRepartitionController : AbstractBaseController<ImmeubleRepa
 {
     private static readonly ImmeubleRepartitionController controller = new();
     public string specific_schema = "";
+
     public override string getTable()
     {
         return "immeuble_repartition";
@@ -29,13 +30,15 @@ public class ImmeubleRepartitionController : AbstractBaseController<ImmeubleRepa
     {
         return $"{ligne}{colonne}";
     }
+
     public DataTable getRepartitionImmeuble(string immeuble_id)
     {
         adapter.SelectCommand = new NpgsqlCommand(
-            $"select * from {getSchemaTable()} where immeuble_id=@immeuble_id and statut=@statut order by ligne, colonne", Database.GetInstance());
+            $"select * from {getSchemaTable()} where immeuble_id=@immeuble_id and statut=@statut order by ligne, colonne",
+            Database.GetInstance());
         var table = new DataTable();
         adapter.SelectCommand.Parameters.AddWithValue("@immeuble_id", immeuble_id);
-        adapter.SelectCommand.Parameters.AddWithValue("@statut", (int) GlobalConstantes.StatutData.Actif);
+        adapter.SelectCommand.Parameters.AddWithValue("@statut", (int)GlobalConstantes.StatutData.Actif);
 
         try
         {
@@ -68,12 +71,10 @@ public class ImmeubleRepartitionController : AbstractBaseController<ImmeubleRepa
         cmd += " where immeuble_id = @immeuble_id and ligne = 8 ";
 
         var table = getResultSQL(cmd, [new NpgsqlParameter("@immeuble_id", immeuble_id)]);
-        if (table != null)
-        {
-            valeur = (int)table.Rows[0]["valeur"] ;
-        }
+        if (table != null) valeur = (int)table.Rows[0]["valeur"];
         return valeur > 0;
-    } 
+    }
+
     public bool SaveRepartitionImmeuble(ImmeubleEntite immeuble_entite, DataGridView grid)
     {
         bool rc;
@@ -86,42 +87,36 @@ public class ImmeubleRepartitionController : AbstractBaseController<ImmeubleRepa
         {
             var bIndiv = HaveRepartitionIndividuelle(immeuble_entite.id);
             foreach (DataGridViewRow rowGrid in grid.Rows)
+            foreach (DataGridViewTextBoxCell cell in rowGrid.Cells)
             {
-                foreach (DataGridViewTextBoxCell cell in rowGrid.Cells)
-                {
-                    if (cell.ColumnIndex == 0)
-                        continue;
-                    var entite_repart = (ImmeubleRepartitionEntite)cell.Tag;
-                    var value = 0;
-                    if (cell.Value.ToString() != "" && cell.Value.ToString() != "*")
-                        value = Convert.ToInt32(cell.Value);
-                    if (entite_repart == null)
-                    {
-                        if (value != 0)
+                if (cell.ColumnIndex == 0)
+                    continue;
+                var entite_repart = (ImmeubleRepartitionEntite)cell.Tag;
+                var value = 0;
+                if (cell.Value.ToString() != "" && cell.Value.ToString() != "*")
+                    value = Convert.ToInt32(cell.Value);
+                if (entite_repart == null)
+                    if (value != 0)
+                        entite_repart = new ImmeubleRepartitionEntite
                         {
-                            entite_repart = new ImmeubleRepartitionEntite
-                            {
-                                immeuble_id = immeuble_entite.id,
-                                nom = "",
-                                reference = keyRepart(cell.RowIndex + 1, cell.ColumnIndex - 1),
-                                ligne = cell.RowIndex + 1,
-                                colonne = cell.ColumnIndex - 1,
-                                type_ventilation = getTypeVentilation(cell.RowIndex + 1)
-                            };
-                        }
-                    }
-                    if (entite_repart != null)
+                            immeuble_id = immeuble_entite.id,
+                            nom = "",
+                            reference = keyRepart(cell.RowIndex + 1, cell.ColumnIndex - 1),
+                            ligne = cell.RowIndex + 1,
+                            colonne = cell.ColumnIndex - 1,
+                            type_ventilation = getTypeVentilation(cell.RowIndex + 1)
+                        };
+
+                if (entite_repart != null)
+                    if (entite_repart.valeur != value)
                     {
-                        if (entite_repart.valeur != value)
-                        {
-                            entite_repart.valeur = value;
-                            if (!doInsertOrUpdate(entite_repart))
-                                throw new Exception("Repartition Millieme");
-                        }
+                        entite_repart.valeur = value;
+                        if (!doInsertOrUpdate(entite_repart))
+                            throw new Exception("Repartition Millieme");
                     }
-                }
             }
-            if ( !bIndiv )
+
+            if (!bIndiv)
                 for (var i = 0; i < 8; i++)
                 {
                     var entite_repart = new ImmeubleRepartitionEntite
@@ -136,6 +131,7 @@ public class ImmeubleRepartitionController : AbstractBaseController<ImmeubleRepa
                     if (!doInsertOrUpdate(entite_repart))
                         throw new Exception("Repartition Individuelle");
                 }
+
             rc = true;
             trx.Commit();
         }
@@ -143,17 +139,19 @@ public class ImmeubleRepartitionController : AbstractBaseController<ImmeubleRepa
         {
             trx.Rollback();
             rc = false;
-            MessageBox.Show(ex.Message);                    
+            MessageBox.Show(ex.Message);
         }
+
         return rc;
     }
-    public bool ExistRepartitionReference(string immeuble_id, string reference )
+
+    public bool ExistRepartitionReference(string immeuble_id, string reference)
     {
         var bExist = false;
         var cmd =
             $"select immeuble_id, reference from {getSchemaTable()} where immeuble_id=@immeuble_id and reference = @reference";
 
-        var parameters = new List<NpgsqlParameter> 
+        var parameters = new List<NpgsqlParameter>
         {
             new("@immeuble_id", immeuble_id),
             new("@reference", reference)
@@ -164,10 +162,12 @@ public class ImmeubleRepartitionController : AbstractBaseController<ImmeubleRepa
             bExist = true;
         return bExist;
     }
+
     public ImmeubleRepartitionEntite getRepartFromImmeubleBase(string immeuble_id, string base_ref)
     {
         adapter.SelectCommand = new NpgsqlCommand(
-            $"select * from {getSchemaTable()} where immeuble_id=@immeuble_id and reference = @reference", Database.GetInstance());
+            $"select * from {getSchemaTable()} where immeuble_id=@immeuble_id and reference = @reference",
+            Database.GetInstance());
         var table = new DataTable();
         adapter.SelectCommand.Parameters.AddWithValue("@immeuble_id", immeuble_id);
         adapter.SelectCommand.Parameters.AddWithValue("@reference", base_ref);
@@ -176,7 +176,7 @@ public class ImmeubleRepartitionController : AbstractBaseController<ImmeubleRepa
         {
             adapter.Fill(table);
 
-            if ( table.Rows.Count > 0 )
+            if (table.Rows.Count > 0)
                 return new ImmeubleRepartitionEntite(table.Rows[0]);
 
             return null;

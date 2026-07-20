@@ -18,6 +18,7 @@ namespace EspaceSyndic.Formulaires.Budget;
 
 public partial class SaisieBudgetForm : Form
 {
+    private bool bLoaded;
     private ImmeubleEntite immeuble;
     private NatureEntite nature;
 
@@ -25,6 +26,7 @@ public partial class SaisieBudgetForm : Form
     {
         InitializeComponent();
     }
+
     private void SaisieBudgetForm_Load(object sender, EventArgs e)
     {
         btnEnter.Width = 0;
@@ -34,6 +36,7 @@ public partial class SaisieBudgetForm : Form
         FillDataGridViewExercice();
         btnExerciceAdd.Visible = false;
     }
+
     private void lblImmeuble_Click(object sender, EventArgs e)
     {
         var form = new FindImmeubleForm();
@@ -44,6 +47,7 @@ public partial class SaisieBudgetForm : Form
             tbRefImmeuble_Validating(null, null);
         }
     }
+
     private void tbRefImmeuble_Validating(object sender, CancelEventArgs e)
     {
         if (!tbRefImmeuble.Enabled)
@@ -66,19 +70,19 @@ public partial class SaisieBudgetForm : Form
         }
     }
 
-    private bool bLoaded;
     private void FillDataGridViewExercice()
     {
         bLoaded = false;
 
-        var exercices = ExerciceComptableController.getController().getListExerciceFromImmeuble(immeuble != null ? immeuble.id:"");
+        var exercices = ExerciceComptableController.getController()
+            .getListExerciceFromImmeuble(immeuble != null ? immeuble.id : "");
         dataGridViewExercice.DataSource = exercices;
         bLoaded = true;
 
         if (exercices != null)
         {
             var cols = dataGridViewExercice.Columns;
-            cols["budget_id"].Visible= false;
+            cols["budget_id"].Visible = false;
             cols["id"]?.Visible = false;
 
             ControlsWindows.ToTitleCase(cols);
@@ -90,13 +94,15 @@ public partial class SaisieBudgetForm : Form
     {
         var budget_id = "";
 
-        if ( dataGridViewExercice.SelectedRows.Count > 0 )
+        if (dataGridViewExercice.SelectedRows.Count > 0)
         {
             var row = (DataRowView)dataGridViewExercice.SelectedRows[0].DataBoundItem;
             budget_id = row["budget_id"].ToString();
         }
+
         return budget_id;
     }
+
     private string getExerciceSelected()
     {
         var exercice_id = "";
@@ -110,19 +116,22 @@ public partial class SaisieBudgetForm : Form
                 //decimal valueSoldeImm = OperationController.getController().getSoldeImmeuble(immeuble.id, (DateTime)row["date_deb"], (DateTime)row["date_fin"]);
             }
         }
+
         return exercice_id;
     }
+
     private void btnExerciceAdd_Click(object sender, EventArgs e)
     {
         var form = new NouvelExerciceForm(immeuble.id);
         form.exercice_id = getExerciceSelected();
         form.ShowDialog();
-        if ( form.exercice_id != "")
+        if (form.exercice_id != "")
         {
             FillDataGridViewExercice();
             dataGridViewExercice_SelectionChanged(null, null);
         }
     }
+
     private void btnEnter_Click(object sender, EventArgs e)
     {
         ControlsWindows.FocusNextTabbedControl(this);
@@ -135,7 +144,8 @@ public partial class SaisieBudgetForm : Form
         dataGridViewBudget.DataSource = "";
         if (immeuble == null)
             return;
-        dataGridViewBudget.DataSource = BudgetController.getController().getViewBudgets(immeuble.id, getExerciceSelected());
+        dataGridViewBudget.DataSource =
+            BudgetController.getController().getViewBudgets(immeuble.id, getExerciceSelected());
 
         var cols = dataGridViewBudget.Columns;
         cols["nature"].MinimumWidth = 160;
@@ -145,11 +155,12 @@ public partial class SaisieBudgetForm : Form
         ControlsWindows.ToTitleCase(cols);
         dataGridViewBudget.ClearSelection();
     }
+
     private void dataGridViewBudget_SelectionChanged(object sender, EventArgs e)
     {
         if (dataGridViewBudget.SelectedRows.Count > 0)
         {
-            var row = (DataRowView) dataGridViewBudget.SelectedRows[0].DataBoundItem;
+            var row = (DataRowView)dataGridViewBudget.SelectedRows[0].DataBoundItem;
 //                Console.WriteLine(row);
             tbBase.Text = row["base"].ToString();
             tbNature.Text = row["compte"].ToString();
@@ -165,6 +176,7 @@ public partial class SaisieBudgetForm : Form
             btnAdd.Text = "&Ajouter";
             btnDel.Enabled = false;
         }
+
         tbNature_Validating(null, null);
     }
 
@@ -178,12 +190,12 @@ public partial class SaisieBudgetForm : Form
         if (budget == null)
         {
             var exercice = ExerciceComptableController.getController().getEntiteById(exercice_id);
-            if ( exercice != null )
+            if (exercice != null)
             {
                 budget = new BudgetEntite
                 {
                     exercice_id = exercice_id,
-                    statut = (int) GlobalConstantes.StatutBudget.Brouillard,
+                    statut = (int)GlobalConstantes.StatutBudget.Brouillard,
                     reference = exercice.reference
                 };
                 if (BudgetController.getController().InsertOrUpdate(budget))
@@ -191,7 +203,10 @@ public partial class SaisieBudgetForm : Form
             }
         }
         else
+        {
             id = budget.id;
+        }
+
         return id;
     }
 
@@ -206,19 +221,17 @@ public partial class SaisieBudgetForm : Form
 
         if (dataGridViewBudget.SelectedRows.Count > 0)
         {
-            var row = (DataRowView) dataGridViewBudget.SelectedRows[0].DataBoundItem;
+            var row = (DataRowView)dataGridViewBudget.SelectedRows[0].DataBoundItem;
             if (row["id"].ToString() != "")
                 budgetLine = BudgetLigneController.getController().getEntiteById(row["id"].ToString());
         }
         else
         {
             budgetLine.budget_id = getBudgetExerciceSelected();
-            budgetLine.statut = (int) GlobalConstantes.StatutBudget.Brouillard;
+            budgetLine.statut = (int)GlobalConstantes.StatutBudget.Brouillard;
         }
-        if (string.IsNullOrEmpty(budgetLine.budget_id))
-        {
-            budgetLine.budget_id = CreateBudget();
-        }
+
+        if (string.IsNullOrEmpty(budgetLine.budget_id)) budgetLine.budget_id = CreateBudget();
 
         budgetLine.base_repart = tbBase.Text;
         budgetLine.nature_id = nature.id;
@@ -226,12 +239,12 @@ public partial class SaisieBudgetForm : Form
         try
         {
             BudgetLigneController.getController().InsertOrUpdate(budgetLine);
-
         }
         catch (Exception ex)
         {
             MessageBox.Show(ex.Message);
         }
+
         FillDataGridViewBudget();
     }
 
@@ -252,9 +265,10 @@ public partial class SaisieBudgetForm : Form
         var parameters = new List<NpgsqlParameter>
         {
             new("reference", tbNature.Text)
-        }; 
+        };
 
-        nature = NatureController.getController().getEntite("where reference = @reference and budgetisable=true", parameters);
+        nature = NatureController.getController()
+            .getEntite("where reference = @reference and budgetisable=true", parameters);
         if (nature != null)
         {
             tbNature.BackColor = Color.White;
@@ -288,7 +302,7 @@ public partial class SaisieBudgetForm : Form
 
             if (budgetLine != null)
             {
-                budgetLine.statut = (int) GlobalConstantes.StatutBudget.Supprime;
+                budgetLine.statut = (int)GlobalConstantes.StatutBudget.Supprime;
                 BudgetLigneController.getController().InsertOrUpdate(budgetLine);
                 FillDataGridViewBudget();
                 tbRefImmeuble.Enabled = false;
@@ -311,12 +325,13 @@ public partial class SaisieBudgetForm : Form
         try
         {
             if (col.Name == "statut_budget")
-                if ( dgv[e.ColumnIndex, e.RowIndex].Value.ToString() != "" )
+                if (dgv[e.ColumnIndex, e.RowIndex].Value.ToString() != "")
                 {
                     var statut = (GlobalConstantes.StatutBudget)dgv[e.ColumnIndex, e.RowIndex].Value;
                     e.Value = statut.ToString().Replace("_", " ");
                     e.FormattingApplied = true;
                 }
+
             if (col.Name == "statut")
                 if (dgv[e.ColumnIndex, e.RowIndex].Value.ToString() != "")
                 {
@@ -332,7 +347,7 @@ public partial class SaisieBudgetForm : Form
 
     private void dataGridViewExercice_SelectionChanged(object sender, EventArgs e)
     {
-        if ( bLoaded )
+        if (bLoaded)
             FillDataGridViewBudget();
         btnPrint.Enabled = getExerciceSelected() != "";
         btnAdd.Enabled = getExerciceSelected() != "";
@@ -353,6 +368,7 @@ public partial class SaisieBudgetForm : Form
             throw new Exception("Creation Liasse");
         return liasse;
     }
+
     private SaisieFactureEntite createFactureReprise(LiasseEntite liasse, DateTime dateDeb, decimal valueSoldeImm)
     {
         var facture = new SaisieFactureEntite
@@ -371,49 +387,56 @@ public partial class SaisieBudgetForm : Form
 
         return facture;
     }
+
     private FournisseurEntite getFournisseurCloture()
     {
         var reference = ParametresDB.getParam1("CLOTURE", "FOURNISSEUR");
         return FournisseurController.getController().getEntiteFromField("reference", reference);
     }
+
     private NatureEntite getNatureCloture()
     {
         var reference = ParametresDB.getParam1("CLOTURE", "NATURE");
         return NatureController.getController().getEntiteFromField("reference", reference);
     }
+
     private void cloturerExerciceToolStripMenuItem_Click(object sender, EventArgs e)
     {
         var exercice_id = getExerciceSelected();
-        if ( exercice_id != "" )
+        if (exercice_id != "")
         {
             nature = getNatureCloture();
             var fournisseur = getFournisseurCloture();
-            var libelle = ParametresDB.getParam1("CLOTURE","LIBELLE OPERATION");
+            var libelle = ParametresDB.getParam1("CLOTURE", "LIBELLE OPERATION");
 
 //                LiasseEntite liasse = 
             var currExercice = ExerciceComptableController.getController().getEntiteById(exercice_id);
             var exercice_suivant = ExerciceComptableController.getController().getExerciceSuivant(exercice_id);
-            if ( exercice_suivant.Rows.Count <= 0 )
+            if (exercice_suivant.Rows.Count <= 0)
             {
                 dataGridViewExercice.ClearSelection();
 
                 btnExerciceAdd_Click(null, null);
                 exercice_suivant = ExerciceComptableController.getController().getExerciceSuivant(exercice_id);
             }
+
             var cnx = Database.GetInstance();
             var trx = cnx.BeginTransaction();
             try
             {
                 // TODO Voir pour TimestampServer
                 // TODO Revoir la gestion exception
-                if (exercice_suivant != null && exercice_suivant.Rows.Count > 0 )
+                if (exercice_suivant != null && exercice_suivant.Rows.Count > 0)
                 {
-                    var exerciceSuivantEntite = new ExerciceComptableEntite( exercice_suivant.Rows[0]);
-                    var soldeImm = SaisieFactureController.getController().getCurrentSoldeImmeuble(exerciceSuivantEntite.immeuble_id, exerciceSuivantEntite.date_deb, exerciceSuivantEntite.date_fin  );
+                    var exerciceSuivantEntite = new ExerciceComptableEntite(exercice_suivant.Rows[0]);
+                    var soldeImm = SaisieFactureController.getController().getCurrentSoldeImmeuble(
+                        exerciceSuivantEntite.immeuble_id, exerciceSuivantEntite.date_deb,
+                        exerciceSuivantEntite.date_fin);
 
-                    if ( soldeImm.Rows.Count <= 0 )
+                    if (soldeImm.Rows.Count <= 0)
                     {
-                        var valueSoldeImm = OperationController.getController().getSoldeImmeuble(currExercice.immeuble_id, currExercice.date_deb, currExercice.date_fin);
+                        var valueSoldeImm = OperationController.getController()
+                            .getSoldeImmeuble(currExercice.immeuble_id, currExercice.date_deb, currExercice.date_fin);
                         var liasse = createLiasseReprise(valueSoldeImm);
 
                         var facture = createFactureReprise(liasse, exerciceSuivantEntite.date_deb, valueSoldeImm);
@@ -427,7 +450,8 @@ public partial class SaisieBudgetForm : Form
                         foreach (DataRow row in repart.Rows)
                         {
                             var repimm = new LotDescriptionEntite(row);
-                            var soldeCopro = OperationController.getController().getSoldeImmeuble(immeuble.id, currExercice.date_deb, currExercice.date_fin, repimm.coproprietaire_id);
+                            var soldeCopro = OperationController.getController().getSoldeImmeuble(immeuble.id,
+                                currExercice.date_deb, currExercice.date_fin, repimm.coproprietaire_id);
                             var operation = new OperationEntite(facture)
                             {
                                 numero_ligne = numero_ligne++,
@@ -442,18 +466,30 @@ public partial class SaisieBudgetForm : Form
                             else
                                 operation.credit = soldeCopro;
                             operation.statut = (int)GlobalConstantes.StatutOperation.Valide;
-                            if ( !OperationController.getController().InsertOrUpdate(operation))
+                            if (!OperationController.getController().InsertOrUpdate(operation))
                                 throw new Exception("Creation Operation");
                         }
                     }
 
-                    if (!SaisieFactureController.getController().ChangeEtat(immeuble.id, currExercice.date_deb, currExercice.date_fin, (int)GlobalConstantes.StatutOperation.Cloture, (int)GlobalConstantes.StatutOperation.Supprime) || !SaisieAppelFondController.getController().ChangeEtat(immeuble.id, currExercice.date_deb, currExercice.date_fin, (int)GlobalConstantes.StatutOperation.Cloture, (int)GlobalConstantes.StatutOperation.Supprime) || !SaisieReglementController.getController().ChangeEtat(immeuble.id, currExercice.date_deb, currExercice.date_fin, (int)GlobalConstantes.StatutOperation.Cloture, (int)GlobalConstantes.StatutOperation.Supprime) || !OperationController.getController().ChangeEtat(immeuble.id, currExercice.date_deb, currExercice.date_fin, (int)GlobalConstantes.StatutOperation.Cloture, (int)GlobalConstantes.StatutOperation.Supprime))
+                    if (!SaisieFactureController.getController().ChangeEtat(immeuble.id, currExercice.date_deb,
+                            currExercice.date_fin, (int)GlobalConstantes.StatutOperation.Cloture,
+                            (int)GlobalConstantes.StatutOperation.Supprime) ||
+                        !SaisieAppelFondController.getController().ChangeEtat(immeuble.id, currExercice.date_deb,
+                            currExercice.date_fin, (int)GlobalConstantes.StatutOperation.Cloture,
+                            (int)GlobalConstantes.StatutOperation.Supprime) ||
+                        !SaisieReglementController.getController().ChangeEtat(immeuble.id, currExercice.date_deb,
+                            currExercice.date_fin, (int)GlobalConstantes.StatutOperation.Cloture,
+                            (int)GlobalConstantes.StatutOperation.Supprime) || !OperationController.getController()
+                            .ChangeEtat(immeuble.id, currExercice.date_deb, currExercice.date_fin,
+                                (int)GlobalConstantes.StatutOperation.Cloture,
+                                (int)GlobalConstantes.StatutOperation.Supprime))
                         throw new Exception("Cloture Facture");
 
                     currExercice.statut = (int)GlobalConstantes.StatutExercice.Clos;
                     if (!ExerciceComptableController.getController().InsertOrUpdate(currExercice))
                         throw new Exception("Statut exercice");
                 }
+
                 trx.Commit();
                 tbRefImmeuble_Validating(null, null);
             }
@@ -494,7 +530,7 @@ public partial class SaisieBudgetForm : Form
     private void modifierExerciceToolStripMenuItem_Click(object sender, EventArgs e)
     {
         var form = new NouvelExerciceForm(immeuble.id);
-        form.exercice_id = getExerciceSelected(); 
+        form.exercice_id = getExerciceSelected();
         form.ShowDialog();
         if (form.exercice_id != "")
         {
@@ -506,10 +542,8 @@ public partial class SaisieBudgetForm : Form
     private void dataGridViewBudget_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
     {
         //Console.WriteLine(e.ColumnIndex);
-        if ( e.ColumnIndex > 2 )
-        {
+        if (e.ColumnIndex > 2)
             if (e.Value.ToString() == "0")
                 e.Value = "";
-        }
     }
 }

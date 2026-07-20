@@ -20,20 +20,20 @@ namespace EspaceSyndic.Formulaires.Ecritures;
 
 public partial class FicheFactureForm : Form
 {
-    private ImmeubleEntite immeuble;
-    private NatureEntite nature;
-    private FournisseurEntite fournisseur;
-    private AutoCompleteStringCollection baseAuto = new();
-    private bool bLoadEcriture;
-    private readonly InfoKeyHelpForm infoKey = new("aide_clavier_facture");
-    private readonly HelpForm infoForm = new("aide_facture");
-    private readonly string TitreForm;
-    private AutoCompleteStringCollection lotAuto = new();
     private const string regKey = "listes\\saisie_factures";
-
-    private readonly int stdWidth;
+    private readonly HelpForm infoForm = new("aide_facture");
+    private readonly InfoKeyHelpForm infoKey = new("aide_clavier_facture");
 
     private readonly int stdHeight;
+
+    private readonly int stdWidth;
+    private readonly string TitreForm;
+    private AutoCompleteStringCollection baseAuto = new();
+    private bool bLoadEcriture;
+    private FournisseurEntite fournisseur;
+    private ImmeubleEntite immeuble;
+    private AutoCompleteStringCollection lotAuto = new();
+    private NatureEntite nature;
 
     public FicheFactureForm()
     {
@@ -42,7 +42,7 @@ public partial class FicheFactureForm : Form
 
         stdWidth = Width;
         stdHeight = Height;
-            
+
         var width = (int)CommonRegistry.getRegistryValue(regKey, "width", -1);
         if (width != -1)
             Width = width;
@@ -58,12 +58,12 @@ public partial class FicheFactureForm : Form
             var index = (int)CommonRegistry.getRegistryValue(regKey, col.Name, -1);
             if (index != -1)
                 col.DisplayIndex = index;
-            var width = (int)CommonRegistry.getRegistryValue(regKey+"\\width", col.Name, -1);
+            var width = (int)CommonRegistry.getRegistryValue(regKey + "\\width", col.Name, -1);
             if (width != -1)
                 col.Width = width;
         }
     }
-        
+
     private void FicheFactureForm_Load(object sender, EventArgs e)
     {
         RepartitionControlsWindows.initGridRepartition(dataGridView);
@@ -72,17 +72,20 @@ public partial class FicheFactureForm : Form
         ParametresDB.FillComboFromParams(cbReglement, "FACTURE_REGLEMENT");
         ControlsWindows.setAutoControle(tbRefImmeuble, ImmeubleController.getController().getAutoComplete("reference"));
         ControlsWindows.setAutoControle(tbNature, NatureController.getController().getAutoComplete("reference"));
-        ControlsWindows.setAutoControle(tbFournisseur, FournisseurController.getController().getAutoComplete("reference"));
+        ControlsWindows.setAutoControle(tbFournisseur,
+            FournisseurController.getController().getAutoComplete("reference"));
         dataGridView.ScrollBars = ScrollBars.None;
         dataGridView.BackgroundColor = Color.LightGray;
         dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         FillComboLiasse();
-        lblDiff.Visible = tbDiff.Visible = lblTotal.Visible = tbTotal.Visible = lblLiasse.Visible = tbMontantLiasse.Visible = false;
+        lblDiff.Visible = tbDiff.Visible =
+            lblTotal.Visible = tbTotal.Visible = lblLiasse.Visible = tbMontantLiasse.Visible = false;
         EnableSaveAction();
         ControlsWindows.setTooltip(tbComment, "Libellé Ecriture");
         ControlsWindows.setTooltip(tbCommentaireFournisseur, "Information Fournisseur");
         btnEnter.Width = 0;
     }
+
     private void FillComboLiasse()
     {
         cbLiasse.DataSource = LiasseController.getController().getLiasseActives(GlobalConstantes.TypeOperation.Facture);
@@ -91,6 +94,7 @@ public partial class FicheFactureForm : Form
         cbLiasse.Enabled = true;
         cbLiasse_SelectedIndexChanged(null, null);
     }
+
     private void EnableSaveAction()
     {
         var enable = true;
@@ -100,7 +104,7 @@ public partial class FicheFactureForm : Form
         enable &= fournisseur != null;
         enable &= baseAuto.Contains(tbBase.Text);
         enable &= !tbMontant.Text.Equals("");
-            
+
         btnAdd.Enabled = enable;
     }
 
@@ -125,6 +129,7 @@ public partial class FicheFactureForm : Form
         tbLot.Visible = false;
         tbLot.Enabled = false;
     }
+
     private void EnableSaisieEcriture(bool saisie)
     {
         tbRefImmeuble.Enabled = saisie;
@@ -141,6 +146,7 @@ public partial class FicheFactureForm : Form
         var total = Convertir.ToFloat(tbTotal.Text);
         EnableSaisieEcriture(total != 0);
     }
+
     private void lblImmeuble_Click(object sender, EventArgs e)
     {
         var form = new FindImmeubleForm();
@@ -151,6 +157,7 @@ public partial class FicheFactureForm : Form
             tbRefImmeuble_Validating(null, null);
         }
     }
+
     private void ShowFromRepartitionImmeuble(ImmeubleEntite immeuble)
     {
         var repartitionImmeuble = immeuble.getRepartitionImmeuble();
@@ -174,15 +181,17 @@ public partial class FicheFactureForm : Form
         }
         else
         {
-            if ( !"".Equals(tbRefImmeuble.Text))
+            if (!"".Equals(tbRefImmeuble.Text))
                 tbRefImmeuble.BackColor = Color.Red;
             Text = TitreForm;
             tbBase.Text = "";
             tbBase.Enabled = false;
             infoForm.Hide();
         }
+
         EnableSaveAction();
     }
+
     private void lblFournisseur_Click(object sender, EventArgs e)
     {
         var form = new FindFournisseurForm();
@@ -204,7 +213,9 @@ public partial class FicheFactureForm : Form
             tbFournisseur.Text = form.entite.reference;
             tbFournisseur_Validating(null, null);
         }
-        ControlsWindows.setAutoControle(tbFournisseur, FournisseurController.getController().getAutoComplete("reference"));
+
+        ControlsWindows.setAutoControle(tbFournisseur,
+            FournisseurController.getController().getAutoComplete("reference"));
     }
 
     private void tbFournisseur_Validating(object sender, CancelEventArgs e)
@@ -227,8 +238,8 @@ public partial class FicheFactureForm : Form
             tbVilleFournisseur.Text = "";
             tbCpFournisseur.Text = "";
         }
-        EnableSaveAction();
 
+        EnableSaveAction();
     }
 
     private void lblNature_Click(object sender, EventArgs e)
@@ -252,6 +263,7 @@ public partial class FicheFactureForm : Form
             tbNature.Text = form.entite.reference;
             tbNature_Validating(null, null);
         }
+
         ControlsWindows.setAutoControle(tbNature, NatureController.getController().getAutoComplete("reference"));
     }
 
@@ -268,14 +280,14 @@ public partial class FicheFactureForm : Form
             tbNature.BackColor = tbNature.Text != "" ? Color.Red : Color.White;
             tbLibNature.Text = "";
         }
-        EnableSaveAction();
 
+        EnableSaveAction();
     }
 
     private void cbLiasse_SelectedIndexChanged(object sender, EventArgs e)
     {
         if (!cbLiasse.Enabled) return;
-        var row = (DataRowView) cbLiasse.SelectedItem;
+        var row = (DataRowView)cbLiasse.SelectedItem;
         ClearFicheSaisie();
         tbTotal.Text = row["montant"].ToString();
         tbTotal_TextChanged(null, null);
@@ -288,13 +300,9 @@ public partial class FicheFactureForm : Form
     private void tbBase_TextChanged(object sender, EventArgs e)
     {
         if (baseAuto.Contains(tbBase.Text))
-        {
             tbBase.BackColor = Color.White;
-        }
         else
-        {
-            tbBase.BackColor = tbBase.Text != "" ? Color.Red: Color.White;
-        }
+            tbBase.BackColor = tbBase.Text != "" ? Color.Red : Color.White;
         tbLot.Visible = tbBase.Text == "80";
         lblLot.Visible = tbBase.Text == "80";
         tbLot.Enabled = tbBase.Text == "80";
@@ -307,27 +315,25 @@ public partial class FicheFactureForm : Form
         float montant = 0;
         if (!tbMontant.Text.Equals(""))
             montant = Convertir.ToFloat(tbMontant.Text);
-        if ( montant == 0)
-        {
+        if (montant == 0)
             tbMontant.BackColor = tbMontant.Text != "" ? Color.Red : Color.White;
-        }
         else
-        {
             tbMontant.BackColor = Color.White;
-        }
         EnableSaveAction();
     }
+
     private void selectComboLiasse(string liasse_id)
     {
         var source = LiasseController.getController().getLiasseActives(GlobalConstantes.TypeOperation.Facture);
         cbLiasse.DataSource = source;
-        foreach ( DataRow row in source.Rows){
-            if ( row["id"].Equals(liasse_id)){
+        foreach (DataRow row in source.Rows)
+            if (row["id"].Equals(liasse_id))
+            {
                 cbLiasse.SelectedValue = liasse_id;
                 break;
             }
-        }
     }
+
     private void btnAdd_Click(object sender, EventArgs e)
     {
         if (dataGridViewEcriture.SelectedRows.Count > 0)
@@ -340,6 +346,7 @@ public partial class FicheFactureForm : Form
     {
         return GlobalConstantes.TypeOperation.Facture;
     }
+
     private bool validateForm()
     {
         var msg = "";
@@ -358,18 +365,20 @@ public partial class FicheFactureForm : Form
             MessageBox.Show(msg);
             return false;
         }
+
         var dtFac = Convert.ToDateTime(tbDateCreation.Text);
         var exercice = ExerciceComptableController.getController().getExerciceFromDate(immeuble.id, dtFac);
 
         if (exercice != null)
-        {
             if (exercice.statut != (int)GlobalConstantes.StatutExercice.Ouvert)
             {
-                var dr = MessageBox.Show("La date de l'opération correspond à un exercice Cloturé\r\nVoulez vous continuer", "Attention", MessageBoxButtons.YesNo);
+                var dr = MessageBox.Show(
+                    "La date de l'opération correspond à un exercice Cloturé\r\nVoulez vous continuer", "Attention",
+                    MessageBoxButtons.YesNo);
                 if (dr != DialogResult.Yes)
                     return false;
             }
-        }
+
         return true;
     }
 
@@ -384,7 +393,7 @@ public partial class FicheFactureForm : Form
         saisie.libelle = tbComment.Text;
         saisie.comment_fournisseur = tbCommentaireFournisseur.Text;
         saisie.base_repart = tbBase.Text;
-        saisie.reglement = (int) cbReglement.SelectedValue;
+        saisie.reglement = (int)cbReglement.SelectedValue;
         return saisie;
     }
 
@@ -402,14 +411,16 @@ public partial class FicheFactureForm : Form
                 var saisie = SaisieFactureController.getController().getEntiteById(row["id"].ToString());
                 if (saisie != null)
                 {
-                    var immeuble_repart = ImmeubleRepartitionController.getController().getEntiteFromField("reference", tbBase.Text);
+                    var immeuble_repart = ImmeubleRepartitionController.getController()
+                        .getEntiteFromField("reference", tbBase.Text);
                     if (immeuble_repart == null) return;
 
                     var oldBase = saisie.base_repart;
 
                     if (tbBase.Text != oldBase)
                     {
-                        var old_repart = ImmeubleRepartitionController.getController().getRepartFromImmeubleBase(immeuble.id, saisie.base_repart);
+                        var old_repart = ImmeubleRepartitionController.getController()
+                            .getRepartFromImmeubleBase(immeuble.id, saisie.base_repart);
                         if (old_repart.type_ventilation != immeuble_repart.type_ventilation)
                         {
                             MessageBox.Show("""
@@ -419,17 +430,20 @@ public partial class FicheFactureForm : Form
                             return;
                         }
                     }
+
                     saisie = FillSaisieFromForm(saisie);
 
                     if (immeuble_repart.type_ventilation == (int)GlobalConstantes.TypeRepartition.Individuelle)
                     {
                         if (tbBase.Text == "80")
                         {
-                            SaisieFactureController.getController().UpdateSaisieAndLot(saisie, immeuble.id, tbLot.Text, Convertir.ToDecimal(tbMontant.Text));
+                            SaisieFactureController.getController().UpdateSaisieAndLot(saisie, immeuble.id, tbLot.Text,
+                                Convertir.ToDecimal(tbMontant.Text));
                         }
                         else
                         {
-                            var multiCpt = LotRepartitionController.getController().GetLotRepartitionHaveMultiCompteur(immeuble.id, saisie.base_repart);
+                            var multiCpt = LotRepartitionController.getController()
+                                .GetLotRepartitionHaveMultiCompteur(immeuble.id, saisie.base_repart);
 
                             if (ParametresDB.IsBaseCompteur(tbBase.Text) && multiCpt != null && multiCpt.Rows.Count > 0)
                             {
@@ -448,7 +462,9 @@ public partial class FicheFactureForm : Form
                         }
                     }
                     else
+                    {
                         SaisieFactureController.getController().InsertOrUpdate(saisie);
+                    }
 
                     ClearFicheSaisie();
 
@@ -487,7 +503,8 @@ public partial class FicheFactureForm : Form
             bNewLiasse = true;
         }
 
-        numero_operation = SaisieFactureController.getController().getNextNumeroOperation(Convert.ToDateTime(tbDateCreation.Text));
+        numero_operation = SaisieFactureController.getController()
+            .getNextNumeroOperation(Convert.ToDateTime(tbDateCreation.Text));
 
         var saisie = new SaisieFactureEntite
         {
@@ -500,17 +517,20 @@ public partial class FicheFactureForm : Form
 
         try
         {
-            var immeuble_repart = ImmeubleRepartitionController.getController().getEntiteFromField("reference", tbBase.Text);
+            var immeuble_repart = ImmeubleRepartitionController.getController()
+                .getEntiteFromField("reference", tbBase.Text);
             if (immeuble_repart == null) return;
             if (immeuble_repart.type_ventilation == (int)GlobalConstantes.TypeRepartition.Individuelle)
             {
                 if (tbBase.Text == "80")
                 {
-                    SaisieFactureController.getController().UpdateSaisieAndLot(saisie, immeuble.id, tbLot.Text, Convertir.ToDecimal(tbMontant.Text));
+                    SaisieFactureController.getController().UpdateSaisieAndLot(saisie, immeuble.id, tbLot.Text,
+                        Convertir.ToDecimal(tbMontant.Text));
                 }
                 else
                 {
-                    var multiCpt = LotRepartitionController.getController().GetLotRepartitionHaveMultiCompteur(immeuble.id, saisie.base_repart);
+                    var multiCpt = LotRepartitionController.getController()
+                        .GetLotRepartitionHaveMultiCompteur(immeuble.id, saisie.base_repart);
 
                     if (ParametresDB.IsBaseCompteur(tbBase.Text) && multiCpt != null && multiCpt.Rows.Count > 0)
                     {
@@ -529,13 +549,14 @@ public partial class FicheFactureForm : Form
                         if (DialogResult.Cancel == form.ShowDialog())
                             bNewLiasse = false;
                     }
-
                 }
             }
             else
+            {
                 SaisieFactureController.getController().InsertOrUpdate(saisie);
+            }
 
-            if ( bNewLiasse)
+            if (bNewLiasse)
                 LiasseController.getController().InsertOrUpdate(liasse);
 
             ClearFicheSaisie();
@@ -547,7 +568,7 @@ public partial class FicheFactureForm : Form
         catch (Exception ex)
         {
             MessageBox.Show(ex.Message);
-        } 
+        }
     }
 
     private void FillDatagridEcritures()
@@ -573,29 +594,25 @@ public partial class FicheFactureForm : Form
             ControlsWindows.ToTitleCase(cols);
 
             OrderColumns();
+        }
 
-        }
         float current = 0;
-        foreach (DataRow row in source.Rows)
-        {
-            current += Convertir.ToFloat(row["montant"]);
-        }
+        foreach (DataRow row in source.Rows) current += Convertir.ToFloat(row["montant"]);
 
         tbMontantLiasse.Text = current.ToString();
-            
-        if ( !"".Equals(tbTotal.Text))
+
+        if (!"".Equals(tbTotal.Text))
         {
             double total = Convertir.ToFloat(tbTotal.Text);
             tbDiff.Text = (total - current).ToString();
         }
+
         btnValid.Enabled = dataGridViewEcriture.Rows.Count > 0;
 
         var bVisibilite = false;
         if (!LiasseEntite.NOUVELLE_ID.Equals(liasse_id))
-        {
             if (dataGridViewEcriture.Rows.Count <= 0)
                 bVisibilite = true;
-        }
         btnDelLiasse.Visible = bVisibilite;
 
         bLoadEcriture = false;
@@ -609,13 +626,15 @@ public partial class FicheFactureForm : Form
 
     private void supprimerToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        if ( dataGridViewEcriture.SelectedRows.Count < 1 ) 
+        if (dataGridViewEcriture.SelectedRows.Count < 1)
             return;
         var row = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
-        if ( row != null )
-            if ( row.Row.RowState != DataRowState.Detached )
+        if (row != null)
+            if (row.Row.RowState != DataRowState.Detached)
             {
-                if ( DialogResult.Yes == MessageBox.Show ( "Voulez vous réellement supprimer cette ecriture\nCette opération est irréversible", "Attention", MessageBoxButtons.YesNo))
+                if (DialogResult.Yes ==
+                    MessageBox.Show("Voulez vous réellement supprimer cette ecriture\nCette opération est irréversible",
+                        "Attention", MessageBoxButtons.YesNo))
                 {
                     var facture = SaisieFactureController.getController().getEntiteById(row["id"].ToString());
                     SaisieFactureController.getController().DeleteEntite(facture);
@@ -634,7 +653,8 @@ public partial class FicheFactureForm : Form
             if (row.Row.RowState != DataRowState.Detached)
             {
                 var saisie = SaisieFactureController.getController().getEntiteById(row["id"].ToString());
-                var multiCpt = LotRepartitionController.getController().GetLotRepartitionHaveMultiCompteur(immeuble.id, saisie.base_repart);
+                var multiCpt = LotRepartitionController.getController()
+                    .GetLotRepartitionHaveMultiCompteur(immeuble.id, saisie.base_repart);
 
                 if (ParametresDB.IsBaseCompteur(tbBase.Text) && multiCpt != null && multiCpt.Rows.Count > 0)
                 {
@@ -674,9 +694,9 @@ public partial class FicheFactureForm : Form
             form.ShowDialog();
         }
     }
+
     private void tbHelpBox_KeyPress(object sender, KeyPressEventArgs e)
     {
-
         if (ModifierKeys == Keys.Control)
             if (e.KeyChar == ' ')
             {
@@ -689,7 +709,7 @@ public partial class FicheFactureForm : Form
                     lblFournisseur_Click(null, null);
                 if (sender.Equals(tbLot))
                     lblLot_Click(null, null);
-            }       
+            }
     }
 
     private void ShowOldLot()
@@ -701,12 +721,11 @@ public partial class FicheFactureForm : Form
             {
                 var row = rowGrid.Row;
                 if (tbBase.Text == "80")
-                {
                     tbLot.Text = OperationController.getController().getNumeroLotFromSaisie(row["id"].ToString());
-                }
             }
         }
     }
+
     private void dataGridViewEcriture_SelectionChanged(object sender, EventArgs e)
     {
         if (!bLoadEcriture)
@@ -735,8 +754,9 @@ public partial class FicheFactureForm : Form
                 }
             }
             else
+            {
                 ClearFicheSaisie();
-
+            }
     }
 
     private void tbComment_KeyUp(object sender, KeyEventArgs e)
@@ -751,7 +771,6 @@ public partial class FicheFactureForm : Form
 
     private void cbReglement_SelectedIndexChanged(object sender, EventArgs e)
     {
-
     }
 
     private void btnEnter_Click(object sender, EventArgs e)
@@ -770,11 +789,12 @@ public partial class FicheFactureForm : Form
         if (dataGridViewEcriture.SelectedRows.Count > 0)
         {
             var numbase = Convertir.ToInt(tbBase.Text);
-            if ( numbase >= 81 && numbase <= 88)
+            if (numbase >= 81 && numbase <= 88)
             {
                 var row = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
                 var saisie = SaisieFactureController.getController().getEntiteById(row["id"].ToString());
-                var multiCpt = LotRepartitionController.getController().GetLotRepartitionHaveMultiCompteur(immeuble.id, saisie.base_repart);
+                var multiCpt = LotRepartitionController.getController()
+                    .GetLotRepartitionHaveMultiCompteur(immeuble.id, saisie.base_repart);
 
                 if (ParametresDB.IsBaseCompteur(tbBase.Text) && multiCpt != null && multiCpt.Rows.Count > 0)
                 {
@@ -782,7 +802,6 @@ public partial class FicheFactureForm : Form
                     form.saisie = saisie;
                     form.immeuble = ImmeubleController.getController().getEntiteById(row["immeuble_id"].ToString());
                     form.ShowDialog();
-
                 }
                 else
                 {
@@ -790,7 +809,6 @@ public partial class FicheFactureForm : Form
                     form.saisie = saisie;
                     form.immeuble = ImmeubleController.getController().getEntiteById(row["immeuble_id"].ToString());
                     form.ShowDialog();
-
                 }
             }
         }
@@ -824,10 +842,7 @@ public partial class FicheFactureForm : Form
         var form = new FindLotCoproprietaireImmeubleForm();
         form.immeuble = immeuble;
         form.ShowDialog();
-        if (form.reference != "")
-        {
-            tbLot.Text = form.reference;
-        }
+        if (form.reference != "") tbLot.Text = form.reference;
     }
 
     private void enregistrerLaPrésentationToolStripMenuItem_Click(object sender, EventArgs e)
@@ -862,7 +877,7 @@ public partial class FicheFactureForm : Form
         if (dataGridViewEcriture.SelectedRows.Count > 0)
         {
             var numbase = Convertir.ToInt(tbBase.Text);
-            if ( numbase >= 81 && numbase <= 88)
+            if (numbase >= 81 && numbase <= 88)
                 repartIndividuelleToolStripMenuItem.Enabled = true;
             else
                 repartIndividuelleToolStripMenuItem.Enabled = false;
@@ -878,9 +893,9 @@ public partial class FicheFactureForm : Form
     {
         var liasse_id = cbLiasse.SelectedValue.ToString();
         var liasse = LiasseController.getController().getEntiteById(liasse_id);
-        if ( liasse != null )
+        if (liasse != null)
         {
-            liasse.statut = (int) GlobalConstantes.StatutData.Supprime;
+            liasse.statut = (int)GlobalConstantes.StatutData.Supprime;
             LiasseController.getController().InsertOrUpdate(liasse);
             FillComboLiasse();
         }

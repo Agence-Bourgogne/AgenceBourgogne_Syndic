@@ -17,10 +17,11 @@ namespace EspaceSyndic.Formulaires.Budget;
 
 public partial class BudgetSruForm : Form
 {
+    private readonly string TitreForm;
+
+    private bool bLoaded;
     private ImmeubleEntite immeuble;
     private NatureEntite nature;
-
-    private readonly string TitreForm;
 
     public BudgetSruForm()
     {
@@ -32,6 +33,7 @@ public partial class BudgetSruForm : Form
     {
         btnEnter.Width = 0;
     }
+
     private string getExerciceSelected()
     {
         var exercice_id = "";
@@ -42,7 +44,7 @@ public partial class BudgetSruForm : Form
             Console.Write(cbExercice.SelectedItem);
             exercice_id = row["id"].ToString();
         }
-            
+
         return exercice_id;
     }
 
@@ -64,14 +66,14 @@ public partial class BudgetSruForm : Form
         dataGridView.ClearSelection();
     }
 
-    private bool bLoaded;
     private void FillComboExercice()
     {
         bLoaded = false;
 
-        var exercices = ExerciceComptableController.getController().getListExerciceFromImmeuble(immeuble != null ? immeuble.id : "");
+        var exercices = ExerciceComptableController.getController()
+            .getListExerciceFromImmeuble(immeuble != null ? immeuble.id : "");
         cbExercice.DataSource = exercices;
-            
+
         cbExercice.DisplayMember = "reference";
         cbExercice.ValueMember = "e.id";
         if (immeuble != null)
@@ -79,15 +81,17 @@ public partial class BudgetSruForm : Form
             var exercice = ExerciceComptableController.getController().getExerciceCourant(immeuble.id);
             cbExercice.SelectedValue = exercice.id;
         }
+
         bLoaded = true;
 
         FillDataGrid();
     }
+
     private void tbRefImmeuble_Validating(object sender, CancelEventArgs e)
     {
         immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
         tbRefImmeuble.BackColor = Color.White;
-        if ( immeuble != null )
+        if (immeuble != null)
         {
             tbNom.Text = immeuble.nom;
             tbAdresse.Text = immeuble.Adresse;
@@ -124,6 +128,7 @@ public partial class BudgetSruForm : Form
             tbNature_Validating(null, null);
         }
     }
+
     private void tbHelpBox_KeyPress(object sender, KeyPressEventArgs e)
     {
         if (ModifierKeys == Keys.Control)
@@ -152,6 +157,7 @@ public partial class BudgetSruForm : Form
             tbLibNature.Text = "";
         }
     }
+
     private void btnEnter_Click(object sender, EventArgs e)
     {
         ControlsWindows.FocusNextTabbedControl(this);
@@ -192,6 +198,7 @@ public partial class BudgetSruForm : Form
             btnAdd.Text = "&Ajouter";
             btnDel.Enabled = false;
         }
+
         tbNature_Validating(null, null);
     }
 
@@ -217,9 +224,13 @@ public partial class BudgetSruForm : Form
             }
         }
         else
+        {
             id = budget.id;
+        }
+
         return id;
     }
+
     private string getBudgetExerciceSelected()
     {
         var budget_id = "";
@@ -229,6 +240,7 @@ public partial class BudgetSruForm : Form
             var row = (DataRowView)cbExercice.SelectedItem;
             budget_id = row["budget_id"].ToString();
         }
+
         return budget_id;
     }
 
@@ -251,10 +263,8 @@ public partial class BudgetSruForm : Form
             budgetLine.budget_id = getBudgetExerciceSelected();
             budgetLine.statut = (int)GlobalConstantes.StatutBudget.Brouillard;
         }
-        if (string.IsNullOrEmpty(budgetLine.budget_id))
-        {
-            budgetLine.budget_id = CreateBudget();
-        }
+
+        if (string.IsNullOrEmpty(budgetLine.budget_id)) budgetLine.budget_id = CreateBudget();
 
         budgetLine.base_repart = tbBase.Text;
         budgetLine.nature_id = nature.id;
@@ -267,8 +277,10 @@ public partial class BudgetSruForm : Form
         {
             MessageBox.Show(ex.Message);
         }
+
         FillDataGrid();
     }
+
     private void btnDel_Click(object sender, EventArgs e)
     {
         if (dataGridView.SelectedRows.Count > 0)
@@ -284,11 +296,12 @@ public partial class BudgetSruForm : Form
             }
         }
     }
+
     private void btnNouvelExerciceAdd_Click(object sender, EventArgs e)
     {
         if (immeuble == null)
             return;
-        if ( (int) CommonRegistry.getRegistryValue("", "", 0) == 0 )
+        if ((int)CommonRegistry.getRegistryValue("", "", 0) == 0)
         {
             var form = new NouvelExerciceOnlyForm(immeuble.id);
             form.ShowDialog();
@@ -298,8 +311,10 @@ public partial class BudgetSruForm : Form
             var form = new NouvelExerciceForm(immeuble.id);
             form.ShowDialog();
         }
+
         FillComboExercice();
     }
+
     private void btnPrint_Click(object sender, EventArgs e)
     {
         var form = new ImprimerBudgetForm(immeuble, getExerciceSelected());
@@ -308,7 +323,7 @@ public partial class BudgetSruForm : Form
 
     private void btnExport_Click(object sender, EventArgs e)
     {
-        var colsToHide = new List<string> { "id"};
+        var colsToHide = new List<string> { "id" };
         BaseApplication.DataGridToExcel(dataGridView, colsToHide);
     }
 }

@@ -17,16 +17,22 @@ namespace EspaceSyndic.Impressions.Bilan;
 
 public partial class ImprimerBilanComptableForm : Form
 {
-    private ImmeubleEntite immeuble;
-    private List<NatureEntite> natTravaux;
-    private List<NatureEntite> natSolde;
-    private decimal chargesNormales, chargesTravaux, chargesPrivatives, depenses, soldeBilan, reglements;
-    private decimal avancePermanente, soldeExercice, totalDebit, totalCredit;
     private readonly List<string> baseIndividuelle = ["80"];
 
     private readonly List<string> excludeNature = ["090", "091", "092", "093"];
 
     private readonly string TitreForm;
+    private decimal avancePermanente, soldeExercice, totalDebit, totalCredit;
+    private DataTable BilanOperationsCoproprietairesAppelDeFond;
+    private DataTable BilanOperationsCoproprietairesPaiements;
+    private DataTable BilanOperationsCoproprietairesSoldes;
+    private decimal chargesNormales, chargesTravaux, chargesPrivatives, depenses, soldeBilan, reglements;
+
+    private DataTable CompteGestionGeneral;
+    private ImmeubleEntite immeuble;
+    private List<NatureEntite> natSolde;
+    private List<NatureEntite> natTravaux;
+
     public ImprimerBilanComptableForm()
     {
         InitializeComponent();
@@ -37,10 +43,7 @@ public partial class ImprimerBilanComptableForm : Form
     {
         var form = new FindImmeubleForm();
         form.ShowDialog();
-        if (!"".Equals(form.reference))
-        {
-            tbRefImmeuble.Text = form.reference;
-        }
+        if (!"".Equals(form.reference)) tbRefImmeuble.Text = form.reference;
     }
 
     private void tbRefImmeuble_KeyPress(object sender, KeyPressEventArgs e)
@@ -52,7 +55,6 @@ public partial class ImprimerBilanComptableForm : Form
                 if (sender.Equals(tbRefImmeuble))
                     lblImmeuble_Click(null, null);
             }
-
     }
 
     private NatureEntite getNatureCloture()
@@ -65,22 +67,23 @@ public partial class ImprimerBilanComptableForm : Form
     {
         btnRapport.Enabled = false;
         var dt = DateTime.Now;
-        dt = dt.AddDays(-dt.DayOfYear +1);
+        dt = dt.AddDays(-dt.DayOfYear + 1);
         dtDebut.Value = dt;
         reportViewer1.LocalReport.SubreportProcessing += SubreportProcessingEventHandler;
         btnEnter.Width = 0;
         var natures = NatureController.getController().GetListEntite();
-        natTravaux = natures.FindAll(x=> (x.type_charge & 2) == 2);
+        natTravaux = natures.FindAll(x => (x.type_charge & 2) == 2);
         natSolde = [getNatureCloture()];
         var excl = ParametresDB.getParam1("NATURE", "PAS PRIVATIVES");
-        if ( !string.IsNullOrEmpty(excl))
+        if (!string.IsNullOrEmpty(excl))
         {
-            excl = excl.Replace(", ", ",").Replace(" ,",",");
+            excl = excl.Replace(", ", ",").Replace(" ,", ",");
             var lExcl = excl.Split(',');
             excludeNature.Clear();
             excludeNature.AddRange(lExcl);
         }
     }
+
     private bool isRepartIndividuelle(string base_repart, string refNature)
     {
         var isIndividuelle = false;
@@ -88,17 +91,18 @@ public partial class ImprimerBilanComptableForm : Form
             isIndividuelle = baseIndividuelle.Contains(base_repart);
         return isIndividuelle;
     }
+
     private bool isNatureTravaux(string nature)
     {
         var isTravaux = false;
-        isTravaux = natTravaux.Find(x=>x.reference == nature)  != null;
+        isTravaux = natTravaux.Find(x => x.reference == nature) != null;
         return isTravaux;
     }
 
     private void Cumuls()
     {
-        chargesNormales= chargesTravaux= chargesPrivatives = depenses= soldeBilan = reglements = 0;
-        avancePermanente = LotDescriptionController.getController().getAvanceImmeuble( immeuble.id);
+        chargesNormales = chargesTravaux = chargesPrivatives = depenses = soldeBilan = reglements = 0;
+        avancePermanente = LotDescriptionController.getController().getAvanceImmeuble(immeuble.id);
         soldeExercice = totalDebit = totalCredit = 0;
         foreach (DataRow row in CompteGestionGeneral.Rows)
         {
@@ -107,11 +111,8 @@ public partial class ImprimerBilanComptableForm : Form
             var charges = (decimal)row["debit"] - (decimal)row["credit"];
             depenses += charges;
             if (!isTravaux && !isIndividuelle)
-            {
                 chargesNormales += charges;
-            }
-            else
-            if (isIndividuelle)
+            else if (isIndividuelle)
                 chargesPrivatives += charges;
             else
                 chargesTravaux += charges;
@@ -124,18 +125,22 @@ public partial class ImprimerBilanComptableForm : Form
             var charges = (decimal)row["credit"] - (decimal)row["debit"];
             soldeBilan += charges;
         }
+
         foreach (DataRow row in BilanOperationsCoproprietairesPaiements.Rows)
         {
             var charges = (decimal)row["credit"] - (decimal)row["debit"];
-            Console.WriteLine("{1} {0} {2} {3} {4} ", row["libelle"], row["reference"], (decimal)row["credit"] , (decimal)row["debit"], charges);
+            Console.WriteLine("{1} {0} {2} {3} {4} ", row["libelle"], row["reference"], (decimal)row["credit"],
+                (decimal)row["debit"], charges);
             reglements += charges;
         }
+
 // Mantis 134 mais Pa OK mantis 136 => 134 c'est relevé individuel
 //            reglements += totalCredit;
         soldeExercice = soldeBilan + reglements - depenses + avancePermanente;
-            
+
         Console.WriteLine("Solde en Bilan : {0} {1} {2} {3}", soldeBilan, reglements, depenses, avancePermanente);
     }
+
     private void btnRapport_Click(object sender, EventArgs e)
     {
         CreateReport();
@@ -145,15 +150,21 @@ public partial class ImprimerBilanComptableForm : Form
     private void CreateReport()
     {
         var parameters = new List<NpgsqlParameter> { new("@reference", tbRefImmeuble.Text) };
-        immeubleBindingSource.DataSource = ImmeubleController.getController().getDataTable(" where reference = @reference", parameters);
+        immeubleBindingSource.DataSource = ImmeubleController.getController()
+            .getDataTable(" where reference = @reference", parameters);
         if (immeubleBindingSource.DataSource != null)
         {
-            CompteGestionGeneral = SaisieFactureController.getController().getCompteGestionGeneral(immeuble.id, dtDebut.Value, dtFin.Value);
-                
+            CompteGestionGeneral = SaisieFactureController.getController()
+                .getCompteGestionGeneral(immeuble.id, dtDebut.Value, dtFin.Value);
+
             // TODO Paramétrer les natures
-            BilanOperationsCoproprietairesSoldes = OperationController.getController().getBilanOperationsCoproprietaires(immeuble.id, dtDebut.Value, dtFin.Value, " n.reference = '140'");
-            BilanOperationsCoproprietairesPaiements = OperationController.getController().getBilanOperationsCoproprietaires(immeuble.id, dtDebut.Value, dtFin.Value, " n.reference != '140' and n.reference != '145' ", true);
-            BilanOperationsCoproprietairesAppelDeFond = OperationController.getController().getBilanOperationsCoproprietaires(immeuble.id, dtDebut.Value, dtFin.Value, " n.reference = '145' ");
+            BilanOperationsCoproprietairesSoldes = OperationController.getController()
+                .getBilanOperationsCoproprietaires(immeuble.id, dtDebut.Value, dtFin.Value, " n.reference = '140'");
+            BilanOperationsCoproprietairesPaiements = OperationController.getController()
+                .getBilanOperationsCoproprietaires(immeuble.id, dtDebut.Value, dtFin.Value,
+                    " n.reference != '140' and n.reference != '145' ", true);
+            BilanOperationsCoproprietairesAppelDeFond = OperationController.getController()
+                .getBilanOperationsCoproprietaires(immeuble.id, dtDebut.Value, dtFin.Value, " n.reference = '145' ");
 
             //BaseApplication.GenerateDataSource(CompteGestionGeneral, "c:\\export_syndic\\compte_gestion.csv", Encoding.UTF8);
             //BaseApplication.GenerateDataSource(BilanOperationsCoproprietairesSoldes, "c:\\export_syndic\\soldes.csv", Encoding.UTF8);
@@ -161,12 +172,12 @@ public partial class ImprimerBilanComptableForm : Form
             //BaseApplication.GenerateDataSource(BilanOperationsCoproprietairesAppelDeFond, "c:\\export_syndic\\appels.csv", Encoding.UTF8);
 
 
-
             Cumuls();
             var hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
             var hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
 
-            var reportParams = new ReportParameter[]{
+            var reportParams = new ReportParameter[]
+            {
                 new("DateEdition", dtEdition.Value.ToShortDateString()),
                 new("DateDebut", dtDebut.Value.ToShortDateString()),
                 new("DateFin", dtFin.Value.ToShortDateString()),
@@ -186,32 +197,23 @@ public partial class ImprimerBilanComptableForm : Form
 
             reportViewer1.LocalReport.SetParameters(reportParams);
         }
-
     }
-
-    private DataTable CompteGestionGeneral;
-    private DataTable BilanOperationsCoproprietairesSoldes;
-    private DataTable BilanOperationsCoproprietairesPaiements;
-    private DataTable BilanOperationsCoproprietairesAppelDeFond;
 
     private void SubreportProcessingEventHandler(object sender, SubreportProcessingEventArgs e)
     {
         var rapport = e.Parameters[0].Values[0];
 
         e.DataSources.Clear();
-        if (rapport == "1")
-        {
-            e.DataSources.Add(new ReportDataSource("CompteGestionGeneral", CompteGestionGeneral));
-        }
-        if (rapport == "2")
-        {
-            e.DataSources.Add(new ReportDataSource("CompteGestionGeneral", CompteGestionGeneral));
-        }
+        if (rapport == "1") e.DataSources.Add(new ReportDataSource("CompteGestionGeneral", CompteGestionGeneral));
+        if (rapport == "2") e.DataSources.Add(new ReportDataSource("CompteGestionGeneral", CompteGestionGeneral));
         if (rapport == "3")
         {
-            e.DataSources.Add(new ReportDataSource("BilanOperationsCoproprietairesSolde", BilanOperationsCoproprietairesSoldes));
-            e.DataSources.Add(new ReportDataSource("BilanOperationsCoproprietairesPaiements", BilanOperationsCoproprietairesPaiements));
-            e.DataSources.Add(new ReportDataSource("BilanOperationsCoproprietairesAppel", BilanOperationsCoproprietairesAppelDeFond));
+            e.DataSources.Add(new ReportDataSource("BilanOperationsCoproprietairesSolde",
+                BilanOperationsCoproprietairesSoldes));
+            e.DataSources.Add(new ReportDataSource("BilanOperationsCoproprietairesPaiements",
+                BilanOperationsCoproprietairesPaiements));
+            e.DataSources.Add(new ReportDataSource("BilanOperationsCoproprietairesAppel",
+                BilanOperationsCoproprietairesAppelDeFond));
         }
     }
 
@@ -227,6 +229,7 @@ public partial class ImprimerBilanComptableForm : Form
                 dtDebut.Value = exercice.date_deb;
                 dtFin.Value = exercice.date_fin;
             }
+
             tbRefImmeuble.BackColor = Color.White;
             btnRapport.Enabled = true;
         }

@@ -1,4 +1,10 @@
-﻿using CommonProjectsPartners.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.IO;
+using System.Reflection;
+using System.Windows.Forms;
+using CommonProjectsPartners.Common;
 using CommonProjectsPartners.Formulaires.Config;
 using CommonProjectsPartners.Formulaires.Logon;
 using CommonProjectsPartners.Utils;
@@ -28,12 +34,6 @@ using EspaceSyndic.Impressions.RetardsPaiements;
 using SyndicData.Common;
 using SyndicData.Controller;
 using SyndicData.Entites;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Reflection;
-using System.Windows.Forms;
 
 namespace EspaceSyndic.Formulaires;
 
@@ -42,15 +42,17 @@ public partial class MainForm : Form
     private static readonly Dictionary<string, Form> dicoForms = new();
     public static readonly CommonChangedEvent syndicEvent = new();
 
+    private static MainForm instance;
+
     public MainForm()
     {
         InitializeComponent();
         instance = this;
     }
-        
+
     private void MainForm_Load(object sender, EventArgs e)
     {
-        Text = Text +" "+ Assembly.GetEntryAssembly().GetName().Version;
+        Text = Text + " " + Assembly.GetEntryAssembly().GetName().Version;
         btnCancel.Width = 0;
 
         var lbl1 = ParametresDB.getParam1("PRESENTATION", "LABEL1", "AGENCE");
@@ -80,25 +82,25 @@ public partial class MainForm : Form
                     file_1.WriteLine("{0}", old_imm);
                     file.WriteLine("{0}", old_imm);
                 }
+
                 var operation = new OperationEntite(row);
                 var regs = SaisieFactureController.getController().getSaisieFacture(operation);
                 if (regs.Rows.Count > 1)
                     file_1.WriteLine(
                         $"{operation.date_reference.ToShortDateString()} ; {operation.credit} ; {operation.debit} ; {operation.global} ; {operation.base_repart}; {operation.libelle} ; {regs.Rows[0]["ref_imm"]} = {regs.Rows.Count}");
-                else
-                if (regs.Rows.Count < 1)
-                {
+                else if (regs.Rows.Count < 1)
                     file.WriteLine(
                         $"{operation.date_reference.ToShortDateString()} ; {operation.credit} ; {operation.debit} ; {operation.global} ; {operation.base_repart}; {operation.libelle}; {operation.Nature.reference}; {operation.Coproprietaire.reference}");
-                }
             }
+
             trx.Commit();
         }
         catch (Exception ex)
         {
             MessageBox.Show(ex.Message);
             trx.Rollback();
-        } 
+        }
+
         file.Close();
         file_1.Close();
         Console.WriteLine("Ended");
@@ -122,20 +124,21 @@ public partial class MainForm : Form
                     file_1.WriteLine("{0}", old_imm);
                     file.WriteLine("{0}", old_imm);
                 }
+
                 var operation = new OperationEntite(row);
                 var regs = SaisieReglementController.getController().getSaisieReglement(operation);
                 if (regs != null)
                 {
                     var ref_copro = "null";
 
-                    if (regs.Rows.Count > 1){
+                    if (regs.Rows.Count > 1)
+                    {
                         if (regs.Rows[0]["ref_copro"] != null)
                             ref_copro = regs.Rows[0]["ref_copro"].ToString();
                         file_1.WriteLine(
                             $"{operation.date_reference} ; {operation.credit} ; {operation.debit} ; {operation.base_repart} ; {operation.libelle}; {ref_copro} = {regs.Rows.Count}");
                     }
-                    else
-                    if (regs.Rows.Count < 1)
+                    else if (regs.Rows.Count < 1)
                     {
                         if (operation.Coproprietaire != null)
                             ref_copro = operation.Coproprietaire.reference;
@@ -153,18 +156,20 @@ public partial class MainForm : Form
                     }
                 }
             }
+
             trx.Commit();
         }
         catch (Exception ex)
         {
             MessageBox.Show(ex.Message);
             trx.Rollback();
-        } 
+        }
+
         file.Close();
         file_1.Close();
         Console.WriteLine("Ended");
-
     }
+
     private void verifOperationAppel(bool bRepare)
     {
         var file = new StreamWriter("c:\\ctl_reprise\\operation_appel_orphelin.csv", false);
@@ -183,6 +188,7 @@ public partial class MainForm : Form
                     file_1.WriteLine("{0}", old_imm);
                     file.WriteLine("{0}", old_imm);
                 }
+
                 var operation = new OperationEntite(row);
                 var regs = SaisieAppelFondController.getController().getSaisieAppel(operation);
                 if (regs != null)
@@ -198,8 +204,7 @@ public partial class MainForm : Form
                         file_1.WriteLine(
                             $"{operation.date_reference} ; {operation.credit} ; {operation.debit} ; {operation.base_repart} ; {operation.libelle}; {ref_copro} = {regs.Rows.Count}");
                     }
-                    else
-                    if (regs.Rows.Count < 1)
+                    else if (regs.Rows.Count < 1)
                     {
                         file.WriteLine(
                             $"{operation.date_reference} ; {operation.credit} ; {operation.debit} ; {operation.base_repart} ; {operation.libelle}; {ref_copro}");
@@ -215,6 +220,7 @@ public partial class MainForm : Form
                     }
                 }
             }
+
             trx.Commit();
         }
         catch (Exception ex)
@@ -222,11 +228,12 @@ public partial class MainForm : Form
             MessageBox.Show(ex.Message);
             trx.Rollback();
         }
+
         file.Close();
         file_1.Close();
         Console.WriteLine("Ended");
-
     }
+
     private void doFacture(DataRow row, StreamWriter file, StreamWriter file_1, bool bRepare)
     {
         var entite = new SaisieFactureEntite(row);
@@ -239,33 +246,35 @@ public partial class MainForm : Form
             var debit = Convertir.ToDecimal(opeRow["debit"]);
             total += credit - debit;
         }
+
         if (Math.Abs(Math.Abs(Math.Abs(total) - Math.Abs(entite.montant))) > 1)
         {
-            if (entite.base_repart.StartsWith( "8") && bRepare)
+            if (entite.base_repart.StartsWith("8") && bRepare)
             {
                 var operation = OperationController.getController().getEntiteById(opes.Rows[0]["id"].ToString());
                 entite.liasse_id = "Correction";
                 entite.lot_id = operation.lot_id;
                 operation.saisie_id = entite.id;
                 if (OperationController.getController().InsertOrUpdate(operation))
-                { 
+                {
                     if (!SaisieFactureController.getController().InsertOrUpdate(entite))
                         throw new Exception("Facture");
                 }
                 else
+                {
                     throw new Exception("Operation");
+                }
             }
+
             if (opes.Rows.Count > 0)
-            {
                 file_1.WriteLine(
                     $"{opes.Rows[0]["ref_copro"]};{entite.date_reference.ToShortDateString()};{entite.montant};{total};{entite.libelle};{entite.base_repart};{entite.statut}");
-            }
-            else
-            if ( entite.nature_id != "10230EAADFA54BCBBBE9434214D0AE50")
+            else if (entite.nature_id != "10230EAADFA54BCBBBE9434214D0AE50")
                 file.WriteLine(
                     $"{row["ref_imm"]};{entite.date_reference.ToShortDateString()};{entite.montant};{total};{entite.libelle};{entite.base_repart};{entite.statut}");
         }
     }
+
     private void verifFactures(bool bRepare)
     {
         var table = SaisieFactureController.getController().GetAllElements("", Database.NullDate, Database.NullDate);
@@ -283,8 +292,10 @@ public partial class MainForm : Form
                     file_1.WriteLine("*** {0}", old_imm);
                     file.WriteLine("*** {0}", old_imm);
                 }
+
                 doFacture(row, file, file_1, bRepare);
             }
+
             trx.Commit();
         }
         catch (Exception e)
@@ -292,10 +303,12 @@ public partial class MainForm : Form
             trx.Rollback();
             MessageBox.Show(e.Message);
         }
+
         file.Close();
         file_1.Close();
         Console.WriteLine("Ended");
     }
+
     private void verifAppelDeFond()
     {
         var table = SaisieAppelFondController.getController().GetAllElements();
@@ -310,6 +323,7 @@ public partial class MainForm : Form
                 file_1.WriteLine("*** {0}", old_imm);
                 file.WriteLine("*** {0}", old_imm);
             }
+
             var entite = new SaisieAppelFondEntite(row);
 //                if (entite.liasse_id.StartsWith("Reprise"))
             {
@@ -333,10 +347,12 @@ public partial class MainForm : Form
                 }
             }
         }
+
         file.Close();
         file_1.Close();
         Console.WriteLine("Ended");
     }
+
     private void verifLotOperation()
     {
         var table = OperationController.getController().getBadOperations();
@@ -354,28 +370,32 @@ public partial class MainForm : Form
                     file_1.WriteLine("*** {0}", old_imm);
                     file.WriteLine("*** {0}", old_imm);
                 }
+
                 var operation = new OperationEntite(row);
-                var lot = LotDescriptionController.getController().getLotFromCopro(operation.immeuble_id, operation.coproprietaire_id);
+                var lot = LotDescriptionController.getController()
+                    .getLotFromCopro(operation.immeuble_id, operation.coproprietaire_id);
                 if (lot != null)
                 {
                     operation.lot_id = lot.id;
-                    operation.statut = (int) GlobalConstantes.StatutOperation.Supprime;
+                    operation.statut = (int)GlobalConstantes.StatutOperation.Supprime;
                     if (!OperationController.getController().InsertOrUpdate(operation))
                         throw new Exception("Operation Lot");
                 }
             }
-            trx.Commit();
 
+            trx.Commit();
         }
         catch (Exception ex)
         {
             trx.Rollback();
-            MessageBox.Show(ex.Message);    
-        } 
+            MessageBox.Show(ex.Message);
+        }
+
         file.Close();
         file_1.Close();
         Console.WriteLine("Ended");
     }
+
     private void verifReglement(bool bUpdate)
     {
         var table = SaisieReglementController.getController().GetAllElements("", Database.NullDate, Database.NullDate);
@@ -394,14 +414,17 @@ public partial class MainForm : Form
                     file_1.WriteLine("*** {0}", old_imm);
                     file.WriteLine("*** {0}", old_imm);
                 }
+
                 var entite = new SaisieReglementEntite(row);
 
                 var opes = OperationController.getController().getReglementOperations(entite);
                 if (opes.Rows.Count != 1)
                 {
                     if (opes.Rows.Count > 0)
+                    {
                         file_1.WriteLine(
                             $"{opes.Rows[0]["ref_copro"]};{opes.Rows.Count};{entite.date_reference};{entite.montant};{entite.libelle};{entite.emetteur};{entite.banque}");
+                    }
                     else
                     {
                         var immeuble_id = row["immeuble_id"].ToString();
@@ -411,35 +434,39 @@ public partial class MainForm : Form
                         {
                             entite.liasse_id = "Correction";
                             var operation = new OperationEntite(entite);
-                            var lot = LotDescriptionController.getController().getLotFromCopro(entite.immeuble_id, entite.coproprietaire_id);
+                            var lot = LotDescriptionController.getController()
+                                .getLotFromCopro(entite.immeuble_id, entite.coproprietaire_id);
                             operation.coproprietaire_id = entite.coproprietaire_id;
                             operation.lot_id = lot.id;
                             if (!OperationController.getController().InsertOrUpdate(operation))
                                 throw new Exception("Operation");
-                            if ( !SaisieReglementController.getController().InsertOrUpdate(entite))
+                            if (!SaisieReglementController.getController().InsertOrUpdate(entite))
                                 throw new Exception("Reglement");
                         }
                     }
                 }
             }
+
             var badOpe = OperationController.getController().getBadOperations();
             old_imm = "";
             foreach (DataRow rowOpe in badOpe.Rows)
             {
                 var operation = new OperationEntite(rowOpe);
-                var lot = LotDescriptionController.getController().getLotFromCopro(operation.immeuble_id, operation.coproprietaire_id);
+                var lot = LotDescriptionController.getController()
+                    .getLotFromCopro(operation.immeuble_id, operation.coproprietaire_id);
                 operation.lot_id = lot.id;
                 if (!OperationController.getController().InsertOrUpdate(operation))
                     throw new Exception("Operation Lot");
             }
-            trx.Commit();
 
+            trx.Commit();
         }
         catch (Exception ex)
         {
             trx.Rollback();
-            MessageBox.Show(ex.Message);    
-        } 
+            MessageBox.Show(ex.Message);
+        }
+
         file.Close();
         file_1.Close();
         Console.WriteLine("Ended");
@@ -452,29 +479,28 @@ public partial class MainForm : Form
 
         Console.WriteLine(className);
         if (dicoForms.Remove(className))
-        {
             if (form is ICommonChangedListener listener)
-            {
                 syndicEvent.Changed -= listener.ChangedReference;
-            }
-        }
+
         Activate();
     }
+
     private static void GenericBtnCancel_Click(object sender, EventArgs e)
     {
         var btn = (Button)sender;
 
-        if ( btn.Parent != null)
+        if (btn.Parent != null)
         {
             var parent = btn.Parent;
-            while ( parent != null )
+            while (parent != null)
             {
                 parent = parent.Parent;
-                if ( parent is Form form)
+                if (parent is Form form)
                     form.Close();
             }
         }
     }
+
     public TForm ShowForm<TForm>() where TForm : Form
     {
         var formType = typeof(TForm);
@@ -489,13 +515,12 @@ public partial class MainForm : Form
                 form = (TForm)obj;
                 dicoForms.Add(className, form);
                 form.FormClosed += GenericForm_FormClosed;
-                if (form is ICommonChangedListener listener)
-                {
-                    syndicEvent.Changed += listener.ChangedReference;
-                }
+                if (form is ICommonChangedListener listener) syndicEvent.Changed += listener.ChangedReference;
             }
             else
-                form = (TForm) dicoForm;
+            {
+                form = (TForm)dicoForm;
+            }
 
             if (form.WindowState == FormWindowState.Minimized)
                 form.WindowState = FormWindowState.Normal;
@@ -507,7 +532,7 @@ public partial class MainForm : Form
             form.ShowIcon = true;
             if (form.CancelButton != null)
             {
-                var btn = (Button) form.CancelButton;
+                var btn = (Button)form.CancelButton;
                 btn.Click += GenericBtnCancel_Click;
             }
 
@@ -520,6 +545,7 @@ public partial class MainForm : Form
         {
             MessageBox.Show(ex.Message);
         }
+
         return null;
     }
 
@@ -708,31 +734,29 @@ public partial class MainForm : Form
         }
     }
 
-    private static MainForm instance;
     public static MainForm getInstance()
     {
         return instance;
     }
+
     private void Connection()
     {
-
         try
         {
-            foreach (var item in dicoForms)
-            {
-                item.Value.Hide();
-            }
+            foreach (var item in dicoForms) item.Value.Hide();
             Hide();
             var logonForm = new LogonForm();
             logonForm.ShowDialog();
-            if ( BaseApplication.userConnected != null)
+            if (BaseApplication.userConnected != null)
             {
                 if (BaseApplication.userConnected.reference == "GVI")
                     controlesDBToolStripMenuItem.Visible = true;
                 Show();
             }
             else
+            {
                 Close();
+            }
         }
         catch (Exception ex)
         {
@@ -749,12 +773,10 @@ public partial class MainForm : Form
     {
         Connection();
     }
+
     private void MainForm_Activated(object sender, EventArgs e)
     {
-        foreach (var item in dicoForms)
-        {
-            item.Value.Show();
-        }
+        foreach (var item in dicoForms) item.Value.Show();
     }
 
     private void facturesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -803,11 +825,9 @@ public partial class MainForm : Form
         verifOperationAppel(false);
     }
 
-    
 
     private void transfertAppelDeFondsSurGéranceToolStripMenuItem_Click(object sender, EventArgs e)
     {
-
     }
 
     private void modèlesDeDocumentsToolStripMenuItem_Click(object sender, EventArgs e)

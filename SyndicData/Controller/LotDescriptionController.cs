@@ -13,16 +13,20 @@ namespace SyndicData.Controller;
 public class LotDescriptionController : AbstractBaseController<LotDescriptionEntite>
 {
     private static readonly LotDescriptionController controller = new();
+
     public override string getTable()
     {
         return "lot_description";
     }
+
     public static LotDescriptionController getController()
     {
         return controller;
         //            return new LotDescriptionController();
     }
-    public DataTable getDataGridListeLotDescription(ImmeubleEntite immeuble, bool bAddMontant = true, bool bAddValeur = true, bool bAddindex = false)
+
+    public DataTable getDataGridListeLotDescription(ImmeubleEntite immeuble, bool bAddMontant = true,
+        bool bAddValeur = true, bool bAddindex = false)
     {
         var cmd =
             $"select @fields from {getSchemaTable()} l  @join1 where l.immeuble_id = @immeuble_id order by numero_lot";
@@ -128,6 +132,7 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
             trx.Rollback();
             MessageBox.Show(ex.Message);
         }
+
         return getDataGridListeLotDescription(immeuble, false, false);
     }
 
@@ -160,13 +165,15 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
             cmd += $" and and c.id = '{copro.id}'";
 
         cmd += " order by 2";
-        var parameters = new List<NpgsqlParameter> 
-        { 
-            new("@immeuble_id", immeuble.id) ,
-            new("@statut_actif", (int) GlobalConstantes.StatutData.Actif)
+        var parameters = new List<NpgsqlParameter>
+        {
+            new("@immeuble_id", immeuble.id),
+            new("@statut_actif", (int)GlobalConstantes.StatutData.Actif)
         };
 
-        return getResultSQL(cmd, parameters);//new List<NpgsqlParameter> { new NpgsqlParameter("@immeuble_id", immeuble.id) });
+        return
+            getResultSQL(cmd,
+                parameters); //new List<NpgsqlParameter> { new NpgsqlParameter("@immeuble_id", immeuble.id) });
     }
 
     public DataTable getListeLot(string immeuble_id)
@@ -174,12 +181,14 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
         var cmd = $"select * from {getSchemaTable()} where immeuble_id = @immeuble_id";
         return getResultSQL(cmd, [new NpgsqlParameter("@immeuble_id", immeuble_id)]);
     }
+
     public DataTable getListeLotFiscaux(string immeuble_id)
     {
         var cmd =
             $"select * from {getSchemaTable()} l join {getSchema()}.coproprietaire c on c.id = l.coproprietaire_id where l.immeuble_id = @immeuble_id and c.declaration=true";
         return getResultSQL(cmd, [new NpgsqlParameter("@immeuble_id", immeuble_id)]);
     }
+
     public List<LotDescriptionEntite> getListeLotDescription(string immeuble_id)
     {
         var cmd = $"select * from {getSchemaTable()} where immeuble_id = @immeuble_id";
@@ -191,6 +200,7 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
 
         return liste;
     }
+
     public List<LotDescriptionEntite> getListeLotDescriptionFiscaux(string immeuble_id)
     {
         var cmd =
@@ -212,13 +222,15 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
         var cmd =
             $"select * from {getSchemaTable()} where immeuble_id = @immeuble_id and numero_lot = @numero_lot ";
 
-        var table = getResultSQL(cmd, [new NpgsqlParameter("@immeuble_id", immeuble_id), new NpgsqlParameter("@numero_lot", numlot)]);
+        var table = getResultSQL(cmd,
+            [new NpgsqlParameter("@immeuble_id", immeuble_id), new NpgsqlParameter("@numero_lot", numlot)]);
 
         if (table != null)
             if (table.Rows.Count > 0)
                 lot = new LotDescriptionEntite(table.Rows[0]);
         return lot;
     }
+
     // TODO Quid des copro avec plusieurs lots
     public LotDescriptionEntite getLotFromCopro(string coproprietaire_id)
     {
@@ -233,6 +245,7 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
                 lot = new LotDescriptionEntite(table.Rows[0]);
         return lot;
     }
+
     public LotDescriptionEntite getLotFromCopro(string immeuble_id, string coproprietaire_id)
     {
         LotDescriptionEntite lot = null;
@@ -250,6 +263,7 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
                 lot = new LotDescriptionEntite(table.Rows[0]);
         return lot;
     }
+
     public decimal getAvanceImmeuble(string immeuble_id)
     {
         decimal avance = 0;
@@ -270,8 +284,8 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
         var cmd = $"select * from {getSchemaTable()} ";
         cmd += $" join {getSchema()}.immeuble i on i.id = immeuble_id ";
         cmd += " where i.reference = @ref_imm and numero_lot = @numero_lot";
-        var parameters = new List<NpgsqlParameter> 
-        { 
+        var parameters = new List<NpgsqlParameter>
+        {
             new("@ref_imm", ref_imm),
             new("@numero_lot", numero_lot)
         };
@@ -282,5 +296,4 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
                 lot = new LotDescriptionEntite(table.Rows[0]);
         return lot;
     }
-
 }

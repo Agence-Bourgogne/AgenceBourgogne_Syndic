@@ -15,10 +15,12 @@ namespace EspaceSyndic.Impressions.Additif;
 
 public partial class ImprimerAdditifForm : Form
 {
-    private ImmeubleEntite immeuble;
+    private const string TEXT_KEY = "ADDITIF";
     private readonly HelpForm infoForm = new("aide_additif");
-    private const  string  TEXT_KEY = "ADDITIF";
     private readonly string TitreForm;
+    private ImmeubleEntite immeuble;
+
+    private ImmeubleRepartitionEntite repart;
 
     public ImprimerAdditifForm()
     {
@@ -33,8 +35,8 @@ public partial class ImprimerAdditifForm : Form
         tbHeure.Text = GetHeureAssemblee();
         cbConvoc.SelectedIndex = 0;
         btnEnter.Width = 0;
-
     }
+
     private static string GetHeureAssemblee()
     {
         return "1800";
@@ -45,10 +47,11 @@ public partial class ImprimerAdditifForm : Form
         var lieu = "";
         if (immeuble != null)
             lieu = immeuble.lieuconv;
-        if ( lieu == "")
+        if (lieu == "")
             lieu = "AGENCE Bourgogne 45 rue des Carmes 45000 ORLEANS";
         return lieu;
     }
+
     private void lblImmeuble_Click(object sender, EventArgs e)
     {
         var form = new FindImmeubleForm();
@@ -64,9 +67,9 @@ public partial class ImprimerAdditifForm : Form
     {
         lblImmeuble_Click(sender, e);
     }
+
     private void tbHelpBox_KeyPress(object sender, KeyPressEventArgs e)
     {
-
         if (ModifierKeys == Keys.Control)
             if (e.KeyChar == ' ')
             {
@@ -76,7 +79,6 @@ public partial class ImprimerAdditifForm : Form
             }
     }
 
-    private ImmeubleRepartitionEntite repart;
     private void tbRefImmeuble_Validating(object sender, CancelEventArgs e)
     {
         immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
@@ -85,9 +87,7 @@ public partial class ImprimerAdditifForm : Form
             var comment = AideImmeubleController.getController().getAideImmeuble(immeuble.id, TEXT_KEY);
             repart = ImmeubleRepartitionController.getController().getRepartitionImmeubleEntite(immeuble.id);
             if (comment != null)
-            {
                 tbText.Text = comment.libelle;
-            }
             else
                 tbText.Text = "";
 
@@ -100,8 +100,8 @@ public partial class ImprimerAdditifForm : Form
             }
             catch (Exception)
             {
-
             }
+
             tbLieu.Text = GetLieuAssemblee();
             btnRapport.Enabled = btnWord.Enabled = true;
         }
@@ -123,38 +123,43 @@ public partial class ImprimerAdditifForm : Form
         var repart_valeur = $"{repart.valeur}";
         var hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
         var hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
-        var parameters = new ReportParameter[]{
+        var parameters = new ReportParameter[]
+        {
             new("DateEntete", dtDateEntete.Value.ToShortDateString()),
             new("DateAssemblee", dtDateAssemblee.Value.ToShortDateString()),
-            new("HeureAssemblee", tbHeure.Text.Replace (":", " H ")),
+            new("HeureAssemblee", tbHeure.Text.Replace(":", " H ")),
             new("OrdreDuJour", tbText.Text),
-            new("Convocation", "Convocation "+ cbConvoc.SelectedItem),
+            new("Convocation", "Convocation " + cbConvoc.SelectedItem),
             new("repart_immeuble", repart_valeur),
             new("Header_Description", hdr_descr),
             new("Header_Agence", hdr_agence),
             new("LieuAssemblee", tbLieu.Text)
         };
         reportViewer1.LocalReport.SetParameters(parameters);
-        if(string.IsNullOrEmpty(num_lot))
-            tableCoproImmeubleBindingSource.DataSource = CoproprietaireController.getController().CoproprietaireImmeubleDescription(immeuble.id);
+        if (string.IsNullOrEmpty(num_lot))
+            tableCoproImmeubleBindingSource.DataSource = CoproprietaireController.getController()
+                .CoproprietaireImmeubleDescription(immeuble.id);
         else
-            tableCoproImmeubleBindingSource.DataSource = CoproprietaireController.getController().CoproprietaireImmeubleDescriptionByLot(immeuble.id,num_lot);
+            tableCoproImmeubleBindingSource.DataSource = CoproprietaireController.getController()
+                .CoproprietaireImmeubleDescriptionByLot(immeuble.id, num_lot);
 
         reportViewer1.RefreshReport();
     }
+
     private void btnWord_Click(object sender, EventArgs e)
     {
-
-        var parameters = new NpgsqlParameter[]{
+        var parameters = new NpgsqlParameter[]
+        {
             new("DateEntete", dtDateEntete.Value.ToShortDateString()),
             new("DateAssemblee", dtDateAssemblee.Value.ToShortDateString()),
-            new("HeureAssemblee", tbHeure.Text.Replace (":", " H ")),
+            new("HeureAssemblee", tbHeure.Text.Replace(":", " H ")),
             new("OrdreDuJour", tbText.Text),
-            new("Convocation", "Convocation "+ cbConvoc.SelectedItem),
+            new("Convocation", "Convocation " + cbConvoc.SelectedItem),
             new("LieuAssemblee", tbLieu.Text)
         };
 
-        var table = CoproprietaireController.getController().CoproprietaireImmeubleDescriptionWord(immeuble.id, parameters);
+        var table = CoproprietaireController.getController()
+            .CoproprietaireImmeubleDescriptionWord(immeuble.id, parameters);
 
         var modele = ParametresDB.getParam1("MODELES", "ADDITIF");
         BaseApplication.PublipostageLettreWord(table, modele);
@@ -165,10 +170,7 @@ public partial class ImprimerAdditifForm : Form
         var form = new FicheAideImmeubleForm(immeuble, TEXT_KEY);
         form.ShowDialog();
         var comment = AideImmeubleController.getController().getAideImmeuble(immeuble.id, TEXT_KEY);
-        if (comment != null)
-        {
-            tbText.Text = comment.libelle;
-        }
+        if (comment != null) tbText.Text = comment.libelle;
     }
 
     private void btnEnter_Click(object sender, EventArgs e)

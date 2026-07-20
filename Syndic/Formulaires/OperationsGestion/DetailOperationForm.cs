@@ -15,26 +15,29 @@ namespace EspaceSyndic.Formulaires.OperationsGestion;
 public partial class DetailOperationForm : Form
 {
     protected readonly string entite_id;
-    protected NatureEntite nature;
     protected FournisseurEntite fournisseur;
-        
+    protected NatureEntite nature;
+
     public DetailOperationForm()
     {
         InitializeComponent();
     }
+
     public DetailOperationForm(string facture_id)
     {
         InitializeComponent();
         entite_id = facture_id;
     }
+
     private void DetailOperationForm_Load(object sender, EventArgs e)
     {
         ShowDetail();
     }
+
     protected virtual void ShowDetail()
     {
-
     }
+
     private void btnEnter_Click(object sender, EventArgs e)
     {
         ControlsWindows.FocusNextTabbedControl(this);
@@ -52,6 +55,7 @@ public partial class DetailOperationForm : Form
             tbNature_Validating(null, null);
         }
     }
+
     private void lblFournisseur_Click(object sender, EventArgs e)
     {
         if (!tbFournisseur.Enabled)
@@ -85,9 +89,11 @@ public partial class DetailOperationForm : Form
     {
         DeleteEntite();
     }
+
     protected virtual void DeleteEntite()
     {
     }
+
     private void AnnulationFactureForm_Shown(object sender, EventArgs e)
     {
         //dataGridView.ClearSelection();
@@ -112,6 +118,7 @@ public partial class DetailOperationForm : Form
             tbLibNature.Text = "";
         }
     }
+
     private void tbFournisseur_Validating(object sender, CancelEventArgs e)
     {
         fournisseur = FournisseurController.getController().getEntiteFromField("reference", tbFournisseur.Text);
@@ -131,11 +138,10 @@ public partial class DetailOperationForm : Form
             tbVilleFournisseur.Text = "";
             tbCpFournisseur.Text = "";
         }
-
     }
+
     protected virtual void ValidModification()
     {
-
     }
 
     private void btnExport_Click(object sender, EventArgs e)
@@ -146,11 +152,9 @@ public partial class DetailOperationForm : Form
 
     protected virtual void dataGridView_SelectionChanged(object sender, EventArgs e)
     {
-            
     }
 
     protected virtual void dataGridView_DoubleClick(object sender, EventArgs e)
     {
-
     }
 }

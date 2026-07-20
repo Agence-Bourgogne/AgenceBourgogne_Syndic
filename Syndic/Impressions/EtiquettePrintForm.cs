@@ -12,13 +12,15 @@ namespace EspaceSyndic.Impressions;
 
 public partial class EtiquettePrintForm : Form
 {
-    private ImmeubleEntite immeuble;
     private readonly string TitreForm;
+    private ImmeubleEntite immeuble;
+
     public EtiquettePrintForm()
     {
         InitializeComponent();
         TitreForm = Text;
     }
+
     private void lblImmeuble_Click(object sender, EventArgs e)
     {
         var form = new FindImmeubleForm();
@@ -53,7 +55,8 @@ public partial class EtiquettePrintForm : Form
     private void btnRapport_Click(object sender, EventArgs e)
     {
         var modele = ParametresDB.getParam1("MODELES", "ETIQUETTES");
-        BaseApplication.PublipostageEtiquetteWord(CoproprietaireController.getController().CoproprietaireImmeubleDescriptionEtiquettes(immeuble.id), modele);
+        BaseApplication.PublipostageEtiquetteWord(
+            CoproprietaireController.getController().CoproprietaireImmeubleDescriptionEtiquettes(immeuble.id), modele);
     }
 
 

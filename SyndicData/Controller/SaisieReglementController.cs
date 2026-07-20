@@ -8,23 +8,24 @@ using Npgsql;
 using SyndicData.Common;
 using SyndicData.Entites;
 
-
 namespace SyndicData.Controller;
 
 public class SaisieReglementController : AbstractBaseController<SaisieReglementEntite>
 {
     private static readonly SaisieReglementController controller = new();
+
     public override string getTable()
     {
         return "saisie_reglement";
     }
+
     public static SaisieReglementController getController()
     {
         //return new SaisieReglementController();
         return controller;
     }
 
-    public DataTable GetAllElements(string immeuble_id , DateTime dtDeb, DateTime dtFin)
+    public DataTable GetAllElements(string immeuble_id, DateTime dtDeb, DateTime dtFin)
     {
         var cmd = $"select r.*, c.reference as ref_copro, i.reference as ref_imm from {getSchemaTable()} r ";
         cmd += " join agence.coproprietaire c on c.id = r.coproprietaire_id ";
@@ -38,18 +39,19 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
             cmd += " and date_reference >= @dtDeb";
         if (dtFin != Database.NullDate)
             cmd += " and date_reference <= @dtFin";
-            
+
         cmd += " order by i.reference";
-        var parameters = new List<NpgsqlParameter> 
+        var parameters = new List<NpgsqlParameter>
         {
             new("@immeuble_id", immeuble_id),
-            new("@statut", (int) GlobalConstantes.StatutOperation.Supprime),
+            new("@statut", (int)GlobalConstantes.StatutOperation.Supprime),
             new("@dtDeb", dtDeb),
             new("@dtFin", dtFin)
         };
 
         return getResultSQL(cmd, parameters);
     }
+
     public DataTable getGridRowSaisieReglement(string liasse_id)
     {
         var schema = getSchema();
@@ -88,15 +90,14 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
             MessageBox.Show(e.Message);
             return null;
         }
+
         return table;
     }
+
     public DataTable GetListeReglementValideFromNature(string liasse_id, string ref_nature)
     {
         var cmd = $" select * from {getSchemaTable()} r";
-        if (ref_nature != "" && ref_nature != "0")
-        {
-            cmd += $" join {getSchema()}.nature n on n.id = nature_id ";
-        }
+        if (ref_nature != "" && ref_nature != "0") cmd += $" join {getSchema()}.nature n on n.id = nature_id ";
         cmd += " where liasse_id = @liasse_id and r.statut = @statut ";
         if (ref_nature != "" && ref_nature != "0")
             cmd += " and n.reference = @nature_ref ";
@@ -117,14 +118,17 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
             MessageBox.Show(e.Message);
             return null;
         }
+
         return table;
     }
+
     public DataTable GetListeReglementValideFromCompteBanque(string liasse_id, string nature_id, string comptebanque)
     {
         var cmd = "SELECT date_reference, montant, emetteur, banque, reference ";
         cmd += $" FROM {getSchemaTable()} f";
         cmd += $" join {getSchema()}.coproprietaire c ON f.coproprietaire_id = c.id";
-        cmd += " where liasse_id = @liasse_id and nature_id = @nature_id and comptebanque = @comptebanque and f.statut = @statut";
+        cmd +=
+            " where liasse_id = @liasse_id and nature_id = @nature_id and comptebanque = @comptebanque and f.statut = @statut";
 
         adapter.SelectCommand = new NpgsqlCommand(cmd, Database.GetInstance());
         adapter.SelectCommand.Parameters.AddWithValue("@liasse_id", liasse_id);
@@ -141,15 +145,19 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
             MessageBox.Show(e.Message);
             return null;
         }
+
         return table;
     }
-    public DataTable getListeOperations(string immeuble, string lot_reference, DateTime dtDeb, DateTime dtFin, string ref_nature = "", string libelle = "", string montant="", bool bValidOnly = true)
+
+    public DataTable getListeOperations(string immeuble, string lot_reference, DateTime dtDeb, DateTime dtFin,
+        string ref_nature = "", string libelle = "", string montant = "", bool bValidOnly = true)
     {
         var schema = getSchema();
         var cmd = "Select ";
         var numlot = 0;
 
-        cmd += " sf.id, i.reference as ref_immeuble, date_reference, n.reference as ref_nature, libelle, montant, c.reference as ref_copro, concat(c.prenom, ' ',c .nom) as coproprietaire, banque, sf.statut ";
+        cmd +=
+            " sf.id, i.reference as ref_immeuble, date_reference, n.reference as ref_nature, libelle, montant, c.reference as ref_copro, concat(c.prenom, ' ',c .nom) as coproprietaire, banque, sf.statut ";
         cmd += $" from {getSchemaTable()} sf";
         cmd += $" join {schema}.immeuble i on i.id = immeuble_id ";
         cmd += $" left join {schema}.nature n on n.id = nature_id ";
@@ -158,7 +166,7 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
 
 
         cmd += " where 1=1";
-        if ( immeuble != "")
+        if (immeuble != "")
             cmd += " and i.reference = @immeuble";
         if (ref_nature != "")
             cmd += " and n.reference = @ref_nature";
@@ -167,6 +175,7 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
             numlot = Convert.ToInt32(lot_reference);
             cmd += " and l.numero_lot = @numlot";
         }
+
         if (dtDeb != DateTime.Parse("01/01/1970"))
             if (dtFin != DateTime.Parse("01/01/1970"))
                 cmd += " and date_reference >= @dtDeb";
@@ -182,21 +191,21 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
         if (bValidOnly)
             cmd += " and sf.statut = @statut";
 
-        var parameters = new List<NpgsqlParameter> 
+        var parameters = new List<NpgsqlParameter>
         {
             new("@immeuble", immeuble),
             new("@numlot", numlot),
             new("@ref_nature", ref_nature),
             new("@dtDeb", dtDeb),
             new("@dtFin", dtFin),
-            new("@libelle", "%"+libelle+"%"),
+            new("@libelle", "%" + libelle + "%"),
             new("@montant", Convertir.ToDecimal(montant)),
-            new("@statut", (int) GlobalConstantes.StatutOperation.Valide)
+            new("@statut", (int)GlobalConstantes.StatutOperation.Valide)
         };
 
         return getResultSQL(cmd, parameters);
-
     }
+
     public decimal getSumReglements(string immeuble_id, DateTime dtDeb, DateTime dtFin)
     {
         decimal sum = 0;
@@ -204,12 +213,12 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
         cmd += " where immeuble_id = @immeuble_id and date_reference >= @dtDeb and date_reference <= @dtFin ";
         cmd += " and statut != @statut";
 
-        var parameters = new List<NpgsqlParameter> 
+        var parameters = new List<NpgsqlParameter>
         {
             new("@immeuble_id", immeuble_id),
             new("@dtDeb", dtDeb),
             new("@dtFin", dtFin),
-            new("@statut", (int) GlobalConstantes.StatutOperation.Supprime)
+            new("@statut", (int)GlobalConstantes.StatutOperation.Supprime)
         };
 
         var table = getResultSQL(cmd, parameters);
@@ -224,7 +233,8 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
         return sum;
     }
 
-    public decimal getTotalOperationWithoutSolde(string immeuble_id, DateTime dtDeb, DateTime dtFin, string copro_id = "")
+    public decimal getTotalOperationWithoutSolde(string immeuble_id, DateTime dtDeb, DateTime dtFin,
+        string copro_id = "")
     {
         decimal sum = 0;
         var nature = "140";
@@ -235,19 +245,19 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
         cmd += " and type_mouvement=@type_mouvement and type_operation = @type_operation";
         cmd += " and n.reference <> @nature ";
         cmd += " and f.statut != @statut";
-        if ( copro_id != "")
+        if (copro_id != "")
             cmd += " and coproprietaire_id=@copro_id";
 
-        var parameters = new List<NpgsqlParameter> 
+        var parameters = new List<NpgsqlParameter>
         {
             new("@immeuble_id", immeuble_id),
             new("@nature", nature),
             new("@dtDeb", dtDeb),
             new("@dtFin", dtFin),
             new("@copro_id", copro_id),
-            new("@statut", (int) GlobalConstantes.StatutOperation.Supprime),
-            new("@type_mouvement",  nameof(GlobalConstantes.TypeMouvement.Recette)),
-            new("@type_operation",  nameof(GlobalConstantes.TypeOperation.Tresorerie))
+            new("@statut", (int)GlobalConstantes.StatutOperation.Supprime),
+            new("@type_mouvement", nameof(GlobalConstantes.TypeMouvement.Recette)),
+            new("@type_operation", nameof(GlobalConstantes.TypeOperation.Tresorerie))
         };
 
         var table = getResultSQL(cmd, parameters);
@@ -261,6 +271,7 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
 
         return sum;
     }
+
     public bool AnnuleElement(SaisieReglementEntite entite, DataTable table)
     {
         var rc = false;
@@ -273,7 +284,6 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
             var ctl = OperationController.getController();
             ctl.setTimestampServer(TimestampServer);
             if (table != null)
-            {
                 foreach (DataRow row in table.Rows)
                 {
                     var operation = new OperationEntite(row)
@@ -283,7 +293,7 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
                     if (!ctl.doInsertOrUpdate(operation))
                         throw new Exception("Annulation Operation");
                 }
-            }
+
             entite.statut = (int)GlobalConstantes.StatutOperation.Supprime;
             if (!doInsertOrUpdate(entite))
                 throw new Exception("Annulation reglement");
@@ -295,23 +305,20 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
             trx.Rollback();
             MessageBox.Show(ex.Message);
         }
+
         return rc;
     }
 
     public void AnnuleElement(string element_id)
     {
         var entite = getController().getEntiteById(element_id);
-        if ( entite != null )
-        {
-            AnnuleElement(entite);
-            return;
-        }
+        if (entite != null) AnnuleElement(entite);
     }
 
     public bool AnnuleElement(SaisieReglementEntite entite)
     {
         var cmd = $"Select * from {getSchema()}.operation where saisie_id = @saisie_id";
-        var parameters = new List<NpgsqlParameter> 
+        var parameters = new List<NpgsqlParameter>
         {
             new("@saisie_id", entite.id)
         };
@@ -319,18 +326,20 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
         var table = getResultSQL(cmd, parameters);
         return AnnuleElement(entite, table);
     }
+
     public DataTable getSaisieReglement(OperationEntite operation)
     {
         var cmd = $"select o.*, c.reference as ref_copro from {getSchemaTable()} o";
         cmd += " join agence.coproprietaire c on c.id = o.coproprietaire_id ";
-        cmd += " where immeuble_id = @immeuble_id and coproprietaire_id =@coproprietaire_id and date_reference = @date_reference and nature_id = @nature_id and trim(libelle) = trim(@libelle)";
+        cmd +=
+            " where immeuble_id = @immeuble_id and coproprietaire_id =@coproprietaire_id and date_reference = @date_reference and nature_id = @nature_id and trim(libelle) = trim(@libelle)";
         cmd += " and montant = @montant";
         var montant = operation.credit;
 
         if (operation.debit != 0)
             montant = operation.debit;
 
-        var parameters = new List<NpgsqlParameter> 
+        var parameters = new List<NpgsqlParameter>
         {
             new("@immeuble_id", operation.immeuble_id),
             new("@coproprietaire_id", operation.coproprietaire_id),
@@ -338,7 +347,6 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
             new("@date_reference", operation.date_reference),
             new("@libelle", operation.libelle),
             new("@montant", montant)
-
         };
         return getResultSQL(cmd, parameters);
     }

@@ -1,6 +1,4 @@
-﻿
-
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using EspaceSyndic.Formulaires.Common;
 using SyndicData.Controller;
 
@@ -13,13 +11,11 @@ internal class FindFournisseurForm : FindStdForm
 
     public FindFournisseurForm()
     {
-
     }
 
     public FindFournisseurForm(TextBox tbResult)
         : base(tbResult)
     {
-
     }
 
 

@@ -11,6 +11,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs;
 public partial class UtilisateursListeForm : Form
 {
     protected readonly string regKey = "";
+
     public UtilisateursListeForm()
     {
         InitializeComponent();
@@ -20,6 +21,7 @@ public partial class UtilisateursListeForm : Form
     {
         FillDataGrid();
     }
+
     protected void HideAndResizeColumns(DataGridViewColumnCollection cols)
     {
         cols["id"].Visible = false;
@@ -44,15 +46,18 @@ public partial class UtilisateursListeForm : Form
             OrderColumns();
         }
     }
-    protected  DataTable getFormListe()
+
+    protected DataTable getFormListe()
     {
         return UsersController.getController().getListeUsers();
     }
+
     protected void ShowFicheForm(string entite_id)
     {
         var form = new UtilisateurFicheForm(entite_id);
         ShowForm(form);
     }
+
     protected void OrderColumns()
     {
         if (regKey == "")
@@ -64,6 +69,7 @@ public partial class UtilisateursListeForm : Form
                 col.DisplayIndex = index;
         }
     }
+
     protected void btnNew_Click(object sender, EventArgs e)
     {
         ShowFicheForm(null);
@@ -91,6 +97,7 @@ public partial class UtilisateursListeForm : Form
                 ShowFicheForm(row["id"].ToString());
         }
     }
+
     private void dataGridView_DoubleClick(object sender, EventArgs e)
     {
         ShowFicheFromSelectedRow();
@@ -100,6 +107,7 @@ public partial class UtilisateursListeForm : Form
     {
         return ["id", "audit_created", "audit_created_by", "audit_updated", "audit_updated_by"];
     }
+
     private void btnExport_Click(object sender, EventArgs e)
     {
         BaseApplication.DataGridToExcel(dataGridView, getExportColsToHide());

@@ -7,13 +7,13 @@ public class BudgetEntite : AbstractBaseEntite
 {
     public string exercice_id;
     public string reference;
-    public int version = 1;
     public int statut;
+    public int version = 1;
+
     public BudgetEntite()
     {
         id = "";
         setValues(null);
-
     }
 
     public override void setValues(DataRow row)
@@ -28,5 +28,4 @@ public class BudgetEntite : AbstractBaseEntite
         updatables.Add(new UpdateField("statut", true, members));
         base.setValues(row);
     }
-
 }

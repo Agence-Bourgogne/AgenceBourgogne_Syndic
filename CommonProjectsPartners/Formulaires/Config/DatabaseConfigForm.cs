@@ -6,16 +6,19 @@ namespace CommonProjectsPartners.Formulaires.Config;
 
 public partial class DatabaseConfigForm : Form
 {
-    private readonly string application;                
+    private readonly string application;
+
     public DatabaseConfigForm()
     {
         InitializeComponent();
     }
+
     public DatabaseConfigForm(string application)
     {
         InitializeComponent();
         this.application = application;
     }
+
     private static void ShowParam(TextBox tb, string param)
     {
         var txt = param.Split('=');
@@ -30,7 +33,7 @@ public partial class DatabaseConfigForm : Form
     private void ConfigForm_Load(object sender, EventArgs e)
     {
         var str = getConnexionString();
-        if ( !string.IsNullOrEmpty(str) )
+        if (!string.IsNullOrEmpty(str))
         {
             var parametres = str.Split(';');
 
@@ -52,8 +55,11 @@ public partial class DatabaseConfigForm : Form
             MessageBox.Show(@"Connexion Ok");
         }
         else
+        {
             MessageBox.Show(@"Connexion KO");
+        }
     }
+
     private void btnOk_Click(object sender, EventArgs e)
     {
         var strCnx =

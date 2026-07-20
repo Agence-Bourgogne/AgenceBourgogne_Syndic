@@ -5,23 +5,27 @@ namespace SyndicData.Entites;
 
 public class LotRepartitionEntite : AbstractBaseEntite
 {
+    public int colonne;
     public string immeuble_id;
+    public int ligne;
     public string lot_id;
     public string reference;
-    public int valeur;
-    public int ligne;
-    public int colonne;
     public int type_ventilation;
+
+    public int valeur;
+
     //public int statut;
     public LotRepartitionEntite()
     {
         id = "";
         setValues(null);
     }
+
     public LotRepartitionEntite(DataRow data)
     {
         setValues(data);
     }
+
     public override void setValues(DataRow row)
     {
         var members = GetType().GetFields();
@@ -36,7 +40,7 @@ public class LotRepartitionEntite : AbstractBaseEntite
         updatables.Add(new UpdateField("colonne", true, members));
         updatables.Add(new UpdateField("type_ventilation", true, members));
         //updatables.Add(new UpdateField("statut", true, members));
-            
+
         base.setValues(row);
     }
 }

@@ -13,7 +13,6 @@ public static class MailUtils
 
     public static void SendEMail(string mailTo, string pass)
     {
-            
         try
         {
             urlWeb = ParametresDB.getParam1("SERVEUR", "ADDRESSE CONNECTION");
@@ -48,7 +47,7 @@ public static class MailUtils
         }
         catch (Exception ex)
         {
-            Console.WriteLine("erreur Envoi email " +ex.Message);
+            Console.WriteLine("erreur Envoi email " + ex.Message);
         }
     }
 
@@ -63,10 +62,7 @@ public static class MailUtils
         var FileName = srvPath + @"Utils\mailbody.txt";
         var lines = File.ReadAllLines(FileName);
         var body = "";
-        foreach (var line in lines)
-        {
-            body += ReplaceVariable(line, pass) + "\r\n";
-        }
+        foreach (var line in lines) body += ReplaceVariable(line, pass) + "\r\n";
         return body;
     }
 }

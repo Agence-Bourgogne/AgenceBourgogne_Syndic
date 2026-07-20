@@ -5,22 +5,27 @@ namespace SyndicData.Entites;
 
 public class BudgetLigneEntite : AbstractBaseEntite
 {
+    public string base_repart;
     public string budget_id;
+
+    public decimal montant;
+
 //        public string reference;
     //public string libelle;
     public string nature_id;
-    public string base_repart;
-    public decimal montant;
     public int statut;
+
     public BudgetLigneEntite()
     {
         id = "";
         setValues(null);
     }
+
     public BudgetLigneEntite(DataRow row)
     {
         setValues(row);
     }
+
     public override void setValues(DataRow row)
     {
         var members = GetType().GetFields();
@@ -36,6 +41,5 @@ public class BudgetLigneEntite : AbstractBaseEntite
         updatables.Add(new UpdateField("statut", true, members));
 
         base.setValues(row);
-
     }
 }

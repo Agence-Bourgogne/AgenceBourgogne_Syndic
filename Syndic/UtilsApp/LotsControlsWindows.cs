@@ -10,10 +10,7 @@ public static class LotsControlsWindows
     {
         var lotAuto = new AutoCompleteStringCollection();
         var table = immeuble.getListeLots();
-        foreach (DataRow row in table.Rows)
-        {
-            lotAuto.Add(row["numero_lot"].ToString());
-        }
+        foreach (DataRow row in table.Rows) lotAuto.Add(row["numero_lot"].ToString());
         return lotAuto;
     }
 }

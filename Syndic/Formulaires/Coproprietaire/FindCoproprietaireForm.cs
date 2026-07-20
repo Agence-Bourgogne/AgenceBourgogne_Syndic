@@ -6,15 +6,13 @@ using EspaceSyndic.Formulaires.Common;
 using SyndicData.Common;
 using SyndicData.Controller;
 
-
-
 namespace EspaceSyndic.Formulaires.Coproprietaire;
 
 public class FindCoproprietaireForm : FindStdForm
 {
-    private TextBox tbGerant;
-    private Label label3;
     public readonly CoproprietaireController controller = new();
+    private Label label3;
+    private TextBox tbGerant;
 
     public FindCoproprietaireForm()
     {
@@ -37,9 +35,7 @@ public class FindCoproprietaireForm : FindStdForm
         {
             var row = dataGridView.Rows[e.RowIndex];
             if (Convertir.ToInt(row.Cells["statut"].Value) != (int)GlobalConstantes.StatutData.Actif)
-            {
                 row.DefaultCellStyle.BackColor = Color.OrangeRed;
-            }
         }
     }
 
@@ -62,6 +58,7 @@ public class FindCoproprietaireForm : FindStdForm
         valid.TabIndex = 7;
         cancel.TabIndex = 8;
     }
+
     private void InitializeComponent()
     {
         tbGerant = new TextBox();
@@ -125,12 +122,10 @@ public class FindCoproprietaireForm : FindStdForm
         panel1.ResumeLayout(false);
         ResumeLayout(false);
         PerformLayout();
-
     }
 
     private void tbGerant_TextChanged(object sender, EventArgs e)
     {
         FillListFromTbFilter();
     }
-
 }

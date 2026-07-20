@@ -11,18 +11,22 @@ public class UsersController : AbstractBaseController<UserEntite>
     {
         return "users";
     }
+
     public static UsersController getController()
     {
         return controller;
     }
+
     public override string getSchema()
     {
         return "";
     }
+
     public override string getSchemaTable()
     {
         return getTable();
     }
+
     public DataTable getListeUsers()
     {
         var cmd = $" select u.*, r.nom as role from {getSchemaTable()} u ";

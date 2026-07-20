@@ -6,19 +6,18 @@ using SyndicData.Common;
 using SyndicData.Controller;
 using SyndicData.Entites;
 
-
-
 namespace EspaceSyndic.Formulaires.Fournisseur;
 
 public partial class FicheFournisseurForm : Form
 {
-    public FournisseurEntite entite;
     public readonly FournisseurController controller = new();
+    public FournisseurEntite entite;
     private bool modified;
+
     public FicheFournisseurForm(bool bShowNav = true)
     {
         InitializeComponent();
-        btnFirst.Visible = btnLast.Visible = btnNext.Visible = btnPrev.Visible = bShowNav; 
+        btnFirst.Visible = btnLast.Visible = btnNext.Visible = btnPrev.Visible = bShowNav;
     }
 
     private void FicheFournisseurForm_Load(object sender, EventArgs e)
@@ -39,17 +38,18 @@ public partial class FicheFournisseurForm : Form
         tbTel.Text = entite.telephone;
         tbAdresse.Text = entite.adresse;
         tbCodePostal.Text = entite.codepostal;
-        tbVille.Text= entite.ville;
+        tbVille.Text = entite.ville;
         cbReglement.SelectedValue = entite.reglement;
         tbComment.Text = entite.commentaire;
         tbSiret.Text = entite.siret;
         tbSecu.Text = entite.numsecu;
         tbApe.Text = entite.codeape;
-        tbUrsaff.Text= entite.numurs;
+        tbUrsaff.Text = entite.numurs;
         ckDesactiv.Checked = entite.statut == (int)AbstractBaseEntite.StatutEntite.Supprime;
 
         modified = false;
     }
+
     private void getNewEntite(string where, string message)
     {
         if (modified)
@@ -67,14 +67,17 @@ public partial class FicheFournisseurForm : Form
             MessageBox.Show(message);
         }
     }
+
     private void btnQuit_Click(object sender, EventArgs e)
     {
         Close();
     }
+
     private void btnSave_Click(object sender, EventArgs e)
     {
         saveForm();
     }
+
     private bool saveForm(bool bShowMessage = false, bool bShowResult = true)
     {
         if (bShowMessage)
@@ -83,10 +86,7 @@ public partial class FicheFournisseurForm : Form
                 "", MessageBoxButtons.YesNoCancel);
             if (result == DialogResult.Cancel)
                 return false;
-            if (result == DialogResult.No)
-            {
-                return true;
-            }
+            if (result == DialogResult.No) return true;
         }
 
 
@@ -96,6 +96,7 @@ public partial class FicheFournisseurForm : Form
             MessageBox.Show(@"Référence invalide");
             return false;
         }
+
         entite.nom = tbNom.Text;
         entite.interlocuteur = tbInterlocuteur.Text;
         entite.telephone = tbTel.Text;
@@ -109,16 +110,20 @@ public partial class FicheFournisseurForm : Form
         entite.numsecu = tbSecu.Text;
         entite.codeape = tbApe.Text;
         entite.numurs = tbUrsaff.Text;
-        entite.statut = ckDesactiv.Checked ? (int)AbstractBaseEntite.StatutEntite.Supprime : (int)AbstractBaseEntite.StatutEntite.Actif;
+        entite.statut = ckDesactiv.Checked
+            ? (int)AbstractBaseEntite.StatutEntite.Supprime
+            : (int)AbstractBaseEntite.StatutEntite.Actif;
         if (controller.InsertOrUpdate(entite))
         {
-            if ( bShowResult )
+            if (bShowResult)
                 MessageBox.Show(@"Modifications entregistrées");
             modified = false;
             return true;
         }
+
         return false;
     }
+
     protected void btnFirst_Click(object sender, EventArgs e)
     {
         getNewEntite("order by reference::integer", "Début de liste atteint");
@@ -126,12 +131,16 @@ public partial class FicheFournisseurForm : Form
 
     protected void btnPrev_Click(object sender, EventArgs e)
     {
-        getNewEntite($"where reference::integer < {entite.reference} order by reference::integer desc", "Début de liste atteint");
+        getNewEntite($"where reference::integer < {entite.reference} order by reference::integer desc",
+            "Début de liste atteint");
     }
+
     protected void btnNext_Click(object sender, EventArgs e)
     {
-        getNewEntite($"where reference::integer > {entite.reference} order by reference::integer ", "Fin de liste atteinte");
+        getNewEntite($"where reference::integer > {entite.reference} order by reference::integer ",
+            "Fin de liste atteinte");
     }
+
     protected void btnLast_Click(object sender, EventArgs e)
     {
         getNewEntite("order by reference::integer desc", "Fin de liste atteinte");

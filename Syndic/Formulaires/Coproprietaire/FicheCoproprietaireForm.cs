@@ -6,16 +6,15 @@ using SyndicData.Common;
 using SyndicData.Controller;
 using SyndicData.Entites;
 
-
-
 namespace EspaceSyndic.Formulaires.Coproprietaire;
 
 public partial class FicheCoproprietaireForm : Form
 {
-    public CoproprietaireEntite entite = new();
     public readonly CoproprietaireController controller = new();
+    public CoproprietaireEntite entite = new();
 
     private bool modified;
+
     //------
     public FicheCoproprietaireForm()
     {
@@ -23,12 +22,14 @@ public partial class FicheCoproprietaireForm : Form
         ParametresDB.FillComboFromParams(cbCivilite, "CIVILITE");
         ParametresDB.FillComboFromParams(cbCodeEnvoiCompte, "CODEENVOICOMPTE");
     }
+
     //------
     private void FicheCoproprietaireForm_Load(object sender, EventArgs e)
     {
         setFicheValues(null);
         btnEnter.Width = 0;
     }
+
     //------
     private void setFicheValues(CoproprietaireEntite newEntite)
     {
@@ -47,8 +48,8 @@ public partial class FicheCoproprietaireForm : Form
         tbNote.Text = entite.note;
         tbEmail.Text = entite.email;
 
-        ckVente.Checked = entite.huissier ;
-        ckDeclaration.Checked = entite.declaration ;
+        ckVente.Checked = entite.huissier;
+        ckDeclaration.Checked = entite.declaration;
 //            ckDrapeau.Checked = (entite.drapeau == "*");
         ckCommerce.Checked = entite.commerce;
 // Todo xxxcompte deviendrais xxxgerant
@@ -61,11 +62,13 @@ public partial class FicheCoproprietaireForm : Form
         ckDesactiv.Checked = entite.statut == (int)AbstractBaseEntite.StatutEntite.Supprime;
         modified = false;
     }
+
     //------
     private void btnSave_Click(object sender, EventArgs e)
     {
         saveForm();
     }
+
     //------
     private bool saveForm(bool bShowMessage = false, bool bShowResult = true)
     {
@@ -75,13 +78,10 @@ public partial class FicheCoproprietaireForm : Form
                 "", MessageBoxButtons.YesNoCancel);
             if (result == DialogResult.Cancel)
                 return false;
-            if (result == DialogResult.No)
-            {
-                return true;
-            }
+            if (result == DialogResult.No) return true;
         }
 
-        entite.reference= tbRef.Text;
+        entite.reference = tbRef.Text;
         entite.nom = tbNom.Text;
         entite.prenom = tbPrenom.Text;
         entite.adresse = tbAdresse.Text;
@@ -94,7 +94,7 @@ public partial class FicheCoproprietaireForm : Form
         entite.note = tbNote.Text;
         entite.email = tbEmail.Text;
 
-        entite.huissier = ckVente.Checked ;
+        entite.huissier = ckVente.Checked;
         entite.declaration = ckDeclaration.Checked;
         entite.commerce = ckCommerce.Checked;
 
@@ -105,22 +105,27 @@ public partial class FicheCoproprietaireForm : Form
         entite.telcomp = tbTelCompte.Text;
         entite.codenvcomp = Convert.ToInt32(cbCodeEnvoiCompte.SelectedValue);
 
-        entite.statut = ckDesactiv.Checked ? (int)AbstractBaseEntite.StatutEntite.Supprime : (int)AbstractBaseEntite.StatutEntite.Actif;
+        entite.statut = ckDesactiv.Checked
+            ? (int)AbstractBaseEntite.StatutEntite.Supprime
+            : (int)AbstractBaseEntite.StatutEntite.Actif;
 
         if (controller.InsertOrUpdate(entite))
         {
-            if ( bShowResult )
+            if (bShowResult)
                 MessageBox.Show(@"Modifications entregistrées");
             modified = false;
             return true;
         }
+
         return false;
     }
+
     //------
     private void btnQuit_Click(object sender, EventArgs e)
     {
         Close();
     }
+
     //------
     private void getNewEntite(string where, string message)
     {
@@ -132,49 +137,56 @@ public partial class FicheCoproprietaireForm : Form
             var entite = controller.getEntite(where);
             if (entite != null)
                 setFicheValues(entite);
-
         }
         catch (Exception)
         {
             MessageBox.Show(message);
         }
     }
+
     //------
     protected void btnFirst_Click(object sender, EventArgs e)
     {
         getNewEntite("order by reference", "Début de liste atteint");
     }
+
     //------
     protected void btnPrev_Click(object sender, EventArgs e)
     {
         getNewEntite($"where reference < '{entite.reference}' order by reference desc", "Début de liste atteint");
     }
+
     //------
     protected void btnNext_Click(object sender, EventArgs e)
     {
         getNewEntite($"where reference > '{entite.reference}' order by reference ", "Fin de liste atteinte");
     }
+
     //------
     protected void btnLast_Click(object sender, EventArgs e)
     {
         getNewEntite("order by reference desc", "Fin de liste atteinte");
     }
+
     //------
     private void FicheCoproprietaireForm_FormClosing(object sender, FormClosingEventArgs e)
     {
         if (modified)
             saveForm(true);
     }
+
     //------
     private void tbTextChanged(object sender, EventArgs e)
     {
         modified = true;
     }
+
     //------
     private void btnEnter_Click(object sender, EventArgs e)
     {
         ControlsWindows.FocusNextTabbedControl(this);
     }
+
     //------
     private void lblRef_Click(object sender, EventArgs e)
     {
@@ -192,6 +204,4 @@ public partial class FicheCoproprietaireForm : Form
     //    webUserForm.ShowDialog();
 
     //}
-
-      
 }

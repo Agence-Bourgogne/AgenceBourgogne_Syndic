@@ -2,15 +2,12 @@
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Globalization;
-using System.Linq;
 using System.Windows.Forms;
 using CommonProjectsPartners.Utils;
 using EspaceSyndic.Formulaires.Config;
 using EspaceSyndic.Formulaires.Coproprietaire;
 using EspaceSyndic.Formulaires.Exercice;
 using EspaceSyndic.Formulaires.Immeubles;
-using EspaceSyndic.Impressions.RelevesIndividuels;
 using Microsoft.Reporting.WinForms;
 using SyndicData.Common;
 using SyndicData.Controller;
@@ -20,10 +17,10 @@ namespace EspaceSyndic.Impressions.AppelDeFond;
 
 public partial class ImprimerAppelDeFondForm : Form
 {
-    public ImmeubleEntite immeuble;
-    private readonly AutoCompleteStringCollection lotsString = new();
     private readonly BindingSource immeubleSource = new();
+    private readonly AutoCompleteStringCollection lotsString = new();
     private readonly string TitreForm;
+    public ImmeubleEntite immeuble;
     public string saisie_id = "";
 
     public ImprimerAppelDeFondForm()
@@ -34,11 +31,12 @@ public partial class ImprimerAppelDeFondForm : Form
 
     private void ValidAppelDeFondForm_Load(object sender, EventArgs e)
     {
-        if (immeuble != null) 
+        if (immeuble != null)
         {
             tbRefImmeuble.Text = immeuble.reference;
             tbRefImmeuble.Enabled = false;
         }
+
         tbRefImmeuble_Validating(null, null);
         tbText.Text = GetTextAppelFond();
         reportViewer1.LocalReport.SubreportProcessing += SubreportProcessingEventHandler;
@@ -49,7 +47,7 @@ public partial class ImprimerAppelDeFondForm : Form
     private string GetTextAppelFond()
     {
         var txt = "";
-        if ( ckFerie.Checked)
+        if (ckFerie.Checked)
             txt = ParametresDB.getParam1("APPEL DE FOND", "FETES");
         else
             txt = ParametresDB.getParam1("APPEL DE FOND", "ENTETE");
@@ -58,7 +56,7 @@ public partial class ImprimerAppelDeFondForm : Form
 
     private void btnPrint_Click(object sender, EventArgs e)
     {
-        CreateReport( tbLot.Text);
+        CreateReport(tbLot.Text);
         reportViewer1.RefreshReport();
         dataGridView.ClearSelection();
     }
@@ -75,6 +73,7 @@ public partial class ImprimerAppelDeFondForm : Form
                 saisie = "";
             Console.WriteLine(saisie_id);
         }
+
         dataGridView.Visible = false;
 
         var commentaire = tbText.Text;
@@ -89,10 +88,12 @@ public partial class ImprimerAppelDeFondForm : Form
                 return;
             }
         }
+
         var hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
         var hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
 
-        var parameters = new ReportParameter[]{
+        var parameters = new ReportParameter[]
+        {
             new("TexteAppel", commentaire),
             new("DateAppel", dtEntete.Value.ToShortDateString()),
             new("seuil", ParametresDB.getParam1("APPEL DE FOND", "SEUIL")),
@@ -102,7 +103,8 @@ public partial class ImprimerAppelDeFondForm : Form
             new("TexteDate", immeuble.texte_date)
         };
         reportViewer1.LocalReport.SetParameters(parameters);
-        immeubleSource.DataSource = ImmeubleController.getController().GetDescriptionCoproprietairesImmeubleAF(immeuble.id, num_lot, false, saisie);
+        immeubleSource.DataSource = ImmeubleController.getController()
+            .GetDescriptionCoproprietairesImmeubleAF(immeuble.id, num_lot, false, saisie);
         immeubleSource.Filter = "";
         immeublecoproBindingSource.DataSource = immeubleSource;
         reportViewer1.RefreshReport();
@@ -113,12 +115,14 @@ public partial class ImprimerAppelDeFondForm : Form
     {
         var immeuble_id = e.Parameters[0].Values[0];
         var coproprietaire_id = e.Parameters[3].Values[0];
-        var source = OperationController.getController().getCoproprietaireOperation(immeuble_id, coproprietaire_id, dtDeb.Value, dtFin.Value);
+        var source = OperationController.getController()
+            .getCoproprietaireOperation(immeuble_id, coproprietaire_id, dtDeb.Value, dtFin.Value);
         e.DataSources.Clear();
         e.DataSources.Add(new ReportDataSource("operation", source));
         immeubleSource.Filter = $"copro_id = '{coproprietaire_id}'";
         e.DataSources.Add(new ReportDataSource("immeuble_copro", immeubleSource));
     }
+
     private void lblImmeuble_Click(object sender, EventArgs e)
     {
         var form = new FindImmeubleForm();
@@ -132,7 +136,7 @@ public partial class ImprimerAppelDeFondForm : Form
 
     private void tbRefImmeuble_Validating(object sender, CancelEventArgs e)
     {
-        if ( tbRefImmeuble.Enabled )
+        if (tbRefImmeuble.Enabled)
             immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
         if (immeuble != null)
         {
@@ -142,7 +146,9 @@ public partial class ImprimerAppelDeFondForm : Form
             Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
 
             if (immeuble.ExerciceCourant == null)
+            {
                 MessageBox.Show(@"Attention pas d'exercice comptable défini");
+            }
             else
             {
                 dtDeb.Value = immeuble.ExerciceCourant.date_deb;
@@ -150,10 +156,7 @@ public partial class ImprimerAppelDeFondForm : Form
             }
 
             lotsString.Clear();
-            foreach (DataRow row in lots.Rows)
-            {
-                lotsString.Add(row["numero_lot"].ToString());
-            }
+            foreach (DataRow row in lots.Rows) lotsString.Add(row["numero_lot"].ToString());
             ControlsWindows.setAutoControle(tbLot, lotsString);
             btnRapport.Enabled = true;
             tbLot.BackColor = Color.White;
@@ -161,12 +164,13 @@ public partial class ImprimerAppelDeFondForm : Form
         }
         else
         {
-            Text = TitreForm;                        
+            Text = TitreForm;
             if (!"".Equals(tbRefImmeuble.Text))
                 tbRefImmeuble.BackColor = Color.Red;
             btnRapport.Enabled = false;
         }
     }
+
     private void tbRefImmeuble_KeyPress(object sender, KeyPressEventArgs e)
     {
         if (ModifierKeys == Keys.Control)
@@ -179,6 +183,7 @@ public partial class ImprimerAppelDeFondForm : Form
                     lblLot_Click(null, null);
             }
     }
+
     private void reportViewer1_ReportExport(object sender, ReportExportEventArgs e)
     {
     }
@@ -197,10 +202,7 @@ public partial class ImprimerAppelDeFondForm : Form
         var form = new FindLotCoproprietaireImmeubleForm();
         form.immeuble = immeuble;
         form.ShowDialog();
-        if (form.reference != "")
-        {
-            tbLot.Text = form.reference;
-        }
+        if (form.reference != "") tbLot.Text = form.reference;
     }
 
     private void tbLot_Validating(object sender, CancelEventArgs e)
@@ -213,7 +215,6 @@ public partial class ImprimerAppelDeFondForm : Form
         var lot = LotDescriptionController.getController().getLotFromReference(immeuble.id, tbLot.Text);
         if (lot == null)
             tbLot.BackColor = Color.Red;
-
     }
 
     private void label1_Click(object sender, EventArgs e)
@@ -231,7 +232,8 @@ public partial class ImprimerAppelDeFondForm : Form
         var dtDeb = DateTime.Parse("01/01/1970");
         var dtFin = DateTime.Parse("01/01/1970");
 
-        dataGridView.DataSource = SaisieAppelFondController.getController().getListeOperations(tbRefImmeuble.Text, dtDeb, dtFin);
+        dataGridView.DataSource = SaisieAppelFondController.getController()
+            .getListeOperations(tbRefImmeuble.Text, dtDeb, dtFin);
         var cols = dataGridView.Columns;
         ControlsWindows.ToTitleCase(cols);
         cols["statut"].Visible = false;
@@ -243,7 +245,7 @@ public partial class ImprimerAppelDeFondForm : Form
     private void lbParametres_Click(object sender, EventArgs e)
     {
         var form = new ConfigParamForm();
-           
+
         form.groupe_selected = "APPEL DE FOND";
         form.param_selected = "ENTETE";
         form.ShowDialog();

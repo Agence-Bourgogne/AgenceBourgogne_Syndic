@@ -11,17 +11,58 @@ namespace CommonProjectsPartners.Entites;
 
 public abstract class AbstractBaseEntite : IAuditable
 {
-    public enum StatutEntite { vide0, Actif, vide2, vide3, vide4, vide5, vide6, vide7, vide8, Supprime }
+    public enum StatutEntite
+    {
+        vide0,
+        Actif,
+        vide2,
+        vide3,
+        vide4,
+        vide5,
+        vide6,
+        vide7,
+        vide8,
+        Supprime
+    }
 
-
-    public string id = "";
     public DateTime audit_created;
     public string audit_created_by;
     public DateTime audit_updated;
     public string audit_updated_by;
+
+
+    public string id = "";
+    public bool isNew;
     public AbstractBaseEntite old_entite;
     public List<UpdateField> updatables = [];
-    public bool isNew;
+
+    public virtual List<AuditChange> GetChanges()
+    {
+        var changes = new List<AuditChange>();
+        foreach (var fieldupd in updatables)
+            if (fieldupd.Auditable)
+            {
+                var field = fieldupd.fieldinfo;
+                var curr_value = field.GetValue(this);
+                var old_value = field.GetValue(old_entite);
+                if (curr_value == null)
+                {
+                    if (old_value != null)
+                        changes.Add(new AuditChange(field.Name, fieldupd.typeinfo, null, old_value));
+                }
+                else if (!curr_value.Equals(old_value))
+                {
+                    changes.Add(new AuditChange(field.Name, fieldupd.typeinfo, curr_value, old_value));
+                }
+            }
+
+        return changes;
+    }
+
+    public virtual string GetId()
+    {
+        return id;
+    }
 
     public virtual void setValues(DataRow row)
     {
@@ -37,6 +78,7 @@ public abstract class AbstractBaseEntite : IAuditable
             if (row.Table.Columns.Contains("audit_updated_by"))
                 audit_updated_by = row["audit_updated_by"].ToString();
         }
+
         isNew = "".Equals(id);
         foreach (var fieldupd in updatables)
         {
@@ -53,12 +95,14 @@ public abstract class AbstractBaseEntite : IAuditable
                 Console.WriteLine(e.Message);
             }
         }
+
         old_entite = (AbstractBaseEntite)MemberwiseClone();
     }
+
     public virtual string GetInsertOrUdpateCommand(string schemaTable)
     {
         string cmd;
-        if ( !isNew )
+        if (!isNew)
         {
             cmd = $"update {schemaTable} set ";
             foreach (var fieldupd in updatables)
@@ -69,20 +113,21 @@ public abstract class AbstractBaseEntite : IAuditable
 
                 if (curr_value == null)
                 {
-                    if (old_value!=null)
+                    if (old_value != null)
                         cmd += $"{field.Name}=@{field.Name}, ";
-
                 }
-                else
-                if (!curr_value.Equals(old_value))
+                else if (!curr_value.Equals(old_value))
+                {
                     cmd += $"{field.Name}=@{field.Name}, ";
+                }
             }
+
             cmd += " audit_updated = @audit_updated, audit_updated_by= @audit_updated_by ";
             cmd += " where id = @id";
         }
         else
         {
-            if ( string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id))
                 id = get_uuid();
             cmd = $"insert into {schemaTable} (";
 
@@ -92,6 +137,7 @@ public abstract class AbstractBaseEntite : IAuditable
                 var field = fieldupd.fieldinfo;
                 cmd += field.Name + ", ";
             }
+
             cmd += " audit_created , audit_created_by ";
             cmd += " ) values ( ";
             cmd += "@id, ";
@@ -100,16 +146,19 @@ public abstract class AbstractBaseEntite : IAuditable
                 var field = fieldupd.fieldinfo;
                 cmd += "@" + field.Name + ", ";
             }
-            cmd += " @audit_created , @audit_created_by "; 
+
+            cmd += " @audit_created , @audit_created_by ";
             cmd += " )";
         }
+
         return cmd;
     }
+
     public string get_uuid()
     {
         var cmd = "select public.get_uuid()";
         var sqlCmd = new NpgsqlCommand(cmd, Database.GetInstance());
-        var uuid = (string) sqlCmd.ExecuteScalar();
+        var uuid = (string)sqlCmd.ExecuteScalar();
         return uuid;
     }
 
@@ -118,6 +167,7 @@ public abstract class AbstractBaseEntite : IAuditable
         var message = "";
         return message;
     }
+
     public virtual void SetInsertOrUpdateParameters(NpgsqlCommand sqlCmd)
     {
         foreach (var fieldupd in updatables)
@@ -130,48 +180,24 @@ public abstract class AbstractBaseEntite : IAuditable
         sqlCmd.Parameters.AddWithValue("@audit_created_by", audit_created_by);
         sqlCmd.Parameters.AddWithValue("@audit_updated", audit_updated);
         sqlCmd.Parameters.AddWithValue("@audit_updated_by", audit_updated_by);
-        
+
         sqlCmd.Parameters.AddWithValue("@id", id);
     }
-    public virtual List<AuditChange> GetChanges()
-    {
-        var changes = new List<AuditChange>();
-        foreach (var fieldupd in updatables)
-        {
-            if (fieldupd.Auditable)
-            {
-                var field = fieldupd.fieldinfo;
-                var curr_value = field.GetValue(this);
-                var old_value = field.GetValue(old_entite);
-                if (curr_value == null)
-                {
-                    if ( old_value != null )
-                        changes.Add(new AuditChange(field.Name, fieldupd.typeinfo, null, old_value));
-                }
-                else
-                if (!curr_value.Equals(old_value))
-                    changes.Add(new AuditChange(field.Name, fieldupd.typeinfo, curr_value, old_value));
-            }
-        }
-        return changes;
-    }
-    public virtual string getId()
-    {
-        return id;
-    }
 }
+
 public class UpdateField
 {
-    public string Name { get; set; }
-    public bool Auditable { get; set; }
-    public bool Updatable { get; set; }
     public FieldInfo fieldinfo;
-    public string typeinfo ;
+    public string typeinfo;
 
     public UpdateField(string name, bool auditable, FieldInfo[] members)
     {
-        setValues(name, auditable,members);
+        setValues(name, auditable, members);
     }
+
+    public string Name { get; set; }
+    public bool Auditable { get; set; }
+    public bool Updatable { get; set; }
 
     private void setValues(string name, bool auditable, FieldInfo[] members, bool updatable = true)
     {
@@ -182,11 +208,10 @@ public class UpdateField
             Updatable = updatable;
             fieldinfo = members.First(x => x.Name == name);
             typeinfo = "";
-
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message + " => "+ name);
+            Console.WriteLine(ex.Message + " => " + name);
         }
     }
 }

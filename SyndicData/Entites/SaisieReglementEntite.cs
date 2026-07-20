@@ -7,21 +7,27 @@ namespace SyndicData.Entites;
 
 public class SaisieReglementEntite : AbstractBaseEntite
 {
+    private NatureEntite _nature;
+    public string banque;
+    public string comptebanque;
+    public string coproprietaire_id;
+    public DateTime date_operation;
+    public DateTime date_reference;
+    public string emetteur;
+
+    public string immeuble_id;
 //        public enum Statut { Inactif, Actif, Valide };
 
     public string liasse_id;
-    public DateTime date_operation;
-    public int numero_operation;
-    public string coproprietaire_id;
-    public string immeuble_id;	
+    public string libelle;
+
+    public decimal montant;
+
 //        public string lot_id;	
     public string nature_id;
-    public string libelle;			
-    public DateTime date_reference;
-    public decimal montant;
-    public string emetteur;
-    public string banque;
-    public string comptebanque;
+
+    public int numero_operation;
+
 //        public decimal base_global;
     public int statut;
 
@@ -30,6 +36,7 @@ public class SaisieReglementEntite : AbstractBaseEntite
         id = "";
         setValues(null);
     }
+
     public SaisieReglementEntite(DataRow data)
     {
         setValues(data);
@@ -48,9 +55,20 @@ public class SaisieReglementEntite : AbstractBaseEntite
         if (operation.credit >= 0)
             montant = operation.credit;
         else
-            montant = operation.debit *-1;
+            montant = operation.debit * -1;
         statut = 1;
     }
+
+    public NatureEntite Nature
+    {
+        get
+        {
+            if (_nature == null)
+                _nature = NatureController.getController().getEntiteById(nature_id);
+            return _nature;
+        }
+    }
+
     public override void setValues(DataRow row)
     {
         var members = GetType().GetFields();
@@ -74,16 +92,5 @@ public class SaisieReglementEntite : AbstractBaseEntite
         updatables.Add(new UpdateField("statut", true, members));
 
         base.setValues(row);
-    }
-
-    private NatureEntite _nature;
-    public NatureEntite Nature
-    {
-        get
-        {
-            if (_nature == null)
-                _nature = NatureController.getController().getEntiteById(nature_id);
-            return _nature;
-        }
     }
 }

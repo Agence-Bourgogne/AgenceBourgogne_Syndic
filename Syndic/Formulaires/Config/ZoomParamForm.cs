@@ -6,6 +6,7 @@ namespace EspaceSyndic.Formulaires.Config;
 public partial class ZoomParamForm : Form
 {
     public string txtParam = "";
+
     public ZoomParamForm()
     {
         InitializeComponent();

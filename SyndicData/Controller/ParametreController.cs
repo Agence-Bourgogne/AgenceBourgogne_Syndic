@@ -14,6 +14,7 @@ public class ParametreController : AbstractBaseController<ParametreEntite>
     {
         return "parametres";
     }
+
     public override string getSchema()
     {
         return "public";
@@ -21,14 +22,14 @@ public class ParametreController : AbstractBaseController<ParametreEntite>
 
     public DataTable getListFromEntiteGroupe(ParametreEntite groupe)
     {
-        if (string.IsNullOrEmpty(groupe.param_1) )
+        if (string.IsNullOrEmpty(groupe.param_1))
             return null;
         var cmd = $" select * from {getSchemaTable()} ";
 
         cmd += " where groupe = @code ";
-        if ( groupe.param_2 != null)
-            if ( groupe.param_2.Trim() != "")
-                cmd += " order by "+ groupe.param_2;
+        if (groupe.param_2 != null)
+            if (groupe.param_2.Trim() != "")
+                cmd += " order by " + groupe.param_2;
         var parameters = new List<NpgsqlParameter>
         {
             new("@code", groupe.code)
@@ -36,6 +37,7 @@ public class ParametreController : AbstractBaseController<ParametreEntite>
 
         return getResultSQL(cmd, parameters);
     }
+
     public ParametreEntite getGroupeEntite(string code)
     {
         var cmd = $" select * from {getSchemaTable()} ";
@@ -51,5 +53,5 @@ public class ParametreController : AbstractBaseController<ParametreEntite>
             if (table.Rows.Count > 0)
                 groupe = new ParametreEntite(table.Rows[0]);
         return groupe;
-    } 
+    }
 }

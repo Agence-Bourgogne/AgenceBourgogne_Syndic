@@ -15,10 +15,11 @@ namespace EspaceSyndic.Impressions.ReleveFiscal;
 
 public partial class ReleveFiscalForm : Form
 {
-    private ImmeubleEntite immeuble;
     private readonly BindingSource immeubleSource = new();
     private readonly AutoCompleteStringCollection lotsString = new();
     private readonly string TitreForm;
+    private ImmeubleEntite immeuble;
+
     public ReleveFiscalForm()
     {
         InitializeComponent();
@@ -38,9 +39,9 @@ public partial class ReleveFiscalForm : Form
         var dateFin = e.Parameters[1].Values[0];
 
         var dtDeb = DateTime.Parse(dateDeb);
-        var dtFin= DateTime.Parse(dateFin);
+        var dtFin = DateTime.Parse(dateFin);
         var coproprietaire_id = e.Parameters[2].Values[0];
-        var source = OperationController.getController().GetReleveFiscalCoproprietaire( coproprietaire_id, dtDeb, dtFin);
+        var source = OperationController.getController().GetReleveFiscalCoproprietaire(coproprietaire_id, dtDeb, dtFin);
         immeubleSource.Filter = $"copro_id = '{coproprietaire_id}'";
 
         e.DataSources.Add(new ReportDataSource("fiscal_copro", source));
@@ -52,6 +53,7 @@ public partial class ReleveFiscalForm : Form
         CreateReport(tbLot.Text);
         reportViewer1.RefreshReport();
     }
+
     private void lblImmeuble_Click(object sender, EventArgs e)
     {
         var form = new FindImmeubleForm();
@@ -77,12 +79,10 @@ public partial class ReleveFiscalForm : Form
                 dtDebut.Value = exercice.date_deb;
                 dtFin.Value = exercice.date_fin;
             }
+
             Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
             lotsString.Clear();
-            foreach ( DataRow row in lots.Rows)
-            {
-                lotsString.Add(row["numero_lot"].ToString());
-            }
+            foreach (DataRow row in lots.Rows) lotsString.Add(row["numero_lot"].ToString());
             ControlsWindows.setAutoControle(tbLot, lotsString);
             btnRapport.Enabled = true;
         }
@@ -126,18 +126,15 @@ public partial class ReleveFiscalForm : Form
         var form = new FindLotCoproprietaireImmeubleForm();
         form.immeuble = immeuble;
         form.ShowDialog();
-        if (form.reference != "")
-        {
-            tbLot.Text = form.reference;
-        }
-
+        if (form.reference != "") tbLot.Text = form.reference;
     }
 
     private void CreateReport(string lot)
     {
         if (immeuble != null)
         {
-            immeubleSource.DataSource = ImmeubleController.getController().GetDescriptionCoproprietairesImmeuble(immeuble.id, lot, true);
+            immeubleSource.DataSource = ImmeubleController.getController()
+                .GetDescriptionCoproprietairesImmeuble(immeuble.id, lot, true);
             immeubleSource.Filter = "";
             immeublecoproBindingSource.DataSource = immeubleSource;
 

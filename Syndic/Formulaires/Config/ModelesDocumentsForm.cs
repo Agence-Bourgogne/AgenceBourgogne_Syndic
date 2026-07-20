@@ -18,9 +18,9 @@ public partial class ModelesDocumentsForm : Form
 
     private void ModelesDocumentsForm_Load(object sender, EventArgs e)
     {
-        var groupe = ParametreController.controller.getGroupeEntite("MODELES"); 
-        if ( groupe != null )
-        { 
+        var groupe = ParametreController.controller.getGroupeEntite("MODELES");
+        if (groupe != null)
+        {
             dataGridView.DataSource = ParametreController.controller.getListFromEntiteGroupe(groupe);
             var cols = dataGridView.Columns;
             cols["id"].Visible = false;
@@ -48,22 +48,22 @@ public partial class ModelesDocumentsForm : Form
                 else
                     cols[colName].HeaderText = colName;
             }
+
             ControlsWindows.ToTitleCase(cols);
         }
     }
 
     private void BtnEdit_Click(object sender, EventArgs e)
     {
-        if ( dataGridView.SelectedRows.Count > 0  )
+        if (dataGridView.SelectedRows.Count > 0)
         {
             var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
-            if ( row != null )
+            if (row != null)
             {
                 Console.WriteLine(row["param_1"].ToString());
                 BaseApplication.OpenWordFile(row["param_1"].ToString());
             }
         }
-
     }
 
     private void btnExport_Click(object sender, EventArgs e)
@@ -86,21 +86,21 @@ public partial class ModelesDocumentsForm : Form
                         var fInfoDst = new FileInfo(serveur_modeles + fInfoSrc.Name);
                         var bWriteFile = true;
                         if (fInfoDst.LastWriteTime > fInfoSrc.LastWriteTime)
-                        {
-                            if (DialogResult.Yes != MessageBox.Show("Le fichier sur le serveur est plus récent que le fichier local\r\nVoulez-vous Continuer", "Attention", MessageBoxButtons.YesNo))
+                            if (DialogResult.Yes !=
+                                MessageBox.Show(
+                                    "Le fichier sur le serveur est plus récent que le fichier local\r\nVoulez-vous Continuer",
+                                    "Attention", MessageBoxButtons.YesNo))
                                 bWriteFile = false;
-                        }
                         if (bWriteFile)
                         {
                             Console.WriteLine(fInfoSrc.Name);
                             var g = Guid.NewGuid();
-                                
-                            File.Move(fInfoDst.FullName, fInfoDst.FullName+"."+g);
+
+                            File.Move(fInfoDst.FullName, fInfoDst.FullName + "." + g);
                             File.Copy(fInfoSrc.FullName, fInfoDst.FullName);
                         }
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -129,10 +129,11 @@ public partial class ModelesDocumentsForm : Form
                         var fInfoSrc = new FileInfo(serveur_modeles + fInfoDst.Name);
                         var bWriteFile = true;
                         if (fInfoDst.LastWriteTime > fInfoSrc.LastWriteTime)
-                        {
-                            if (DialogResult.Yes != MessageBox.Show("Le fichier local est plus récent que le fichier sur le serveur\r\nVoulez-vous Continuer", "Attention", MessageBoxButtons.YesNo))
+                            if (DialogResult.Yes !=
+                                MessageBox.Show(
+                                    "Le fichier local est plus récent que le fichier sur le serveur\r\nVoulez-vous Continuer",
+                                    "Attention", MessageBoxButtons.YesNo))
                                 bWriteFile = false;
-                        }
                         if (bWriteFile)
                         {
                             Console.WriteLine(fInfoSrc.Name);
@@ -143,7 +144,6 @@ public partial class ModelesDocumentsForm : Form
                         }
                     }
                 }
-
             }
             catch (Exception ex)
             {

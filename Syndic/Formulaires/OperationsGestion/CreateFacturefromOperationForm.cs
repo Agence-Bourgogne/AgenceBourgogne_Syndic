@@ -14,12 +14,14 @@ namespace EspaceSyndic.Formulaires.OperationsGestion;
 public partial class CreateFacturefromOperationForm : Form
 {
     private readonly OperationEntite operation;
-    private NatureEntite nature;
     private FournisseurEntite fournisseur;
+    private NatureEntite nature;
+
     public CreateFacturefromOperationForm()
     {
         InitializeComponent();
     }
+
     public CreateFacturefromOperationForm(OperationEntite entite)
     {
         InitializeComponent();
@@ -56,9 +58,10 @@ public partial class CreateFacturefromOperationForm : Form
             var debit = Convertir.ToDecimal(row["debit"]);
             total += credit - debit;
         }
+
         tbTotal.Text = Math.Abs(total).ToString();
         tbNature_Validating(null, null);
-        tbFournisseur_Validating(null, null );
+        tbFournisseur_Validating(null, null);
     }
 
     private void btnDelete_Click(object sender, EventArgs e)
@@ -88,7 +91,8 @@ public partial class CreateFacturefromOperationForm : Form
             {
                 base_repart = base_repart,
                 immeuble_id = operation.immeuble_id,
-                numero_operation = SaisieFactureController.getController().getNextNumeroOperation(Convert.ToDateTime(tbDateCreation.Text)),
+                numero_operation = SaisieFactureController.getController()
+                    .getNextNumeroOperation(Convert.ToDateTime(tbDateCreation.Text)),
                 montant = montant
             };
             entite.date_operation = entite.date_reference = date_reference;
@@ -99,7 +103,7 @@ public partial class CreateFacturefromOperationForm : Form
             entite.liasse_id = "Correction";
             entite.libelle = comment;
             entite.comment_fournisseur = comment_fournisseur;
-            entite.statut = (int) GlobalConstantes.StatutOperation.Valide;
+            entite.statut = (int)GlobalConstantes.StatutOperation.Valide;
 
             if (!SaisieFactureController.getController().InsertOrUpdate(entite))
                 throw new Exception("Facture");
@@ -117,9 +121,11 @@ public partial class CreateFacturefromOperationForm : Form
                     opes.credit = montant < 0 ? montant * (decimal)-1.0 : (decimal)0.0;
                     opes.global = montant;
                 }
+
                 if (!OperationController.getController().InsertOrUpdate(opes))
                     throw new Exception("Operation");
             }
+
             trx.Commit();
             MessageBox.Show(@"Modification enregistrées");
             Close();
@@ -130,6 +136,7 @@ public partial class CreateFacturefromOperationForm : Form
             MessageBox.Show(ex.Message);
         }
     }
+
     private void tbNature_Validating(object sender, CancelEventArgs e)
     {
         nature = NatureController.getController().getEntiteFromField("reference", tbNature.Text);
@@ -144,6 +151,7 @@ public partial class CreateFacturefromOperationForm : Form
             tbLibNature.Text = "";
         }
     }
+
     private void tbFournisseur_Validating(object sender, CancelEventArgs e)
     {
         fournisseur = FournisseurController.getController().getEntiteFromField("reference", tbFournisseur.Text);
@@ -163,7 +171,6 @@ public partial class CreateFacturefromOperationForm : Form
             tbVilleFournisseur.Text = "";
             tbCpFournisseur.Text = "";
         }
-
     }
 
     private void lblFournisseur_Click(object sender, EventArgs e)

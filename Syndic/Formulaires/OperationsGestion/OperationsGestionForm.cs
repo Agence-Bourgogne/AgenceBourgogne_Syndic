@@ -17,16 +17,23 @@ namespace EspaceSyndic.Formulaires.OperationsGestion;
 
 public partial class OperationsGestionForm : Form, ICommonChangedListener
 {
-    private ImmeubleEntite immeuble;
-    private bool bLoading;
-    private string regKey;
     private readonly string TitreForm;
+    private bool bLoading;
+    private ImmeubleEntite immeuble;
+    private string regKey;
     private int stdWidth, stdHeight;
 
     public OperationsGestionForm()
     {
         InitializeComponent();
         TitreForm = Text;
+    }
+
+    public void ChangedReference(object sender, CommonEventArgs e)
+    {
+        tbRefImmeuble.Text = e.newRef;
+        tbLot.Text = e.newRef2;
+        commonValidating();
     }
 
     private void cbTypeOpe_SelectedIndexChanged(object sender, EventArgs e)
@@ -54,7 +61,7 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
         }
 
         var newOrder = (SortOrder)CommonRegistry.getRegistryValue(regKey, "SortOrder", 0);
-        var SortedColumn = (string) CommonRegistry.getAppRegistryValue(regKey, "SortedColumn", "");
+        var SortedColumn = (string)CommonRegistry.getAppRegistryValue(regKey, "SortedColumn", "");
         if (newOrder != SortOrder.None && !string.IsNullOrEmpty(SortedColumn))
         {
             var cols = dataGridView.Columns;
@@ -68,11 +75,8 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
     private void dataGridView_ColumnDisplayIndexChanged(object sender, DataGridViewColumnEventArgs e)
     {
         if (!bLoading)
-        {
             if (regKey != "")
                 CommonRegistry.setRegistryValue(regKey, e.Column.Name, e.Column.DisplayIndex);
-        }
-
     }
 
     private void OperationsGestion_Load(object sender, EventArgs e)
@@ -88,6 +92,7 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
         if (height != -1)
             Height = height;
     }
+
     private void tbRefImmeuble_DoubleClick(object sender, EventArgs e)
     {
         var form = new FindImmeubleForm();
@@ -97,8 +102,8 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
             tbRefImmeuble.Text = form.reference;
             tbRefImmeuble_Validating(null, null);
         }
-
     }
+
     private void tbRefImmeuble_Validating(object sender, CancelEventArgs e)
     {
         commonValidating();
@@ -110,11 +115,13 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
         dataGridView.MultiSelect = false;
         var dtDeb = ckDebut.Checked ? dateDebut.Value : DateTime.Parse("01/01/1970");
         var dtFin = ckFin.Checked ? dateFin.Value : DateTime.Parse("01/01/1970");
-            
+
         var sortedCol = dataGridView.SortedColumn;
         var sortOrder = dataGridView.SortOrder;
 
-        dataGridView.DataSource = SaisieFactureController.getController().getListeOperations(tbRefImmeuble.Text, tbNature.Text, dtDeb, dtFin, tbFournisseur.Text, tbLibelle.Text, tbMontant.Text, ckValid.Checked, tbBase.Text);
+        dataGridView.DataSource = SaisieFactureController.getController().getListeOperations(tbRefImmeuble.Text,
+            tbNature.Text, dtDeb, dtFin, tbFournisseur.Text, tbLibelle.Text, tbMontant.Text, ckValid.Checked,
+            tbBase.Text);
         var cols = dataGridView.Columns;
         ControlsWindows.ToTitleCase(cols);
 
@@ -128,7 +135,7 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
         cols["statut"].Visible = false;
         cols["id"].Visible = false;
 
-        if ( sortOrder == SortOrder.Ascending)
+        if (sortOrder == SortOrder.Ascending)
             dataGridView.Sort(cols[sortedCol.Name], ListSortDirection.Ascending);
         if (sortOrder == SortOrder.Descending)
             dataGridView.Sort(cols[sortedCol.Name], ListSortDirection.Descending);
@@ -137,6 +144,7 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
         OrderColumns();
         bLoading = false;
     }
+
     private void FillFromAppelsDeFond()
     {
         bLoading = true;
@@ -147,7 +155,8 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
         var sortedCol = dataGridView.SortedColumn;
         var sortOrder = dataGridView.SortOrder;
 
-        dataGridView.DataSource = SaisieAppelFondController.getController().getListeViewOperations(tbRefImmeuble.Text, dtDeb, dtFin, tbLibelle.Text, tbMontant.Text, ckValid.Checked, tbBase.Text);
+        dataGridView.DataSource = SaisieAppelFondController.getController().getListeViewOperations(tbRefImmeuble.Text,
+            dtDeb, dtFin, tbLibelle.Text, tbMontant.Text, ckValid.Checked, tbBase.Text);
         var cols = dataGridView.Columns;
         ControlsWindows.ToTitleCase(cols);
         cols["statut"].Visible = false;
@@ -158,11 +167,12 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
             dataGridView.Sort(cols[sortedCol.Name], ListSortDirection.Ascending);
         if (sortOrder == SortOrder.Descending)
             dataGridView.Sort(cols[sortedCol.Name], ListSortDirection.Descending);
-            
+
         setRowIndicators();
         OrderColumns();
         bLoading = false;
     }
+
     private void FillFromReglements()
     {
         bLoading = true;
@@ -173,7 +183,8 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
         var sortedCol = dataGridView.SortedColumn;
         var sortOrder = dataGridView.SortOrder;
 
-        dataGridView.DataSource = SaisieReglementController.getController().getListeOperations(tbRefImmeuble.Text, tbLot.Text, dtDeb, dtFin, tbNature.Text, tbLibelle.Text, tbMontant.Text, ckValid.Checked);
+        dataGridView.DataSource = SaisieReglementController.getController().getListeOperations(tbRefImmeuble.Text,
+            tbLot.Text, dtDeb, dtFin, tbNature.Text, tbLibelle.Text, tbMontant.Text, ckValid.Checked);
         var cols = dataGridView.Columns;
         ControlsWindows.ToTitleCase(cols);
         cols["statut"].Visible = false;
@@ -200,7 +211,9 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
         var sortedCol = dataGridView.SortedColumn;
         var sortOrder = dataGridView.SortOrder;
 
-        dataGridView.DataSource = OperationController.getController().getListeOperations(immeuble.id, tbLot.Text, type, ckValid.Checked ? (int) GlobalConstantes.StatutOperation.Valide :-1, dtDeb, dtFin, tbNature.Text, tbBase.Text, tbLibelle.Text, tbMontant.Text);
+        dataGridView.DataSource = OperationController.getController().getListeOperations(immeuble.id, tbLot.Text, type,
+            ckValid.Checked ? (int)GlobalConstantes.StatutOperation.Valide : -1, dtDeb, dtFin, tbNature.Text,
+            tbBase.Text, tbLibelle.Text, tbMontant.Text);
         var cols = dataGridView.Columns;
         ControlsWindows.ToTitleCase(cols);
         cols["statut"].Visible = false;
@@ -227,7 +240,7 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
     {
         foreach (DataGridViewRow row in dataGridView.Rows)
         {
-            var statut = (int) row.Cells["statut"].Value;
+            var statut = (int)row.Cells["statut"].Value;
             var color = statut switch
             {
                 0 => Color.Gray,
@@ -238,6 +251,7 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
             row.DefaultCellStyle.BackColor = color;
         }
     }
+
     private void commonValidating()
     {
         if (tbRefImmeuble.Text != "")
@@ -247,7 +261,10 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
                 Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
         }
         else
+        {
             Text = TitreForm;
+        }
+
         var selected_id = "";
 
         if (dataGridView.SelectedRows.Count > 0)
@@ -256,9 +273,9 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
             if (row != null)
                 selected_id = row["id"].ToString();
         }
+
         if (cbTypeOpe.SelectedIndex >= 0)
-        {
-            switch ( cbTypeOpe.SelectedIndex )
+            switch (cbTypeOpe.SelectedIndex)
             {
                 case 0:
                     regKey = "listes\\factures";
@@ -290,9 +307,7 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
                     tbNature.Enabled = true;
                     tbFournisseur.Enabled = false;
                     if (immeuble != null)
-                    {
                         FillFromOperations("");
-                    }
                     else
                         dataGridView.DataSource = null;
                     break;
@@ -302,9 +317,7 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
                     tbNature.Enabled = true;
                     btnDetail.Enabled = false;
                     if (immeuble != null)
-                    {
                         FillFromOperations(nameof(GlobalConstantes.TypeMouvement.Depense));
-                    }
                     else
                         dataGridView.DataSource = null;
                     break;
@@ -315,17 +328,13 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
                     tbFournisseur.Enabled = false;
                     btnDetail.Enabled = false;
                     if (immeuble != null)
-                    {
                         FillFromOperations(nameof(GlobalConstantes.TypeMouvement.Recette));
-                    }
                     else
                         dataGridView.DataSource = null;
                     break;
             }
 
-        }
         if (selected_id != "")
-        {
             foreach (DataGridViewRow rowGrid in dataGridView.Rows)
             {
                 var row = (DataRowView)rowGrid.DataBoundItem;
@@ -337,8 +346,8 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
                     break;
                 }
             }
-        }
     }
+
     private void btnEnter_Click(object sender, EventArgs e)
     {
         ControlsWindows.FocusNextTabbedControl(this);
@@ -356,8 +365,8 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
 
     private void btnExport_Click(object sender, EventArgs e)
     {
-        var colsToHide = new List<string>{"id"};
-        BaseApplication.DataGridToExcel( dataGridView, colsToHide, "", ["montant", "debit", "credit"]);
+        var colsToHide = new List<string> { "id" };
+        BaseApplication.DataGridToExcel(dataGridView, colsToHide, "", ["montant", "debit", "credit"]);
     }
 
     private void EditionOperation()
@@ -382,12 +391,12 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
                 dataGridView.Rows[0].Selected = false;
                 if (index >= dataGridView.Rows.Count)
                     index--;
-                if ( index >= 0)
+                if (index >= 0)
                     dataGridView.Rows[index].Selected = true;
             }
         }
-
     }
+
     private void lblFournisseur_Click(object sender, EventArgs e)
     {
         var form = new FindFournisseurForm();
@@ -428,12 +437,6 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
 
     private void tbNature_Validating(object sender, CancelEventArgs e)
     {
-        commonValidating();
-    }
-    public void ChangedReference(object sender, CommonEventArgs e)
-    {
-        tbRefImmeuble.Text = e.newRef;
-        tbLot.Text = e.newRef2;
         commonValidating();
     }
 
@@ -478,6 +481,7 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
                 var form = new ModificationLotForm(appel);
                 form.ShowDialog();
             }
+
             if (cbTypeOpe.SelectedIndex == 0)
             {
                 var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
@@ -506,10 +510,7 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
                     modifierNumeroLotToolStripMenuItem.Enabled = true;
             }
 
-            if (dataGridView.SelectedRows.Count > 0)
-            {
-                supprimerLesÉlémentsToolStripMenuItem.Enabled = true;
-            }
+            if (dataGridView.SelectedRows.Count > 0) supprimerLesÉlémentsToolStripMenuItem.Enabled = true;
         }
     }
 
@@ -556,6 +557,7 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
                             throw new Exception("Delete Operation failed");
                     }
                 }
+
                 trx.Commit();
             }
             catch (Exception ex)
@@ -564,6 +566,7 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
                 MessageBox.Show(ex.Message);
             }
         }
+
         commonValidating();
     }
 
@@ -575,7 +578,7 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
             CommonRegistry.setRegistryValue(regKey, "height", Height);
             if (dataGridView.SortOrder != SortOrder.None)
             {
-                CommonRegistry.setRegistryValue(regKey, "SortOrder", (int) dataGridView.SortOrder);
+                CommonRegistry.setRegistryValue(regKey, "SortOrder", (int)dataGridView.SortOrder);
                 CommonRegistry.setRegistryValue(regKey, "SortedColumn", dataGridView.SortedColumn.Name);
             }
 

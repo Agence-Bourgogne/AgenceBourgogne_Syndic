@@ -7,6 +7,7 @@ namespace CommonProjectsPartners.Utils;
 public static class CryptoUtils
 {
     private const string SECURITY_KEY = "Projects$Partners";
+
     public static string Decrypt(string cipherString, bool useHashing = true)
     {
         byte[] keyArray;
@@ -35,6 +36,7 @@ public static class CryptoUtils
         tdes.Clear();
         return UTF8Encoding.UTF8.GetString(resultArray);
     }
+
     public static string Encrypt(string toEncrypt, bool useHashing = true)
     {
         byte[] keyArray;
@@ -47,7 +49,9 @@ public static class CryptoUtils
             hashmd5.Clear();
         }
         else
+        {
             keyArray = UTF8Encoding.UTF8.GetBytes(SECURITY_KEY);
+        }
 
         var tdes = new TripleDESCryptoServiceProvider();
         tdes.Key = keyArray;
@@ -67,10 +71,7 @@ public static class CryptoUtils
         var special = "*$-+?_&=!%{}/";
         var res = new StringBuilder();
         var rnd = new Random();
-        while (0 < length--)
-        {
-            res.Append(valid[rnd.Next(valid.Length)]);
-        }
+        while (0 < length--) res.Append(valid[rnd.Next(valid.Length)]);
         res.Append(special[rnd.Next(special.Length)]);
         return res.ToString();
     }

@@ -5,23 +5,25 @@ namespace SyndicData.Entites;
 
 public class ImmeubleRepartitionEntite : AbstractBaseEntite
 {
-    public string immeuble_id = "";
-    public string reference = "";
-    public string nom = "";
-    public int valeur;
-    public int ligne;
     public int colonne;
+    public string immeuble_id = "";
+    public int ligne;
+    public string nom = "";
+    public string reference = "";
     public int type_ventilation;
+    public int valeur;
 
     public ImmeubleRepartitionEntite()
     {
         id = "";
         setValues(null);
     }
+
     public ImmeubleRepartitionEntite(DataRow data)
     {
         setValues(data);
     }
+
     public override void setValues(DataRow row)
     {
         var members = GetType().GetFields();
@@ -37,5 +39,4 @@ public class ImmeubleRepartitionEntite : AbstractBaseEntite
         updatables.Add(new UpdateField("type_ventilation", true, members));
         base.setValues(row);
     }
-
 }

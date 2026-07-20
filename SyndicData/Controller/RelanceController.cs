@@ -18,6 +18,7 @@ public static class RelanceController
             _ => ParametresDB.getParam1("RELANCE", "TEXTE RELANCE 3")
         };
     }
+
     public static string getLibelleEcritureRelance(int type_relance)
     {
         return type_relance switch
@@ -27,16 +28,19 @@ public static class RelanceController
             _ => ParametresDB.getParam1("RELANCE", "ECRITURE RELANCE 3")
         };
     }
+
     public static NatureEntite getNatureRelance()
     {
         var reference = ParametresDB.getParam1("RELANCE", "NATURE");
         return NatureController.getController().getEntiteFromField("reference", reference);
     }
+
     public static FournisseurEntite getFournisseurRelance()
     {
         var reference = ParametresDB.getParam1("RELANCE", "FOURNISSEUR");
         return FournisseurController.getController().getEntiteFromField("reference", reference);
     }
+
     public static decimal getMontantRelance(int type_relance)
     {
         var montant = type_relance switch
@@ -64,7 +68,7 @@ public static class RelanceController
 
             var facCtl = SaisieFactureController.getController();
             var opeCtl = OperationController.getController();
-            for ( var type = 0; type < relances.Length; type ++)
+            for (var type = 0; type < relances.Length; type++)
             {
                 var montant_relance = getMontantRelance(type);
                 var lib_relance = getLibelleEcritureRelance(type);
@@ -76,11 +80,10 @@ public static class RelanceController
                     if (!CoproprietaireController.getController().MiseAjourDateRelances(copro_ids, dt, type))
                         throw new Exception("Mise A Jour date Relances");
                     if (type > 0)
-                    {
                         // TODO Attention le type 3 ne doit pas générer d'écriture ( Déja Générée )
                         //if ( type < 3 )
                         if (montant_relance > 0)
-                            foreach ( var relance in relanceList)
+                            foreach (var relance in relanceList)
                             {
                                 var facture = new SaisieFactureEntite();
                                 facture.date_operation = facture.date_reference = dt;
@@ -95,7 +98,7 @@ public static class RelanceController
                                 facture.comment_fournisseur = fournisseur.nom;
                                 facture.montant = montant_relance;
                                 facture.base_repart = base_repart;
-                                facture.statut = (int) GlobalConstantes.StatutOperation.Valide;
+                                facture.statut = (int)GlobalConstantes.StatutOperation.Valide;
                                 if (!facCtl.InsertOrUpdate(facture))
                                     throw new Exception("Generate Facture");
 
@@ -110,9 +113,9 @@ public static class RelanceController
                                 if (!opeCtl.InsertOrUpdate(operation))
                                     throw new Exception("Generate operation");
                             }
-                    }
                 }
             }
+
             trx.Commit();
             rc = true;
         }
@@ -121,26 +124,23 @@ public static class RelanceController
             trx.Rollback();
             MessageBox.Show(ex.Message);
         }
+
         return rc;
     }
+
     public static string getQuotedCoproprietaireId(List<RelanceEntite> relances)
     {
         var quoted = "";
 
-        foreach (var relance in relances)
-        {
-            quoted += (quoted == "" ? "" : ", ") + $"'{relance.coproprietaire_id}'";
-        }
+        foreach (var relance in relances) quoted += (quoted == "" ? "" : ", ") + $"'{relance.coproprietaire_id}'";
         return quoted;
     }
+
     public static string getQuotedCoproprietaireId(List<string> ids_copro)
     {
         var quoted = "";
 
-        foreach (var id_copro in ids_copro)
-        {
-            quoted += (quoted == "" ? "" : ", ") + $"'{id_copro}'";
-        }
+        foreach (var id_copro in ids_copro) quoted += (quoted == "" ? "" : ", ") + $"'{id_copro}'";
         return quoted;
     }
 }

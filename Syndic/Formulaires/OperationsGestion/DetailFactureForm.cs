@@ -12,16 +12,19 @@ namespace EspaceSyndic.Formulaires.OperationsGestion;
 
 public partial class DetailFactureForm : DetailOperationForm
 {
+    private bool bCheckLot = true;
     private SaisieFactureEntite entite;
 
     public DetailFactureForm()
     {
         InitializeComponent();
     }
-    public DetailFactureForm(string entite_id) : base ( entite_id)
+
+    public DetailFactureForm(string entite_id) : base(entite_id)
     {
         InitializeComponent();
     }
+
     protected override void ShowDetail()
     {
         entite = SaisieFactureController.getController().getEntiteById(entite_id);
@@ -40,7 +43,9 @@ public partial class DetailFactureForm : DetailOperationForm
                 tbLot.Text = lot.numero_lot.ToString();
         }
 
-        var bEnabled = entite.statut <= (int)GlobalConstantes.StatutOperation.Valide;//&& !facture.liasse_id.StartsWith("Reprise");
+        var bEnabled =
+            entite.statut <=
+            (int)GlobalConstantes.StatutOperation.Valide; //&& !facture.liasse_id.StartsWith("Reprise");
         if (BaseApplication.userConnected.IsAdmin)
         {
             dataGridView.ContextMenuStrip = contextMenuStrip1;
@@ -58,7 +63,7 @@ public partial class DetailFactureForm : DetailOperationForm
         tbDateCreation.Enabled = bEnabled;
         tbComment.Enabled = bEnabled;
         tbCommentaireFournisseur.Enabled = bEnabled;
-        tbMontant.Enabled = false;//bEnabled;
+        tbMontant.Enabled = false; //bEnabled;
 
 
         ControlsWindows.setTooltip(tbComment, "Libellé Ecriture");
@@ -67,13 +72,12 @@ public partial class DetailFactureForm : DetailOperationForm
         btnValid.Enabled = tbDateCreation.Enabled;
 
         fillFormFromMaster();
-
     }
 
     private void FillDataGridView()
     {
-        var table = entite.liasse_id.StartsWith("Reprise") 
-            ? OperationController.getController().getFactureOperations(entite) 
+        var table = entite.liasse_id.StartsWith("Reprise")
+            ? OperationController.getController().getFactureOperations(entite)
             : OperationController.getController().getSaisieOperations(entite.id);
 
         dataGridView.DataSource = table;
@@ -96,15 +100,18 @@ public partial class DetailFactureForm : DetailOperationForm
             var debit = Convertir.ToDecimal(row["debit"]);
             total += credit - debit;
         }
+
         tbTotal.Text = Math.Abs(total).ToString();
-            
+
         if (Math.Abs(Math.Abs(total) - Math.Abs(entite.montant)) > 1)
         {
             tbTotal.BackColor = Color.Red;
             tbTotal.ForeColor = Color.Black;
         }
         else
+        {
             tbTotal.BackColor = Color.Gray;
+        }
     }
 
     private void fillFormFromMaster()
@@ -130,6 +137,7 @@ public partial class DetailFactureForm : DetailOperationForm
             tbCpFournisseur.Text = fournisseur.codepostal;
             tbVilleFournisseur.Text = fournisseur.ville;
         }
+
         tbDateCreation.Text = entite.date_reference.ToShortDateString();
 
         FillDataGridView();
@@ -137,19 +145,21 @@ public partial class DetailFactureForm : DetailOperationForm
         tbMontant.Enabled = dataGridView.Rows.Count == 1 || nature.reference == "140";
     }
 
-    private bool bCheckLot = true;
     protected override void DeleteEntite()
     {
-        if (DialogResult.Yes == MessageBox.Show("L'annulation d'une facture et de ses éléments est irréversible\nVoulez vous continuer ?", "Attention", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+        if (DialogResult.Yes ==
+            MessageBox.Show("L'annulation d'une facture et de ses éléments est irréversible\nVoulez vous continuer ?",
+                "Attention", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
         {
             bCheckLot = false;
-            if (entite.liasse_id.StartsWith("Reprise") && dataGridView.Rows.Count > 0 )
+            if (entite.liasse_id.StartsWith("Reprise") && dataGridView.Rows.Count > 0)
                 ValidModification();
             bCheckLot = true;
             if (SaisieFactureController.getController().DeleteEntite(entite))
                 Close();
         }
     }
+
     protected override void ValidModification()
     {
         var bRepartChanged = false;
@@ -166,7 +176,7 @@ public partial class DetailFactureForm : DetailOperationForm
         var nature = NatureController.getController().getEntiteFromField("reference", ref_nature);
         var fournisseur = FournisseurController.getController().getEntiteFromField("reference", ref_fournisseur);
         LotDescriptionEntite lot = null;
-        if ( base_repart == "80" && bCheckLot)
+        if (base_repart == "80" && bCheckLot)
         {
             lot = LotDescriptionController.getController().getLotFromReference(entite.immeuble_id, tbLot.Text);
             if (lot == null)
@@ -174,7 +184,6 @@ public partial class DetailFactureForm : DetailOperationForm
                 MessageBox.Show(@"Lot Invalide");
                 return;
             }
-                
         }
 
         if (old_nature is { reference: "140" })
@@ -200,16 +209,16 @@ public partial class DetailFactureForm : DetailOperationForm
 
                 if (dataGridView.Rows.Count == 1 || old_nature is { reference: "140" })
                     entite.montant = montant;
-                    
+
                 if (lot != null)
                     entite.lot_id = lot.id;
                 var statut = entite.statut;
                 if (BaseApplication.userConnected.IsAdmin)
-                    if (entite.statut >= (int) GlobalConstantes.StatutOperation.Valide)
-                    {
-                        if (DialogResult.Yes == MessageBox.Show("Voulez-vous repasser le statut de l'opération comme Validé", "Attention", MessageBoxButtons.YesNo))
+                    if (entite.statut >= (int)GlobalConstantes.StatutOperation.Valide)
+                        if (DialogResult.Yes ==
+                            MessageBox.Show("Voulez-vous repasser le statut de l'opération comme Validé", "Attention",
+                                MessageBoxButtons.YesNo))
                             statut = (int)GlobalConstantes.StatutOperation.Valide;
-                    }
 
                 entite.nature_id = nature.id;
                 entite.fournisseur_id = fournisseur.id;
@@ -219,7 +228,7 @@ public partial class DetailFactureForm : DetailOperationForm
                 entite.statut = statut;
                 if (!SaisieFactureController.getController().InsertOrUpdate(entite))
                     throw new Exception("Facture");
-                    
+
                 if (dataGridView.Rows.Count == 0 && base_repart == "80")
                 {
                     var operation = new OperationEntite
@@ -231,13 +240,14 @@ public partial class DetailFactureForm : DetailOperationForm
                     operation.credit = montant < 0 ? montant * (decimal)-1.0 : (decimal)0.0;
                     operation.date_reference = operation.date_operation = date_reference;
                     operation.global = montant;
-                    if ( lot != null)
+                    if (lot != null)
                         operation.lot_id = entite.lot_id;
                     operation.coproprietaire_id = lot.coproprietaire_id;
                     if (!OperationController.getController().InsertOrUpdate(operation))
                         throw new Exception("Operation");
                 }
                 else
+                {
                     foreach (DataGridViewRow rowGrid in dataGridView.Rows)
                     {
                         var row = (DataRowView)rowGrid.DataBoundItem;
@@ -247,10 +257,10 @@ public partial class DetailFactureForm : DetailOperationForm
                         operation.date_reference = operation.date_operation = date_reference;
                         operation.libelle = comment;
                         operation.saisie_id = entite.id;
-                            
+
                         if (dataGridView.Rows.Count == 1)
                         {
-                            if ( entite.lot_id != null)
+                            if (entite.lot_id != null)
                                 operation.lot_id = entite.lot_id;
                             if (lot != null)
                                 operation.coproprietaire_id = lot.coproprietaire_id;
@@ -258,9 +268,11 @@ public partial class DetailFactureForm : DetailOperationForm
                             operation.credit = montant < 0 ? montant * (decimal)-1.0 : (decimal)0.0;
                             operation.global = montant;
                         }
+
                         if (!OperationController.getController().InsertOrUpdate(operation))
                             throw new Exception("Operation");
                     }
+                }
 
                 trx.Commit();
             }
@@ -270,11 +282,14 @@ public partial class DetailFactureForm : DetailOperationForm
                 MessageBox.Show(ex.Message);
             }
         }
-        else
-        if (DialogResult.No == MessageBox.Show("La modification de ces élements entraine une nouvelle repartition\rVous devez annulez cette facture et la recréer", "Attention", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+        else if (DialogResult.No ==
+                 MessageBox.Show(
+                     "La modification de ces élements entraine une nouvelle repartition\rVous devez annulez cette facture et la recréer",
+                     "Attention", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
         {
             return;
         }
+
         entite = SaisieFactureController.getController().getEntiteById(entite.id);
         fillFormFromMaster();
     }
@@ -288,9 +303,10 @@ public partial class DetailFactureForm : DetailOperationForm
             else
                 SaisieFactureController.getController().RecalcRepartition(entite, true);
         }
-        fillFormFromMaster();
 
+        fillFormFromMaster();
     }
+
     private void supprimerLélémentToolStripMenuItem_Click(object sender, EventArgs e)
     {
         if (dataGridView.SelectedRows.Count > 0)
@@ -309,6 +325,7 @@ public partial class DetailFactureForm : DetailOperationForm
                             throw new Exception("Operation");
                     }
                 }
+
                 trx.Commit();
             }
             catch (Exception ex)
@@ -316,6 +333,7 @@ public partial class DetailFactureForm : DetailOperationForm
                 trx.Rollback();
                 MessageBox.Show(ex.Message);
             }
+
             FillDataGridView();
         }
     }
@@ -339,6 +357,7 @@ public partial class DetailFactureForm : DetailOperationForm
                             throw new Exception("Operation");
                     }
                 }
+
                 entite.liasse_id = "Correction";
                 if (!SaisieFactureController.getController().InsertOrUpdate(entite))
                     throw new Exception("Facture");
@@ -349,13 +368,16 @@ public partial class DetailFactureForm : DetailOperationForm
                 trx.Rollback();
                 MessageBox.Show(ex.Message);
             }
+
             FillDataGridView();
         }
     }
+
     private void tbTotal_Enter(object sender, EventArgs e)
     {
         ControlsWindows.FocusNextTabbedControl(this);
     }
+
     protected override void dataGridView_DoubleClick(object sender, EventArgs e)
     {
         if (dataGridView.SelectedRows.Count > 0)

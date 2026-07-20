@@ -12,14 +12,14 @@ namespace EspaceSyndic.Impressions.Budget;
 
 public partial class ImprimerBudgetForm : Form
 {
-    private ImmeubleEntite immeuble;
     private readonly string exercice_id;
+    private ImmeubleEntite immeuble;
+
     public ImprimerBudgetForm(ImmeubleEntite immeuble, string exercice_id)
     {
         InitializeComponent();
         this.immeuble = immeuble;
         this.exercice_id = exercice_id;
-            
     }
 
     private void ImprimerBudgetForm_Load(object sender, EventArgs e)
@@ -31,6 +31,7 @@ public partial class ImprimerBudgetForm : Form
             tbRefImmeuble_Validating();
         }
     }
+
     private void FillCbExercice(string exercice_id = "")
     {
         var exercices = ExerciceComptableController.getController().getListExerciceFromImmeuble(immeuble.id);
@@ -43,6 +44,7 @@ public partial class ImprimerBudgetForm : Form
             cbExercice.SelectedValue = exercice_id;
         cbExercice_SelectedIndexChanged(null, null);
     }
+
     private void cbExercice_SelectedIndexChanged(object sender, EventArgs e)
     {
         if (cbExercice.SelectedValue != null)
@@ -54,6 +56,7 @@ public partial class ImprimerBudgetForm : Form
                 btnRapport_Click(null, null);
             }
     }
+
     private void lblImmeuble_Click(object sender, EventArgs e)
     {
         var form = new FindImmeubleForm();
@@ -64,6 +67,7 @@ public partial class ImprimerBudgetForm : Form
             tbRefImmeuble_Validating();
         }
     }
+
     private void tbRefImmeuble_Validating()
     {
         if (!tbRefImmeuble.Enabled)
@@ -94,13 +98,15 @@ public partial class ImprimerBudgetForm : Form
         {
             var hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
             var hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
-            var parameters = new ReportParameter[]{
+            var parameters = new ReportParameter[]
+            {
                 new("DateEntete", dtEdition.Value.ToShortDateString()),
                 new("Header_Description", hdr_descr),
                 new("Header_Agence", hdr_agence),
                 new("Exercice", row["reference"].ToString())
             };
-            var budgets = BudgetController.getController().getViewBudgets(immeuble.id, cbExercice.SelectedValue.ToString());
+            var budgets = BudgetController.getController()
+                .getViewBudgets(immeuble.id, cbExercice.SelectedValue.ToString());
             reportViewer1.LocalReport.DataSources.Clear();
             reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("BudgetAnnexe3", budgets));
             reportViewer1.LocalReport.SetParameters(parameters);

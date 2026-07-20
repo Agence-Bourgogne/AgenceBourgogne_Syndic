@@ -4,22 +4,23 @@ using SyndicData.Common;
 
 namespace SyndicData.Entites;
 
-public class LiasseEntite :AbstractBaseEntite
+public class LiasseEntite : AbstractBaseEntite
 {
 //        public enum Type { Ecriture, Cheques, AppelDeFond};
 //        public enum Statut { Actif, Inactif , Valide };
     public const string NOUVELLE_ID = "new";
     public const string NOUVELLE_DESI = "Nouvelle";
-    public string reference;
     public decimal montant;
-    public string type_ecriture;
+    public string reference;
     public int statut = (int)GlobalConstantes.StatutOperation.Brouillon;
-    public LiasseEntite ()
+    public string type_ecriture;
+
+    public LiasseEntite()
     {
         id = "";
         setValues(null);
     }
-    
+
     public override void setValues(DataRow row)
     {
         var members = GetType().GetFields();
@@ -33,5 +34,4 @@ public class LiasseEntite :AbstractBaseEntite
 
         base.setValues(row);
     }
-
 }

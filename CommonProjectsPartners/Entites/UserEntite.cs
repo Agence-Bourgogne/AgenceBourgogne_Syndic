@@ -6,18 +6,41 @@ namespace CommonProjectsPartners.Entites;
 
 public class UserEntite : AbstractBaseEntite
 {
-    public string reference;
-    public string password;
     public string nom;
+    public string password;
     public string prenom;
-    public string roles_id;
+    public string reference;
     public string resources_id;
+    public string roles_id;
     public int statut;
 
     public UserEntite()
     {
         id = "";
         setValues(null);
+    }
+
+    public string Password
+    {
+        get
+        {
+            if (password != null)
+                return CryptoUtils.Decrypt(password);
+            return null;
+        }
+        set => password = CryptoUtils.Encrypt(value);
+    }
+
+    public RoleEntite Role => RolesController.getController().getEntiteById(roles_id);
+
+    public bool IsAdmin
+    {
+        get
+        {
+            if (Role != null)
+                return Role.reference == "ADMIN";
+            return false;
+        }
     }
 
     public override void setValues(DataRow row)
@@ -35,26 +58,5 @@ public class UserEntite : AbstractBaseEntite
         updatables.Add(new UpdateField("statut", true, members));
 
         base.setValues(row);
-    }
-    public string Password
-    {
-        get
-        {
-            if (password != null)
-                return CryptoUtils.Decrypt(password);
-            return null;
-        }
-        set => password = CryptoUtils.Encrypt(value);
-    }
-    public RoleEntite Role => RolesController.getController().getEntiteById(roles_id);
-
-    public bool IsAdmin
-    {
-        get
-        {
-            if (Role != null)
-                return Role.reference == "ADMIN";
-            return false;
-        }
     }
 }

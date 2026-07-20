@@ -14,15 +14,17 @@ namespace EspaceSyndic.Formulaires.Nature;
 public partial class ListeNatureForm : Form
 {
     public readonly NatureController controller = new();
+
     public ListeNatureForm()
     {
         InitializeComponent();
-
     }
+
     private void ListeNatureForm_Load(object sender, EventArgs e)
     {
         FillDataGrid();
     }
+
     private void FillDataGrid()
     {
         if (ckActif.Checked)
@@ -47,6 +49,7 @@ public partial class ListeNatureForm : Form
             cols["budgetisable"].MinimumWidth = 40;
             ControlsWindows.ToTitleCase(cols);
         }
+
         BtnSave.Enabled = false;
     }
 
@@ -78,10 +81,7 @@ public partial class ListeNatureForm : Form
 
     private void BtnSave_Click(object sender, EventArgs e)
     {
-        if (controller.SaveList((DataTable)dataGridView.DataSource))
-        {
-            updateEditMode(false);
-        }
+        if (controller.SaveList((DataTable)dataGridView.DataSource)) updateEditMode(false);
     }
 
     private void updateEditMode(bool bEdit)
@@ -91,6 +91,7 @@ public partial class ListeNatureForm : Form
         dataGridView.ReadOnly = !bEdit;
         BtnSave.Enabled = bEdit;
     }
+
     private void edition(NatureEntite entite)
     {
         try
@@ -105,6 +106,7 @@ public partial class ListeNatureForm : Form
             MessageBox.Show(ex.Message);
         }
     }
+
     private void dataGridView_KeyPress(object sender, KeyPressEventArgs e)
     {
         if (Convert.ToInt16(e.KeyChar) == 32)
@@ -112,6 +114,7 @@ public partial class ListeNatureForm : Form
             e.Handled = true;
             editionToolStripMenuItem_Click(null, null);
         }
+
         if (Convert.ToInt16(e.KeyChar) == 27)
         {
             e.Handled = true;
@@ -121,20 +124,23 @@ public partial class ListeNatureForm : Form
 
     private void btnExport_Click(object sender, EventArgs e)
     {
-        var colsToHide = new List<string> { "id", "audit_created_by", "audit_created", "audit_updated", "audit_updated_by" };
+        var colsToHide = new List<string>
+            { "id", "audit_created_by", "audit_created", "audit_updated", "audit_updated_by" };
         BaseApplication.DataGridToExcel(dataGridView, colsToHide);
     }
 
     private void btnFiltre_Click(object sender, EventArgs e)
     {
         var form = new FindNatureForm();
-        var source = new BindingSource();// (BindingSource)dataGridView.DataSource;
+        var source = new BindingSource(); // (BindingSource)dataGridView.DataSource;
         source.DataSource = dataGridView.DataSource;
         if (DialogResult.Cancel != form.ShowDialog())
         {
             var action = (int)CommonRegistry.getRegistryValue("Parametres", "ActionFiltre", 0);
             if (action == 1)
+            {
                 source.Filter = $"reference = '{form.reference}'";
+            }
             else
             {
                 var fiche = new FicheNatureForm();
@@ -143,8 +149,9 @@ public partial class ListeNatureForm : Form
             }
         }
         else
+        {
             source.Filter = "";
-
+        }
     }
 
     private void ckActif_CheckedChanged(object sender, EventArgs e)
@@ -156,8 +163,6 @@ public partial class ListeNatureForm : Form
     {
         var row = dataGridView.Rows[e.RowIndex];
         if ((int)row.Cells["statut"].Value == 9)
-        {
             dataGridView.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.OrangeRed;
-        }
     }
 }

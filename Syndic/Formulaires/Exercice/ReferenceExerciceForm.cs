@@ -10,13 +10,14 @@ namespace EspaceSyndic.Formulaires.Exercice;
 
 public partial class ReferenceExerciceForm : Form
 {
-    private ExerciceComptableEntite exercice;
     private bool bLoading;
+    private ExerciceComptableEntite exercice;
 
     public ReferenceExerciceForm()
     {
         InitializeComponent();
     }
+
     //public ReferenceExerciceForm(ExerciceComptableEntite exercice)
     //{
     //    InitializeComponent();
@@ -34,7 +35,7 @@ public partial class ReferenceExerciceForm : Form
 
     private void ReferenceExerciceForm_Load(object sender, EventArgs e)
     {
-        if ( exercice != null )
+        if (exercice != null)
         {
             if (exercice.id != "")
             {
@@ -43,6 +44,7 @@ public partial class ReferenceExerciceForm : Form
                 dtDeb.Value = exercice.date_deb;
                 dtDeb.ValueChanged += dtDeb_ValueChanged;
             }
+
             tbReference.Text = exercice.reference;
             fillDataGrid();
         }
@@ -55,7 +57,8 @@ public partial class ReferenceExerciceForm : Form
     private void fillDataGrid()
     {
         bLoading = true;
-        dataGridView.DataSource = ExerciceComptableController.getController().getListExerciceFromImmeuble(exercice.immeuble_id);
+        dataGridView.DataSource = ExerciceComptableController.getController()
+            .getListExerciceFromImmeuble(exercice.immeuble_id);
         var cols = dataGridView.Columns;
         cols["id"].Visible = false;
         cols["budget_id"].Visible = false;
@@ -67,7 +70,7 @@ public partial class ReferenceExerciceForm : Form
         dataGridView.ClearSelection();
         foreach (DataGridViewRow rowGrid in dataGridView.Rows)
         {
-            var row = (DataRowView) rowGrid.DataBoundItem;
+            var row = (DataRowView)rowGrid.DataBoundItem;
             if (row["id"].ToString() == exercice.id)
             {
                 rowGrid.Selected = true;
@@ -75,6 +78,7 @@ public partial class ReferenceExerciceForm : Form
                 break;
             }
         }
+
         bLoading = false;
     }
 
@@ -92,8 +96,11 @@ public partial class ReferenceExerciceForm : Form
                 Close();
         }
         else
+        {
             ControlsWindows.FocusNextTabbedControl(this);
+        }
     }
+
     private bool UpdateExercice()
     {
         var bResult = false;
@@ -112,6 +119,7 @@ public partial class ReferenceExerciceForm : Form
             immeuble.datecloture = exercice.date_fin;
             bResult &= ImmeubleController.getController().InsertOrUpdate(immeuble);
         }
+
         return bResult;
     }
 
@@ -120,14 +128,15 @@ public partial class ReferenceExerciceForm : Form
         var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
         var entite = ExerciceComptableController.getController().getEntiteById(row["id"].ToString());
 
-        if ( entite != null )
+        if (entite != null)
         {
             var statut = Convertir.ToInt(entite.statut);
-            if (statut == (int) GlobalConstantes.StatutExercice.Clos)
+            if (statut == (int)GlobalConstantes.StatutExercice.Clos)
             {
                 MessageBox.Show(@"Exercice Cloturé impossible de le supprimer");
                 return;
             }
+
             ExerciceComptableController.getController().deleteEntite(entite);
             fillDataGrid();
         }
@@ -135,7 +144,7 @@ public partial class ReferenceExerciceForm : Form
 
     private void dataGridView_SelectionChanged(object sender, EventArgs e)
     {
-        if (!bLoading && dataGridView.SelectedRows.Count > 0 )
+        if (!bLoading && dataGridView.SelectedRows.Count > 0)
         {
             var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
             var entite = ExerciceComptableController.getController().getEntiteById(row["id"].ToString());

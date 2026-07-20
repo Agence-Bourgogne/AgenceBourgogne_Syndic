@@ -9,14 +9,17 @@ namespace SyndicData.Controller;
 internal class ConvocationController : AbstractBaseController<ConvocationEntite>
 {
     private static readonly ConvocationController controller = new();
+
     public override string getTable()
     {
         return "convocation";
     }
+
     public static ConvocationController getController()
     {
         return controller;
     }
+
     public List<ConvocationDescriptionEntite> getListeDescription(string convocation_id)
     {
         List<ConvocationDescriptionEntite> list = null;
@@ -29,15 +32,13 @@ internal class ConvocationController : AbstractBaseController<ConvocationEntite>
         };
 
         var table = getResultSQL(cmd, parameters);
-        if ( table != null)
+        if (table != null)
             if (table.Rows.Count > 0)
             {
                 list = [];
-                foreach (DataRow row in table.Rows)
-                {
-                    list.Add(new ConvocationDescriptionEntite(row));
-                }
+                foreach (DataRow row in table.Rows) list.Add(new ConvocationDescriptionEntite(row));
             }
+
         return list;
     }
 }

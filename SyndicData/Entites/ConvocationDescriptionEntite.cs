@@ -5,14 +5,14 @@ namespace SyndicData.Entites;
 
 public class ConvocationDescriptionEntite : AbstractBaseEntite
 {
-    public string convocation_id;
-    public int numero_ordre;
-    public string description;
-    public int votants;
-    public int approuves;
     public int abstensions;
+    public int approuves;
+    public string convocation_id;
+    public string description;
+    public int numero_ordre;
     public int refuses;
     public int statut;
+    public int votants;
 
     public ConvocationDescriptionEntite(DataRow row)
     {

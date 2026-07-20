@@ -5,7 +5,6 @@ namespace EspaceSyndic.Formulaires.Common;
 
 internal static class StandardFunctionnalities
 {
-
     public static string GetKeyPressText(string keyValue)
     {
         var keyString = "";
@@ -14,6 +13,7 @@ internal static class StandardFunctionnalities
             keyString = row["param_1"].ToString();
         return keyString;
     }
+
     public static void Standard_KeyPress(object sender, KeyEventArgs e, bool bClear = true)
     {
         if (sender is TextBox tb)
@@ -21,7 +21,7 @@ internal static class StandardFunctionnalities
             var keyText = GetKeyPressText(e.KeyCode.ToString());
             if (keyText != "")
             {
-                if ( bClear )
+                if (bClear)
                     tb.Text = keyText;
                 else
                     tb.Text += keyText;

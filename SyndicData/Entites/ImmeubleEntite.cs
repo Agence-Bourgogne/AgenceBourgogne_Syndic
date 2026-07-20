@@ -8,34 +8,70 @@ namespace SyndicData.Entites;
 
 public class ImmeubleEntite : AbstractBaseEntite
 {
-    public string reference;
-    public string nom;
-    public string rue;
+    private ExerciceComptableEntite _exercice;
     public string codepostal;
-    public string ville;
     public string comptebanque;
+    public DateTime dateass;
+    public DateTime datecloture;
+    public DateTime datecreation;
+    private DataTable immeuble_repart;
+    public string lieuconv;
+    private DataTable listeLots;
+    public string nom;
     public int nombrelots;
     public string note;
     public string note_repart;
-    public DateTime datecreation;
-    public DateTime datecloture;
-    public DateTime dateass;
-    public string lieuconv;
+    public string reference;
+    public string rue;
     public int statut = (int)StatutEntite.Actif;
     public string texte_date;
-    private DataTable immeuble_repart;
-    private DataTable listeLots;
+    public string ville;
+
     public ImmeubleEntite()
     {
         id = "";
         datecreation = DateTime.Now;
         setValues(null);
     }
-    public ImmeubleEntite(DataRow datas) 
+
+    public ImmeubleEntite(DataRow datas)
     {
         setValues(datas);
     }
-    public override void setValues( DataRow row)
+
+    public List<LotDescriptionEntite> LotDescription
+    {
+        get
+        {
+            if (field == null) field = LotDescriptionController.getController().getListeLotDescription(id);
+            return field;
+        }
+    }
+
+    public string Adresse => rue + " " + codepostal + " " + ville;
+
+    public ExerciceComptableEntite ExerciceCourant
+    {
+        get
+        {
+            if (_exercice == null)
+                _exercice = ExerciceComptableController.getController().getExerciceCourant(id);
+            return _exercice;
+        }
+    }
+
+    public string DateExercice
+    {
+        get
+        {
+            var strDate = "  /  /    ";
+            if (ExerciceCourant != null)
+                strDate = ExerciceCourant.date_deb.ToShortDateString();
+            return strDate;
+        }
+    }
+
+    public override void setValues(DataRow row)
     {
         var members = GetType().GetFields();
         updatables.Clear();
@@ -58,16 +94,18 @@ public class ImmeubleEntite : AbstractBaseEntite
 
         base.setValues(row);
     }
+
     public DataTable getRepartitionImmeuble()
     {
         //if (immeuble_repart == null)
         {
             var controller = new ImmeubleRepartitionController();
-            if ( ! isNew )
-                immeuble_repart = controller.getRepartitionImmeuble(id/*, reference*/);
+            if (!isNew)
+                immeuble_repart = controller.getRepartitionImmeuble(id /*, reference*/);
         }
         return immeuble_repart;
     }
+
     public DataTable getListeLots()
     {
         //if (listeLots == null)
@@ -76,38 +114,5 @@ public class ImmeubleEntite : AbstractBaseEntite
             listeLots = controller.getDataGridListeLotDescription(this);
         }
         return listeLots;
-    }
-
-    public List<LotDescriptionEntite> LotDescription
-    {
-        get
-        {
-            if (field == null)
-            {
-                field = LotDescriptionController.getController().getListeLotDescription(id);
-            }
-            return field;
-        }
-    }
-    public string Adresse => rue + " " + codepostal + " " + ville;
-    private ExerciceComptableEntite _exercice;
-    public ExerciceComptableEntite ExerciceCourant
-    {
-        get
-        {
-            if ( _exercice == null )
-                _exercice = ExerciceComptableController.getController().getExerciceCourant(id);
-            return _exercice;
-        }
-    }
-    public string DateExercice 
-    {
-        get
-        {
-            var strDate = "  /  /    ";
-            if ( ExerciceCourant != null )
-                strDate = ExerciceCourant.date_deb.ToShortDateString();
-            return strDate;
-        }
     }
 }

@@ -12,17 +12,17 @@ namespace EspaceSyndic.Formulaires.Ecritures;
 
 public partial class FicheAppelDeFondRepartitionIndividuelle : Form
 {
-    public ImmeubleEntite immeuble = null;
-    public SaisieAppelFondEntite saisie = null;
-    private bool initialized;
-
     private string[] base_compteur = new string[1];
     private string[] base_compteurFixes = new string[1];
+    public ImmeubleEntite immeuble = null;
+    private bool initialized;
+    public SaisieAppelFondEntite saisie = null;
 
     public FicheAppelDeFondRepartitionIndividuelle()
     {
         InitializeComponent();
     }
+
     protected void getBasesCompteurs()
     {
         var bases = ParametresDB.getParam1("BASES", "COMPTEURS");
@@ -37,14 +37,12 @@ public partial class FicheAppelDeFondRepartitionIndividuelle : Form
     {
         getBasesCompteurs();
 
-        dataGridViewLots.DataSource = LotDescriptionController.getController().getDataGridListeLotDescription(immeuble, true, true, true); 
+        dataGridViewLots.DataSource = LotDescriptionController.getController()
+            .getDataGridListeLotDescription(immeuble, true, true, true);
         dataGridViewLots.Columns["id"].Visible = false;
         dataGridViewLots.Columns["coproprietaire_id"].Visible = false;
         dataGridViewLots.Columns["avance"].Visible = false;
-        foreach (DataGridViewColumn col in dataGridViewLots.Columns)
-        {
-            col.ReadOnly = true;
-        }
+        foreach (DataGridViewColumn col in dataGridViewLots.Columns) col.ReadOnly = true;
 
         if (!base_compteur.Contains(saisie.base_repart))
         {
@@ -59,6 +57,7 @@ public partial class FicheAppelDeFondRepartitionIndividuelle : Form
             lblGlobal.Visible = false;
             dataGridViewLots.Columns["montant"].ReadOnly = false;
         }
+
         if (saisie.base_repart == "81" && saisie.Nature.reference == "140")
         {
             dataGridViewLots.Columns["index"].Visible = false;
@@ -76,6 +75,7 @@ public partial class FicheAppelDeFondRepartitionIndividuelle : Form
         initialized = true;
         dataGridViewLots_CellValueChanged(null, null);
     }
+
     protected void FillDataGrid()
     {
         try
@@ -85,7 +85,8 @@ public partial class FicheAppelDeFondRepartitionIndividuelle : Form
             var bFromSaisie = true;
             if (repart == null || repart.Rows.Count < 1)
             {
-                repart = RepartIndividuelleController.getController().getLastRepartFromSaisie(saisie.immeuble_id, saisie.base_repart, GlobalConstantes.TypeSaisie.AppelDeFond);
+                repart = RepartIndividuelleController.getController().getLastRepartFromSaisie(saisie.immeuble_id,
+                    saisie.base_repart, GlobalConstantes.TypeSaisie.AppelDeFond);
 
                 if (base_compteurFixes.Contains(saisie.base_repart))
                 {
@@ -104,16 +105,14 @@ public partial class FicheAppelDeFondRepartitionIndividuelle : Form
             {
                 var rowGrid = (DataRowView)rowItem.DataBoundItem;
                 foreach (DataRow row in table.Rows)
-                {
                     if (rowGrid["id"].ToString() == row["lot_id"].ToString())
                     {
                         rowGrid["montant"] = (decimal)row["debit"] == 0 ? null : row["debit"];
                         rowItem.Tag = row;
                         break;
                     }
-                }
+
                 foreach (DataRow row in repart.Rows)
-                {
                     if (rowGrid["id"].ToString() == row["lot_id"].ToString())
                     {
                         if (bFromSaisie)
@@ -130,18 +129,19 @@ public partial class FicheAppelDeFondRepartitionIndividuelle : Form
                             else
                                 rowGrid["ancien"] = row["nouveau"] == null ? row["ancien"] : row["nouveau"];
                         }
-                        dataGridViewLots_CellEndEdit(dataGridViewLots, new DataGridViewCellEventArgs(rowItem.Cells["index"].ColumnIndex, rowItem.Index));
+
+                        dataGridViewLots_CellEndEdit(dataGridViewLots,
+                            new DataGridViewCellEventArgs(rowItem.Cells["index"].ColumnIndex, rowItem.Index));
                         break;
                     }
-                }
             }
-
         }
         catch (Exception ex)
         {
             MessageBox.Show(ex.Message);
         }
     }
+
     private void dataGridViewLots_CellValueChanged(object sender, DataGridViewCellEventArgs e)
     {
         if (initialized)
@@ -149,9 +149,7 @@ public partial class FicheAppelDeFondRepartitionIndividuelle : Form
             //                Console.WriteLine("changed");
             float current = 0;
             foreach (DataGridViewRow row in dataGridViewLots.Rows)
-            {
                 current += Convertir.ToFloat(row.Cells["montant"].Value);
-            }
             tbMontantActuel.Text = current.ToString();
             tbDiff.BackColor = Color.White;
             if (!"".Equals(tbMontantTotal.Text))
@@ -171,10 +169,11 @@ public partial class FicheAppelDeFondRepartitionIndividuelle : Form
         dataGridViewLots_CellValueChanged(null, null);
 
         if (Math.Abs(Convertir.ToDecimal(tbDiff.Text)) > (decimal)1.0)
-        {
-            if (DialogResult.Yes != MessageBox.Show("Le montant total de la répartition n'est pas valide\r\nVoulez-vous enregistrer cette répartition", "Attention", MessageBoxButtons.YesNo))
+            if (DialogResult.Yes !=
+                MessageBox.Show(
+                    "Le montant total de la répartition n'est pas valide\r\nVoulez-vous enregistrer cette répartition",
+                    "Attention", MessageBoxButtons.YesNo))
                 return;
-        }
 
         var cnx = Database.GetInstance();
         var trx = cnx.BeginTransaction();
@@ -203,7 +202,8 @@ public partial class FicheAppelDeFondRepartitionIndividuelle : Form
                     if (rowGrid.Tag != null)
                         operation = new OperationEntite((DataRow)rowGrid.Tag);
 
-                    if (!operationCtl.InsertOperationFromSaisie(saisie, operation, montant, row["coproprietaire_id"].ToString(), row["id"].ToString(), numligne++))
+                    if (!operationCtl.InsertOperationFromSaisie(saisie, operation, montant,
+                            row["coproprietaire_id"].ToString(), row["id"].ToString(), numligne++))
                         throw new Exception("Operation");
 
                     var cell = rowGrid.Cells["index"];
@@ -211,10 +211,12 @@ public partial class FicheAppelDeFondRepartitionIndividuelle : Form
                     var index = Convertir.ToDecimal(rowGrid.Cells["index"].Value);
                     var ancien = Convertir.ToDecimal(rowGrid.Cells["ancien"].Value);
                     var nouveau = Convertir.ToDecimal(rowGrid.Cells["nouveau"].Value);
-                    if (!repartCtl.InsertRepartIndividuelleFromSaisie(operation, repart, index, ancien, nouveau, global, GlobalConstantes.TypeSaisie.AppelDeFond ))
+                    if (!repartCtl.InsertRepartIndividuelleFromSaisie(operation, repart, index, ancien, nouveau, global,
+                            GlobalConstantes.TypeSaisie.AppelDeFond))
                         throw new Exception("Repartition");
                 }
             }
+
             trx.Commit();
             MessageBox.Show(@"Modifications enregistrées");
             DialogResult = DialogResult.OK;
@@ -226,6 +228,7 @@ public partial class FicheAppelDeFondRepartitionIndividuelle : Form
             trx.Rollback();
         }
     }
+
     private void tbGlobal_Validating(object sender, CancelEventArgs e)
     {
         if (tbGlobal.Text != "")
@@ -250,7 +253,7 @@ public partial class FicheAppelDeFondRepartitionIndividuelle : Form
 
     private void dataGridViewLots_CellEndEdit(object sender, DataGridViewCellEventArgs e)
     {
-        if ( ((DataGridView) sender).Columns[e.ColumnIndex].Name == "index" )
+        if (((DataGridView)sender).Columns[e.ColumnIndex].Name == "index")
         {
             var cell = dataGridViewLots.Rows[e.RowIndex].Cells[e.ColumnIndex];
             //if ( !cell.ReadOnly )
@@ -268,15 +271,17 @@ public partial class FicheAppelDeFondRepartitionIndividuelle : Form
                 }
             }
         }
-        if (((DataGridView)sender).Columns[e.ColumnIndex].Name == "nouveau" || ((DataGridView)sender).Columns[e.ColumnIndex].Name == "ancien")
+
+        if (((DataGridView)sender).Columns[e.ColumnIndex].Name == "nouveau" ||
+            ((DataGridView)sender).Columns[e.ColumnIndex].Name == "ancien")
         {
             var row = dataGridViewLots.Rows[e.RowIndex];
             if (row != null)
-                if ( row.Cells["ancien"].Value.ToString() != "" && row.Cells["nouveau"].Value.ToString() != "" )
+                if (row.Cells["ancien"].Value.ToString() != "" && row.Cells["nouveau"].Value.ToString() != "")
                 {
                     var ancien = Convertir.ToDecimal(row.Cells["ancien"].Value);
                     var nouveau = Convertir.ToDecimal(row.Cells["nouveau"].Value);
-                    row.Cells["index"].Value =  nouveau - ancien;
+                    row.Cells["index"].Value = nouveau - ancien;
 
                     var montant = Convertir.ToDecimal(tbMontantTotal.Text);
                     var global = Convertir.ToDecimal(tbGlobal.Text);
@@ -299,9 +304,7 @@ public partial class FicheAppelDeFondRepartitionIndividuelle : Form
         {
             var row = dataGridViewLots.Rows[e.RowIndex];
             if (Convertir.ToInt(row.Cells["statut"].Value) == (int)GlobalConstantes.StatutData.Inactif)
-            {
                 row.DefaultCellStyle.BackColor = Color.OrangeRed;
-            }
         }
     }
 }

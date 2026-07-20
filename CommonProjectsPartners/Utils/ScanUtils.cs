@@ -8,10 +8,11 @@ using NTwain.Data;
 namespace CommonProjectsPartners.Utils;
 
 public delegate void DataTransferredEventHandler(object sender, EventArgs e);
+
 public class ScanUtils
 {
-    public Image image;
     public DataTransferredEventHandler DataTransferred;
+    public Image image;
 
     public void TwainAcquire(IntPtr handle)
     {

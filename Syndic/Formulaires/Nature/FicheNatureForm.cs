@@ -10,10 +10,10 @@ namespace EspaceSyndic.Formulaires.Nature;
 
 public partial class FicheNatureForm : Form
 {
-    public NatureEntite entite;
     public readonly NatureController controller = new();
+    public NatureEntite entite;
     private bool modified;
-        
+
     public FicheNatureForm(bool bShowNav = true)
     {
         InitializeComponent();
@@ -21,12 +21,14 @@ public partial class FicheNatureForm : Form
         tbNomCompta.Visible = false;
         lblNomCompta.Visible = false;
     }
+
     private void FicheNatureForm_Load(object sender, EventArgs e)
     {
         btnEnter.Width = 0;
-        ParametresDB.FillComboFromParams(cbTypeCharge,"TYPECHARGE", "Nom");
+        ParametresDB.FillComboFromParams(cbTypeCharge, "TYPECHARGE", "Nom");
         setFicheValues(null);
     }
+
     private void setFicheValues(NatureEntite newEntite)
     {
         if (newEntite != null)
@@ -39,7 +41,7 @@ public partial class FicheNatureForm : Form
         tbRefComptable.Text = entite.reference_comptabilite;
         cbTypeCharge.SelectedValue = entite.type_charge;
         ckBudget.Checked = entite.budgetisable;
-        ckDesactiv.Checked = entite.statut == (int) AbstractBaseEntite.StatutEntite.Supprime;
+        ckDesactiv.Checked = entite.statut == (int)AbstractBaseEntite.StatutEntite.Supprime;
 //            tbNomCompta.Text = entite.nom_comptabilite;
         modified = false;
     }
@@ -54,6 +56,7 @@ public partial class FicheNatureForm : Form
     {
         saveForm();
     }
+
     private bool saveForm(bool bShowMessage = false, bool bShowResult = true)
     {
         if (bShowMessage)
@@ -62,10 +65,7 @@ public partial class FicheNatureForm : Form
                 "", MessageBoxButtons.YesNoCancel);
             if (result == DialogResult.Cancel)
                 return false;
-            if (result == DialogResult.No)
-            {
-                return true;
-            }
+            if (result == DialogResult.No) return true;
         }
 
         entite.reference = tbRef.Text;
@@ -73,9 +73,11 @@ public partial class FicheNatureForm : Form
         entite.charge_locative = tbPart.Text.Equals("") ? 0 : Convert.ToInt32(tbPart.Text);
         entite.declaration = tbDeclaration.Text;
         entite.reference_comptabilite = tbRefComptable.Text;
-        entite.type_charge = (int) cbTypeCharge.SelectedValue;
+        entite.type_charge = (int)cbTypeCharge.SelectedValue;
         entite.budgetisable = ckBudget.Checked;
-        entite.statut = ckDesactiv.Checked ? (int) AbstractBaseEntite.StatutEntite.Supprime : (int) AbstractBaseEntite.StatutEntite.Actif;
+        entite.statut = ckDesactiv.Checked
+            ? (int)AbstractBaseEntite.StatutEntite.Supprime
+            : (int)AbstractBaseEntite.StatutEntite.Actif;
 //            entite.nom_comptabilite = tbNomCompta.Text;
 
         if (controller.InsertOrUpdate(entite))
@@ -85,8 +87,10 @@ public partial class FicheNatureForm : Form
             modified = false;
             return true;
         }
+
         return false;
     }
+
     private void getNewEntite(string where, string message)
     {
         if (modified)
@@ -114,10 +118,12 @@ public partial class FicheNatureForm : Form
     {
         getNewEntite($"where reference < '{entite.reference}' order by reference desc", "Début de liste atteint");
     }
+
     protected void btnNext_Click(object sender, EventArgs e)
     {
         getNewEntite($"where reference > '{entite.reference}' order by reference ", "Fin de liste atteinte");
     }
+
     protected void btnLast_Click(object sender, EventArgs e)
     {
         getNewEntite("order by reference desc", "Fin de liste atteinte");
@@ -129,6 +135,7 @@ public partial class FicheNatureForm : Form
             if (!saveForm(true))
                 e.Cancel = true;
     }
+
     private void tbTextChanged(object sender, EventArgs e)
     {
         modified = true;
@@ -159,5 +166,4 @@ public partial class FicheNatureForm : Form
             setFicheValues(entite);
         }
     }
-
 }

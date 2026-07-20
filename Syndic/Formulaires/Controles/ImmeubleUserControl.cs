@@ -10,11 +10,31 @@ public delegate void ValidatingEventHandler(object sender, CancelEventArgs e);
 
 public partial class ImmeubleUserControl : UserControl
 {
-    public event ValidatingEventHandler ValidatingControl;
     public ImmeubleUserControl()
     {
         InitializeComponent();
     }
+
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public string Reference
+    {
+        get => tbRefImmeuble.Text;
+        set => tbRefImmeuble.Text = value;
+    }
+
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public bool Invalid
+    {
+        set
+        {
+            if (value)
+                tbRefImmeuble.BackColor = Color.Red;
+            else
+                tbRefImmeuble.BackColor = Color.White;
+        }
+    }
+
+    public event ValidatingEventHandler ValidatingControl;
 
     private void lblImmeuble_Click(object sender, EventArgs e)
     {
@@ -41,23 +61,4 @@ public partial class ImmeubleUserControl : UserControl
     {
         ValidatingControl?.Invoke(sender, e);
     }
-
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public string Reference
-    {
-        get => tbRefImmeuble.Text;
-        set => tbRefImmeuble.Text = value;
-    }
-
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public bool Invalid
-    {
-        set
-        {
-            if (value)
-                tbRefImmeuble.BackColor = Color.Red;
-            else
-                tbRefImmeuble.BackColor = Color.White;
-        }
-    } 
 }

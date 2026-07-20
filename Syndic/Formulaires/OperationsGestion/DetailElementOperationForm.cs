@@ -12,15 +12,18 @@ namespace EspaceSyndic.Formulaires.OperationsGestion;
 public partial class DetailElementOperationForm : Form
 {
     private readonly OperationEntite operation;
+
     public DetailElementOperationForm()
     {
         InitializeComponent();
     }
+
     public DetailElementOperationForm(string operation_id)
     {
         InitializeComponent();
         operation = OperationController.getController().getEntiteById(operation_id);
     }
+
     private void DetailElementOperationForm_Load(object sender, EventArgs e)
     {
         btnEnter.Width = 0;
@@ -29,13 +32,14 @@ public partial class DetailElementOperationForm : Form
             tbRefImmeuble.Text = operation.Immeuble.reference;
             tbDateCreation.Text = operation.date_reference.ToShortDateString();
             tbBase.Text = operation.base_repart;
-            if( operation.Lot != null )
+            if (operation.Lot != null)
                 tbLot.Text = operation.Lot.numero_lot.ToString();
             if (operation.Nature != null)
             {
                 tbNature.Text = operation.Nature.reference;
                 tbLibNature.Text = operation.Nature.nom;
             }
+
             tbComment.Text = operation.libelle;
             tbDebit.Text = operation.debit.ToString();
             tbCredit.Text = operation.credit.ToString();
@@ -53,9 +57,10 @@ public partial class DetailElementOperationForm : Form
     {
         if (operation == null)
             return;
-        if (MessageBox.Show("Cette Opération est irréversible\r\nVoulez-vous Continuer", "Attention", MessageBoxButtons.YesNo) == DialogResult.Yes)
+        if (MessageBox.Show("Cette Opération est irréversible\r\nVoulez-vous Continuer", "Attention",
+                MessageBoxButtons.YesNo) == DialogResult.Yes)
         {
-            operation.statut = (int) GlobalConstantes.StatutOperation.Supprime;
+            operation.statut = (int)GlobalConstantes.StatutOperation.Supprime;
             if (OperationController.getController().InsertOrUpdate(operation))
                 Close();
         }
@@ -63,12 +68,14 @@ public partial class DetailElementOperationForm : Form
 
     private void btnValid_Click(object sender, EventArgs e)
     {
-        var lot = LotDescriptionController.getController().getLotFromRefImmeubleNumLot(tbRefImmeuble.Text, Convertir.ToInt(tbLot.Text));
+        var lot = LotDescriptionController.getController()
+            .getLotFromRefImmeubleNumLot(tbRefImmeuble.Text, Convertir.ToInt(tbLot.Text));
         if (lot == null)
         {
             MessageBox.Show(@"Lot Invalide");
             return;
         }
+
         if (operation.statut == (int)GlobalConstantes.StatutOperation.Supprime)
             operation.statut = (int)GlobalConstantes.StatutOperation.Valide;
         operation.debit = Convertir.ToDecimal(tbDebit.Text);
@@ -79,8 +86,8 @@ public partial class DetailElementOperationForm : Form
 
         if (OperationController.getController().InsertOrUpdate(operation))
             Close();
-
     }
+
     private void btnEnter_Click(object sender, EventArgs e)
     {
         ControlsWindows.FocusNextTabbedControl(this);
@@ -88,7 +95,8 @@ public partial class DetailElementOperationForm : Form
 
     private void tbLot_Validating(object sender, CancelEventArgs e)
     {
-        var lot = LotDescriptionController.getController().getLotFromRefImmeubleNumLot(tbRefImmeuble.Text, Convertir.ToInt(tbLot.Text));
+        var lot = LotDescriptionController.getController()
+            .getLotFromRefImmeubleNumLot(tbRefImmeuble.Text, Convertir.ToInt(tbLot.Text));
         tbLot.BackColor = Color.White;
         if (lot != null)
         {
@@ -96,7 +104,8 @@ public partial class DetailElementOperationForm : Form
             tbRefCopro.Text = lot.Coproprietaire.reference;
         }
         else
+        {
             tbLot.BackColor = Color.Red;
+        }
     }
-
 }

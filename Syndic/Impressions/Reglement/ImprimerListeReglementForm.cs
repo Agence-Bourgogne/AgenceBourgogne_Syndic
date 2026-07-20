@@ -17,7 +17,8 @@ public partial class ImprimerListeReglementForm : Form
 
     private void ImprimerRemiseChequeForm_Load(object sender, EventArgs e)
     {
-        cbLiasse.DataSource = LiasseController.getController().GetLiassesValidees(GlobalConstantes.TypeOperation.Tresorerie);
+        cbLiasse.DataSource = LiasseController.getController()
+            .GetLiassesValidees(GlobalConstantes.TypeOperation.Tresorerie);
         cbLiasse.DisplayMember = "reference";
         cbLiasse.ValueMember = "id";
         if (liasse_id != "")
@@ -27,11 +28,12 @@ public partial class ImprimerListeReglementForm : Form
 
     private void btnRapport_Click(object sender, EventArgs e)
     {
-        var liasse_id = (string) cbLiasse.SelectedValue;
+        var liasse_id = (string)cbLiasse.SelectedValue;
 
         if (string.IsNullOrEmpty(liasse_id))
             MessageBox.Show(@"vous n'avez pas selectionner de liasse");
-        saisieremisechequeBindingSource.DataSource = SaisieReglementController.getController().GetListeReglementValideFromNature(liasse_id, cbReg.SelectedValue.ToString());
+        saisieremisechequeBindingSource.DataSource = SaisieReglementController.getController()
+            .GetListeReglementValideFromNature(liasse_id, cbReg.SelectedValue.ToString());
         reportViewer1.LocalReport.SubreportProcessing += SubreportProcessingEventHandler;
         reportViewer1.RefreshReport();
     }
@@ -42,8 +44,8 @@ public partial class ImprimerListeReglementForm : Form
         var nature_id = e.Parameters[1].Values[0];
         var comptebanque = e.Parameters[2].Values[0];
 
-        var source = SaisieReglementController.getController().GetListeReglementValideFromCompteBanque(liasse_id, nature_id, comptebanque);
+        var source = SaisieReglementController.getController()
+            .GetListeReglementValideFromCompteBanque(liasse_id, nature_id, comptebanque);
         e.DataSources.Add(new ReportDataSource("detail_operation", source));
     }
-
 }

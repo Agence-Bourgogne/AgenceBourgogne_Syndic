@@ -11,14 +11,15 @@ namespace EspaceSyndic.Impressions.RemiseDeCles;
 
 public partial class ImprimerRemiseDeClesForm : Form
 {
-    private ImmeubleEntite immeuble;
     private readonly string TitreForm;
+    private ImmeubleEntite immeuble;
+
     public ImprimerRemiseDeClesForm()
     {
         InitializeComponent();
         TitreForm = Text;
     }
-        
+
     private void lblImmeuble_Click()
     {
         var form = new FindImmeubleForm();
@@ -39,7 +40,7 @@ public partial class ImprimerRemiseDeClesForm : Form
     private void tbRefImmeuble_Validating(object sender, CancelEventArgs e)
     {
         immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
-        if (immeuble != null )
+        if (immeuble != null)
         {
             btnRapport.Enabled = true;
             Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
@@ -58,19 +59,21 @@ public partial class ImprimerRemiseDeClesForm : Form
 
     private void btnRapport_Click(object sender, EventArgs e)
     {
-        var parameters = new ReportParameter[]{
+        var parameters = new ReportParameter[]
+        {
             new("DateRemise", dtRemise.Value.ToShortDateString())
         };
 
 //            this.tableCoproImmeubleBindingSource.Filter = String.Format("immeuble_id = '{0}'", immeuble.id);
         reportViewer1.LocalReport.SetParameters(parameters);
-        tableCoproImmeubleBindingSource.DataSource = CoproprietaireController.getController().CoproprietaireImmeubleDescription(immeuble.id);
+        tableCoproImmeubleBindingSource.DataSource =
+            CoproprietaireController.getController().CoproprietaireImmeubleDescription(immeuble.id);
 //            this.coproImmeubleTableAdapter.Fill(this.coproprietaireImmeuble.TableCoproImmeuble);
         reportViewer1.RefreshReport();
     }
+
     private void tbHelpBox_KeyPress(object sender, KeyPressEventArgs e)
     {
-
         if (ModifierKeys == Keys.Control)
             if (e.KeyChar == ' ')
             {
@@ -94,5 +97,4 @@ public partial class ImprimerRemiseDeClesForm : Form
         //Console.WriteLine(sender);
         ControlsWindows.FocusNextTabbedControl(this);
     }
-
 }

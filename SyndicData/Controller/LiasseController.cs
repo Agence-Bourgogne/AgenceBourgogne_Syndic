@@ -12,15 +12,18 @@ namespace SyndicData.Controller;
 public class LiasseController : AbstractBaseController<LiasseEntite>
 {
     private static readonly LiasseController controller = new();
+
     public override string getTable()
     {
         return "liasse";
     }
+
     public static LiasseController getController()
     {
         //return new LiasseController();
         return controller;
     }
+
     public DataTable getLiasseActives(GlobalConstantes.TypeOperation type_ecriture, bool bAddNew = true)
     {
         var cmd = $"select * from {getSchemaTable()} ";
@@ -36,7 +39,7 @@ public class LiasseController : AbstractBaseController<LiasseEntite>
         try
         {
             adapter.Fill(table);
-            if ( bAddNew)
+            if (bAddNew)
             {
                 var row = table.NewRow();
                 row["id"] = LiasseEntite.NOUVELLE_ID;
@@ -53,14 +56,17 @@ public class LiasseController : AbstractBaseController<LiasseEntite>
                 row["type_ecriture"] = type_ecriture;
                 table.Rows.InsertAt(row, 0);
             }
+
             return table;
         }
         catch (Exception e)
         {
             MessageBox.Show(e.Message);
         }
+
         return null;
     }
+
     public DataTable GetLiassesValidees(GlobalConstantes.TypeOperation type_ecriture, string limit = "")
     {
         var cmd = $"select * from {getSchemaTable()} ";

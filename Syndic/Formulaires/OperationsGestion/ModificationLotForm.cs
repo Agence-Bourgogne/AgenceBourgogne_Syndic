@@ -8,27 +8,29 @@ namespace EspaceSyndic.Formulaires.OperationsGestion;
 
 public partial class ModificationLotForm : Form
 {
-    private ImmeubleEntite immeuble;
-
     private readonly SaisieAppelFondEntite appel;
     private readonly SaisieFactureEntite facture;
+    private ImmeubleEntite immeuble;
 
     public ModificationLotForm()
     {
         InitializeComponent();
     }
+
     public ModificationLotForm(SaisieAppelFondEntite entite)
     {
         InitializeComponent();
         appel = entite;
         facture = null;
     }
+
     public ModificationLotForm(SaisieFactureEntite entite)
     {
         InitializeComponent();
         appel = null;
         facture = entite;
     }
+
     private void FillComboLot()
     {
         if (immeuble == null)
@@ -42,6 +44,7 @@ public partial class ModificationLotForm : Form
             if (lot != null)
                 cbLot.SelectedValue = lot.numero_lot;
         }
+
         if (facture != null)
         {
             var lot = LotDescriptionController.getController().getEntiteById(facture.lot_id);
@@ -54,8 +57,7 @@ public partial class ModificationLotForm : Form
     {
         if (appel != null)
             immeuble = appel.Immeuble;
-        else
-        if (facture != null)
+        else if (facture != null)
             immeuble = facture.Immeuble;
 
         if (immeuble != null)
@@ -66,7 +68,7 @@ public partial class ModificationLotForm : Form
 
     private void btnValid_Click(object sender, EventArgs e)
     {
-        var row = (DataRowView) cbLot.SelectedItem;
+        var row = (DataRowView)cbLot.SelectedItem;
         if (row != null)
         {
             if (appel != null)
@@ -75,6 +77,7 @@ public partial class ModificationLotForm : Form
                 if (SaisieAppelFondController.getController().InsertOrUpdate(appel))
                     Close();
             }
+
             if (facture != null)
             {
                 facture.lot_id = row["id"].ToString();

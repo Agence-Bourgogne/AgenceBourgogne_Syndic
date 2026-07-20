@@ -13,14 +13,15 @@ namespace EspaceSyndic.Formulaires.Ecritures;
 
 public partial class FicheFactureRepartitionIndividuelle : Form
 {
+    private string[] base_compteur = new string[1];
+    private string[] base_compteurFixes = new string[1];
     public ImmeubleEntite immeuble = null;
+
+    private bool initialized;
+
 //        DataTable repartitionImmeuble;//= immeuble.getRepartitionImmeuble();
 //        DataTable repartitionLots;
     public SaisieFactureEntite saisie = null;
-    private bool initialized;
-
-    private string[] base_compteur = new string[1];
-    private string[] base_compteurFixes = new string[1];
 
     public FicheFactureRepartitionIndividuelle()
     {
@@ -50,7 +51,6 @@ public partial class FicheFactureRepartitionIndividuelle : Form
         //}
 
 
-
         //if ( multiCpt != null && multiCpt.Rows.Count > 0 )
         //{
         //    DataTable listeLot = LotDescriptionController.getController().getDataGridListeLotDescriptionCpt(immeuble, true, true, true);
@@ -63,16 +63,14 @@ public partial class FicheFactureRepartitionIndividuelle : Form
         //    dataGridViewLots.DataSource = listeLot;
         //}
         //else
-        dataGridViewLots.DataSource = LotDescriptionController.getController().getDataGridListeLotDescription(immeuble, true, true, true);
+        dataGridViewLots.DataSource = LotDescriptionController.getController()
+            .getDataGridListeLotDescription(immeuble, true, true, true);
         var cols = dataGridViewLots.Columns;
         cols["id"].Visible = false;
         cols["coproprietaire_id"].Visible = false;
         cols["avance"].Visible = false;
 
-        foreach (DataGridViewColumn col in cols)
-        {
-            col.ReadOnly = true;
-        }
+        foreach (DataGridViewColumn col in cols) col.ReadOnly = true;
 
         if (!base_compteur.Contains(saisie.base_repart))
         {
@@ -90,6 +88,7 @@ public partial class FicheFactureRepartitionIndividuelle : Form
             lblGlobal.Visible = false;
             cols["montant"].ReadOnly = false;
         }
+
         FillDataGrid();
 
         ControlsWindows.ToTitleCase(cols);
@@ -97,8 +96,8 @@ public partial class FicheFactureRepartitionIndividuelle : Form
         tbMontantTotal.Enabled = false;
         initialized = true;
         dataGridViewLots_CellValueChanged(null, null);
-
     }
+
     protected void FillDataGrid()
     {
         try
@@ -108,14 +107,18 @@ public partial class FicheFactureRepartitionIndividuelle : Form
             var bFromSaisie = true;
             if (repart == null || repart.Rows.Count < 1)
             {
-                repart = RepartIndividuelleController.getController().getLastRepartFromSaisie(saisie.immeuble_id, saisie.base_repart, GlobalConstantes.TypeSaisie.Facture) ;
+                repart = RepartIndividuelleController.getController().getLastRepartFromSaisie(saisie.immeuble_id,
+                    saisie.base_repart, GlobalConstantes.TypeSaisie.Facture);
                 if (base_compteurFixes.Contains(saisie.base_repart))
                 {
-                    var totalRepart = RepartIndividuelleController.getController().getFactureRepartFromAppel(immeuble.id, saisie.base_repart, saisie.date_reference);
+                    var totalRepart = RepartIndividuelleController.getController()
+                        .getFactureRepartFromAppel(immeuble.id, saisie.base_repart, saisie.date_reference);
                     repart = totalRepart;
                 }
+
                 bFromSaisie = false;
             }
+
             if (repart != null && repart.Rows.Count > 0)
                 tbGlobal.Text = repart.Rows[0]["global"].ToString();
             tbMontantTotal.Text = saisie.montant.ToString();
@@ -124,16 +127,14 @@ public partial class FicheFactureRepartitionIndividuelle : Form
             {
                 var rowGrid = (DataRowView)rowItem.DataBoundItem;
                 foreach (DataRow row in table.Rows)
-                {
                     if (rowGrid["id"].ToString() == row["lot_id"].ToString())
                     {
                         rowGrid["montant"] = (decimal)row["debit"] == 0 ? null : row["debit"];
                         rowItem.Tag = row;
                         break;
                     }
-                }
+
                 foreach (DataRow row in repart.Rows)
-                {
                     if (rowGrid["id"].ToString() == row["lot_id"].ToString())
                     {
                         if (bFromSaisie)
@@ -150,10 +151,11 @@ public partial class FicheFactureRepartitionIndividuelle : Form
                             else
                                 rowGrid["ancien"] = row["nouveau"] == null ? row["ancien"] : row["nouveau"];
                         }
-                        dataGridViewLots_CellEndEdit(dataGridViewLots, new DataGridViewCellEventArgs(rowItem.Cells["index"].ColumnIndex, rowItem.Index));
+
+                        dataGridViewLots_CellEndEdit(dataGridViewLots,
+                            new DataGridViewCellEventArgs(rowItem.Cells["index"].ColumnIndex, rowItem.Index));
                         break;
                     }
-                }
             }
         }
         catch (Exception ex)
@@ -164,14 +166,12 @@ public partial class FicheFactureRepartitionIndividuelle : Form
 
     private void dataGridViewLots_CellValueChanged(object sender, DataGridViewCellEventArgs e)
     {
-        if (initialized) 
+        if (initialized)
         {
             float current = 0;
             foreach (DataGridViewRow row in dataGridViewLots.Rows)
-            {
                 current += Convertir.ToFloat(row.Cells["montant"].Value);
-//                    current += Convertir.ToFloat(row.Cells["index"].Value);
-            }
+            //                    current += Convertir.ToFloat(row.Cells["index"].Value);
             tbMontantActuel.Text = current.ToString();
             tbDiff.BackColor = Color.White;
             if (!"".Equals(tbMontantTotal.Text))
@@ -179,7 +179,7 @@ public partial class FicheFactureRepartitionIndividuelle : Form
                 double total = Convertir.ToFloat(tbMontantTotal.Text);
 //                    double total = Convertir.ToFloat(tbGlobal.Text);
                 tbDiff.Text = $"{total - current:0.00}";
-                if ( Math.Abs(total - current) > 1 )
+                if (Math.Abs(total - current) > 1)
                     tbDiff.BackColor = Color.Red;
             }
         }
@@ -192,10 +192,11 @@ public partial class FicheFactureRepartitionIndividuelle : Form
         dataGridViewLots_CellValueChanged(null, null);
 
         if (Math.Abs(Convertir.ToDecimal(tbDiff.Text)) > (decimal)1.0)
-        {
-            if ( DialogResult.Yes !=  MessageBox.Show("Le montant total de la répartition n'est pas valide\r\nVoulez-vous enregistrer cette répartition", "Attention", MessageBoxButtons.YesNo ))
+            if (DialogResult.Yes !=
+                MessageBox.Show(
+                    "Le montant total de la répartition n'est pas valide\r\nVoulez-vous enregistrer cette répartition",
+                    "Attention", MessageBoxButtons.YesNo))
                 return;
-        }
         var cnx = Database.GetInstance();
         var trx = cnx.BeginTransaction();
 
@@ -204,25 +205,26 @@ public partial class FicheFactureRepartitionIndividuelle : Form
             var dt = DateTime.Now;
             var operationCtl = OperationController.getController();
             var repartCtl = RepartIndividuelleController.getController();
-                
+
             repartCtl.setTimestampServer(dt);
             operationCtl.setTimestampServer(dt);
-            if ( !SaisieFactureController.getController().doInsertOrUpdate(saisie))
+            if (!SaisieFactureController.getController().doInsertOrUpdate(saisie))
                 throw new Exception("Saisie Facture");
             var global = Convertir.ToDecimal(tbGlobal.Text);
 
             foreach (DataGridViewRow rowGrid in dataGridViewLots.Rows)
             {
-                var row = (DataRowView) rowGrid.DataBoundItem;
+                var row = (DataRowView)rowGrid.DataBoundItem;
                 var montant = Convertir.ToDecimal(row["montant"]);
 
-                if (montant != 0 || rowGrid.Tag != null )
+                if (montant != 0 || rowGrid.Tag != null)
                 {
                     var operation = new OperationEntite(saisie);
                     if (rowGrid.Tag != null)
                         operation = new OperationEntite((DataRow)rowGrid.Tag);
 
-                    if (!operationCtl.InsertOperationFromSaisie(saisie, operation, montant, row["coproprietaire_id"].ToString(), row["id"].ToString(), numligne++))
+                    if (!operationCtl.InsertOperationFromSaisie(saisie, operation, montant,
+                            row["coproprietaire_id"].ToString(), row["id"].ToString(), numligne++))
                         throw new Exception("Operation");
 
                     var cell = rowGrid.Cells["index"];
@@ -230,10 +232,12 @@ public partial class FicheFactureRepartitionIndividuelle : Form
                     var index = Convertir.ToDecimal(rowGrid.Cells["index"].Value);
                     var ancien = Convertir.ToDecimal(rowGrid.Cells["ancien"].Value);
                     var nouveau = Convertir.ToDecimal(rowGrid.Cells["nouveau"].Value);
-                    if (!repartCtl.InsertRepartIndividuelleFromSaisie(operation, repart, index, ancien, nouveau, global, GlobalConstantes.TypeSaisie.Facture))
+                    if (!repartCtl.InsertRepartIndividuelleFromSaisie(operation, repart, index, ancien, nouveau, global,
+                            GlobalConstantes.TypeSaisie.Facture))
                         throw new Exception("Repartition");
                 }
             }
+
             trx.Commit();
             MessageBox.Show(@"Modifications enregistrées");
             DialogResult = DialogResult.OK;
@@ -248,7 +252,7 @@ public partial class FicheFactureRepartitionIndividuelle : Form
 
     private void tbGlobal_Validating(object sender, CancelEventArgs e)
     {
-        if ( tbGlobal.Text != "" )
+        if (tbGlobal.Text != "")
         {
             var cols = dataGridViewLots.Columns;
             if (base_compteur.Contains(saisie.base_repart))
@@ -261,6 +265,7 @@ public partial class FicheFactureRepartitionIndividuelle : Form
                 cols["index"].ReadOnly = false;
             }
         }
+
         dataGridViewLots_CellValueChanged(null, null);
     }
 
@@ -271,7 +276,7 @@ public partial class FicheFactureRepartitionIndividuelle : Form
 
     private void dataGridViewLots_CellEndEdit(object sender, DataGridViewCellEventArgs e)
     {
-        if ( ((DataGridView) sender).Columns[e.ColumnIndex].Name == "index" )
+        if (((DataGridView)sender).Columns[e.ColumnIndex].Name == "index")
         {
             var cell = dataGridViewLots.Rows[e.RowIndex].Cells[e.ColumnIndex];
             //if ( !cell.ReadOnly )
@@ -282,22 +287,24 @@ public partial class FicheFactureRepartitionIndividuelle : Form
                 if (global != 0)
                 {
                     var value = montant * curr / global;
-                    if ( value != 0)
+                    if (value != 0)
                         dataGridViewLots.Rows[e.RowIndex].Cells["montant"].Value = $"{value:0.00}";
                     //else
                     //    dataGridViewLots.Rows[e.RowIndex].Cells["montant"].Value = null;
                 }
             }
         }
-        if (((DataGridView)sender).Columns[e.ColumnIndex].Name == "nouveau" || ((DataGridView)sender).Columns[e.ColumnIndex].Name == "ancien")
+
+        if (((DataGridView)sender).Columns[e.ColumnIndex].Name == "nouveau" ||
+            ((DataGridView)sender).Columns[e.ColumnIndex].Name == "ancien")
         {
             var row = dataGridViewLots.Rows[e.RowIndex];
             if (row != null)
-                if ( row.Cells["ancien"].Value.ToString() != "" && row.Cells["nouveau"].Value.ToString() != "" )
+                if (row.Cells["ancien"].Value.ToString() != "" && row.Cells["nouveau"].Value.ToString() != "")
                 {
                     var ancien = Convertir.ToDecimal(row.Cells["ancien"].Value);
                     var nouveau = Convertir.ToDecimal(row.Cells["nouveau"].Value);
-                    row.Cells["index"].Value =  nouveau-ancien;
+                    row.Cells["index"].Value = nouveau - ancien;
 
                     var montant = Convertir.ToDecimal(tbMontantTotal.Text);
                     var global = Convertir.ToDecimal(tbGlobal.Text);
@@ -318,10 +325,8 @@ public partial class FicheFactureRepartitionIndividuelle : Form
     {
         var name = dataGridViewLots.Columns[e.ColumnIndex].Name;
         if (name == "nouveau" || name == "ancien" || name == "index" || name == "montant")
-        {
             if (Convertir.ToDecimal(e.Value) == 0)
                 e.Value = "";
-        }
     }
 
     private void button1_Click(object sender, EventArgs e)
@@ -335,8 +340,9 @@ public partial class FicheFactureRepartitionIndividuelle : Form
             //RepartitionControlsWindows.ShowRepartitionImmeuble(dataGridView, repartition_immeuble);
         }
         else
+        {
             MessageBox.Show(@"vous devez d'abord définir l'immeuble");
-
+        }
     }
 
     private void dataGridViewLots_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
@@ -345,9 +351,7 @@ public partial class FicheFactureRepartitionIndividuelle : Form
         {
             var row = dataGridViewLots.Rows[e.RowIndex];
             if (Convertir.ToInt(row.Cells["statut"].Value) == (int)GlobalConstantes.StatutData.Inactif)
-            {
                 row.DefaultCellStyle.BackColor = Color.OrangeRed;
-            }
         }
     }
 }

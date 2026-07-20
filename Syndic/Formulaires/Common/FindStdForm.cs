@@ -7,25 +7,25 @@ namespace EspaceSyndic.Formulaires.Common;
 
 public partial class FindStdForm : Form
 {
-    public string reference = "";
-    public string filter = "";
-    protected DataTable source = null;
-
     private readonly TextBox tbResult;
+    public string filter = "";
+    public string reference = "";
+    protected DataTable source = null;
 
     public FindStdForm()
     {
         InitializeComponent();
     }
+
     public FindStdForm(TextBox tbResult)
     {
         InitializeComponent();
         this.tbResult = tbResult;
     }
 
-    public virtual void FillListFromFilter( string filter)
+    public virtual void FillListFromFilter(string filter)
     {
-        if ( source != null)
+        if (source != null)
         {
             dataGridView.DataSource = source;
             var cols = dataGridView.Columns;
@@ -33,6 +33,7 @@ public partial class FindStdForm : Form
             cols["nom"].Width = 250;
             ControlsWindows.ToTitleCase(cols);
         }
+
         dataGridView.ReadOnly = true;
     }
 
@@ -60,7 +61,7 @@ public partial class FindStdForm : Form
 
     private void setReferenceFromRow(int index)
     {
-        var row = (DataRowView) dataGridView.Rows[index].DataBoundItem;
+        var row = (DataRowView)dataGridView.Rows[index].DataBoundItem;
         if (row != null)
         {
             reference = row["reference"].ToString();
@@ -75,7 +76,7 @@ public partial class FindStdForm : Form
         if (e.KeyChar == 0x0D)
         {
             e.Handled = true;
-            setReferenceFromRow(dataGridView.SelectedRows[0].Index-1);
+            setReferenceFromRow(dataGridView.SelectedRows[0].Index - 1);
         }
     }
 

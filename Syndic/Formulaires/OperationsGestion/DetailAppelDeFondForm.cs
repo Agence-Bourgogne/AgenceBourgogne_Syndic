@@ -13,14 +13,17 @@ namespace EspaceSyndic.Formulaires.OperationsGestion;
 public partial class DetailAppelDeFondForm : DetailOperationForm
 {
     private SaisieAppelFondEntite entite;
+
     public DetailAppelDeFondForm()
     {
         InitializeComponent();
     }
-    public DetailAppelDeFondForm( string entite_id):base(entite_id)
+
+    public DetailAppelDeFondForm(string entite_id) : base(entite_id)
     {
         InitializeComponent();
     }
+
     protected override void ShowDetail()
     {
         entite = SaisieAppelFondController.getController().getEntiteById(entite_id);
@@ -47,6 +50,7 @@ public partial class DetailAppelDeFondForm : DetailOperationForm
 
         fillFormFromMaster();
     }
+
     protected void fillFormFromMaster()
     {
         var immeuble = ImmeubleController.getController().getEntiteById(entite.immeuble_id);
@@ -68,6 +72,7 @@ public partial class DetailAppelDeFondForm : DetailOperationForm
             tbCpFournisseur.Text = fournisseur.codepostal;
             tbVilleFournisseur.Text = fournisseur.ville;
         }
+
         tbDateCreation.Text = entite.date_reference.ToShortDateString();
 
         FillDataGridView();
@@ -115,6 +120,7 @@ public partial class DetailAppelDeFondForm : DetailOperationForm
             var debit = Convertir.ToDecimal(row["debit"]);
             total += credit - debit;
         }
+
         tbTotal.Text = Math.Abs(total).ToString();
 
         if (Math.Abs(Math.Abs(total) - Math.Abs(entite.montant)) > 1)
@@ -123,11 +129,17 @@ public partial class DetailAppelDeFondForm : DetailOperationForm
             tbTotal.ForeColor = Color.Black;
         }
         else
+        {
             tbTotal.BackColor = Color.Gray;
+        }
     }
+
     protected override void DeleteEntite()
     {
-        if (DialogResult.Yes == MessageBox.Show("L'annulation d'un appel de fond et de ses éléments est irréversible\nVoulez vous continuer ?", "Attention", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+        if (DialogResult.Yes ==
+            MessageBox.Show(
+                "L'annulation d'un appel de fond et de ses éléments est irréversible\nVoulez vous continuer ?",
+                "Attention", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
         {
             if (entite.liasse_id.StartsWith("Reprise"))
                 ValidModification();
@@ -135,6 +147,7 @@ public partial class DetailAppelDeFondForm : DetailOperationForm
                 FillDataGridView();
         }
     }
+
     protected override void ValidModification()
     {
         var bRepartChanged = false;
@@ -178,9 +191,11 @@ public partial class DetailAppelDeFondForm : DetailOperationForm
                         operation.credit = montant < 0 ? montant * (decimal)-1.0 : (decimal)0.0;
                         operation.global = montant;
                     }
+
                     if (!OperationController.getController().InsertOrUpdate(operation))
                         throw new Exception("Operation");
                 }
+
                 trx.Commit();
             }
             catch (Exception ex)
@@ -197,10 +212,7 @@ public partial class DetailAppelDeFondForm : DetailOperationForm
 
     private void btnRecalc_Click(object sender, EventArgs e)
     {
-        if (entite != null)
-        {
-            SaisieAppelFondController.getController().RecalcRepartition(entite, true);
-        }
+        if (entite != null) SaisieAppelFondController.getController().RecalcRepartition(entite, true);
         fillFormFromMaster();
     }
 
@@ -222,6 +234,7 @@ public partial class DetailAppelDeFondForm : DetailOperationForm
                             throw new Exception("Operation");
                     }
                 }
+
                 trx.Commit();
             }
             catch (Exception ex)
@@ -229,6 +242,7 @@ public partial class DetailAppelDeFondForm : DetailOperationForm
                 trx.Rollback();
                 MessageBox.Show(ex.Message);
             }
+
             FillDataGridView();
         }
     }
@@ -252,6 +266,7 @@ public partial class DetailAppelDeFondForm : DetailOperationForm
                             throw new Exception("Operation");
                     }
                 }
+
                 entite.liasse_id = "Correction";
                 if (!SaisieAppelFondController.getController().InsertOrUpdate(entite))
                     throw new Exception("Appel de Fond");
@@ -262,15 +277,16 @@ public partial class DetailAppelDeFondForm : DetailOperationForm
                 trx.Rollback();
                 MessageBox.Show(ex.Message);
             }
+
             FillDataGridView();
         }
-
     }
+
     protected override void dataGridView_DoubleClick(object sender, EventArgs e)
     {
         if (dataGridView.SelectedRows.Count > 0)
         {
-            var row = (DataRowView) dataGridView.SelectedRows[0].DataBoundItem;
+            var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
             var form = new DetailElementOperationForm(row["id"].ToString());
             form.ShowDialog();
             FillDataGridView();

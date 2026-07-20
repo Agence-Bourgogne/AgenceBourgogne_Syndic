@@ -11,6 +11,12 @@ namespace SyndicData.Controller;
 public class ImmeubleController : AbstractBaseController<ImmeubleEntite>
 {
     private static readonly ImmeubleController controller = new();
+
+    public ImmeubleController()
+    {
+        DefaultOrder = "reference";
+    }
+
     public override string getTable()
     {
         return "immeuble";
@@ -20,15 +26,13 @@ public class ImmeubleController : AbstractBaseController<ImmeubleEntite>
     {
         return true;
     }
+
     public static ImmeubleController getController()
     {
 //            return new ImmeubleController();
         return controller;
     }
-    public ImmeubleController()
-    {
-        DefaultOrder = "reference";
-    }
+
     public DataTable GetListeFromMonthCloture(string iMonths)
     {
         var cmd =
@@ -37,36 +41,40 @@ public class ImmeubleController : AbstractBaseController<ImmeubleEntite>
         var table = getResultSQL(cmd);
         return table;
     }
-    public DataTable GetDescriptionCoproprietairesImmeubleAF(string immeuble_id, string numlot = "", bool isFiscal = false, string saisie_id = "")
+
+    public DataTable GetDescriptionCoproprietairesImmeubleAF(string immeuble_id, string numlot = "",
+        bool isFiscal = false, string saisie_id = "")
     {
         var schema = getSchema();
         var cmd = "select";
         var numero_lot = 0;
         cmd += " i.reference, i.nom, i.rue, i.codepostal, i.ville, c.reference ref_copro, ";
 
-        cmd += " c.nom as nom_copro, c.prenom as prenom, p.code codenvoi, c.adresse as adresse_copro, c.codepostal as cp_copro, concat(c.ville, ' ', c.pays ) as ville_copro, ";
+        cmd +=
+            " c.nom as nom_copro, c.prenom as prenom, p.code codenvoi, c.adresse as adresse_copro, c.codepostal as cp_copro, concat(c.ville, ' ', c.pays ) as ville_copro, ";
         cmd += " c.nomcomp, c.adressecomp, c.villecomp, p2.code as codenvcomp, codecomp, ";
         cmd += " l.numero_lot,  c.id as copro_id, l.id as lot_id, i.id as immeuble_id";
         cmd += $" from {getSchemaTable()} i ";
         cmd += $" join {schema}.lot_description l on l.immeuble_id = i.id ";
         cmd += $" join {schema}.coproprietaire c on l.coproprietaire_id = c.id ";
-        cmd += " left join ( select groupe, code , iparam_1 from parametres ) p on p.groupe = 'CIVILITE' and c.codenvoi = iparam_1";
-        cmd += " left join ( select groupe, code , iparam_1 from parametres ) p2 on p2.groupe='CODEENVOICOMPTE' and c.codenvcomp = p2.iparam_1";
+        cmd +=
+            " left join ( select groupe, code , iparam_1 from parametres ) p on p.groupe = 'CIVILITE' and c.codenvoi = iparam_1";
+        cmd +=
+            " left join ( select groupe, code , iparam_1 from parametres ) p2 on p2.groupe='CODEENVOICOMPTE' and c.codenvcomp = p2.iparam_1";
         cmd += " where immeuble_id = @immeuble_id";
         if (numlot != "")
         {
             cmd += " and numero_lot = @numero_lot";
             numero_lot = Convert.ToInt32(numlot);
         }
-        if ( saisie_id != "" )
-        {
+
+        if (saisie_id != "")
             cmd += $" and c.id in (select coproprietaire_id from {schema}.operation where saisie_id = @saisie_id) ";
-        }
         if (isFiscal)
             cmd += " and c.declaration = true";
         cmd += " order by c.reference ";
 
-        var parameters = new List<NpgsqlParameter> 
+        var parameters = new List<NpgsqlParameter>
         {
             new("@immeuble_id", immeuble_id),
             new("@saisie_id", saisie_id),
@@ -76,33 +84,38 @@ public class ImmeubleController : AbstractBaseController<ImmeubleEntite>
 
         var table = getResultSQL(cmd, parameters);
         return table;
-
     }
-    public DataTable GetDescriptionCoproprietairesImmeubleReleveIndividuel(string immeuble_id, string numlot = "", bool isFiscal = false)
+
+    public DataTable GetDescriptionCoproprietairesImmeubleReleveIndividuel(string immeuble_id, string numlot = "",
+        bool isFiscal = false)
     {
         var schema = getSchema();
         var cmd = "select";
         var numero_lot = 0;
         cmd += " i.reference, i.nom, i.rue, i.codepostal, i.ville, c.reference ref_copro, ";
-        cmd += " c.nom as nom_copro, c.prenom as prenom, coalesce(p.code, '') as codenvoi, c.adresse as adresse_copro, c.codepostal as cp_copro, concat(c.ville, ' ', c.pays) as ville_copro, ";
-        cmd += " l.numero_lot, c.id as copro_id, l.id as lot_id, i.id as immeuble_id, round(l.avance::numeric,2) as avance, l.statut";
+        cmd +=
+            " c.nom as nom_copro, c.prenom as prenom, coalesce(p.code, '') as codenvoi, c.adresse as adresse_copro, c.codepostal as cp_copro, concat(c.ville, ' ', c.pays) as ville_copro, ";
+        cmd +=
+            " l.numero_lot, c.id as copro_id, l.id as lot_id, i.id as immeuble_id, round(l.avance::numeric,2) as avance, l.statut";
         cmd += $" from {getSchemaTable()} i ";
 //            cmd += String.Format(" join {0}.lot_description l on l.immeuble_id = i.id and l.statut=1 ", schema);
         cmd += $" join {schema}.lot_description l on l.immeuble_id = i.id ";
-  
+
         cmd += $" join {schema}.coproprietaire c on l.coproprietaire_id = c.id ";
-        cmd += " left join ( select groupe, code , iparam_1 from parametres ) p on p.groupe = 'CIVILITE' and c.codenvoi = iparam_1";
+        cmd +=
+            " left join ( select groupe, code , iparam_1 from parametres ) p on p.groupe = 'CIVILITE' and c.codenvoi = iparam_1";
         cmd += " where immeuble_id = @immeuble_id";
         if (numlot != "")
         {
             cmd += " and numero_lot = @numero_lot";
             numero_lot = Convert.ToInt32(numlot);
         }
+
         if (isFiscal)
             cmd += " and c.declaration = true";
         cmd += " order by c.reference ";
 
-        var parameters = new List<NpgsqlParameter> 
+        var parameters = new List<NpgsqlParameter>
         {
             new("@immeuble_id", immeuble_id),
             new("@numero_lot", numero_lot)
@@ -114,13 +127,15 @@ public class ImmeubleController : AbstractBaseController<ImmeubleEntite>
     }
 
 
-    public DataTable GetDescriptionCoproprietairesImmeuble( string immeuble_id , string numlot = "", bool isFiscal = false )
+    public DataTable GetDescriptionCoproprietairesImmeuble(string immeuble_id, string numlot = "",
+        bool isFiscal = false)
     {
         var schema = getSchema();
-        var  cmd  = "select";
+        var cmd = "select";
         var numero_lot = 0;
-        cmd +=  " i.reference, i.nom, i.rue, i.codepostal, i.ville, c.reference ref_copro, ";
-        cmd += " c.nom as nom_copro, c.prenom as prenom, coalesce(p.code, '') as codenvoi, c.adresse as adresse_copro, c.codepostal as cp_copro, concat(c.ville, '\n', c.pays) as ville_copro, ";
+        cmd += " i.reference, i.nom, i.rue, i.codepostal, i.ville, c.reference ref_copro, ";
+        cmd +=
+            " c.nom as nom_copro, c.prenom as prenom, coalesce(p.code, '') as codenvoi, c.adresse as adresse_copro, c.codepostal as cp_copro, concat(c.ville, '\n', c.pays) as ville_copro, ";
         //cmd += " case when coalesce(c.nomcomp, '') != '' then c.nomcomp else c.nom end as nom_copro, ";
         //cmd += " case when coalesce(c.nomcomp, '') != '' then '' else c.prenom end as prenom, ";
         //cmd += " case when coalesce(c.nomcomp, '') != '' then p2.code else p.code end as codenvoi, ";
@@ -128,12 +143,14 @@ public class ImmeubleController : AbstractBaseController<ImmeubleEntite>
         //cmd += " case when coalesce(c.nomcomp, '') != '' then c.codecomp else c.codepostal end as cp_copro, ";
         //cmd += " case when coalesce(c.nomcomp, '') != '' then c.villecomp else c.ville end as ville_copro, ";
 
-        cmd += " l.numero_lot, c.id as copro_id, l.id as lot_id, i.id as immeuble_id, round(l.avance::numeric,2) as avance";
+        cmd +=
+            " l.numero_lot, c.id as copro_id, l.id as lot_id, i.id as immeuble_id, round(l.avance::numeric,2) as avance";
         cmd += $" from {getSchemaTable()} i ";
 //            cmd += String.Format ( " join {0}.lot_description l on l.immeuble_id = i.id ", schema);
         cmd += $" join {schema}.lot_description l on l.immeuble_id = i.id and l.statut=1 ";
         cmd += $" join {schema}.coproprietaire c on l.coproprietaire_id = c.id ";
-        cmd += " left join ( select groupe, code , iparam_1 from parametres ) p on p.groupe = 'CIVILITE' and c.codenvoi = iparam_1";
+        cmd +=
+            " left join ( select groupe, code , iparam_1 from parametres ) p on p.groupe = 'CIVILITE' and c.codenvoi = iparam_1";
         //cmd += String.Format(" left join ( select groupe, code , iparam_1 from parametres ) p2 on p2.groupe='CODEENVOICOMPTE' and c.codenvcomp = p2.iparam_1");
         cmd += " where immeuble_id = @immeuble_id";
         if (numlot != "")
@@ -141,11 +158,12 @@ public class ImmeubleController : AbstractBaseController<ImmeubleEntite>
             cmd += " and numero_lot = @numero_lot";
             numero_lot = Convert.ToInt32(numlot);
         }
+
         if (isFiscal)
             cmd += " and c.declaration = true";
         cmd += " order by c.reference ";
 
-        var parameters = new List<NpgsqlParameter> 
+        var parameters = new List<NpgsqlParameter>
         {
             new("@immeuble_id", immeuble_id),
             new("@numero_lot", numero_lot)
@@ -164,7 +182,7 @@ public class ImmeubleController : AbstractBaseController<ImmeubleEntite>
         cmd += $" join {getSchema()}.lot_description ld on ld.immeuble_id = i.id ";
         cmd += " where ld.coproprietaire_id = @copro_id";
 
-        var parameters = new List<NpgsqlParameter> 
+        var parameters = new List<NpgsqlParameter>
         {
             new("@copro_id", copro_id)
         };
@@ -172,11 +190,9 @@ public class ImmeubleController : AbstractBaseController<ImmeubleEntite>
 
         var table = getResultSQL(cmd, parameters);
 
-        if ( table != null)
+        if (table != null)
             if (table.Rows.Count > 0)
-            {
                 immeuble = new ImmeubleEntite(table.Rows[0]);
-            }
 
         return immeuble;
     }

@@ -8,39 +8,106 @@ namespace SyndicData.Entites;
 
 public class OperationEntite : AbstractBaseEntite
 {
+    private CoproprietaireEntite _copro;
+
+    private ImmeubleEntite _immeuble;
+
+    private LotDescriptionEntite _lot;
+
+    private NatureEntite _nature;
+    public string base_repart;
+    public string coproprietaire_id;
+    public decimal credit;
+    public DateTime date_operation;
+    public DateTime date_reference;
+    public decimal debit;
+    public decimal global;
+    public string immeuble_id;
+
+    public string liasse_id;
+    public string libelle;
+    public string lot_id;
+    public string nature_id;
+    public int numero_ligne;
+    public int numero_operation;
+    public int ref_cpt = 1;
+    public string saisie_id;
+
+    public int statut;
 //        public enum Statut { Inactif, Actif, Valide };
 
     public string type_mouvement;
     public string type_operation;
-    public DateTime date_operation;
-    public int numero_operation;
-    public int numero_ligne;
-
-    public string liasse_id;
-    public string saisie_id;
-    public string immeuble_id;
-    public string lot_id;
-    public string base_repart;
-    public string nature_id;
-    public string coproprietaire_id;
-    public string libelle;
-    public DateTime date_reference;
-    public decimal debit;
-    public decimal credit;
-    public decimal global;
-    public int ref_cpt = 1;
-       
-    public int statut;
 
     public OperationEntite()
     {
         id = "";
         setValues(null);
     }
+
     public OperationEntite(DataRow data)
     {
         setValues(data);
     }
+
+    public OperationEntite(SaisieAppelFondEntite saisie)
+    {
+        setValues(null);
+        setValue(saisie);
+    }
+
+    public OperationEntite(SaisieFactureEntite saisie)
+    {
+        setValues(null);
+        setValue(saisie);
+    }
+
+    public OperationEntite(SaisieReglementEntite saisie)
+    {
+        setValues(null);
+        setValue(saisie);
+    }
+
+    public CoproprietaireEntite Coproprietaire
+    {
+        get
+        {
+            if (_copro == null)
+                _copro = CoproprietaireController.getController().getEntiteById(coproprietaire_id);
+            return _copro;
+        }
+    }
+
+    public ImmeubleEntite Immeuble
+    {
+        get
+        {
+            if (_immeuble == null)
+                _immeuble = ImmeubleController.getController().getEntiteById(immeuble_id);
+            return _immeuble;
+        }
+    }
+
+    public NatureEntite Nature
+    {
+        get
+        {
+            if (_nature == null)
+                _nature = NatureController.getController().getEntiteById(nature_id);
+            return _nature;
+        }
+    }
+
+    public LotDescriptionEntite Lot
+    {
+        get
+        {
+            if (_lot == null)
+                _lot = LotDescriptionController.getController().getEntiteById(lot_id);
+            return _lot;
+        }
+    }
+
     public override void setValues(DataRow row)
     {
         var members = GetType().GetFields();
@@ -68,12 +135,8 @@ public class OperationEntite : AbstractBaseEntite
         updatables.Add(new UpdateField("ref_cpt", true, members));
         base.setValues(row);
     }
-    public OperationEntite(SaisieAppelFondEntite saisie)
-    {
-        setValues(null);
-        setValue(saisie);
-    }
-    public void setValue ( SaisieAppelFondEntite saisie)
+
+    public void setValue(SaisieAppelFondEntite saisie)
     {
         type_mouvement = nameof(GlobalConstantes.TypeMouvement.Recette);
         type_operation = nameof(GlobalConstantes.TypeOperation.AppelDeFond);
@@ -92,11 +155,7 @@ public class OperationEntite : AbstractBaseEntite
         global = saisie.montant;
         statut = saisie.statut;
     }
-    public OperationEntite(SaisieFactureEntite saisie)
-    {
-        setValues(null);
-        setValue(saisie);
-    }
+
     public void setValue(SaisieFactureEntite saisie)
     {
         type_mouvement = nameof(GlobalConstantes.TypeMouvement.Depense);
@@ -118,11 +177,7 @@ public class OperationEntite : AbstractBaseEntite
         global = saisie.montant;
         statut = saisie.statut;
     }
-    public OperationEntite(SaisieReglementEntite saisie)
-    {
-        setValues(null);
-        setValue(saisie);
-    }
+
     public void setValue(SaisieReglementEntite saisie)
     {
         type_mouvement = nameof(GlobalConstantes.TypeMouvement.Recette);
@@ -141,50 +196,5 @@ public class OperationEntite : AbstractBaseEntite
 //            date_reference = saisie.date_reference;
         global = saisie.montant;
         statut = saisie.statut;
-    }
-
-    private CoproprietaireEntite _copro;
-
-    public CoproprietaireEntite Coproprietaire
-    {
-        get
-        {
-            if (_copro == null)
-                _copro = CoproprietaireController.getController().getEntiteById(coproprietaire_id);
-            return _copro;
-        }
-    }
-
-    private ImmeubleEntite _immeuble;
-    public ImmeubleEntite Immeuble
-    {
-        get
-        {
-            if (_immeuble == null)
-                _immeuble = ImmeubleController.getController().getEntiteById(immeuble_id);
-            return _immeuble;
-        }
-    }
-
-    private NatureEntite _nature;
-    public NatureEntite Nature
-    {
-        get
-        {
-            if (_nature == null)
-                _nature = NatureController.getController().getEntiteById(nature_id);
-            return _nature;
-        }
-    }
-
-    private LotDescriptionEntite _lot;
-    public LotDescriptionEntite Lot
-    {
-        get
-        {
-            if (_lot == null)
-                _lot = LotDescriptionController.getController().getEntiteById(lot_id);
-            return _lot;
-        }
     }
 }

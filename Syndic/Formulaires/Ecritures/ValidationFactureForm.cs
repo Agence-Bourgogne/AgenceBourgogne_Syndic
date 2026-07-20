@@ -22,7 +22,6 @@ public partial class ValidationFactureForm : Form
 //            ControlsWindows.FillComboFromParams(cbType, "TYPE_VALIDATION", "nom");
         FillDataGrid();
 //            this.MinimumSize = this.MaximumSize = this.Size;
-
     }
 
     private void FillDataGrid()
@@ -51,7 +50,7 @@ public partial class ValidationFactureForm : Form
     {
         if (dataGridViewLiasse.SelectedRows.Count < 1)
             return;
-        var rowGrid = (DataRowView) dataGridViewLiasse.SelectedRows[0].DataBoundItem;
+        var rowGrid = (DataRowView)dataGridViewLiasse.SelectedRows[0].DataBoundItem;
         var liasse_id = rowGrid["id"].ToString();
         var source = SaisieFactureController.getController().getListeFactures(liasse_id);
         dataGridViewEcriture.DataSource = source;
@@ -69,6 +68,7 @@ public partial class ValidationFactureForm : Form
             cols["date_operation"].Visible = false;
             ControlsWindows.ToTitleCase(cols);
         }
+
         if (dataGridViewEcriture.Rows.Count > 0)
             dataGridViewEcriture.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
         else
@@ -86,13 +86,13 @@ public partial class ValidationFactureForm : Form
             row.Cells[e.ColumnIndex].Value = !(bool)row.Cells[e.ColumnIndex].Value;
         }
     }
+
     private void btnValid_Click(object sender, EventArgs e)
     {
 //            bool bAllValide = true;
         var liasses = new List<string>();
 
         foreach (DataGridViewRow rowGrid in dataGridViewLiasse.Rows)
-        {
             if (rowGrid.Cells["valider"].Value != null)
                 if ((bool)rowGrid.Cells["valider"].Value)
                 {
@@ -105,26 +105,20 @@ public partial class ValidationFactureForm : Form
                     //}
                     liasses.Add(liasse_id);
                 }
-        }
-        if ( liasses.Count < 1)
-        {
-            MessageBox.Show(@"Pas de liasse à valider");
-        }
-        else
-        if (OperationController.getController().ValidateFacture(liasses))
-        {
 
+        if (liasses.Count < 1)
+            MessageBox.Show(@"Pas de liasse à valider");
+        else if (OperationController.getController().ValidateFacture(liasses))
             try
             {
                 var form = new ImprimerListeFacturationForm(liasses);
                 form.ShowDialog();
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-        }
+
         FillDataGrid();
     }
 

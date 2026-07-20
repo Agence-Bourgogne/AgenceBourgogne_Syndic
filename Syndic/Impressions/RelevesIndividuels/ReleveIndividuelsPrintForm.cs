@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Globalization;
-using System.Linq;
 using System.Windows.Forms;
 using CommonProjectsPartners.Common;
 using CommonProjectsPartners.Utils;
@@ -20,24 +18,37 @@ namespace EspaceSyndic.Impressions.RelevesIndividuels;
 
 public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
 {
-    public ImmeubleEntite immeuble;
-    private readonly AutoCompleteStringCollection lotsString = new();
-    private readonly string TitreForm;
+    private readonly BindingSource base_descr = new();
     private readonly BindingSource immeuble_copro = new();
+    private readonly AutoCompleteStringCollection lotsString = new();
+
+
+    // TODO Parametrer ces éléments
+    private readonly string[] noCumulable = ["042", "043", "050", "051", "113", "123"];
+    private readonly BindingSource releve_appel_fond = new();
     private readonly BindingSource releve_copro = new();
     private readonly BindingSource releve_soldes = new();
-    private readonly BindingSource releve_appel_fond = new();
-    private DataTable tableImmeuble_copro, table_soldes, table_appel_fond;
-    private readonly BindingSource base_descr = new();
-    private DataTable solde_bidon;
     private readonly DataTable tableCondense = new();
-    private DataTable releve;
+    private readonly string TitreForm;
     private string[] base_compteur;
+    public ImmeubleEntite immeuble;
+    private DataTable releve;
+    private DataTable solde_bidon;
+    private DataTable tableImmeuble_copro, table_soldes, table_appel_fond;
 
     public ReleveIndividuelsPrintForm()
     {
         InitializeComponent();
         TitreForm = Text;
+    }
+
+    public void ChangedReference(object send, CommonEventArgs e)
+    {
+        tbRefImmeuble.Text = e.newRef;
+        tbRefImmeuble_Validating(null, null);
+        tbLot.Text = e.newRef2;
+        tbLot_Validating(null, null);
+        btnRapport_Click(null, null);
     }
 
     private void ReleveIndividuelsPrintForm_Load(object sender, EventArgs e)
@@ -46,6 +57,7 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
         btnEnter.Width = 0;
         reportViewer1.LocalReport.SubreportProcessing += SubreportProcessingEventHandler;
     }
+
     private void lblImmeuble_Click(object sender, EventArgs e)
     {
         var form = new FindImmeubleForm();
@@ -68,7 +80,8 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
 
             Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
 
-            var exercice = immeuble.ExerciceCourant;//ExerciceComptableController.getController().getExerciceCourant(immeuble.id);
+            var exercice =
+                immeuble.ExerciceCourant; //ExerciceComptableController.getController().getExerciceCourant(immeuble.id);
             if (exercice != null)
             {
                 dtDebut.Value = exercice.date_deb;
@@ -78,10 +91,7 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
             // Milliemes de chaque Copro
 
             lotsString.Clear();
-            foreach (DataRow row in lots.Rows)
-            {
-                lotsString.Add(row["numero_lot"].ToString());
-            }
+            foreach (DataRow row in lots.Rows) lotsString.Add(row["numero_lot"].ToString());
             ControlsWindows.setAutoControle(tbLot, lotsString);
             btnRapport.Enabled = true;
         }
@@ -123,31 +133,27 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
         ControlsWindows.FocusNextTabbedControl(this);
     }
 
-      
-    // TODO Parametrer ces éléments
-    private readonly string[] noCumulable = ["042", "043", "050", "051", "113", "123"];
-    private bool isCumulable( string refNature)
+    private bool isCumulable(string refNature)
     {
         var rc = true;
         if (noCumulable.Contains(refNature))
             return false;
         return rc;
     }
-        
+
     protected void getBasesCompteurs()
     {
         var bases = ParametresDB.getParam1("BASES", "COMPTEURS");
-        if (bases != null)
-        {
-            base_compteur = bases.Replace(" ", "").Split(',');
-        }
+        if (bases != null) base_compteur = bases.Replace(" ", "").Split(',');
     }
+
     private bool IsBaseCompteur(string base_repart)
     {
-        if ( base_compteur == null)
+        if (base_compteur == null)
             getBasesCompteurs();
         return base_compteur.Contains(base_repart);
     }
+
     private void loadDataReleve()
     {
         releve = OperationController.getController().GetReleveIndividuels(immeuble.id, dtDebut.Value, dtFin.Value);
@@ -181,7 +187,7 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
                 if (bDetail)
                     copro_id = "";
                 var ref_cpt = Convertir.ToInt(row["ref_cpt"].ToString());
-                if (copro_id != row["ref_copro"].ToString() )
+                if (copro_id != row["ref_copro"].ToString())
                 {
                     tableCondense.Rows.Add(rowItem);
                     copro_id = row["ref_copro"].ToString();
@@ -190,8 +196,7 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
                     base_repart = row["base_repart"].ToString();
                     row2Update = -1;
                 }
-                else
-                if (fournisseur != row["fournisseur"].ToString())
+                else if (fournisseur != row["fournisseur"].ToString())
                 {
                     tableCondense.Rows.Add(rowItem);
                     nature_id = row["ref_nature"].ToString();
@@ -199,16 +204,14 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
                     base_repart = row["base_repart"].ToString();
                     row2Update = -1;
                 }
-                else
-                if (nature_id != row["ref_nature"].ToString() || !isCumulable(row["ref_nature"].ToString()))
+                else if (nature_id != row["ref_nature"].ToString() || !isCumulable(row["ref_nature"].ToString()))
                 {
                     tableCondense.Rows.Add(rowItem);
                     nature_id = row["ref_nature"].ToString();
                     base_repart = row["base_repart"].ToString();
                     row2Update = -1;
                 }
-                else
-                if (base_repart != row["base_repart"].ToString())
+                else if (base_repart != row["base_repart"].ToString())
                 {
                     tableCondense.Rows.Add(rowItem);
                     base_repart = row["base_repart"].ToString();
@@ -219,7 +222,7 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
                     var current = tableCondense.Rows.Count - 1;
                     var oldItem = tableCondense.Rows[current].ItemArray;
                     //                                    if (!IsBaseCompteur(base_repart))
-                    if (!IsBaseCompteur(oldItem[2].ToString())&&!IsBaseCompteur(base_repart))
+                    if (!IsBaseCompteur(oldItem[2].ToString()) && !IsBaseCompteur(base_repart))
                     {
                         oldItem[5] = ".";
                         var value = Convertir.ToDecimal(oldItem[8]) + Convertir.ToDecimal(rowItem[8]);
@@ -231,11 +234,10 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
                         tableCondense.Rows[current].ItemArray = oldItem;
                         row2Update = -1;
                     }
-                    else
-                    if (row2Update != -1)
+                    else if (row2Update != -1)
                     {
                         var oldRow = tableCondense.Rows[row2Update];
-                        if ( oldRow["saisie_id"].ToString() != row["saisie_id"].ToString())
+                        if (oldRow["saisie_id"].ToString() != row["saisie_id"].ToString())
                         {
                             row2Update = -1;
                             tableCondense.Rows.Add(rowItem);
@@ -243,7 +245,8 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
                         //Console.WriteLine("..");
                     }
                 }
-                if (IsBaseCompteur (base_repart))
+
+                if (IsBaseCompteur(base_repart))
                 {
                     var bCumul = true;
                     if (row2Update == -1)
@@ -251,7 +254,8 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
                         row2Update = tableCondense.Rows.Count - 1;
                         bCumul = false;
                     }
-                    if ( row2Update != -1 && bCumul)
+
+                    if (row2Update != -1 && bCumul)
                     {
                         var oldItem = tableCondense.Rows[row2Update].ItemArray;
                         oldItem[7] = Convertir.ToDecimal(oldItem[7]) + Convertir.ToDecimal(rowItem[7]);
@@ -260,24 +264,26 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
                         oldItem[11] = Convertir.ToDecimal(oldItem[11]) + Convertir.ToDecimal(rowItem[11]);
                         tableCondense.Rows[row2Update].ItemArray = oldItem;
                     }
+
                     double ancien = Convertir.ToFloat(row["ancien"].ToString());
                     double nouveau = Convertir.ToFloat(row["nouveau"].ToString());
                     if (nouveau != 0)
                     {
                         for (var i = 1; i < rowItem.Length; i++)
                             rowItem[i] = null;
-                        rowItem[5] = string.Format("Cpt {2} : Ancien Index {0}   -   Nouvel Index {1} ", ancien, nouveau, ref_cpt);
+                        rowItem[5] = string.Format("Cpt {2} : Ancien Index {0}   -   Nouvel Index {1} ", ancien,
+                            nouveau, ref_cpt);
                         tableCondense.Rows.Add(rowItem);
                     }
                 }
             }
-
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.StackTrace);
             MessageBox.Show(ex.Message);
-        } 
+        }
+
         Console.WriteLine("---");
     }
 
@@ -286,8 +292,10 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
         try
         {
             loadDataReleve();
-            table_soldes = OperationController.getController().getSoldesRelevesIndividuels(immeuble.id, dtDebut.Value, dtFin.Value);
-            table_appel_fond = OperationController.getController().getSoldesRelevesIndividuels(immeuble.id, dtDebut.Value, dtFin.Value, true);
+            table_soldes = OperationController.getController()
+                .getSoldesRelevesIndividuels(immeuble.id, dtDebut.Value, dtFin.Value);
+            table_appel_fond = OperationController.getController()
+                .getSoldesRelevesIndividuels(immeuble.id, dtDebut.Value, dtFin.Value, true);
             solde_bidon = OperationController.getController().getSoldesBidon();
             //  LoadReport();
             CreateReport(tbLot.Text);
@@ -298,19 +306,18 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
         {
             MessageBox.Show(ex.Message);
         }
-
     }
 
-    private void CreateReport( string num_lot)
+    private void CreateReport(string num_lot)
     {
-        tableImmeuble_copro = ImmeubleController.getController().GetDescriptionCoproprietairesImmeubleReleveIndividuel(immeuble.id, num_lot);
+        tableImmeuble_copro = ImmeubleController.getController()
+            .GetDescriptionCoproprietairesImmeubleReleveIndividuel(immeuble.id, num_lot);
 
 
         var finance = new List<EtatFinancier>();
         foreach (DataRow row in table_appel_fond.Rows)
-        {
-            finance.Add(new EtatFinancier(row["coproprietaire_id"].ToString(), (decimal)row["credit"] - (decimal)row["debit"]));
-        }
+            finance.Add(new EtatFinancier(row["coproprietaire_id"].ToString(),
+                (decimal)row["credit"] - (decimal)row["debit"]));
 
 
         decimal avance = 0, sommes = 0, excedents = 0, solde = 0;
@@ -325,11 +332,11 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
                 etat = new EtatFinancier(row["coproprietaire_id"].ToString());
                 finance.Add(etat);
             }
+
             switch (ordre)
             {
                 case 1:
                     if ((decimal)row["credit"] - (decimal)row["debit"] == 0)
-                    {
                         foreach (DataRow row_copro in tableImmeuble_copro.Rows)
                         {
                             var statut = (int)row_copro["statut"];
@@ -340,7 +347,7 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
                                     break;
                                 }
                         }
-                    }
+
                     etat.solde += (decimal)row["credit"] - (decimal)row["debit"];
                     break;
                 case 2:
@@ -382,7 +389,8 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
         var hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
         var hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
 
-        var parameters = new ReportParameter[]{
+        var parameters = new ReportParameter[]
+        {
             new("DateDebut", dtDebut.Value.ToShortDateString()),
             new("DateFin", dtFin.Value.ToShortDateString()),
             new("DateEdition", dtEdition.Value.ToShortDateString()),
@@ -391,7 +399,7 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
         };
 
         Console.WriteLine(" test " + reportViewer1.LocalReport.ReportEmbeddedResource);
-           
+
         reportViewer1.LocalReport.SetParameters(parameters);
         reportViewer1.LocalReport.DataSources.Clear();
         reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("immeuble_copro", tableImmeuble_copro));
@@ -412,34 +420,33 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
         {
             var base_ref = row["base_repart"].ToString();
             if (base_ref != "")
-            {
                 if (!base_def.Contains(base_ref))
                 {
                     base_def.Add(base_ref);
                     table.Rows.Add(base_ref, row["base_nom"].ToString());
                 }
-            }
         }
+
         return table;
     }
+
     private EtatFinancier getIndiceCopro(List<EtatFinancier> finance, string copro)
     {
-        foreach (var etat in finance )
-        {
-            if ( etat.copro_id == copro )
+        foreach (var etat in finance)
+            if (etat.copro_id == copro)
                 return etat;
-        }
         return null;
     }
+
     private void SubreportProcessingEventHandler(object sender, SubreportProcessingEventArgs e)
     {
         var coproprietaire_id = e.Parameters[0].Values[0];
-        releve_copro.DataSource  = tableCondense;
+        releve_copro.DataSource = tableCondense;
         releve_copro.Filter = $"ref_copro = '{coproprietaire_id}'";
 
         base_descr.DataSource = getTableBase();
         base_descr.Sort = "base_ref";
-            
+
         releve_soldes.DataSource = table_soldes;
         releve_appel_fond.DataSource = table_appel_fond;
 
@@ -456,29 +463,17 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
         e.DataSources.Add(new ReportDataSource("soldes_appel_fond", releve_appel_fond));
         e.DataSources.Add(new ReportDataSource("soldes_bidon", solde_bidon));
     }
-    public void ChangedReference(object send, CommonEventArgs e)
-    {
-        tbRefImmeuble.Text = e.newRef;
-        tbRefImmeuble_Validating(null, null);
-        tbLot.Text = e.newRef2;
-        tbLot_Validating(null, null);
-        btnRapport_Click(null, null);
-    }
 
     private void lblLot_Click(object sender, EventArgs e)
     {
         var form = new FindLotCoproprietaireImmeubleForm();
         form.immeuble = immeuble;
         form.ShowDialog();
-        if (form.reference != "")
-        {
-            tbLot.Text = form.reference;
-        }
+        if (form.reference != "") tbLot.Text = form.reference;
     }
 
     private void reportViewer1_Load(object sender, EventArgs e)
     {
-
     }
 
     private void label1_Click(object sender, EventArgs e)
@@ -493,12 +488,11 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
 
 internal class EtatFinancier
 {
-    public readonly string copro_id;
-
     public readonly decimal appel;
-    public decimal solde;
+    public readonly string copro_id;
     public decimal reglement;
     public decimal releve;
+    public decimal solde;
 
     public EtatFinancier(string copro)
     {

@@ -12,6 +12,7 @@ namespace SyndicData.Controller;
 public class LotRepartitionController : AbstractBaseController<LotRepartitionEntite>
 {
     private static readonly LotRepartitionController controller = new();
+
     public override string getTable()
     {
         return "lot_repartition";
@@ -22,6 +23,7 @@ public class LotRepartitionController : AbstractBaseController<LotRepartitionEnt
         return controller;
         //return new LotRepartitionController();
     }
+
     public DataTable GetLotsRepartition(ImmeubleEntite immeuble)
     {
         return GetLotsRepartition(immeuble.id);
@@ -48,8 +50,8 @@ public class LotRepartitionController : AbstractBaseController<LotRepartitionEnt
             MessageBox.Show(e.Message);
             return null;
         }
-        return table;
 
+        return table;
     }
 
     public DataTable GetLotsRepartition(string immeuble_id)
@@ -71,8 +73,10 @@ public class LotRepartitionController : AbstractBaseController<LotRepartitionEnt
             MessageBox.Show(e.Message);
             return null;
         }
+
         return table;
     }
+
     public DataTable GetLotsRepartitionFromBase(string immeuble_id, string base_repart)
     {
         var cmd = $"select lr.*, ld.coproprietaire_id as copro_id from {getSchemaTable()} lr";
@@ -85,13 +89,14 @@ public class LotRepartitionController : AbstractBaseController<LotRepartitionEnt
         {
             new("@immeuble_id", immeuble_id),
             new("@base_repart", base_repart)
-
         };
         return getResultSQL(cmd, parameters);
     }
+
     public DataTable GetListLotsDescription(string immeuble_id, string base_repart)
     {
-        var cmd = "select s.cpt as Compteur, ref_cpt, null as ancien, null as nouveau, null as index, null as montant, l.id , c.id as coproprietaire_id, l.numero_lot, c.reference as coproprietaire, c.nom, c.prenom from ";
+        var cmd =
+            "select s.cpt as Compteur, ref_cpt, null as ancien, null as nouveau, null as index, null as montant, l.id , c.id as coproprietaire_id, l.numero_lot, c.reference as coproprietaire, c.nom, c.prenom from ";
         cmd += "( \n";
 
         cmd +=
@@ -125,7 +130,7 @@ public class LotRepartitionController : AbstractBaseController<LotRepartitionEnt
             $"select 'cpt 2' as cpt, 2 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 2 union \n";
         cmd +=
             $"select 'cpt 1' as cpt, 1 as ref_cpt, * from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 2 union \n";
-            
+
 //            cmd += String.Format("select 'cpt 1' as cpt, 1 as ref_cpt, * from {0} where immeuble_id = @immeuble_id and reference = @base_repart and valeur = 1 union \n", getSchemaTable());
 
         cmd +=
@@ -133,11 +138,11 @@ public class LotRepartitionController : AbstractBaseController<LotRepartitionEnt
 
         cmd += " ) s ";
         cmd += "join agence.lot_description l on l.id = lot_id ";
-        cmd += "join agence.coproprietaire c on c.id = l.coproprietaire_id " ;
+        cmd += "join agence.coproprietaire c on c.id = l.coproprietaire_id ";
         cmd += "order by l.numero_lot, cpt ";
 
         Console.WriteLine(cmd);
-            
+
         var parameters = new List<NpgsqlParameter>
         {
             new("@immeuble_id", immeuble_id),

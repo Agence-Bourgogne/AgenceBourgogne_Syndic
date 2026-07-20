@@ -5,25 +5,29 @@ namespace SyndicData.Entites;
 
 public class NatureEntite : AbstractBaseEntite
 {
-
-    public string reference;
-    public string nom;
+    public bool budgetisable;
     public int charge_locative;
     public string declaration;
+    public string nom;
+
+    public string reference;
     public string reference_comptabilite;
-    public int type_charge;
-    public bool budgetisable;
     public int statut;
+
+    public int type_charge;
+
     //        public string nom_comptabilite;
     public NatureEntite()
     {
         id = "";
         setValues(null);
     }
+
     public NatureEntite(DataRow data)
     {
         setValues(data);
     }
+
     public override void setValues(DataRow row)
     {
         var members = GetType().GetFields();

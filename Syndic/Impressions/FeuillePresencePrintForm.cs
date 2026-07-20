@@ -12,6 +12,7 @@ namespace EspaceSyndic.Impressions;
 public partial class FeuillePresencePrintForm : Form
 {
     private ImmeubleEntite immeuble;
+
     public FeuillePresencePrintForm()
     {
         InitializeComponent();
@@ -31,13 +32,15 @@ public partial class FeuillePresencePrintForm : Form
 
     private void btnPrint_Click(object sender, EventArgs e)
     {
-        var parameters = new ReportParameter[]{
+        var parameters = new ReportParameter[]
+        {
             new("TypeAssemblee", cbAssemblee.SelectedItem.ToString()),
             new("DateAssemblee", dtAssemblee.Value.ToShortDateString())
         };
 
         reportViewer1.LocalReport.DataSources.Clear();
-        reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("CoproImmeubleDSet", CoproprietaireController.getController().CoproprietaireImmeubleDescription(immeuble.id)));
+        reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("CoproImmeubleDSet",
+            CoproprietaireController.getController().CoproprietaireImmeubleDescription(immeuble.id)));
         reportViewer1.LocalReport.SetParameters(parameters);
         reportViewer1.RefreshReport();
     }
@@ -45,10 +48,8 @@ public partial class FeuillePresencePrintForm : Form
     private void tbRefImmeuble_Validating(object sender, CancelEventArgs e)
     {
         immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
-        if ((immeuble != null) &(cbAssemblee.SelectedIndex >= 0))
-        {
+        if ((immeuble != null) & (cbAssemblee.SelectedIndex >= 0))
             btnRapport.Enabled = true;
-        }
         else
             btnRapport.Enabled = false;
     }

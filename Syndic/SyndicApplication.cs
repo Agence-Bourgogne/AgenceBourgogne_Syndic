@@ -6,11 +6,9 @@ using CommonProjectsPartners.Utils;
 using EspaceSyndic.Formulaires;
 using SyndicData.Common;
 
-
-
 namespace EspaceSyndic;
 
-internal static class SyndicApplication 
+internal static class SyndicApplication
 {
     public const string CURRENT_APPLICATION = "syndic";
 
@@ -27,16 +25,13 @@ internal static class SyndicApplication
 
             try
             {
-                if (Database.GetInstance() == null)
-                {
-                    str = "";
-                }
-
+                if (Database.GetInstance() == null) str = "";
             }
             catch (Exception)
             {
                 str = null;
             }
+
             if (string.IsNullOrEmpty(str))
             {
                 var cfgForm = new DatabaseConfigForm(CURRENT_APPLICATION);
@@ -47,12 +42,12 @@ internal static class SyndicApplication
                 BaseApplication.schema = ParametresDB.getParam1("AGENCE", "schema");
                 Application.Run(new MainForm());
             }
-
         }
         catch (Exception ex)
         {
             MessageBox.Show(ex.Message);
         }
+
         BaseApplication.CloseOfficeInstance();
     }
 }

@@ -12,23 +12,26 @@ namespace EspaceSyndic.Formulaires.Immeubles;
 public partial class ListeImmeubleForm : Form
 {
     private readonly ImmeubleController controller = new();
-    private bool bLoading;
     private readonly string regKey;
+    private bool bLoading;
+
     public ListeImmeubleForm()
     {
         InitializeComponent();
         regKey = "listes\\immeubles";
     }
+
     private void ListeImmeubleForm_Load(object sender, EventArgs e)
     {
         FillDataGrid();
     }
-    private void FillDataGrid() 
+
+    private void FillDataGrid()
     {
         bLoading = true;
 
         dataGridView.DataSource = ckActif.Checked ? controller.GetList() : controller.GetAllEntite();
-            
+
         if (dataGridView.DataSource != null)
         {
             var cols = dataGridView.Columns;
@@ -61,7 +64,10 @@ public partial class ListeImmeubleForm : Form
             OrderColumns();
         }
         else
+        {
             Close();
+        }
+
         BtnSave.Enabled = false;
         bLoading = false;
     }
@@ -105,19 +111,16 @@ public partial class ListeImmeubleForm : Form
 
     private void editionToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        ShowImmeuble ( dataGridView.SelectedRows[0].Index);
+        ShowImmeuble(dataGridView.SelectedRows[0].Index);
     }
 
     private void ShowImmeuble(int index)
     {
-        if (!dataGridView.ReadOnly)
-        {
-            return;
-        }
+        if (!dataGridView.ReadOnly) return;
         if (controller.SaveList((DataTable)dataGridView.DataSource))
         {
             var row = (DataRowView)dataGridView.Rows[index].DataBoundItem;
-            if ( row.Row.RowState != DataRowState.Detached )
+            if (row.Row.RowState != DataRowState.Detached)
                 edition(new ImmeubleEntite(row.Row));
         }
     }
@@ -126,6 +129,7 @@ public partial class ListeImmeubleForm : Form
     {
         edition(new ImmeubleEntite());
     }
+
     private void edition(ImmeubleEntite entite)
     {
         try
@@ -155,12 +159,14 @@ public partial class ListeImmeubleForm : Form
             e.Handled = true;
             editionToolStripMenuItem_Click(null, null);
         }
+
         if (Convert.ToInt16(e.KeyChar) == 27)
         {
             e.Handled = true;
             updateEditMode(false);
         }
-        if (e.KeyChar == 0x0D && dataGridView.ReadOnly )
+
+        if (e.KeyChar == 0x0D && dataGridView.ReadOnly)
         {
             e.Handled = true;
             var index = dataGridView.SelectedRows[0].Index;
@@ -168,9 +174,14 @@ public partial class ListeImmeubleForm : Form
             ShowImmeuble(index);
         }
     }
+
     private void btnExport_Click(object sender, EventArgs e)
     {
-        var colsToHide = new List<string> { "id", "note", "codenvoi","codenvcomp", "declaration","note_repart", "audit_created", "audit_created_by", "audit_updated", "audit_updated_by" };
+        var colsToHide = new List<string>
+        {
+            "id", "note", "codenvoi", "codenvcomp", "declaration", "note_repart", "audit_created", "audit_created_by",
+            "audit_updated", "audit_updated_by"
+        };
         BaseApplication.DataGridToExcel(dataGridView, colsToHide);
     }
 
@@ -183,7 +194,9 @@ public partial class ListeImmeubleForm : Form
         {
             var action = (int)CommonRegistry.getRegistryValue("Parametres", "ActionFiltre", 0);
             if (action == 1)
+            {
                 source.Filter = $"reference = '{form.reference}'";
+            }
             else
             {
                 var fiche = new FicheImmeubleForm();
@@ -192,16 +205,16 @@ public partial class ListeImmeubleForm : Form
             }
         }
         else
+        {
             source.Filter = "";
-
+        }
     }
+
     private void dataGridView_ColumnDisplayIndexChanged(object sender, DataGridViewColumnEventArgs e)
     {
         if (!bLoading)
-        {
             if (regKey != "")
                 CommonRegistry.setRegistryValue(regKey, e.Column.Name, e.Column.DisplayIndex);
-        }
     }
 
     private void ckActif_CheckedChanged(object sender, EventArgs e)
