@@ -53,7 +53,6 @@ public partial class MainForm : Form
     private void MainForm_Load(object sender, EventArgs e)
     {
         Text = Text + " " + Assembly.GetEntryAssembly().GetName().Version;
-        btnCancel.Width = 0;
 
         var lbl1 = ParametresDB.getParam1("PRESENTATION", "LABEL1", "AGENCE");
         var lbl2 = ParametresDB.getParam1("PRESENTATION", "LABEL2", "BOURGOGNE");
@@ -840,5 +839,10 @@ public partial class MainForm : Form
     {
         var form = new ImprimerListeFacturationForm();
         form.ShowDialog();
+    }
+
+    private void GrandLivreToolStripMenuItemOnClick(object sender, EventArgs e)
+    {
+        ShowForm<GrandLivreForm>();
     }
 }

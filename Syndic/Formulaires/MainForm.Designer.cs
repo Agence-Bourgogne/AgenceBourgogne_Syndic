@@ -75,6 +75,7 @@ namespace EspaceSyndic.Formulaires
             outilsToolStripMenuItem = new ToolStripMenuItem();
             parametresToolStripMenuItem = new ToolStripMenuItem();
             parametresGenerauxToolStripMenuItem = new ToolStripMenuItem();
+            utilisateursToolStripMenuItem = new ToolStripMenuItem();
             modèlesDeDocumentsToolStripMenuItem = new ToolStripMenuItem();
             quitterToolStripMenuItem = new ToolStripMenuItem();
             deconnexionToolStripMenuItem = new ToolStripMenuItem();
@@ -94,8 +95,7 @@ namespace EspaceSyndic.Formulaires
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
-            btnCancel = new Button();
-            utilisateursToolStripMenuItem = new ToolStripMenuItem();
+            grandLivreToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -119,35 +119,35 @@ namespace EspaceSyndic.Formulaires
             // immeublesToolStripMenuItem
             // 
             immeublesToolStripMenuItem.Name = "immeublesToolStripMenuItem";
-            immeublesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            immeublesToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             immeublesToolStripMenuItem.Text = "Immeubles";
             immeublesToolStripMenuItem.Click += immeublesToolStripMenuItem_Click;
             // 
             // copropriétairesToolStripMenuItem
             // 
             copropriétairesToolStripMenuItem.Name = "copropriétairesToolStripMenuItem";
-            copropriétairesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            copropriétairesToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             copropriétairesToolStripMenuItem.Text = "Copropriétaires";
             copropriétairesToolStripMenuItem.Click += copropriétairesToolStripMenuItem_Click;
             // 
             // fournisseursToolStripMenuItem
             // 
             fournisseursToolStripMenuItem.Name = "fournisseursToolStripMenuItem";
-            fournisseursToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            fournisseursToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             fournisseursToolStripMenuItem.Text = "Fournisseurs";
             fournisseursToolStripMenuItem.Click += fournisseursToolStripMenuItem_Click;
             // 
             // naturesToolStripMenuItem
             // 
             naturesToolStripMenuItem.Name = "naturesToolStripMenuItem";
-            naturesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            naturesToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             naturesToolStripMenuItem.Text = "Natures";
             naturesToolStripMenuItem.Click += naturesToolStripMenuItem_Click;
             // 
             // commentairesToolStripMenuItem
             // 
             commentairesToolStripMenuItem.Name = "commentairesToolStripMenuItem";
-            commentairesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            commentairesToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             commentairesToolStripMenuItem.Text = "Aides Immeubles";
             commentairesToolStripMenuItem.Click += commentairesToolStripMenuItem_Click;
             // 
@@ -260,7 +260,7 @@ namespace EspaceSyndic.Formulaires
             // 
             // editionsToolStripMenuItem
             // 
-            editionsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { convocationsToolStripMenuItem, additifsToolStripMenuItem, accusésDeReceptionToolStripMenuItem, feuillesDePrésenceToolStripMenuItem, bilanGénéralEtCompteExploitationToolStripMenuItem, relevésIndividuelsToolStripMenuItem, budgetPrévisionnelToolStripMenuItem, bordereauRemiseDeChèquesToolStripMenuItem, relevésCommercesToolStripMenuItem, clotureExerciceToolStripMenuItem });
+            editionsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { convocationsToolStripMenuItem, additifsToolStripMenuItem, accusésDeReceptionToolStripMenuItem, feuillesDePrésenceToolStripMenuItem, bilanGénéralEtCompteExploitationToolStripMenuItem, relevésIndividuelsToolStripMenuItem, budgetPrévisionnelToolStripMenuItem, bordereauRemiseDeChèquesToolStripMenuItem, relevésCommercesToolStripMenuItem, clotureExerciceToolStripMenuItem, grandLivreToolStripMenuItem });
             editionsToolStripMenuItem.Name = "editionsToolStripMenuItem";
             editionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             editionsToolStripMenuItem.Text = "E&ditions";
@@ -419,6 +419,13 @@ namespace EspaceSyndic.Formulaires
             parametresGenerauxToolStripMenuItem.Text = "Paramètres Généraux";
             parametresGenerauxToolStripMenuItem.Click += parametresGenerauxToolStripMenuItem_Click;
             // 
+            // utilisateursToolStripMenuItem
+            // 
+            utilisateursToolStripMenuItem.Name = "utilisateursToolStripMenuItem";
+            utilisateursToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
+            utilisateursToolStripMenuItem.Text = "Utilisateurs";
+            utilisateursToolStripMenuItem.Click += utilisateursToolStripMenuItem_Click;
+            // 
             // modèlesDeDocumentsToolStripMenuItem
             // 
             modèlesDeDocumentsToolStripMenuItem.Name = "modèlesDeDocumentsToolStripMenuItem";
@@ -566,32 +573,19 @@ namespace EspaceSyndic.Formulaires
             label3.TabIndex = 3;
             label3.Text = "BOURGOGNE";
             // 
-            // btnCancel
+            // grandLivreToolStripMenuItem
             // 
-            btnCancel.DialogResult = DialogResult.Cancel;
-            btnCancel.Location = new System.Drawing.Point(414, 312);
-            btnCancel.Margin = new Padding(4, 3, 4, 3);
-            btnCancel.Name = "btnCancel";
-            btnCancel.Size = new System.Drawing.Size(88, 27);
-            btnCancel.TabIndex = 115;
-            btnCancel.Text = "button1";
-            btnCancel.UseVisualStyleBackColor = true;
-            // 
-            // utilisateursToolStripMenuItem
-            // 
-            utilisateursToolStripMenuItem.Name = "utilisateursToolStripMenuItem";
-            utilisateursToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
-            utilisateursToolStripMenuItem.Text = "Utilisateurs";
-            utilisateursToolStripMenuItem.Click += utilisateursToolStripMenuItem_Click;
+            grandLivreToolStripMenuItem.Name = "grandLivreToolStripMenuItem";
+            grandLivreToolStripMenuItem.Size = new System.Drawing.Size(309, 22);
+            grandLivreToolStripMenuItem.Text = "Grand Livre";
+            grandLivreToolStripMenuItem.Click += GrandLivreToolStripMenuItemOnClick;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = System.Drawing.Color.Silver;
-            CancelButton = btnCancel;
             ClientSize = new System.Drawing.Size(915, 648);
-            Controls.Add(btnCancel);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
@@ -655,7 +649,6 @@ namespace EspaceSyndic.Formulaires
         private ToolStripMenuItem balanceReglementsFacturesPourUnImmeubleToolStripMenuItem;
         private ToolStripMenuItem balanceReglementsAppelsDeFondImmeubleToolStripMenuItem;
         private ToolStripMenuItem balanceReglementsFacturesPourLeCompteSyndicToolStripMenuItem;
-        private Button btnCancel;
         private ToolStripMenuItem parametresGenerauxToolStripMenuItem;
         private ToolStripMenuItem visualisationOperationDeGestionToolStripMenuItem;
         private ToolStripMenuItem clotureExerciceToolStripMenuItem;
@@ -678,5 +671,6 @@ namespace EspaceSyndic.Formulaires
         private ToolStripMenuItem modèlesDeDocumentsToolStripMenuItem;
         private ToolStripMenuItem impressionListeFacturesToolStripMenuItem;
         private ToolStripMenuItem utilisateursToolStripMenuItem;
+        private ToolStripMenuItem grandLivreToolStripMenuItem;
     }
 }
