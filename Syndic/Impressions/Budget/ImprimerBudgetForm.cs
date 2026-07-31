@@ -34,7 +34,7 @@ public partial class ImprimerBudgetForm : Form
 
     private void FillCbExercice(string exercice_id = "")
     {
-        var exercices = ExerciceComptableController.getController().getListExerciceFromImmeuble(immeuble.id);
+        var exercices = ExerciceComptableController.GetController().GetListExerciceFromImmeuble(immeuble.id);
         cbExercice.Enabled = false;
         cbExercice.DataSource = exercices;
         cbExercice.ValueMember = "id";

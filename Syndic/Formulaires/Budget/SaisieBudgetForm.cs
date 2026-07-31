@@ -74,8 +74,8 @@ public partial class SaisieBudgetForm : Form
     {
         bLoaded = false;
 
-        var exercices = ExerciceComptableController.getController()
-            .getListExerciceFromImmeuble(immeuble != null ? immeuble.id : "");
+        var exercices = ExerciceComptableController.GetController()
+            .GetListExerciceFromImmeuble(immeuble != null ? immeuble.id : "");
         dataGridViewExercice.DataSource = exercices;
         bLoaded = true;
 
@@ -189,7 +189,7 @@ public partial class SaisieBudgetForm : Form
         var budget = BudgetController.getController().getEntiteFromField("exercice_id", exercice_id);
         if (budget == null)
         {
-            var exercice = ExerciceComptableController.getController().getEntiteById(exercice_id);
+            var exercice = ExerciceComptableController.GetController().getEntiteById(exercice_id);
             if (exercice != null)
             {
                 budget = new BudgetEntite
@@ -410,14 +410,14 @@ public partial class SaisieBudgetForm : Form
             var libelle = ParametresDB.getParam1("CLOTURE", "LIBELLE OPERATION");
 
 //                LiasseEntite liasse = 
-            var currExercice = ExerciceComptableController.getController().getEntiteById(exercice_id);
-            var exercice_suivant = ExerciceComptableController.getController().getExerciceSuivant(exercice_id);
+            var currExercice = ExerciceComptableController.GetController().getEntiteById(exercice_id);
+            var exercice_suivant = ExerciceComptableController.GetController().GetExerciceSuivant(exercice_id);
             if (exercice_suivant.Rows.Count <= 0)
             {
                 dataGridViewExercice.ClearSelection();
 
                 btnExerciceAdd_Click(null, null);
-                exercice_suivant = ExerciceComptableController.getController().getExerciceSuivant(exercice_id);
+                exercice_suivant = ExerciceComptableController.GetController().GetExerciceSuivant(exercice_id);
             }
 
             var cnx = Database.GetInstance();
@@ -486,7 +486,7 @@ public partial class SaisieBudgetForm : Form
                         throw new Exception("Cloture Facture");
 
                     currExercice.statut = (int)GlobalConstantes.StatutExercice.Clos;
-                    if (!ExerciceComptableController.getController().InsertOrUpdate(currExercice))
+                    if (!ExerciceComptableController.GetController().InsertOrUpdate(currExercice))
                         throw new Exception("Statut exercice");
                 }
 

@@ -57,8 +57,8 @@ public partial class ReferenceExerciceForm : Form
     private void fillDataGrid()
     {
         bLoading = true;
-        dataGridView.DataSource = ExerciceComptableController.getController()
-            .getListExerciceFromImmeuble(exercice.immeuble_id);
+        dataGridView.DataSource = ExerciceComptableController.GetController()
+            .GetListExerciceFromImmeuble(exercice.immeuble_id);
         var cols = dataGridView.Columns;
         cols["id"].Visible = false;
         cols["budget_id"].Visible = false;
@@ -111,7 +111,7 @@ public partial class ReferenceExerciceForm : Form
         exercice.reference = exercice.nom = tbReference.Text;
         exercice.date_deb = dtDeb.Value;
         exercice.date_fin = dtFin.Value;
-        bResult = ExerciceComptableController.getController().InsertOrUpdate(exercice);
+        bResult = ExerciceComptableController.GetController().InsertOrUpdate(exercice);
 
         var immeuble = ImmeubleController.getController().getEntiteById(exercice.immeuble_id);
         if (immeuble != null)
@@ -126,7 +126,7 @@ public partial class ReferenceExerciceForm : Form
     private void supprimerToolStripMenuItem_Click(object sender, EventArgs e)
     {
         var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
-        var entite = ExerciceComptableController.getController().getEntiteById(row["id"].ToString());
+        var entite = ExerciceComptableController.GetController().getEntiteById(row["id"].ToString());
 
         if (entite != null)
         {
@@ -137,7 +137,7 @@ public partial class ReferenceExerciceForm : Form
                 return;
             }
 
-            ExerciceComptableController.getController().deleteEntite(entite);
+            ExerciceComptableController.GetController().deleteEntite(entite);
             fillDataGrid();
         }
     }
@@ -147,7 +147,7 @@ public partial class ReferenceExerciceForm : Form
         if (!bLoading && dataGridView.SelectedRows.Count > 0)
         {
             var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
-            var entite = ExerciceComptableController.getController().getEntiteById(row["id"].ToString());
+            var entite = ExerciceComptableController.GetController().getEntiteById(row["id"].ToString());
             tbReference.Text = entite.reference;
             dtDeb.Value = entite.date_deb;
             dtFin.Value = entite.date_fin;
@@ -159,7 +159,7 @@ public partial class ReferenceExerciceForm : Form
         if (!bLoading && dataGridView.SelectedRows.Count > 0)
         {
             var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
-            exercice = ExerciceComptableController.getController().getEntiteById(row["id"].ToString());
+            exercice = ExerciceComptableController.GetController().getEntiteById(row["id"].ToString());
             UpdateExercice();
             fillDataGrid();
         }

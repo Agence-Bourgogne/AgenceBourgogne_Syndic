@@ -55,7 +55,7 @@ public class ImmeubleEntite : AbstractBaseEntite
         get
         {
             if (_exercice == null)
-                _exercice = ExerciceComptableController.getController().getExerciceCourant(id);
+                _exercice = ExerciceComptableController.GetController().GetExerciceCourant(id);
             return _exercice;
         }
     }
