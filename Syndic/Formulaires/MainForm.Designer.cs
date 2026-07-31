@@ -64,6 +64,7 @@ namespace EspaceSyndic.Formulaires
             bordereauRemiseDeChèquesToolStripMenuItem = new ToolStripMenuItem();
             relevésCommercesToolStripMenuItem = new ToolStripMenuItem();
             clotureExerciceToolStripMenuItem = new ToolStripMenuItem();
+            grandLivreToolStripMenuItem = new ToolStripMenuItem();
             utilitairesToolStripMenuItem = new ToolStripMenuItem();
             immeublesToolStripMenuItem1 = new ToolStripMenuItem();
             editionEtiquettesToolStripMenuItem = new ToolStripMenuItem();
@@ -80,22 +81,10 @@ namespace EspaceSyndic.Formulaires
             quitterToolStripMenuItem = new ToolStripMenuItem();
             deconnexionToolStripMenuItem = new ToolStripMenuItem();
             quitterToolStripMenuItem1 = new ToolStripMenuItem();
-            controlesDBToolStripMenuItem = new ToolStripMenuItem();
-            facturesToolStripMenuItem = new ToolStripMenuItem();
-            reglementsToolStripMenuItem = new ToolStripMenuItem();
-            appelDeFondToolStripMenuItem = new ToolStripMenuItem();
-            operationsReglementsToolStripMenuItem = new ToolStripMenuItem();
-            operationsFacturesToolStripMenuItem = new ToolStripMenuItem();
-            operationsAppelDeFondToolStripMenuItem = new ToolStripMenuItem();
-            toolStripSeparator1 = new ToolStripSeparator();
-            repareFacturesToolStripMenuItem = new ToolStripMenuItem();
-            répareRéglementsToolStripMenuItem = new ToolStripMenuItem();
-            répareOpérationReglementsToolStripMenuItem = new ToolStripMenuItem();
             appelsDeFondsNouvelExerciceToolStripMenuItem = new ToolStripMenuItem();
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
-            grandLivreToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -252,11 +241,8 @@ namespace EspaceSyndic.Formulaires
             // 
             // transfertAppelDeFondsSurGéranceToolStripMenuItem
             // 
-            transfertAppelDeFondsSurGéranceToolStripMenuItem.Enabled = false;
             transfertAppelDeFondsSurGéranceToolStripMenuItem.Name = "transfertAppelDeFondsSurGéranceToolStripMenuItem";
             transfertAppelDeFondsSurGéranceToolStripMenuItem.Size = new System.Drawing.Size(293, 22);
-            transfertAppelDeFondsSurGéranceToolStripMenuItem.Text = "Transfert Appel de Fonds sur Gérance";
-            transfertAppelDeFondsSurGéranceToolStripMenuItem.Click += transfertAppelDeFondsSurGéranceToolStripMenuItem_Click;
             // 
             // editionsToolStripMenuItem
             // 
@@ -338,6 +324,13 @@ namespace EspaceSyndic.Formulaires
             clotureExerciceToolStripMenuItem.Size = new System.Drawing.Size(309, 22);
             clotureExerciceToolStripMenuItem.Text = "Cloture Exercice";
             clotureExerciceToolStripMenuItem.Click += clotureExerciceToolStripMenuItem_Click;
+            // 
+            // grandLivreToolStripMenuItem
+            // 
+            grandLivreToolStripMenuItem.Name = "grandLivreToolStripMenuItem";
+            grandLivreToolStripMenuItem.Size = new System.Drawing.Size(309, 22);
+            grandLivreToolStripMenuItem.Text = "Grand Livre";
+            grandLivreToolStripMenuItem.Click += GrandLivreToolStripMenuItemOnClick;
             // 
             // utilitairesToolStripMenuItem
             // 
@@ -435,7 +428,7 @@ namespace EspaceSyndic.Formulaires
             // 
             // quitterToolStripMenuItem
             // 
-            quitterToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { deconnexionToolStripMenuItem, quitterToolStripMenuItem1, controlesDBToolStripMenuItem });
+            quitterToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { deconnexionToolStripMenuItem, quitterToolStripMenuItem1 });
             quitterToolStripMenuItem.Name = "quitterToolStripMenuItem";
             quitterToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
             quitterToolStripMenuItem.Text = "&Actions";
@@ -443,92 +436,16 @@ namespace EspaceSyndic.Formulaires
             // deconnexionToolStripMenuItem
             // 
             deconnexionToolStripMenuItem.Name = "deconnexionToolStripMenuItem";
-            deconnexionToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            deconnexionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             deconnexionToolStripMenuItem.Text = "Déconnexion";
             deconnexionToolStripMenuItem.Click += deconnexionToolStripMenuItem_Click;
             // 
             // quitterToolStripMenuItem1
             // 
             quitterToolStripMenuItem1.Name = "quitterToolStripMenuItem1";
-            quitterToolStripMenuItem1.Size = new System.Drawing.Size(143, 22);
+            quitterToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             quitterToolStripMenuItem1.Text = "&Quitter";
             quitterToolStripMenuItem1.Click += quitterToolStripMenuItem1_Click;
-            // 
-            // controlesDBToolStripMenuItem
-            // 
-            controlesDBToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { facturesToolStripMenuItem, reglementsToolStripMenuItem, appelDeFondToolStripMenuItem, operationsReglementsToolStripMenuItem, operationsFacturesToolStripMenuItem, operationsAppelDeFondToolStripMenuItem, toolStripSeparator1, repareFacturesToolStripMenuItem, répareRéglementsToolStripMenuItem, répareOpérationReglementsToolStripMenuItem });
-            controlesDBToolStripMenuItem.Name = "controlesDBToolStripMenuItem";
-            controlesDBToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
-            controlesDBToolStripMenuItem.Text = "Controles DB";
-            controlesDBToolStripMenuItem.Visible = false;
-            // 
-            // facturesToolStripMenuItem
-            // 
-            facturesToolStripMenuItem.Name = "facturesToolStripMenuItem";
-            facturesToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-            facturesToolStripMenuItem.Text = "Factures";
-            facturesToolStripMenuItem.Click += facturesToolStripMenuItem_Click;
-            // 
-            // reglementsToolStripMenuItem
-            // 
-            reglementsToolStripMenuItem.Name = "reglementsToolStripMenuItem";
-            reglementsToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-            reglementsToolStripMenuItem.Text = "Reglements";
-            reglementsToolStripMenuItem.Click += reglementsToolStripMenuItem_Click;
-            // 
-            // appelDeFondToolStripMenuItem
-            // 
-            appelDeFondToolStripMenuItem.Name = "appelDeFondToolStripMenuItem";
-            appelDeFondToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-            appelDeFondToolStripMenuItem.Text = "Appel de Fond";
-            appelDeFondToolStripMenuItem.Click += appelDeFondToolStripMenuItem_Click;
-            // 
-            // operationsReglementsToolStripMenuItem
-            // 
-            operationsReglementsToolStripMenuItem.Name = "operationsReglementsToolStripMenuItem";
-            operationsReglementsToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-            operationsReglementsToolStripMenuItem.Text = "Operations Reglements";
-            operationsReglementsToolStripMenuItem.Click += operationsReglementsToolStripMenuItem_Click;
-            // 
-            // operationsFacturesToolStripMenuItem
-            // 
-            operationsFacturesToolStripMenuItem.Name = "operationsFacturesToolStripMenuItem";
-            operationsFacturesToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-            operationsFacturesToolStripMenuItem.Text = "Operations Factures";
-            operationsFacturesToolStripMenuItem.Click += operationsFacturesToolStripMenuItem_Click;
-            // 
-            // operationsAppelDeFondToolStripMenuItem
-            // 
-            operationsAppelDeFondToolStripMenuItem.Name = "operationsAppelDeFondToolStripMenuItem";
-            operationsAppelDeFondToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-            operationsAppelDeFondToolStripMenuItem.Text = "Operations Appel de Fond";
-            operationsAppelDeFondToolStripMenuItem.Click += operationsAppelDeFondToolStripMenuItem_Click;
-            // 
-            // toolStripSeparator1
-            // 
-            toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new System.Drawing.Size(228, 6);
-            // 
-            // repareFacturesToolStripMenuItem
-            // 
-            repareFacturesToolStripMenuItem.Name = "repareFacturesToolStripMenuItem";
-            repareFacturesToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-            repareFacturesToolStripMenuItem.Text = "Répare Factures";
-            repareFacturesToolStripMenuItem.Click += repareFacturesToolStripMenuItem_Click;
-            // 
-            // répareRéglementsToolStripMenuItem
-            // 
-            répareRéglementsToolStripMenuItem.Name = "répareRéglementsToolStripMenuItem";
-            répareRéglementsToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-            répareRéglementsToolStripMenuItem.Text = "Répare Règlements";
-            répareRéglementsToolStripMenuItem.Click += répareRéglementsToolStripMenuItem_Click;
-            // 
-            // répareOpérationReglementsToolStripMenuItem
-            // 
-            répareOpérationReglementsToolStripMenuItem.Name = "répareOpérationReglementsToolStripMenuItem";
-            répareOpérationReglementsToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-            répareOpérationReglementsToolStripMenuItem.Text = "Répare Opération Reglements";
-            répareOpérationReglementsToolStripMenuItem.Click += répareOpérationReglementsToolStripMenuItem_Click;
             // 
             // appelsDeFondsNouvelExerciceToolStripMenuItem
             // 
@@ -572,13 +489,6 @@ namespace EspaceSyndic.Formulaires
             label3.Size = new System.Drawing.Size(574, 98);
             label3.TabIndex = 3;
             label3.Text = "BOURGOGNE";
-            // 
-            // grandLivreToolStripMenuItem
-            // 
-            grandLivreToolStripMenuItem.Name = "grandLivreToolStripMenuItem";
-            grandLivreToolStripMenuItem.Size = new System.Drawing.Size(309, 22);
-            grandLivreToolStripMenuItem.Text = "Grand Livre";
-            grandLivreToolStripMenuItem.Click += GrandLivreToolStripMenuItemOnClick;
             // 
             // MainForm
             // 
@@ -654,17 +564,6 @@ namespace EspaceSyndic.Formulaires
         private ToolStripMenuItem clotureExerciceToolStripMenuItem;
         private ToolStripMenuItem deconnexionToolStripMenuItem;
         private ToolStripMenuItem quitterToolStripMenuItem1;
-        private ToolStripMenuItem controlesDBToolStripMenuItem;
-        private ToolStripMenuItem facturesToolStripMenuItem;
-        private ToolStripMenuItem reglementsToolStripMenuItem;
-        private ToolStripMenuItem appelDeFondToolStripMenuItem;
-        private ToolStripSeparator toolStripSeparator1;
-        private ToolStripMenuItem repareFacturesToolStripMenuItem;
-        private ToolStripMenuItem répareRéglementsToolStripMenuItem;
-        private ToolStripMenuItem operationsReglementsToolStripMenuItem;
-        private ToolStripMenuItem répareOpérationReglementsToolStripMenuItem;
-        private ToolStripMenuItem operationsFacturesToolStripMenuItem;
-        private ToolStripMenuItem operationsAppelDeFondToolStripMenuItem;
         private ToolStripMenuItem controleDesDonnéesToolStripMenuItem;
         private ToolStripMenuItem aideMenuItem;
         private ToolStripMenuItem impressionRéglementsToolStripMenuItem;
