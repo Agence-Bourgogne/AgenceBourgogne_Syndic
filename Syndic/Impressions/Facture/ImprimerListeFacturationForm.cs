@@ -57,7 +57,6 @@ public partial class ImprimerListeFacturationForm : Form
         var hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
         var hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
 
-
         var parameters = new ReportParameter[]
         {
             new("Header_Description", hdr_descr),
