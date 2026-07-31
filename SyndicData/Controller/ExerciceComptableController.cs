@@ -25,7 +25,6 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
     public static ExerciceComptableController GetController()
     {
         return Controller;
-        //return new ExerciceComptableController();
     }
 
     public DataTable GetListExerciceFromImmeuble(string immeubleId)
@@ -49,17 +48,19 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
 
     public IEnumerable<ExerciceComptableSelector> GetExercicesIncludedInDates(DateOnly dateMinimale, DateOnly dateMaximale)
     {
-        var cmd = $"select " +
-                  $"i.reference AS reference_immeuble, " +
-                  $"e.reference as reference_exercice, " +
-                  $"e.date_deb, " +
-                  $"e.date_fin " +
-                  $"from {getSchemaTable()} e " +
-                  $"join immeuble i on i.id = e.immeuble_id" +
-                  "where e.date_deb <= @date_maximale " +
-                  "and e.date_fin >= @date_minimale " +
-                  "and e.statut != @statut " +
-                  "order by e.date_deb";
+        var cmd = $"""
+                   select
+                       i.reference AS reference_immeuble,
+                       e.reference AS reference_exercice,
+                       e.date_deb,
+                       e.date_fin
+                   from {getSchemaTable()} e
+                   join agence.immeuble i on i.id = e.immeuble_id
+                   where e.date_deb <= @date_maximale
+                     and e.date_fin >= @date_minimale
+                     and e.statut != @statut
+                   order by e.date_deb
+                   """;
 
         var parameters = new List<NpgsqlParameter>
         {
