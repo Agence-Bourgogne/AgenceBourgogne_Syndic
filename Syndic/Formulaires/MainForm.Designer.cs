@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace EspaceSyndic.Formulaires
@@ -84,6 +84,7 @@ namespace EspaceSyndic.Formulaires
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
+            paiementDesFacturesToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -187,7 +188,7 @@ namespace EspaceSyndic.Formulaires
             // 
             // reflemToolStripMenuItem
             // 
-            reflemToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { appelDeFondsToolStripMenuItem, appelDeFondDunimmeubleToolStripMenuItem, consultationComptesPropriétairesToolStripMenuItem, saisieReglementCoproproToolStripMenuItem, impressionRéglementsToolStripMenuItem, retardDePaiementsToolStripMenuItem });
+            reflemToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { appelDeFondsToolStripMenuItem, appelDeFondDunimmeubleToolStripMenuItem, consultationComptesPropriétairesToolStripMenuItem, saisieReglementCoproproToolStripMenuItem, impressionRéglementsToolStripMenuItem, retardDePaiementsToolStripMenuItem, paiementDesFacturesToolStripMenuItem });
             reflemToolStripMenuItem.Name = "reflemToolStripMenuItem";
             reflemToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.A;
             reflemToolStripMenuItem.Size = new System.Drawing.Size(122, 20);
@@ -484,6 +485,13 @@ namespace EspaceSyndic.Formulaires
             label3.TabIndex = 3;
             label3.Text = "BOURGOGNE";
             // 
+            // paiementDesFacturesToolStripMenuItem
+            // 
+            paiementDesFacturesToolStripMenuItem.Name = "paiementDesFacturesToolStripMenuItem";
+            paiementDesFacturesToolStripMenuItem.Size = new System.Drawing.Size(293, 22);
+            paiementDesFacturesToolStripMenuItem.Text = "Paiement des factures";
+            paiementDesFacturesToolStripMenuItem.Click += paiementDesFacturesToolStripMenuItem_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -564,5 +572,6 @@ namespace EspaceSyndic.Formulaires
         private ToolStripMenuItem impressionListeFacturesToolStripMenuItem;
         private ToolStripMenuItem utilisateursToolStripMenuItem;
         private ToolStripMenuItem grandLivreToolStripMenuItem;
+        private ToolStripMenuItem paiementDesFacturesToolStripMenuItem;
     }
 }

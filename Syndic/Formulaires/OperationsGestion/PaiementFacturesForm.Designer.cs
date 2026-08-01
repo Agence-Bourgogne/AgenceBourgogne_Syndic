@@ -28,32 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            dataGridView1 = new System.Windows.Forms.DataGridView();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            dgvFactures = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)dgvFactures).BeginInit();
             SuspendLayout();
             // 
-            // dataGridView1
+            // dgvFactures
             // 
-            dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new System.Drawing.Point(12, 12);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new System.Drawing.Size(776, 426);
-            dataGridView1.TabIndex = 0;
+            dgvFactures.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvFactures.Location = new System.Drawing.Point(12, 12);
+            dgvFactures.Name = "dgvFactures";
+            dgvFactures.Size = new System.Drawing.Size(776, 426);
+            dgvFactures.TabIndex = 0;
             // 
             // PaiementFacturesForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(800, 450);
-            Controls.Add(dataGridView1);
+            Controls.Add(dgvFactures);
             Name = "PaiementFacturesForm";
             Text = "Paiement des factures";
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvFactures).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dgvFactures;
     }
 }
