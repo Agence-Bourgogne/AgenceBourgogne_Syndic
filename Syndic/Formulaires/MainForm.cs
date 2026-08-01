@@ -379,4 +379,9 @@ public partial class MainForm : Form
     {
         ShowForm<GrandLivreForm>();
     }
+
+    private void paiementDesFacturesToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ShowForm<PaiementFacturesForm>();
+    }
 }

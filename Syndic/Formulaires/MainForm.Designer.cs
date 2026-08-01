@@ -52,7 +52,6 @@ namespace EspaceSyndic.Formulaires
             saisieReglementCoproproToolStripMenuItem = new ToolStripMenuItem();
             impressionRéglementsToolStripMenuItem = new ToolStripMenuItem();
             retardDePaiementsToolStripMenuItem = new ToolStripMenuItem();
-            transfertAppelDeFondsSurGéranceToolStripMenuItem = new ToolStripMenuItem();
             editionsToolStripMenuItem = new ToolStripMenuItem();
             convocationsToolStripMenuItem = new ToolStripMenuItem();
             additifsToolStripMenuItem = new ToolStripMenuItem();
@@ -85,6 +84,7 @@ namespace EspaceSyndic.Formulaires
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
+            paiementDesFacturesToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -188,7 +188,7 @@ namespace EspaceSyndic.Formulaires
             // 
             // reflemToolStripMenuItem
             // 
-            reflemToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { appelDeFondsToolStripMenuItem, appelDeFondDunimmeubleToolStripMenuItem, consultationComptesPropriétairesToolStripMenuItem, saisieReglementCoproproToolStripMenuItem, impressionRéglementsToolStripMenuItem, retardDePaiementsToolStripMenuItem, transfertAppelDeFondsSurGéranceToolStripMenuItem });
+            reflemToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { appelDeFondsToolStripMenuItem, appelDeFondDunimmeubleToolStripMenuItem, consultationComptesPropriétairesToolStripMenuItem, saisieReglementCoproproToolStripMenuItem, impressionRéglementsToolStripMenuItem, retardDePaiementsToolStripMenuItem, paiementDesFacturesToolStripMenuItem });
             reflemToolStripMenuItem.Name = "reflemToolStripMenuItem";
             reflemToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.A;
             reflemToolStripMenuItem.Size = new System.Drawing.Size(122, 20);
@@ -238,11 +238,6 @@ namespace EspaceSyndic.Formulaires
             retardDePaiementsToolStripMenuItem.Size = new System.Drawing.Size(293, 22);
             retardDePaiementsToolStripMenuItem.Text = "Retards de paiements";
             retardDePaiementsToolStripMenuItem.Click += retardDePaiementsToolStripMenuItem_Click;
-            // 
-            // transfertAppelDeFondsSurGéranceToolStripMenuItem
-            // 
-            transfertAppelDeFondsSurGéranceToolStripMenuItem.Name = "transfertAppelDeFondsSurGéranceToolStripMenuItem";
-            transfertAppelDeFondsSurGéranceToolStripMenuItem.Size = new System.Drawing.Size(293, 22);
             // 
             // editionsToolStripMenuItem
             // 
@@ -436,14 +431,14 @@ namespace EspaceSyndic.Formulaires
             // deconnexionToolStripMenuItem
             // 
             deconnexionToolStripMenuItem.Name = "deconnexionToolStripMenuItem";
-            deconnexionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            deconnexionToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             deconnexionToolStripMenuItem.Text = "Déconnexion";
             deconnexionToolStripMenuItem.Click += deconnexionToolStripMenuItem_Click;
             // 
             // quitterToolStripMenuItem1
             // 
             quitterToolStripMenuItem1.Name = "quitterToolStripMenuItem1";
-            quitterToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            quitterToolStripMenuItem1.Size = new System.Drawing.Size(143, 22);
             quitterToolStripMenuItem1.Text = "&Quitter";
             quitterToolStripMenuItem1.Click += quitterToolStripMenuItem1_Click;
             // 
@@ -489,6 +484,13 @@ namespace EspaceSyndic.Formulaires
             label3.Size = new System.Drawing.Size(574, 98);
             label3.TabIndex = 3;
             label3.Text = "BOURGOGNE";
+            // 
+            // paiementDesFacturesToolStripMenuItem
+            // 
+            paiementDesFacturesToolStripMenuItem.Name = "paiementDesFacturesToolStripMenuItem";
+            paiementDesFacturesToolStripMenuItem.Size = new System.Drawing.Size(293, 22);
+            paiementDesFacturesToolStripMenuItem.Text = "Paiement des factures";
+            paiementDesFacturesToolStripMenuItem.Click += paiementDesFacturesToolStripMenuItem_Click;
             // 
             // MainForm
             // 
@@ -548,7 +550,6 @@ namespace EspaceSyndic.Formulaires
         private ToolStripMenuItem appelDeFondDunimmeubleToolStripMenuItem;
         private ToolStripMenuItem consultationComptesPropriétairesToolStripMenuItem;
         private ToolStripMenuItem retardDePaiementsToolStripMenuItem;
-        private ToolStripMenuItem transfertAppelDeFondsSurGéranceToolStripMenuItem;
         private ToolStripMenuItem bilanGénéralEtCompteExploitationToolStripMenuItem;
         private ToolStripMenuItem relevésIndividuelsToolStripMenuItem;
         private ToolStripMenuItem budgetPrévisionnelToolStripMenuItem;
@@ -571,5 +572,6 @@ namespace EspaceSyndic.Formulaires
         private ToolStripMenuItem impressionListeFacturesToolStripMenuItem;
         private ToolStripMenuItem utilisateursToolStripMenuItem;
         private ToolStripMenuItem grandLivreToolStripMenuItem;
+        private ToolStripMenuItem paiementDesFacturesToolStripMenuItem;
     }
 }

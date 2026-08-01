@@ -24,11 +24,43 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
         return controller;
     }
 
+    public IEnumerable<FacturePresenter> GetFactures()
+    {
+        var cmd = $"""
+                   select
+                       l.reference as nom_liasse,
+                       i.nom as nom_immeuble,
+                       i.reference as reference_immeuble,
+                       f.nom as nom_fournisseur,
+                       fac.date_reference,
+                       fac.montant as montant_facture
+                   from {getSchema()}.saisie_facture fac
+                   join {getSchema()}.liasse l on l.id = fac.liasse_id
+                   join immeuble i on i.id = fac.immeuble_id
+                   join fournisseur f on f.id = fac.fournisseur_id
+                   order by fac.date_facture
+                   """;
+
+        var result = getResultSQL(cmd);
+
+        return result.AsEnumerable()
+            .Select(row => new FacturePresenter
+            {
+                NomLiasse = row.Field<string>("nom_liasse"),
+                NomImmeuble = row.Field<string>("nom_immeuble"),
+                ReferenceImmeuble = row.Field<string>("reference_immeuble"),
+                NomFournisseur = row.Field<string>("nom_fournisseur"),
+                DateFacture = DateOnly.FromDateTime(
+                    row.Field<DateTime>("date_facture")
+                ),
+                MontantFacture = row.Field<decimal>("montant_facture")
+            });
+    }
+
     public DataTable GetAllElements(string immeuble_id, DateTime dtDeb, DateTime dtFin)
     {
         var cmd = $"select f.*, i.reference as ref_imm from {getSchemaTable()} f ";
         cmd += " join agence.immeuble i on i.id = immeuble_id ";
-//            cmd += " where f.statut != @statut ";
         cmd += " where f.statut = 1 ";
         if (Database.NullDate != dtDeb)
             cmd += " and date_reference >= @dtDeb and date_reference <= @dtFin";
@@ -53,26 +85,6 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
         return getResultSQL(cmd, parameters);
     }
 
-    /*
-    public DataTable GetAllControlElements(string immeuble_id = "")
-    {
-        string cmd = String.Format("select f.*, i.reference as ref_imm, c.reference as ref_copro, n.reference as ref_nature from {0} f ", getSchemaTable());
-        cmd += " join agence.immeuble i on i.id = immeuble_id ";
-        cmd += " join agence.coproprietaire c on c.id = coproprietaire_id ";
-        cmd += " join agence.nature n on n.id = nature_id ";
-        cmd += " where f.statut = 1 ";
-        if (immeuble_id != "")
-            cmd += " and immeuble_id = @immeuble_id";
-        cmd += " order by i.reference";
-        List<NpgsqlParameter> parameters = new List<NpgsqlParameter>
-        {
-            new NpgsqlParameter("@immeuble_id", immeuble_id),
-            new NpgsqlParameter("@statut",(int) GlobalConstantes.StatutOperation.Valide),
-        };
-
-        return getResultSQL(cmd, parameters);
-    }
-     * */
     public DataTable getListeFactures(string liasse_id)
     {
         var schema = getSchema();
@@ -282,7 +294,7 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
     public decimal getTotalOperationWithoutSolde(string immeuble_id, DateTime dtDeb, DateTime dtFin)
     {
         decimal sum = 0;
-        var nature = "140";
+        const string nature = "140";
 
         var cmd = $"select sum(montant) as montant from {getSchemaTable()} f";
         cmd += string.Format(" join agence.nature n on n.id = f.nature_id ", getSchema());
@@ -329,7 +341,7 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
             new("@dtDeb", dtDeb),
             new("@dtFin", dtFin)
         };
-        //Console.WriteLine(cmd);
+
         return getResultSQL(cmd, parameters);
     }
 
@@ -347,8 +359,7 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
             new("@dtFin", dtFin),
             new("@solde_bilan", ParametresDB.getParam1("NATURE", "SOLDE BILAN"))
         };
-        //Console.WriteLine(cmd);
-        //Console.WriteLine(immeuble_id);
+
         return getResultSQL(cmd, parameters);
     }
 
@@ -357,9 +368,7 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
         var table = getCurrentSoldeImmeuble(immeuble_id, dtDeb, dtFin);
         decimal solde = 0;
 
-        if (table != null)
-            if (table.Rows.Count > 0)
-                solde = Convertir.ToDecimal(table.Rows[0]["montant"]);
+        if (table is { Rows.Count: > 0 }) solde = Convertir.ToDecimal(table.Rows[0]["montant"]);
         return solde;
     }
 
@@ -396,11 +405,8 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
             " where immeuble_id = @immeuble_id and date_reference = @date_reference and nature_id = @nature_id and trim(libelle) = trim(@libelle)";
         cmd += " and montant = @montant and o.statut != @statut ";
         cmd += " and base_repart = @base_repart";
-        //cmd += " and o.liasse_id like 'Reprise%'";
-        var montant = operation.global;
 
-        //if (operation.debit != 0)
-        //    montant = operation.debit;
+        var montant = operation.global;
 
         var parameters = new List<NpgsqlParameter>
         {
@@ -490,8 +496,7 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
                 if (!doInsertOrUpdate(saisie))
                     throw new Exception("SaisieAppel de Fond");
 
-                if (operation == null)
-                    operation = new OperationEntite(saisie);
+                operation ??= new OperationEntite(saisie);
 
                 if (!opeCtl.InsertOperationFromSaisie(saisie, operation, montant, lot.coproprietaire_id, lot.id, 1))
                     throw new Exception("Creation operation");
@@ -530,7 +535,6 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
                 Console.WriteLine(repimm.numero_lot);
 
                 if (repimm.statut == (int)GlobalConstantes.StatutData.Supprime || repimm.coproprietaire_id == "")
-                    //if (repimm.statut != (int)GlobalConstantes.StatutData.Actif || repimm.coproprietaire_id == "")
                 {
                     Console.WriteLine("{0}", repimm.numero_lot);
                     continue;
@@ -583,12 +587,10 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
         if (entite.base_repart == "0") return;
         var repart = LotRepartitionController.getController()
             .GetLotsRepartitionFromBase(entite.immeuble_id, entite.base_repart);
-        DataTable operations;
 
-        if (entite.liasse_id.StartsWith("Reprise"))
-            operations = OperationController.getController().getNativeFactureOperations(entite);
-        else
-            operations = OperationController.getController().getNativeSaisieOperations(entite.id);
+        var operations = entite.liasse_id.StartsWith("Reprise") 
+            ? OperationController.getController().getNativeFactureOperations(entite) 
+            : OperationController.getController().getNativeSaisieOperations(entite.id);
 
         decimal valeur_imm = repartImm.valeur;
         if (valeur_imm == 0) return;
