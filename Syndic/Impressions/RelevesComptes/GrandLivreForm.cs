@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using SyndicData.Controller;
 using SyndicData.Entites;
+using SyndicData.Entites.ExerciceComptable;
 
 namespace EspaceSyndic.Impressions.RelevesComptes
 {
@@ -137,10 +138,8 @@ namespace EspaceSyndic.Impressions.RelevesComptes
 
                 return;
             }
-
-            var idsExercices = exercicesSelectionnes.Select(ex => ex.IdExercice);
-
-            GenerateurGrandLivre.GenerateurGrandLivre.GénérerDans(dossierDestination, idsExercices);
+            
+            GenerateurGrandLivre.GenerateurPdfGrandLivre.GénérerDans(dossierDestination, exercicesSelectionnes);
         }
     }
 }

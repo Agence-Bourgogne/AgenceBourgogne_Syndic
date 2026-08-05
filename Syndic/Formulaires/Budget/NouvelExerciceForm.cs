@@ -5,6 +5,7 @@ using CommonProjectsPartners.Utils;
 using SyndicData.Common;
 using SyndicData.Controller;
 using SyndicData.Entites;
+using SyndicData.Entites.ExerciceComptable;
 
 namespace EspaceSyndic.Formulaires.Budget;
 

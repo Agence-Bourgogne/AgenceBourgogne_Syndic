@@ -7,6 +7,7 @@ using CommonProjectsPartners.Utils;
 using Npgsql;
 using SyndicData.Common;
 using SyndicData.Entites;
+using SyndicData.Entites.ExerciceComptable;
 
 namespace SyndicData.Controller;
 

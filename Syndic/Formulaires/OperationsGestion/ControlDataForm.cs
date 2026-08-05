@@ -465,7 +465,6 @@ public partial class ControlDataForm : Form
                 file.Write($"*** {immeuble.reference};{datDeb.ToShortDateString()};{datFin.ToShortDateString()};");
                 var results =
                     $"{total_facture};{depenseOperation};;{total_reglements};{reglementOperation};;{total_appels};{Math.Abs(appelOperation)};;{Math.Abs(soldeReprise)};{valueSoldeImm}";
-//                    file.WriteLine(results.Replace(",","."));
                 file.WriteLine(results);
             }
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using CommonProjectsPartners.Entites;
 using SyndicData.Controller;
+using SyndicData.Entites.ExerciceComptable;
 
 namespace SyndicData.Entites;
 

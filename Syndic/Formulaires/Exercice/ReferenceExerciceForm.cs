@@ -5,6 +5,7 @@ using CommonProjectsPartners.Utils;
 using SyndicData.Common;
 using SyndicData.Controller;
 using SyndicData.Entites;
+using SyndicData.Entites.ExerciceComptable;
 
 namespace EspaceSyndic.Formulaires.Exercice;
 
@@ -17,12 +18,6 @@ public partial class ReferenceExerciceForm : Form
     {
         InitializeComponent();
     }
-
-    //public ReferenceExerciceForm(ExerciceComptableEntite exercice)
-    //{
-    //    InitializeComponent();
-    //    this.exercice = exercice;
-    //}
     public ReferenceExerciceForm(ImmeubleEntite immeuble)
     {
         InitializeComponent();

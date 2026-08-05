@@ -13,6 +13,7 @@ using EspaceSyndic.Formulaires.OperationsGestion;
 using SyndicData.Common;
 using SyndicData.Controller;
 using SyndicData.Entites;
+using SyndicData.Entites.ExerciceComptable;
 
 namespace EspaceSyndic.Formulaires.Exercice;
 
