@@ -50,6 +50,7 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
     {
         var cmd = $"""
                    select
+                       e.id as id_exercice,
                        i.reference AS reference_immeuble,
                        e.reference AS reference_exercice,
                        e.date_deb,
@@ -74,6 +75,7 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
         return table
             .AsEnumerable()
             .Select(row => new ExerciceComptableSelector(
+                (string) row["id_exercice"],
                 (string) row["reference_immeuble"],
                 (string) row["reference_exercice"],
                 (DateOnly) row["date_deb"],

@@ -3,7 +3,8 @@
 namespace SyndicData.Entites;
 
 public record ExerciceComptableSelector(
+    string IdExercice,
     string ReferenceImmeuble, 
-    string ReferenceExercice, 
+    string ReferenceExercice,
     DateOnly DateDebutExercice, 
     DateOnly DateFinExercice);

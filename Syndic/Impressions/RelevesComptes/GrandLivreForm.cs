@@ -1,6 +1,10 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Windows.Forms;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using SyndicData.Controller;
+using SyndicData.Entites;
 
 namespace EspaceSyndic.Impressions.RelevesComptes
 {
@@ -73,17 +77,70 @@ namespace EspaceSyndic.Impressions.RelevesComptes
 
             foreach (var exerciceComptable in data)
             {
-                exercices.Rows.Add(
+                var rowIndex = exercices.Rows.Add(
                     exerciceComptable.ReferenceImmeuble,
                     exerciceComptable.ReferenceExercice,
                     exerciceComptable.DateDebutExercice,
                     exerciceComptable.DateFinExercice);
+
+                exercices.Rows[rowIndex].Tag = exerciceComptable;
             }
         }
 
         private void editerBtn_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(@"Soon.");
+            using var dialog = new CommonOpenFileDialog();
+
+            dialog.IsFolderPicker = true;
+            dialog.Title = "Sélectionnez le dossier de destination";
+
+            if (dialog.ShowDialog() != CommonFileDialogResult.Ok)
+            {
+                MessageBox.Show(
+                    "Aucune destination sélectionnée.",
+                    "Destination",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+
+                return;
+            }
+
+            var dossierDestination = new DirectoryInfo(dialog.FileName);
+
+            if (!dossierDestination.Exists)
+            {
+                MessageBox.Show(
+                    "Destination inexistante sélectionnée.",
+                    "Destination",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+
+                return;
+            }
+
+            var exercicesSelectionnes = exercices.SelectedRows
+                .Cast<DataGridViewRow>()
+                .Select(row => row.Tag as ExerciceComptableSelector)
+                .Where(x => x != null)
+                .ToList();
+
+            if (exercicesSelectionnes.Count == 0)
+            {
+                MessageBox.Show(
+                    "Aucun exercice sélectionné.",
+                    "Grand Livre",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+
+                return;
+            }
+
+            var idsExercices = exercicesSelectionnes.Select(ex => ex.IdExercice);
+
+            GenerateurGrandLivre.GenerateurGrandLivre.GénérerDans(dossierDestination, idsExercices);
         }
     }
 }
