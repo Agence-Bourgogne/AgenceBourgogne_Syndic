@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows.Forms;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using SyndicData.Controller;
-using SyndicData.Entites;
 using SyndicData.Entites.ExerciceComptable;
 
 namespace EspaceSyndic.Impressions.RelevesComptes
@@ -88,58 +87,97 @@ namespace EspaceSyndic.Impressions.RelevesComptes
             }
         }
 
-        private void editerBtn_Click(object sender, EventArgs e)
+        private async void editerBtn_Click(object sender, EventArgs e)
         {
-            using var dialog = new CommonOpenFileDialog();
+            editerBtn.Enabled = false;
+            exercices.Enabled = false;
+            anneeMinimale.Enabled = false;
+            anneeMaximale.Enabled = false;
+            progressExport.Visible = true;
 
-            dialog.IsFolderPicker = true;
-            dialog.Title = "Sélectionnez le dossier de destination";
-
-            if (dialog.ShowDialog() != CommonFileDialogResult.Ok)
+            try
             {
+                using var dialog = new CommonOpenFileDialog();
+
+                dialog.IsFolderPicker = true;
+                dialog.Title = "Sélectionnez le dossier de destination";
+
+                if (dialog.ShowDialog() != CommonFileDialogResult.Ok)
+                {
+                    MessageBox.Show(
+                        "Aucune destination sélectionnée.",
+                        "Destination",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+
+                    return;
+                }
+
+                var dossierDestination = new DirectoryInfo(dialog.FileName);
+
+                if (!dossierDestination.Exists)
+                {
+                    MessageBox.Show(
+                        "Destination inexistante sélectionnée.",
+                        "Destination",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+
+                    return;
+                }
+
+                BringToFront();
+                Activate();
+
+                var exercicesSelectionnes = exercices.SelectedRows
+                    .Cast<DataGridViewRow>()
+                    .Select(row => row.Tag as ExerciceComptableSelector)
+                    .Where(x => x != null)
+                    .ToList();
+
+                var nombreExercices = exercicesSelectionnes.Count;
+
+                if (nombreExercices == 0)
+                {
+                    MessageBox.Show(
+                        "Aucun exercice sélectionné.",
+                        "Grand Livre",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+
+                    return;
+                }
+
+                progressExport.Minimum = 0;
+                progressExport.Maximum = nombreExercices + 1;
+                progressExport.Value = 1;
+
+                var progress = new Progress<int>(i => progressExport.Value = i);
+
+                await GenerateurGrandLivre.GenerateurPdfGrandLivre.GénérerDansAsync(
+                    dossierDestination,
+                    exercicesSelectionnes, 
+                    progress);
+
                 MessageBox.Show(
-                    "Aucune destination sélectionnée.",
-                    "Destination",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-
-                return;
-            }
-
-            var dossierDestination = new DirectoryInfo(dialog.FileName);
-
-            if (!dossierDestination.Exists)
-            {
-                MessageBox.Show(
-                    "Destination inexistante sélectionnée.",
-                    "Destination",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-
-                return;
-            }
-
-            var exercicesSelectionnes = exercices.SelectedRows
-                .Cast<DataGridViewRow>()
-                .Select(row => row.Tag as ExerciceComptableSelector)
-                .Where(x => x != null)
-                .ToList();
-
-            if (exercicesSelectionnes.Count == 0)
-            {
-                MessageBox.Show(
-                    "Aucun exercice sélectionné.",
+                    "Export terminé.",
                     "Grand Livre",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
+                    MessageBoxIcon.Asterisk
                 );
-
-                return;
+            }
+            finally
+            {
+                editerBtn.Enabled = true;
+                exercices.Enabled = true;
+                anneeMinimale.Enabled = true;
+                anneeMaximale.Enabled = true;
+                progressExport.Visible = false;
             }
             
-            GenerateurGrandLivre.GenerateurPdfGrandLivre.GénérerDans(dossierDestination, exercicesSelectionnes);
         }
     }
 }

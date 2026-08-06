@@ -34,6 +34,7 @@
             anneeMaximale = new System.Windows.Forms.NumericUpDown();
             exercices = new System.Windows.Forms.DataGridView();
             editerBtn = new System.Windows.Forms.Button();
+            progressExport = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)anneeMinimale).BeginInit();
             ((System.ComponentModel.ISupportInitialize)anneeMaximale).BeginInit();
             ((System.ComponentModel.ISupportInitialize)exercices).BeginInit();
@@ -99,11 +100,21 @@
             editerBtn.UseVisualStyleBackColor = true;
             editerBtn.Click += editerBtn_Click;
             // 
+            // progressExport
+            // 
+            progressExport.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            progressExport.Location = new System.Drawing.Point(12, 40);
+            progressExport.Name = "progressExport";
+            progressExport.Size = new System.Drawing.Size(776, 23);
+            progressExport.TabIndex = 5;
+            progressExport.Visible = false;
+            // 
             // GrandLivreForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(800, 450);
+            Controls.Add(progressExport);
             Controls.Add(editerBtn);
             Controls.Add(exercices);
             Controls.Add(anneeMaximale);
@@ -127,5 +138,6 @@
         private System.Windows.Forms.NumericUpDown anneeMaximale;
         private System.Windows.Forms.DataGridView exercices;
         private System.Windows.Forms.Button editerBtn;
+        private System.Windows.Forms.ProgressBar progressExport;
     }
 }

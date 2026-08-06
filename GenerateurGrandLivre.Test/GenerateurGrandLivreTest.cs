@@ -8,7 +8,7 @@ public class GenerateurGrandLivreTest
     [InlineData(0)]
     [InlineData(1)]
     [InlineData(2)]
-    public void GeneratesOnePdfPerId(ushort n)
+    public async Task GeneratesOnePdfPerId(ushort n)
     {
         // ETANT DONNE un dossier
         using var dossier = new TemporaryDirectory();
@@ -19,7 +19,7 @@ public class GenerateurGrandLivreTest
             .Select(_ => new RandomExerciceComptableExportable());
 
         // QUAND la génération de Grand Livre est appelée
-        GenerateurPdfGrandLivre.GénérerDans(dossier, exportables);
+        await GenerateurPdfGrandLivre.GénérerDansAsync(dossier, exportables, new ProgressStub<int>());
 
         // ALORS <n> fichiers PDF valides sont générés
         var pdfFiles = dossier

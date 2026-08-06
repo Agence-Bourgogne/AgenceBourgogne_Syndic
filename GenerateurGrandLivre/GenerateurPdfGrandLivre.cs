@@ -1,27 +1,49 @@
-﻿using QuestPDF.Fluent;
-using QuestPDF.Infrastructure;
+﻿using PuppeteerSharp;
+using PuppeteerSharp.Media;
 using SyndicData.Entites.ExerciceComptable;
 
 namespace GenerateurGrandLivre;
 
 public static class GenerateurPdfGrandLivre
 {
-    static GenerateurPdfGrandLivre()
+    public static async Task GénérerDansAsync(
+        DirectoryInfo directory, 
+        IEnumerable<IExerciceComptableExportable> exercicesComptables,
+        IProgress<int> progress)
     {
-        QuestPDF.Settings.License = LicenseType.Community;
-    }
+        await new BrowserFetcher().DownloadAsync();
 
-    public static void GénérerDans(DirectoryInfo directory, IEnumerable<IExerciceComptableExportable> exercicesComptables)
-    {
+        await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
+        {
+            Headless = true
+        });
+
+        var générateurHtml = new GenerateurHtmlGrandLivre();
+        var i = 1;
+
         foreach (var exportable in exercicesComptables)
         {
+            var html = générateurHtml.GénérerHtml(exportable);
             var filename = (exportable.DisplayName + ".pdf").ToSafeFileName();
 
-            Document.Create(container =>
+            await using var page = await browser.NewPageAsync();
+
+            await page.SetContentAsync(html);
+
+            await page.PdfAsync(Path.Combine(directory.FullName, filename), new PdfOptions
+            {
+                Format = PaperFormat.A4,
+                PrintBackground = true,
+                MarginOptions = new MarginOptions
                 {
-                    container.Page(page => { });
-                })
-                .GeneratePdf(Path.Combine(directory.FullName, filename));
+                    Top = "15mm",
+                    Bottom = "15mm",
+                    Left = "15mm",
+                    Right = "15mm"
+                }
+            });
+
+            progress.Report(i ++);
         }
     }
 
