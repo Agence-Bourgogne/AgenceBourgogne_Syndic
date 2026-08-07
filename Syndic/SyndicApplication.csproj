@@ -27,6 +27,9 @@
 		<Company>Atelier Logiciel Sandré</Company>
 		<Product>Gestion de Copropriétés Agence Bourgogne</Product>
 		<Authors>Enzo Sandré</Authors>
+
+		<!--Required by RazorLight in GenerateurGrandLivre-->
+		<PreserveCompilationContext>true</PreserveCompilationContext>
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -1,0 +1,28 @@
+﻿@model GrandLivre.Templates.Models.Exercice
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grand Livre</title>
+</head>
+
+<body>
+<header class="header">
+    <div class="header-agence">
+        Agence Bourgogne<br/>
+        45 rue des Carmes<br/>
+        45000 Orléans
+    </div>
+
+    <div class="header-titre">Grand livre</div>
+
+    <div class="header-empty"></div>
+
+    <h1>Copropriété : @Model.Copropriete.Nom</h1>
+    <p>Adresse : @Model.Copropriete.Adresse</p>
+    <p>Exercice du @Model.Debut au @Model.Fin</p>
+</header>
+</body>
+</html>
