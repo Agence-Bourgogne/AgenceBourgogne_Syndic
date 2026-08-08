@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using CommonProjectsPartners.Controller;
 using Npgsql;
 using SyndicData.Common;
@@ -83,6 +84,90 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
                 (DateOnly) row["date_deb"],
                 (DateOnly) row["date_fin"],
                 this));
+    }
+
+    public IEnumerable<CompteComptable> FetchComptesComptablesFor(string idExercice)
+    {
+        const string natureSoldeBilan = "140";
+        const string natureVirement = "143";
+        const string natureAppelDeFonds = "145";
+        const string natureCheques = "146";
+
+        const string operationsQuery =
+            $"""
+             SELECT 
+             o.date_operation, 
+             o.libelle, 
+             o.debit, 
+             o.credit, 
+             o.liasse_id, 
+             n.nom AS nature_nom, 
+             n.reference_comptabilite AS nature_ref,
+             COALESCE(f.nom, sr.emetteur) AS tiers,
+             rf.date_reglement, 
+             rf.libelle AS libelle_reg
+             FROM agence.operation o
+             INNER JOIN agence.exercice_comptable e ON e.id = @exercice_id
+             LEFT JOIN agence.nature n ON o.nature_id = n.id 
+             LEFT JOIN agence.saisie_facture sf ON o.saisie_id = sf.id
+             LEFT JOIN agence.fournisseur f ON sf.fournisseur_id = f.id
+             LEFT JOIN agence.saisie_reglement sr ON o.saisie_id = sr.id
+             LEFT JOIN agence.reglement_facture rf ON o.saisie_id = rf.facture_id
+             WHERE o.immeuble_id = e.immeuble_id
+             AND o.date_operation >= e.date_deb
+             AND o.date_operation <= e.date_fin
+             AND (
+                 n.reference NOT IN (
+                     '{natureSoldeBilan}',
+                     '{natureCheques}',
+                     '{natureAppelDeFonds}',
+                     '{natureVirement}'
+                 )
+                 OR n.reference IS NULL
+             )
+             ORDER BY n.nom, o.date_operation, o.liasse_id
+             """;
+
+        var parameters = new List<NpgsqlParameter>
+        {
+            new("@exercice_id", idExercice)
+        };
+
+        var operationsTable = getResultSQL(operationsQuery, parameters);
+
+        const uint compteAbsent = 999999;
+
+        var operationsCopropriété = operationsTable.AsEnumerable()
+            .Select(row => (
+                date_operation: row.Field<DateOnly>("date_operation"),
+                libelle: row.Field<string>("libelle"),
+                debit: row.Field<decimal?>("debit"),
+                credit: row.Field<decimal?>("credit"),
+                liasse_id: row.Field<string>("liasse_id"),
+                nature_nom: row.Field<string>("nature_nom"),
+                nature_ref: uint.TryParse(row.Field<string>("nature_ref"), out var compteValide) ? compteValide : compteAbsent,
+                tiers: row.Field<string>("tiers"),
+                date_reglement: row.Field<DateOnly?>("date_reglement"),
+                libelle_reg: row.Field<string>("libelle_reg")
+            ))
+            .GroupBy(opération => (opération.nature_ref, opération.nature_nom))
+            .Select(compte =>
+            {
+                var orderedByDate = compte
+                    .OrderBy(operation => operation.date_operation)
+                    .ToArray();
+
+                var solde = orderedByDate.Aggregate(0m, (cur, elem) => cur + elem.credit ?? 0 - elem.debit ?? 0);
+                var dateSolde = orderedByDate.Last().date_operation;
+
+                var operations = orderedByDate.Select(operation => new OperationSurCompte(
+                    operation.date_operation, operation.libelle, operation.tiers, operation.credit ?? -(operation.debit ?? 0)));
+
+                return new CompteCopropriete(compte.Key.nature_ref, compte.Key.nature_nom, operations, new Solde(dateSolde, solde));
+            })
+            .ToArray();
+
+        return operationsCopropriété;
     }
 
     public DateTime GetNewDateDebutExercice(string immeubleId)
@@ -217,10 +302,5 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
         }
 
         return exerciceSuivant;
-    }
-
-    public GrandLivreData FetchGrandLivreDataFor(string idExercice)
-    {
-        throw new NotImplementedException();
     }
 }

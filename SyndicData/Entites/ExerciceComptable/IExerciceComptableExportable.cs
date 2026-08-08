@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SyndicData.Entites.ExerciceComptable;
 
@@ -11,6 +12,5 @@ public interface IExerciceComptableExportable
     DateOnly DateFin { get; }
     string NomImmeuble { get; }
     string AdresseImmeuble { get; }
-
-    GrandLivreData FetchAllData();
+    IEnumerable<CompteComptable> FetchComptesComptables();
 }

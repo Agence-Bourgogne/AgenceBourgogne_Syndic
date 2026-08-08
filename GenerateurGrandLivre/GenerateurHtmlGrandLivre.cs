@@ -23,7 +23,7 @@ internal class GenerateurHtmlGrandLivre
             .Assembly
             .GetManifestResourceNames();
 
-        var mainRessource = resources.Single(resName => resName.EndsWith("Main.cshtml"));
+        var mainRessource = resources.Single(resName => resName.EndsWith("Main.cshtml")); 
 
         var data = Factory(exerciceComptable);
         return _engine.CompileRenderAsync(mainRessource, data);
@@ -31,10 +31,10 @@ internal class GenerateurHtmlGrandLivre
 
     private static Exercice Factory(IExerciceComptableExportable exerciceComptable)
     {
-        //var fullData = exerciceComptable.FetchAllData();
+        var fullData = exerciceComptable.FetchComptesComptables();
 
         return new Exercice(
             new Copropriete(exerciceComptable.NomImmeuble, exerciceComptable.AdresseImmeuble), 
-            exerciceComptable.DateDebut, exerciceComptable.DateFin, exerciceComptable.Reference);
+            exerciceComptable.DateDebut, exerciceComptable.DateFin, exerciceComptable.Reference, fullData);
     }
 }

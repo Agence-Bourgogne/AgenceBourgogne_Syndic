@@ -1,5 +1,6 @@
-﻿using System;
-using SyndicData.Controller;
+﻿using SyndicData.Controller;
+using System;
+using System.Collections.Generic;
 
 namespace SyndicData.Entites.ExerciceComptable;
 
@@ -33,5 +34,5 @@ public class ExerciceComptableSelector : IExerciceComptableExportable
     public DateOnly DateFin { get; }
     public string NomImmeuble { get; }
     public string AdresseImmeuble { get; }
-    public GrandLivreData FetchAllData() => _controller.FetchGrandLivreDataFor(_idExercice);
+    public IEnumerable<CompteComptable> FetchComptesComptables() => _controller.FetchComptesComptablesFor(_idExercice);
 }

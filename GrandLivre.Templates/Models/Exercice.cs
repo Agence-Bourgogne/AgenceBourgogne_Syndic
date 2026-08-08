@@ -1,3 +1,5 @@
-﻿namespace GrandLivre.Templates.Models;
+﻿using SyndicData.Entites.ExerciceComptable;
 
-public record Exercice(Copropriete Copropriete, DateOnly Debut, DateOnly Fin, string Reference);
+namespace GrandLivre.Templates.Models;
+
+public record Exercice(Copropriete Copropriete, DateOnly Debut, DateOnly Fin, string Reference, IEnumerable<CompteComptable> Comptes);
