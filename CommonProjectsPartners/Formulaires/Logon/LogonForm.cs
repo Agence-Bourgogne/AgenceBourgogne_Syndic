@@ -8,8 +8,8 @@ namespace CommonProjectsPartners.Formulaires.Logon;
 
 public partial class LogonForm : Form
 {
-    private bool bClose;
-    private UserEntite userConnected;
+    private bool _bClose;
+    private UserEntite _userConnected;
 
     public LogonForm()
     {
@@ -18,26 +18,26 @@ public partial class LogonForm : Form
 
     private void LogonForm_FormClosing(object sender, FormClosingEventArgs e)
     {
-        if (!bClose)
+        if (!_bClose)
             if (!ValidUser())
                 e.Cancel = true;
     }
 
     private bool ValidUser(bool bShowMessage = true)
     {
-        userConnected = UsersController.getController().getEntiteFromField("reference", tbUser.Text);
-        if (userConnected != null)
+        _userConnected = UsersController.getController().getEntiteFromField("reference", tbUser.Text);
+        if (_userConnected != null)
         {
             var encryptPassword = tbPassword.Text;
-            if (userConnected.Password == encryptPassword)
+            if (_userConnected.Password == encryptPassword)
             {
-                BaseApplication.userConnected = userConnected;
+                BaseApplication.userConnected = _userConnected;
                 return true;
             }
         }
 
         if (bShowMessage)
-            tbMessage.Text = "Utilisateur ou Mot de passe Invalide";
+            labelMessage.Text = "Utilisateur ou Mot de passe Invalide";
         return false;
     }
 
@@ -58,18 +58,19 @@ public partial class LogonForm : Form
 
     private void pictureBox1_Click(object sender, EventArgs e)
     {
-        bClose = true;
+        _bClose = true;
         Close();
     }
 
     private void LogonForm_Load(object sender, EventArgs e)
     {
-        btnCancel.Width = 0;
         BaseApplication.userConnected = null;
+        BringToFront();
+        Activate();
     }
 
     private void tbUser_TextChanged(object sender, EventArgs e)
     {
-        tbMessage.Text = "";
+        labelMessage.Text = "";
     }
 }

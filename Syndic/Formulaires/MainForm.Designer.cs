@@ -52,7 +52,6 @@ namespace EspaceSyndic.Formulaires
             saisieReglementCoproproToolStripMenuItem = new ToolStripMenuItem();
             impressionRéglementsToolStripMenuItem = new ToolStripMenuItem();
             retardDePaiementsToolStripMenuItem = new ToolStripMenuItem();
-            transfertAppelDeFondsSurGéranceToolStripMenuItem = new ToolStripMenuItem();
             editionsToolStripMenuItem = new ToolStripMenuItem();
             convocationsToolStripMenuItem = new ToolStripMenuItem();
             additifsToolStripMenuItem = new ToolStripMenuItem();
@@ -188,7 +187,7 @@ namespace EspaceSyndic.Formulaires
             // 
             // reflemToolStripMenuItem
             // 
-            reflemToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { appelDeFondsToolStripMenuItem, appelDeFondDunimmeubleToolStripMenuItem, consultationComptesPropriétairesToolStripMenuItem, saisieReglementCoproproToolStripMenuItem, impressionRéglementsToolStripMenuItem, retardDePaiementsToolStripMenuItem, transfertAppelDeFondsSurGéranceToolStripMenuItem });
+            reflemToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { appelDeFondsToolStripMenuItem, appelDeFondDunimmeubleToolStripMenuItem, consultationComptesPropriétairesToolStripMenuItem, saisieReglementCoproproToolStripMenuItem, impressionRéglementsToolStripMenuItem, retardDePaiementsToolStripMenuItem });
             reflemToolStripMenuItem.Name = "reflemToolStripMenuItem";
             reflemToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.A;
             reflemToolStripMenuItem.Size = new System.Drawing.Size(122, 20);
@@ -238,11 +237,6 @@ namespace EspaceSyndic.Formulaires
             retardDePaiementsToolStripMenuItem.Size = new System.Drawing.Size(293, 22);
             retardDePaiementsToolStripMenuItem.Text = "Retards de paiements";
             retardDePaiementsToolStripMenuItem.Click += retardDePaiementsToolStripMenuItem_Click;
-            // 
-            // transfertAppelDeFondsSurGéranceToolStripMenuItem
-            // 
-            transfertAppelDeFondsSurGéranceToolStripMenuItem.Name = "transfertAppelDeFondsSurGéranceToolStripMenuItem";
-            transfertAppelDeFondsSurGéranceToolStripMenuItem.Size = new System.Drawing.Size(293, 22);
             // 
             // editionsToolStripMenuItem
             // 
@@ -436,14 +430,14 @@ namespace EspaceSyndic.Formulaires
             // deconnexionToolStripMenuItem
             // 
             deconnexionToolStripMenuItem.Name = "deconnexionToolStripMenuItem";
-            deconnexionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            deconnexionToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             deconnexionToolStripMenuItem.Text = "Déconnexion";
             deconnexionToolStripMenuItem.Click += deconnexionToolStripMenuItem_Click;
             // 
             // quitterToolStripMenuItem1
             // 
             quitterToolStripMenuItem1.Name = "quitterToolStripMenuItem1";
-            quitterToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            quitterToolStripMenuItem1.Size = new System.Drawing.Size(143, 22);
             quitterToolStripMenuItem1.Text = "&Quitter";
             quitterToolStripMenuItem1.Click += quitterToolStripMenuItem1_Click;
             // 
@@ -548,7 +542,6 @@ namespace EspaceSyndic.Formulaires
         private ToolStripMenuItem appelDeFondDunimmeubleToolStripMenuItem;
         private ToolStripMenuItem consultationComptesPropriétairesToolStripMenuItem;
         private ToolStripMenuItem retardDePaiementsToolStripMenuItem;
-        private ToolStripMenuItem transfertAppelDeFondsSurGéranceToolStripMenuItem;
         private ToolStripMenuItem bilanGénéralEtCompteExploitationToolStripMenuItem;
         private ToolStripMenuItem relevésIndividuelsToolStripMenuItem;
         private ToolStripMenuItem budgetPrévisionnelToolStripMenuItem;
