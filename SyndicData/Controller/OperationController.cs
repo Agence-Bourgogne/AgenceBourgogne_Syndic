@@ -20,7 +20,6 @@ public class OperationController : AbstractBaseController<OperationEntite>
 
     public static OperationController getController()
     {
-        //return new OperationController();
         return controller;
     }
 

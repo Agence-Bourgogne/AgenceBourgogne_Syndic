@@ -1,7 +1,5 @@
-﻿using Microsoft.Office.Interop.Excel;
-using RazorLight;
+﻿using RazorLight;
 using SyndicData.Entites.ExerciceComptable;
-using System.Windows.Documents;
 using GrandLivre.Templates.Models;
 
 namespace GenerateurGrandLivre;
@@ -27,7 +25,16 @@ internal class GenerateurHtmlGrandLivre
 
         var mainRessource = resources.Single(resName => resName.EndsWith("Main.cshtml"));
 
-        var data = new Exercice(new Copropriete("Copro", "Test"), DateOnly.MinValue, DateOnly.MaxValue, exerciceComptable.DisplayName);
+        var data = Factory(exerciceComptable);
         return _engine.CompileRenderAsync(mainRessource, data);
+    }
+
+    private static Exercice Factory(IExerciceComptableExportable exerciceComptable)
+    {
+        //var fullData = exerciceComptable.FetchAllData();
+
+        return new Exercice(
+            new Copropriete(exerciceComptable.NomImmeuble, exerciceComptable.AdresseImmeuble), 
+            exerciceComptable.DateDebut, exerciceComptable.DateFin, exerciceComptable.Reference);
     }
 }

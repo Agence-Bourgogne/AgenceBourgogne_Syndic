@@ -78,10 +78,10 @@ namespace EspaceSyndic.Impressions.RelevesComptes
             foreach (var exerciceComptable in data)
             {
                 var rowIndex = exercices.Rows.Add(
-                    exerciceComptable.ReferenceImmeuble,
-                    exerciceComptable.ReferenceExercice,
-                    exerciceComptable.DateDebutExercice,
-                    exerciceComptable.DateFinExercice);
+                    exerciceComptable.NomImmeuble,
+                    exerciceComptable.Reference,
+                    exerciceComptable.DateDebut,
+                    exerciceComptable.DateFin);
 
                 exercices.Rows[rowIndex].Tag = exerciceComptable;
             }

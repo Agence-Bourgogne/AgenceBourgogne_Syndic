@@ -1,7 +1,16 @@
-﻿namespace SyndicData.Entites.ExerciceComptable;
+﻿using System;
+
+namespace SyndicData.Entites.ExerciceComptable;
 
 public interface IExerciceComptableExportable
 {
-    string DisplayName { get; }
-    string Id { get; }
+    string FactoryDisplayNameOfExercice();
+
+    string Reference { get; }
+    DateOnly DateDebut { get; }
+    DateOnly DateFin { get; }
+    string NomImmeuble { get; }
+    string AdresseImmeuble { get; }
+
+    GrandLivreData FetchAllData();
 }

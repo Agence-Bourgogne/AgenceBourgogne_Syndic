@@ -24,7 +24,7 @@ public static class GenerateurPdfGrandLivre
         foreach (var exportable in exercicesComptables)
         {
             var html = await générateurHtml.GénérerHtmlAsync(exportable);
-            var filename = (exportable.DisplayName + ".pdf").ToSafeFileName();
+            var filename = (exportable.FactoryDisplayNameOfExercice() + ".pdf").ToSafeFileName();
 
             await using var page = await browser.NewPageAsync();
 

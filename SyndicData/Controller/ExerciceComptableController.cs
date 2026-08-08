@@ -51,7 +51,8 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
         var cmd = $"""
                    select
                        e.id as id_exercice,
-                       i.reference AS reference_immeuble,
+                       i.nom AS nom_immeuble,
+                       CONCAT_WS(' ', i.rue, i.codepostal, i.ville) AS adresse_immeuble,
                        e.reference AS reference_exercice,
                        e.date_deb,
                        e.date_fin
@@ -76,10 +77,12 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
             .AsEnumerable()
             .Select(row => new ExerciceComptableSelector(
                 (string) row["id_exercice"],
-                (string) row["reference_immeuble"],
+                (string) row["nom_immeuble"],
+                (string) row["adresse_immeuble"],
                 (string) row["reference_exercice"],
                 (DateOnly) row["date_deb"],
-                (DateOnly) row["date_fin"]));
+                (DateOnly) row["date_fin"],
+                this));
     }
 
     public DateTime GetNewDateDebutExercice(string immeubleId)
@@ -111,7 +114,6 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
         ExerciceComptableEntite entite = null;
         cmd += $" from {getSchemaTable()} ";
         cmd += " where immeuble_id = @immeuble_id and date_deb >= @dtDeb and date_fin <= @dtFin ";
-//            cmd += " where immeuble_id = @immeuble_id and date_deb >= @dtDeb and date_fin <= @dtDeb ";
 
         var parameters = new List<NpgsqlParameter>
         {
@@ -135,7 +137,6 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
         cmd += " where id = ";
         cmd += $" (select id from {getSchemaTable()} ";
         cmd += " where immeuble_id = @immeuble_id and statut = @statut";
-//            cmd += " order by date_deb desc limit 1)";
         cmd += " order by date_deb limit 1)";
 
         var statut = (int)GlobalConstantes.StatutExercice.Ouvert;
@@ -145,8 +146,6 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
             new("@immeuble_id", immeubleId),
             new("@statut", statut)
         };
-
-//            Console.WriteLine(cmd.Replace("@immeuble_id", String.Format("{0}", immeuble_id)));
 
         var table = getResultSQL(cmd, parameters);
         if (table is { Rows.Count: > 0 }) entite = new ExerciceComptableEntite(table.Rows[0]);
@@ -218,5 +217,10 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
         }
 
         return exerciceSuivant;
+    }
+
+    public GrandLivreData FetchGrandLivreDataFor(string idExercice)
+    {
+        throw new NotImplementedException();
     }
 }
