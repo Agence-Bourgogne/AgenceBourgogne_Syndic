@@ -9,6 +9,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="5.6.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.6.0" />
+	  <!--Manual picking to avoid vulnerable version from RazorLight-->
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="10.0.10" />
     <PackageReference Include="PuppeteerSharp" Version="25.5.0" />
     <PackageReference Include="RazorLight" Version="2.3.1" />
   </ItemGroup>

@@ -1,40 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SyndicData.Entites.ExerciceComptable;
 
 #nullable enable
 
 public abstract record CompteComptable(
-    uint IdentifiantComptable, 
+    string IdentifiantCompte, 
     string Nom, 
-    IEnumerable<OperationSurCompte> Operations,
-    Solde Solde,
-    bool CompteCoproprietaire);
+    IEnumerable<OperationSurCompte> Operations);
 
 public record CompteCoproprietaire : CompteComptable
 {
     public CompteCoproprietaire(
-        ushort reference,
+        string reference,
         string nom,
         string prenom,
         IEnumerable<OperationSurCompte> operations,
         decimal soldeAnterieur,
-        Solde soldeBilan) : base(reference, nom + " " + prenom, operations, soldeBilan, true)
+        Solde soldeBilan) : base(
+        string.IsNullOrWhiteSpace(reference) ? "REFERENCE ABSENTE" : reference, 
+        string.IsNullOrWhiteSpace(prenom) ? nom : nom + " " + prenom, 
+        operations.Append(new OperationSurCompte(soldeBilan.Date, "SOLDE BILAN", null, soldeBilan.Montant)))
     {
         SoldeAnterieur = soldeAnterieur;
     }
 
-    public decimal SoldeAnterieur { get; init; }
+    public decimal SoldeAnterieur { get; }
 }
 
 public record CompteCopropriete : CompteComptable
 {
     public CompteCopropriete(
-        uint identifiantComptable, 
+        uint? identifiantComptable, 
         string nom, 
         IEnumerable<OperationSurCompte> operations,
-        Solde soldeCopropriete) : base(identifiantComptable, nom, operations, soldeCopropriete, false)
+        Solde soldeCopropriete) : base(
+        identifiantComptable?.ToString() ?? "N° COMPTE NON RENSEIGNE", 
+        nom, 
+        operations.Append(new OperationSurCompte(soldeCopropriete.Date, "SOLDE COPROPRIETE", 
+            null, 
+            soldeCopropriete.Montant)))
     {
     }
 }

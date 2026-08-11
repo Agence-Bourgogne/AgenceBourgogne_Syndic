@@ -1,10 +1,10 @@
 ﻿body {
     font-family: sans-serif;
-    margin: 40px;
+    margin: 10px;
+    font-size: 11px;
 }
 
 .header {
-    display: flex;
     align-items: center;
     border-bottom: 3px solid #333;
     padding-bottom: 10px;
@@ -12,21 +12,15 @@
 }
 
 .header-agence {
-    flex: 1;
     font-size: 0.9em;
     line-height: 1.4;
 }
 
 .header-titre {
-    flex: 2;
     text-align: center;
     font-size: 2.5em;
     font-weight: bold;
     text-transform: uppercase;
-}
-
-.header-empty {
-    flex: 1;
 }
 
 h1 {
@@ -62,4 +56,8 @@ th, td {
 tfoot td {
     font-weight: bold;
     border-top: 2px solid #333;
+}
+
+tfoot {
+    display: table-row-group;
 }

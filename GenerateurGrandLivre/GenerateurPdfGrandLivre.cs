@@ -1,4 +1,5 @@
-﻿using PuppeteerSharp;
+﻿using GrandLivre.Templates.Models;
+using PuppeteerSharp;
 using PuppeteerSharp.Media;
 using SyndicData.Entites.ExerciceComptable;
 
@@ -28,12 +29,24 @@ public static class GenerateurPdfGrandLivre
 
             await using var page = await browser.NewPageAsync();
 
+            var resources = typeof(Exercice)
+                .Assembly
+                .GetManifestResourceNames();
+
+            var cssResource = resources.Single(resName => resName.EndsWith("Main.cshtml.css"));
+            await using var cssStream = typeof(Exercice).Assembly.GetManifestResourceStream(cssResource);
+            using var cssReader = new StreamReader(cssStream!);
+            var css = await cssReader.ReadToEndAsync();
+
             await page.SetContentAsync(html);
+
+            await page.AddStyleTagAsync(new AddTagOptions { Content = css });
 
             await page.PdfAsync(Path.Combine(directory.FullName, filename), new PdfOptions
             {
                 Format = PaperFormat.A4,
                 PrintBackground = true,
+                Landscape = true,
                 MarginOptions = new MarginOptions
                 {
                     Top = "15mm",

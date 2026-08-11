@@ -24,8 +24,8 @@ internal class GenerateurHtmlGrandLivre
             .GetManifestResourceNames();
 
         var mainRessource = resources.Single(resName => resName.EndsWith("Main.cshtml")); 
-
         var data = Factory(exerciceComptable);
+
         return _engine.CompileRenderAsync(mainRessource, data);
     }
 
