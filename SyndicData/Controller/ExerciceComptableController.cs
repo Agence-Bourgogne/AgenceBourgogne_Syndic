@@ -97,17 +97,17 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
         const string coproprietairesQuery =
             $"""
              SELECT
-                 c.id,
-                 c.reference,
-                 c.nom,
-                 c.prenom,
-                 COALESCE(SUM(
-                 CASE
-                 WHEN n.reference = '{natureSoldeBilan}' THEN o.debit - o.credit
-                 ELSE 0
-                 END
-                 ), 0) AS solde_anterieur,
-                 e.date_fin AS date_solde_bilan
+             c.id,
+             c.reference,
+             c.nom,
+             c.prenom,
+             COALESCE(SUM(
+             CASE
+             WHEN n.reference = '{natureSoldeBilan}' THEN o.credit - o.debit
+             ELSE 0
+             END
+             ), 0) AS solde_anterieur,
+             e.date_fin AS date_solde_bilan
              FROM agence.coproprietaire c
              INNER JOIN agence.operation o
              ON o.coproprietaire_id = c.id
@@ -201,45 +201,27 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
 
     private CompteCopropriete[] FetchOpérationsCopropriété(string idExercice)
     {
-        const string natureSoldeBilan = "140";
-        const string natureVirement = "143";
-        const string natureAppelDeFonds = "145";
-        const string natureCheques = "146";
-
         const string operationsQuery =
-            $"""
+            """
              SELECT 
-             o.date_operation, 
-             o.libelle, 
-             SUM(o.debit) AS debit, 
-             SUM(o.credit) AS credit, 
-             o.liasse_id, 
+             sf.date_operation, 
+             sf.libelle, 
+             sf.montant AS montant,
              n.nom AS nature_nom, 
              n.reference_comptabilite AS nature_ref,
-             COALESCE(f.nom, sr.emetteur) AS tiers,
+             f.nom AS tiers,
              rf.date_reglement, 
              rf.libelle AS libelle_reg,
              e.date_fin AS date_solde
-             FROM agence.operation o
+             FROM agence.saisie_facture sf
              INNER JOIN agence.exercice_comptable e ON e.id = @exercice_id
-             LEFT JOIN agence.nature n ON o.nature_id = n.id 
-             LEFT JOIN agence.saisie_facture sf ON o.saisie_id = sf.id
+             LEFT JOIN agence.nature n ON sf.nature_id = n.id
              LEFT JOIN agence.fournisseur f ON sf.fournisseur_id = f.id
-             LEFT JOIN agence.saisie_reglement sr ON o.saisie_id = sr.id
-             LEFT JOIN agence.reglement_facture rf ON o.saisie_id = rf.facture_id
-             WHERE o.immeuble_id = e.immeuble_id
-             AND o.date_operation >= e.date_deb
-             AND o.date_operation <= e.date_fin
-             AND (
-                 n.reference NOT IN (
-                     '{natureSoldeBilan}',
-                     '{natureCheques}',
-                     '{natureAppelDeFonds}',
-                     '{natureVirement}'
-                 )
-                 OR n.reference IS NULL
-             )
-             GROUP BY o.date_operation, o.libelle, o.liasse_id, nature_nom, nature_ref, tiers, date_reglement, libelle_reg, date_solde
+             LEFT JOIN agence.reglement_facture rf ON sf.id = rf.facture_id
+             WHERE sf.immeuble_id = e.immeuble_id
+             AND sf.date_operation >= e.date_deb
+             AND sf.date_operation <= e.date_fin
+             ORDER BY sf.numero_operation
              """;
 
         var parameters = new List<NpgsqlParameter>
@@ -253,9 +235,7 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
             .Select(row => (
                 date_operation: row.Field<DateOnly>("date_operation"),
                 libelle: row.Field<string>("libelle"),
-                debit: row.Field<decimal?>("debit"),
-                credit: row.Field<decimal?>("credit"),
-                liasse_id: row.Field<string>("liasse_id"),
+                montant: row.Field<decimal>("montant"),
                 nature_nom: row.Field<string>("nature_nom"),
                 nature_ref: uint.TryParse(row.Field<string>("nature_ref"), out var compteValide) ? compteValide : (uint?) null,
                 tiers: row.Field<string>("tiers"),
@@ -273,7 +253,8 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
 
                 foreach (var operation in compte)
                 {
-                    var montant = (operation.credit ?? 0) - (operation.debit ?? 0);
+                    // Une facture est au débit si son montant est positif. Sinon c'est un avoir.
+                    var montant = -operation.montant;
                     operationsSurCompte.Add(new OperationSurCompte(operation.date_operation, operation.libelle, operation.tiers, montant));
 
                     if (operation.date_reglement is null) solde += montant;
