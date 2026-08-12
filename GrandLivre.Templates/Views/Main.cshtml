@@ -1,5 +1,7 @@
-﻿@using SyndicData.Entites.ExerciceComptable
+﻿@using GrandLivre.Templates.Helpers
+@using SyndicData.Entites.ExerciceComptable
 @model GrandLivre.Templates.Models.Exercice
+
 
 <!DOCTYPE html>
 <html>
@@ -37,7 +39,7 @@
 
                 <p>
                     <strong>Solde antérieur : </strong>
-                        @compteCoproprietaire.SoldeAnterieur.ToString("C").Replace(" ", "\u00A0")
+                        @compteCoproprietaire.SoldeAnterieur.ToInsecableCurrency()
                 </p>
             }
 
@@ -68,11 +70,11 @@
                         totalCredit += credit;
                         soldeCompte += operation.Montant;
 
-                        var representationDebit = debit > 0 ? debit.ToString("C").Replace(" ", "\u00A0") : string.Empty;
-                        var representationCredit = credit > 0 || string.IsNullOrEmpty(representationDebit) ? credit.ToString("C").Replace(" ", "\u00A0") : string.Empty;
+                            var representationDebit = debit > 0 ? debit.ToInsecableCurrency() : string.Empty;
+                            var representationCredit = credit > 0 || string.IsNullOrEmpty(representationDebit) ? credit.ToInsecableCurrency() : string.Empty;
 
-                        var representationSoldeDebiteur = soldeCompte < 0 ? (-soldeCompte).ToString("C").Replace(" ", "\u00A0") : string.Empty;
-                        var representationSoldeCrediteur = soldeCompte >= 0 ? soldeCompte.ToString("C").Replace(" ", "\u00A0") : string.Empty;
+                            var representationSoldeDebiteur = soldeCompte < 0 ? (-soldeCompte).ToInsecableCurrency() : string.Empty;
+                            var representationSoldeCrediteur = soldeCompte >= 0 ? soldeCompte.ToInsecableCurrency() : string.Empty;
 
                         <tr>
                             <td>@operation.Date.ToString("d")</td>
@@ -87,13 +89,13 @@
                 </tbody>
                 <tfoot>
                     @{
-                        var soldeDebiteurFinal = totalDebit > totalCredit ? (totalDebit - totalCredit).ToString("C").Replace(" ", "\u00A0") : string.Empty;
-                        var soldeCrediteurFinal = totalCredit > totalDebit ? (totalCredit - totalDebit).ToString("C").Replace(" ", "\u00A0") : string.Empty;
+                            var soldeDebiteurFinal = totalDebit > totalCredit ? (totalDebit - totalCredit).ToInsecableCurrency() : string.Empty;
+                            var soldeCrediteurFinal = totalCredit > totalDebit ? (totalCredit - totalDebit).ToInsecableCurrency() : string.Empty;
                         if (string.IsNullOrEmpty(soldeCrediteurFinal) && string.IsNullOrEmpty(soldeDebiteurFinal)) 
-                            soldeCrediteurFinal = 0m.ToString("C").Replace(" ", "\u00A0");
+                                soldeCrediteurFinal = 0m.ToInsecableCurrency();
 
-                        var representationTotalDebit = totalDebit.ToString("C").Replace(" ", "\u00A0");
-                        var representationTotalCredit = totalCredit.ToString("C").Replace(" ", "\u00A0");
+                            var representationTotalDebit = totalDebit.ToInsecableCurrency();
+                            var representationTotalCredit = totalCredit.ToInsecableCurrency();
                     }
                 <tr>
                     <td colspan="3">TOTAL</td>
