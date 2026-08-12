@@ -106,8 +106,7 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
              WHEN n.reference = '{natureSoldeBilan}' THEN o.credit - o.debit
              ELSE 0
              END
-             ), 0) AS solde_anterieur,
-             e.date_fin AS date_solde_bilan
+             ), 0) AS solde_anterieur
              FROM agence.coproprietaire c
              INNER JOIN agence.operation o
              ON o.coproprietaire_id = c.id
@@ -135,8 +134,7 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
                 reference: row.Field<string>("reference"),
                 nom: row.Field<string>("nom"),
                 prenom: row.Field<string>("prenom"),
-                soldeAnterieur: row.Field<decimal>("solde_anterieur"),
-                dateSoldeBilan: row.Field<DateOnly>("date_solde_bilan")
+                soldeAnterieur: row.Field<decimal>("solde_anterieur")
             ))
             .ToList();
 
@@ -184,17 +182,12 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
                     .ToArray()
                     : [];
 
-                var soldeBilan = c.soldeAnterieur + opérationsCopropriétaire
-                    .Select(op => op.Montant)
-                    .Sum();
-
                 return new CompteCoproprietaire(
                     c.reference,
                     c.prenom,
                     c.nom,
                     opérationsCopropriétaire,
-                    c.soldeAnterieur,
-                    new Solde(c.dateSoldeBilan, soldeBilan));
+                    c.soldeAnterieur);
             })
             .ToArray();
     }

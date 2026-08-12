@@ -18,11 +18,10 @@ public record CompteCoproprietaire : CompteComptable
         string nom,
         string prenom,
         IEnumerable<OperationSurCompte> operations,
-        decimal soldeAnterieur,
-        Solde soldeBilan) : base(
+        decimal soldeAnterieur) : base(
         string.IsNullOrWhiteSpace(reference) ? "REFERENCE ABSENTE" : reference, 
         string.IsNullOrWhiteSpace(prenom) ? nom : nom + " " + prenom, 
-        operations.Append(new OperationSurCompte(soldeBilan.Date, "SOLDE BILAN", null, soldeBilan.Montant)))
+        operations)
     {
         SoldeAnterieur = soldeAnterieur;
     }
