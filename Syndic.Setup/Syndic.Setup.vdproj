@@ -225,7 +225,7 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:Gestion de Copropri?t?s"
+        "ProductName" = "8:Gestion de Coproprietes"
         "ProductCode" = "8:{0B813753-500C-CE0A-9C4C-D745F4B8BCF5}"
         "PackageCode" = "8:{DD4D94EF-713B-4368-B2C7-18788D746A1F}"
         "UpgradeCode" = "8:{1BD31BC1-36CE-468B-A0F1-4C0BB16AFC83}"
@@ -235,12 +235,12 @@
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
         "ProductVersion" = "8:2.1.0000"
-        "Manufacturer" = "8:Atelier Logiciel Sandr?"
+        "Manufacturer" = "8:Atelier Logiciel Sandre"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:Gestion de Copropri?t?s"
+        "Title" = "8:Gestion de Coproprietes"
         "Subject" = "8:"
-        "ARPCONTACT" = "8:Atelier Logiciel Sandr?"
+        "ARPCONTACT" = "8:Atelier Logiciel Sandre"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:https://enzosandre.fr/"
@@ -777,5 +777,7 @@
         }
     }
 }
+
+
 
 
