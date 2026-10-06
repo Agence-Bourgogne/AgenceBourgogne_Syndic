@@ -52,12 +52,50 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Include="Impressions\Budget\TableauComptableAnnexe3.rdlc" />
+	  <EmbeddedResource Include="Impressions\Additif\ImprimerAdditifReport.rdlc" />
+	  <EmbeddedResource Include="Impressions\AppelDeFond\AppelDeFondDetailReport.rdlc" />
+	  <EmbeddedResource Include="Impressions\AppelDeFond\AppelDeFondMasterReport.rdlc" />
+	  <EmbeddedResource Include="Impressions\Balances\BalanceReport.rdlc" />
+	  <EmbeddedResource Include="Impressions\Bilan\AutreOperationReport.rdlc" />
+	  <EmbeddedResource Include="Impressions\Bilan\CompteExploitationReport.rdlc" />
+	  <EmbeddedResource Include="Impressions\Bilan\CompteGestionGeneralReport.rdlc" />
+	  <EmbeddedResource Include="Impressions\Bilan\ImpressionBilanComptableMasterReport.rdlc" />
+	  <EmbeddedResource Include="Impressions\Bilan\ReleveGeneralOperationGestionReport.rdlc" />
+	  <EmbeddedResource Include="Impressions\Bilan\SituationTresorerieReport.rdlc" />
+	  <EmbeddedResource Include="Impressions\Convocations\ConvocationMasterReport.rdlc" />
+	  <EmbeddedResource Include="Impressions\Convocations\ConvocationModeleReport.rdlc" />
+	  <EmbeddedResource Include="Impressions\Convocations\ConvocationReport.rdlc" />
+	  <EmbeddedResource Include="Impressions\Convocations\ConvocationViergeReport.rdlc" />
+	  <EmbeddedResource Include="Impressions\Convocations\ConvocationWordReport.rdlc" />
+	  <EmbeddedResource Include="Impressions\Convocations\ConvocFeuillePresence.rdlc" />
+	  <EmbeddedResource Include="Impressions\Convocations\Report1.rdlc" />
+	  <EmbeddedResource Include="Impressions\EtiquetteReport.rdlc" />
+	  <EmbeddedResource Include="Impressions\Facture\ListeFacturationDetailReport.rdlc" />
+	  <EmbeddedResource Include="Impressions\Facture\ListeFacturationMasterReport.rdlc" />
+	  <EmbeddedResource Include="Impressions\FeuillePresence.rdlc" />
+	  <EmbeddedResource Include="Impressions\Immeuble.rdlc" />
+	  <EmbeddedResource Include="Impressions\Reglement\ListeReglementDetailReport.rdlc" />
+	  <EmbeddedResource Include="Impressions\Reglement\ListeReglementMasterReport.rdlc" />
+	  <EmbeddedResource Include="Impressions\ReleveFiscal\ReleveFiscalDetailReport.rdlc" />
+	  <EmbeddedResource Include="Impressions\ReleveFiscal\ReleveFiscalMasterReport.rdlc" />
+	  <EmbeddedResource Include="Impressions\RelevesComptes\ReleveCompteReport.rdlc" />
+	  <EmbeddedResource Include="Impressions\RelevesIndividuels\ReleveIndivDetailReport.rdlc" />
+	  <EmbeddedResource Include="Impressions\RelevesIndividuels\ReleveIndivMasterReport.rdlc" />
+	  <EmbeddedResource Include="Impressions\RemiseDeCles\RemiseDeCleReport.rdlc" />
+	  <EmbeddedResource Include="Impressions\RetardsPaiements\RetardPaiementReport.rdlc" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Npgsql" Version="10.0.3" />
 		<PackageReference Include="System.Data.Odbc" Version="10.0.9" />
 		<PackageReference Include="System.ServiceModel.Primitives" Version="10.0.652802" />
 		<PackageReference Include="System.ServiceModel.Http" Version="10.0.652802" />
 		<PackageReference Include="ReportViewerCore.WinForms" Version="15.1.33" />
 		<PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Common" Version="5.6.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.6.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.VisualBasic" Version="5.6.0" />
 	</ItemGroup>
 
 	<ItemGroup>
