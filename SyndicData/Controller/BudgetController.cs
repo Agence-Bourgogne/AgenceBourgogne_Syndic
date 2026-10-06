@@ -7,6 +7,7 @@ using CommonProjectsPartners.Utils;
 using Npgsql;
 using SyndicData.Common;
 using SyndicData.Entites;
+using SyndicData.Entites.ExerciceComptable;
 
 namespace SyndicData.Controller;
 
@@ -35,7 +36,7 @@ public class BudgetController : AbstractBaseController<BudgetEntite>
         string exercice_precedent_id = "", exercice_suivant_id = "", exercice_n_2_id = "";
         var schema = getSchema();
         {
-            var table = ExerciceComptableController.getController().getExercicePrecedent(exercice_id);
+            var table = ExerciceComptableController.GetController().GetExercicePrecedent(exercice_id);
             if (table != null)
                 if (table.Rows.Count > 0)
                 {
@@ -44,7 +45,7 @@ public class BudgetController : AbstractBaseController<BudgetEntite>
                 }
         }
         {
-            var table = ExerciceComptableController.getController().getExerciceSuivant(exercice_id);
+            var table = ExerciceComptableController.GetController().GetExerciceSuivant(exercice_id);
             if (table != null)
                 if (table.Rows.Count > 0)
                 {
@@ -53,7 +54,7 @@ public class BudgetController : AbstractBaseController<BudgetEntite>
                 }
         }
         {
-            var table = ExerciceComptableController.getController().getExerciceSuivant(exercice_suivant_id);
+            var table = ExerciceComptableController.GetController().GetExerciceSuivant(exercice_suivant_id);
             if (table != null)
                 if (table.Rows.Count > 0)
                 {

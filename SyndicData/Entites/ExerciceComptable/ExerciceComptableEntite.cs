@@ -2,7 +2,7 @@
 using System.Data;
 using CommonProjectsPartners.Entites;
 
-namespace SyndicData.Entites;
+namespace SyndicData.Entites.ExerciceComptable;
 
 public class ExerciceComptableEntite : AbstractBaseEntite
 {

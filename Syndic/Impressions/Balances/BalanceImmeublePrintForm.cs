@@ -130,7 +130,7 @@ public partial class BalanceImmeublePrintForm : Form
 
     private void btnCompte_Click(object sender, EventArgs e)
     {
-        var form = MainForm.getInstance().ShowForm<ReleveCompteCoproPrintForm>();
+        var form = MainForm.GetInstance().ShowForm<ReleveCompteCoproPrintForm>();
         form.RefreshImmeuble(immeuble.reference);
         form.Activate();
     }

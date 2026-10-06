@@ -1,0 +1,78 @@
+﻿using GrandLivre.Templates.Models;
+using PuppeteerSharp;
+using PuppeteerSharp.Media;
+using SyndicData.Entites.ExerciceComptable;
+
+namespace GenerateurGrandLivre;
+
+public static class GenerateurPdfGrandLivre
+{
+    public static async Task GénérerDansAsync(
+        DirectoryInfo directory, 
+        IEnumerable<IExerciceComptableExportable> exercicesComptables,
+        IProgress<int> progress)
+    {
+        await new BrowserFetcher().DownloadAsync();
+
+        await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
+        {
+            Headless = true
+        });
+
+        var générateurHtml = new GenerateurHtmlGrandLivre();
+        var i = 1;
+
+        foreach (var exportable in exercicesComptables)
+        {
+            var html = await générateurHtml.GénérerHtmlAsync(exportable);
+            var filename = (exportable.FactoryDisplayNameOfExercice() + ".pdf").ToSafeFileName();
+
+            await using var page = await browser.NewPageAsync();
+
+            var resources = typeof(Exercice)
+                .Assembly
+                .GetManifestResourceNames();
+
+            var cssResource = resources.Single(resName => resName.EndsWith("Main.cshtml.css"));
+            await using var cssStream = typeof(Exercice).Assembly.GetManifestResourceStream(cssResource);
+            using var cssReader = new StreamReader(cssStream!);
+            var css = await cssReader.ReadToEndAsync();
+
+            await page.SetContentAsync(html);
+
+            await page.AddStyleTagAsync(new AddTagOptions { Content = css });
+
+            await page.PdfAsync(Path.Combine(directory.FullName, filename), new PdfOptions
+            {
+                Format = PaperFormat.A4,
+                PrintBackground = true,
+                Landscape = true,
+                MarginOptions = new MarginOptions
+                {
+                    Top = "15mm",
+                    Bottom = "15mm",
+                    Left = "15mm",
+                    Right = "15mm"
+                }
+            });
+
+            progress.Report(i ++);
+        }
+    }
+
+    private static string ToSafeFileName(this string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return "unnamed";
+
+        var invalidChars = Path.GetInvalidFileNameChars();
+
+        var result = new string(value
+            .Select(c => invalidChars.Contains(c) ? '_' : c)
+            .ToArray());
+
+        return result
+            .Trim()
+            .TrimEnd('.');
+    }
+}

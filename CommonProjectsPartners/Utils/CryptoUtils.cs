@@ -64,15 +64,4 @@ public static class CryptoUtils
         tdes.Clear();
         return Convert.ToBase64String(resultArray, 0, resultArray.Length);
     }
-
-    public static string CreatePassword(int length)
-    {
-        var valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        var special = "*$-+?_&=!%{}/";
-        var res = new StringBuilder();
-        var rnd = new Random();
-        while (0 < length--) res.Append(valid[rnd.Next(valid.Length)]);
-        res.Append(special[rnd.Next(special.Length)]);
-        return res.ToString();
-    }
 }

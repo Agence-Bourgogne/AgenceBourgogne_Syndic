@@ -88,14 +88,14 @@ public partial class ControlDataForm : Form
     {
         if (immeuble == null)
             return;
-        var exercices = ExerciceComptableController.getController().getListExerciceFromImmeuble(immeuble.id);
+        var exercices = ExerciceComptableController.GetController().GetListExerciceFromImmeuble(immeuble.id);
         cbExercice.DataSource = exercices;
 
         cbExercice.DisplayMember = "reference";
         cbExercice.ValueMember = "e.id";
         if (immeuble != null)
         {
-            var exercice = ExerciceComptableController.getController().getExerciceCourant(immeuble.id);
+            var exercice = ExerciceComptableController.GetController().GetExerciceCourant(immeuble.id);
             cbExercice.SelectedValue = exercice.id;
         }
     }
@@ -129,7 +129,7 @@ public partial class ControlDataForm : Form
             return;
         }
 
-        var exercice = ExerciceComptableController.getController().getEntiteById(getExerciceSelected());
+        var exercice = ExerciceComptableController.GetController().getEntiteById(getExerciceSelected());
         var datDeb = exercice.date_deb;
         var datFin = exercice.date_fin;
 
@@ -172,7 +172,7 @@ public partial class ControlDataForm : Form
             return;
         }
 
-        var exercice = ExerciceComptableController.getController().getEntiteById(getExerciceSelected());
+        var exercice = ExerciceComptableController.GetController().getEntiteById(getExerciceSelected());
         var datDeb = exercice.date_deb;
         var datFin = exercice.date_fin;
 
@@ -235,7 +235,7 @@ public partial class ControlDataForm : Form
             return;
         }
 
-        var exercice = ExerciceComptableController.getController().getEntiteById(getExerciceSelected());
+        var exercice = ExerciceComptableController.GetController().getEntiteById(getExerciceSelected());
         var datDeb = exercice.date_deb;
         var datFin = exercice.date_fin;
 
@@ -278,7 +278,7 @@ public partial class ControlDataForm : Form
             return;
         }
 
-        var exercice = ExerciceComptableController.getController().getEntiteById(getExerciceSelected());
+        var exercice = ExerciceComptableController.GetController().getEntiteById(getExerciceSelected());
         var datDeb = exercice.date_deb;
         var datFin = exercice.date_fin;
 
@@ -330,7 +330,7 @@ public partial class ControlDataForm : Form
                 immeuble_id = immeuble.id;
         }
 
-        var exercice = ExerciceComptableController.getController().getEntiteById(getExerciceSelected());
+        var exercice = ExerciceComptableController.GetController().getEntiteById(getExerciceSelected());
         var datDeb = exercice.date_deb;
         var datFin = exercice.date_fin;
 
@@ -383,7 +383,7 @@ public partial class ControlDataForm : Form
                 immeuble_id = immeuble.id;
         }
 
-        var exercice = ExerciceComptableController.getController().getEntiteById(getExerciceSelected());
+        var exercice = ExerciceComptableController.GetController().getEntiteById(getExerciceSelected());
         var datDeb = exercice.date_deb;
         var datFin = exercice.date_fin;
 
@@ -439,7 +439,7 @@ public partial class ControlDataForm : Form
         foreach (DataRow row in immeubles.Rows)
         {
             var immeuble = new ImmeubleEntite(row);
-            var exercice = ExerciceComptableController.getController().getExerciceCourant(immeuble.id);
+            var exercice = ExerciceComptableController.GetController().GetExerciceCourant(immeuble.id);
             if (exercice != null)
             {
                 var datDeb = exercice.date_deb;
@@ -465,7 +465,6 @@ public partial class ControlDataForm : Form
                 file.Write($"*** {immeuble.reference};{datDeb.ToShortDateString()};{datFin.ToShortDateString()};");
                 var results =
                     $"{total_facture};{depenseOperation};;{total_reglements};{reglementOperation};;{total_appels};{Math.Abs(appelOperation)};;{Math.Abs(soldeReprise)};{valueSoldeImm}";
-//                    file.WriteLine(results.Replace(",","."));
                 file.WriteLine(results);
             }
         }
@@ -479,7 +478,7 @@ public partial class ControlDataForm : Form
         if (immeuble != null)
         {
             //ExerciceComptableEntite exercice = immeuble.ExerciceCourant;
-            var exercice = ExerciceComptableController.getController().getEntiteById(getExerciceSelected());
+            var exercice = ExerciceComptableController.GetController().getEntiteById(getExerciceSelected());
             var datDeb = exercice.date_deb;
             var datFin = exercice.date_fin;
 

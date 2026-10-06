@@ -1,0 +1,113 @@
+﻿@using GrandLivre.Templates.Helpers
+@using SyndicData.Entites.ExerciceComptable
+@model GrandLivre.Templates.Models.Exercice
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grand Livre</title>
+</head>
+
+<body>
+<header class="header">
+    <div class="header-agence">
+        Agence Bourgogne<br/>
+        45 rue des Carmes<br/>
+        45000 Orléans
+    </div>
+
+        <div class="header-titre">Grand livre - Exercice du @Model.Debut au @Model.Fin</div>
+
+    <h1>Copropriété : @Model.Copropriete.Nom</h1>
+    <p>Adresse : @Model.Copropriete.Adresse</p>
+
+    @foreach(var compte in Model.Comptes)
+    {
+        <div>
+            <h2>Compte @compte.IdentifiantCompte - @compte.Nom</h2>
+            
+            @{
+                var soldeCompte = 0m;
+            }
+
+            @if (compte is CompteCoproprietaire compteCoproprietaire)
+            {
+                soldeCompte = compteCoproprietaire.SoldeAnterieur;
+
+                <p>
+                    <strong>Solde antérieur : </strong>
+                        @compteCoproprietaire.SoldeAnterieur.ToInsecableCurrency()
+                </p>
+            }
+
+            <table>
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Libellé</th>
+                    <th>Tiers</th>
+                    <th class="montant">Débit</th>
+                    <th class="montant">Crédit</th>
+                    <th class="montant">Solde Débiteur</th>
+                    <th class="montant">Solde Créditeur</th>
+                </tr>
+                </thead>
+                
+                @{
+                    decimal totalDebit = 0, totalCredit = 0;
+                }
+
+                <tbody>
+                    @foreach (var operation in compte.Operations)
+                    {
+                        var debit = operation.Montant < 0 ? -operation.Montant : 0;
+                        var credit = operation.Montant >= 0 ? operation.Montant : 0;
+
+                        totalDebit += debit;
+                        totalCredit += credit;
+                        soldeCompte += operation.Montant;
+
+                            var representationDebit = debit > 0 ? debit.ToInsecableCurrency() : string.Empty;
+                            var representationCredit = credit > 0 || string.IsNullOrEmpty(representationDebit) ? credit.ToInsecableCurrency() : string.Empty;
+
+                            var representationSoldeDebiteur = soldeCompte < 0 ? (-soldeCompte).ToInsecableCurrency() : string.Empty;
+                            var representationSoldeCrediteur = soldeCompte >= 0 ? soldeCompte.ToInsecableCurrency() : string.Empty;
+
+                        <tr>
+                            <td>@operation.Date.ToString("d")</td>
+                            <td>@operation.Libelle</td>
+                            <td>@operation.Tiers</td>
+                            <td class="montant">@representationDebit</td>
+                            <td class="montant">@representationCredit</td>
+                            <td class="montant">@representationSoldeDebiteur</td>
+                            <td class="montant">@representationSoldeCrediteur</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    @{
+                            var soldeDebiteurFinal = totalDebit > totalCredit ? (totalDebit - totalCredit).ToInsecableCurrency() : string.Empty;
+                            var soldeCrediteurFinal = totalCredit > totalDebit ? (totalCredit - totalDebit).ToInsecableCurrency() : string.Empty;
+                        if (string.IsNullOrEmpty(soldeCrediteurFinal) && string.IsNullOrEmpty(soldeDebiteurFinal)) 
+                                soldeCrediteurFinal = 0m.ToInsecableCurrency();
+
+                            var representationTotalDebit = totalDebit.ToInsecableCurrency();
+                            var representationTotalCredit = totalCredit.ToInsecableCurrency();
+                    }
+                <tr>
+                    <td colspan="3">TOTAL</td>
+                    <td class="montant">@representationTotalDebit</td>
+                    <td class="montant">@representationTotalCredit</td>
+                    <td class="montant">@soldeDebiteurFinal</td>
+                    <td class="montant">@soldeCrediteurFinal</td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    }
+</header>
+</body>
+</html>

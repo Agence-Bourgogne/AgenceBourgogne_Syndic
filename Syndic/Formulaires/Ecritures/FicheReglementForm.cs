@@ -293,7 +293,7 @@ public partial class FicheReglementForm : Form
         }
 
         var dtFac = Convert.ToDateTime(tbDate.Text);
-        var exercice = ExerciceComptableController.getController().getExerciceFromDate(immeuble.id, dtFac);
+        var exercice = ExerciceComptableController.GetController().GetExerciceFromDate(immeuble.id, dtFac);
 
         if (exercice != null)
             if (exercice.statut != (int)GlobalConstantes.StatutExercice.Ouvert)

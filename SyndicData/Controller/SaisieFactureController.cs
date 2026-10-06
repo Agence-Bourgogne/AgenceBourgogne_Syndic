@@ -515,7 +515,7 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
         var repart = LotDescriptionController.getController().getListeLot(entite.immeuble_id);
         var numero_ligne = 0;
         var dtDeb = entite.date_reference;
-        var exercice = ExerciceComptableController.getController().getExerciceFromDate(entite.immeuble_id, dtDeb);
+        var exercice = ExerciceComptableController.GetController().GetExerciceFromDate(entite.immeuble_id, dtDeb);
         if (exercice == null) return;
         NpgsqlTransaction trx = null;
         if (bUseTransaction)

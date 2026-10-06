@@ -70,15 +70,15 @@ public partial class BudgetSruForm : Form
     {
         bLoaded = false;
 
-        var exercices = ExerciceComptableController.getController()
-            .getListExerciceFromImmeuble(immeuble != null ? immeuble.id : "");
+        var exercices = ExerciceComptableController.GetController()
+            .GetListExerciceFromImmeuble(immeuble != null ? immeuble.id : "");
         cbExercice.DataSource = exercices;
 
         cbExercice.DisplayMember = "reference";
         cbExercice.ValueMember = "e.id";
         if (immeuble != null)
         {
-            var exercice = ExerciceComptableController.getController().getExerciceCourant(immeuble.id);
+            var exercice = ExerciceComptableController.GetController().GetExerciceCourant(immeuble.id);
             cbExercice.SelectedValue = exercice.id;
         }
 
@@ -210,7 +210,7 @@ public partial class BudgetSruForm : Form
         var budget = BudgetController.getController().getEntiteFromField("exercice_id", exercice_id);
         if (budget == null)
         {
-            var exercice = ExerciceComptableController.getController().getEntiteById(exercice_id);
+            var exercice = ExerciceComptableController.GetController().getEntiteById(exercice_id);
             if (exercice != null)
             {
                 budget = new BudgetEntite

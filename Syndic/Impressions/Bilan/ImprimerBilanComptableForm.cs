@@ -222,7 +222,7 @@ public partial class ImprimerBilanComptableForm : Form
         immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
         if (immeuble != null)
         {
-            var exercice = ExerciceComptableController.getController().getExerciceCourant(immeuble.id);
+            var exercice = ExerciceComptableController.GetController().GetExerciceCourant(immeuble.id);
             Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
             if (exercice != null)
             {

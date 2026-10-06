@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using CommonProjectsPartners.Entites;
 using SyndicData.Controller;
+using SyndicData.Entites.ExerciceComptable;
 
 namespace SyndicData.Entites;
 
@@ -55,7 +56,7 @@ public class ImmeubleEntite : AbstractBaseEntite
         get
         {
             if (_exercice == null)
-                _exercice = ExerciceComptableController.getController().getExerciceCourant(id);
+                _exercice = ExerciceComptableController.GetController().GetExerciceCourant(id);
             return _exercice;
         }
     }

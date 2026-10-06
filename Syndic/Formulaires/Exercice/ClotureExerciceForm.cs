@@ -13,6 +13,7 @@ using EspaceSyndic.Formulaires.OperationsGestion;
 using SyndicData.Common;
 using SyndicData.Controller;
 using SyndicData.Entites;
+using SyndicData.Entites.ExerciceComptable;
 
 namespace EspaceSyndic.Formulaires.Exercice;
 
@@ -364,7 +365,7 @@ public partial class ClotureExerciceForm : Form
             try
             {
                 // TODO Voir pour TimestampServer
-                var exercice_suivant = ExerciceComptableController.getController().createExerciceSuivant(exercice);
+                var exercice_suivant = ExerciceComptableController.GetController().CreateExerciceSuivant(exercice);
                 if (exercice_suivant != null)
                 {
                     var soldeImm = SaisieFactureController.getController()
@@ -433,7 +434,7 @@ public partial class ClotureExerciceForm : Form
                         throw new Exception("Cloture Facture");
 
                     currExercice.statut = (int)GlobalConstantes.StatutExercice.Clos;
-                    if (!ExerciceComptableController.getController().InsertOrUpdate(currExercice))
+                    if (!ExerciceComptableController.GetController().InsertOrUpdate(currExercice))
                         throw new Exception("Statut exercice");
                     trx.Commit();
                     tbRefImmeuble_Validating(null, null);

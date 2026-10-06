@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace CommonProjectsPartners.Utils;
 
@@ -8,7 +9,7 @@ public static class Convertir
     {
         if (value == null) return 0;
         if (value.ToString() == "") return 0;
-        var valeur = (int)Convert.ToDouble(value.ToString().Replace(".", ",").Replace("-", ""));
+        var valeur = (int)Convert.ToDouble(value.ToString().Replace(".", ",").Replace("-", ""), CultureInfo.GetCultureInfo("fr_FR"));
         if (value.ToString().Trim().StartsWith("-"))
             valeur *= -1;
         return valeur;
@@ -19,7 +20,7 @@ public static class Convertir
         if (value == null) return 0;
         var txtValue = value.ToString().Replace(".", ",").Replace("-", "");
         if (txtValue == "") return 0;
-        var valeur = (float)Convert.ToDouble(txtValue);
+        var valeur = (float)Convert.ToDouble(txtValue, CultureInfo.GetCultureInfo("fr_FR"));
         if (value.ToString().Trim().StartsWith("-"))
             valeur *= -1;
         return valeur;
@@ -29,7 +30,7 @@ public static class Convertir
     {
         if (value == null) return 0;
         if (value.ToString() == "") return 0;
-        var valeur = (decimal)Convert.ToDouble(value.ToString().Replace(".", ",").Replace("-", ""));
+        var valeur = (decimal)Convert.ToDouble(value.ToString().Replace(".", ",").Replace("-", ""), CultureInfo.GetCultureInfo("fr_FR"));
         if (value.ToString().Trim().StartsWith("-"))
             valeur *= -1;
         return valeur;

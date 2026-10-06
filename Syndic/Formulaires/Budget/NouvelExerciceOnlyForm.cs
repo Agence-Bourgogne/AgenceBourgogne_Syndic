@@ -4,6 +4,7 @@ using CommonProjectsPartners.Utils;
 using SyndicData.Common;
 using SyndicData.Controller;
 using SyndicData.Entites;
+using SyndicData.Entites.ExerciceComptable;
 
 namespace EspaceSyndic.Formulaires.Budget;
 
@@ -28,13 +29,13 @@ public partial class NouvelExerciceOnlyForm : Form
         MinimumSize = MaximumSize = Size;
         if (exercice_id == "")
         {
-            var dt = ExerciceComptableController.getController().getNewDateDebutExercice(immeuble_id);
+            var dt = ExerciceComptableController.GetController().GetNewDateDebutExercice(immeuble_id);
             dtDeb.Value = dt;
             dtFin.Value = dtDeb.Value.AddYears(1).AddDays(-1);
         }
         else
         {
-            var exercice = ExerciceComptableController.getController().getEntiteById(exercice_id);
+            var exercice = ExerciceComptableController.GetController().getEntiteById(exercice_id);
             dtDeb.Value = exercice.date_deb;
             dtFin.Value = exercice.date_fin;
             tbReference.Text = exercice.reference;
@@ -67,7 +68,7 @@ public partial class NouvelExerciceOnlyForm : Form
         {
             ExerciceComptableEntite exercice = null;
             if (exercice_id != "")
-                exercice = ExerciceComptableController.getController().getEntiteById(exercice_id);
+                exercice = ExerciceComptableController.GetController().getEntiteById(exercice_id);
             if (exercice == null)
                 exercice = new ExerciceComptableEntite
                 {
@@ -79,7 +80,7 @@ public partial class NouvelExerciceOnlyForm : Form
             exercice.immeuble_id = immeuble_id;
             exercice.reference = tbReference.Text;
             exercice.nom = tbReference.Text;
-            if (!ExerciceComptableController.getController().InsertOrUpdate(exercice))
+            if (!ExerciceComptableController.GetController().InsertOrUpdate(exercice))
                 throw new Exception("New Exercice");
             exercice_id = exercice.id;
 

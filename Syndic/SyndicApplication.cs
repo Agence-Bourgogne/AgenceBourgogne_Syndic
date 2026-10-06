@@ -48,6 +48,13 @@ internal static class SyndicApplication
             MessageBox.Show(ex.Message);
         }
 
-        BaseApplication.CloseOfficeInstance();
+        try
+        {
+            BaseApplication.CloseOfficeInstance();
+        }
+        catch
+        {
+            // failsafe
+        }
     }
 }
