@@ -24,7 +24,6 @@ public partial class FicheFournisseurForm : Form
     {
         ParametresDB.FillComboFromParams(cbReglement, "FACTURE_REGLEMENT");
         setFicheValues(null);
-        btnEnter.Width = 0;
     }
 
     private void setFicheValues(FournisseurEntite newEntite)

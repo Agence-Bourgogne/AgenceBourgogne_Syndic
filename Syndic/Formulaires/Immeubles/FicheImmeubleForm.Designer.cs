@@ -31,554 +31,595 @@ namespace EspaceSyndic.Formulaires.Immeubles
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FicheImmeubleForm));
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.ckDesactiv = new System.Windows.Forms.CheckBox();
-            this.tbNoteRepart = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.tbNote = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.tbLots = new System.Windows.Forms.MaskedTextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.tbCompteBanque = new System.Windows.Forms.MaskedTextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.tbVille = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.tbCodePostal = new System.Windows.Forms.MaskedTextBox();
-            this.tbAdresse = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.tbNom = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.tbDateCreation = new System.Windows.Forms.MaskedTextBox();
-            this.tbNumero = new System.Windows.Forms.TextBox();
-            this.lblRef = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.lblExercice = new System.Windows.Forms.Label();
-            this.btnEnter = new System.Windows.Forms.Button();
-            this.lblTxtImmeuble = new System.Windows.Forms.Label();
-            this.lblTitre = new System.Windows.Forms.Label();
-            this.dataGridView = new System.Windows.Forms.DataGridView();
-            this.btnFirst = new System.Windows.Forms.Button();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.btnPrev = new System.Windows.Forms.Button();
-            this.btnNext = new System.Windows.Forms.Button();
-            this.btnLast = new System.Windows.Forms.Button();
-            this.btnQuit = new System.Windows.Forms.Button();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.btnModifLot = new System.Windows.Forms.Button();
-            this.btnModif = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.tbAppel = new System.Windows.Forms.TextBox();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
-            this.panel1.SuspendLayout();
-            this.SuspendLayout();
+            components = new Container();
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(FicheImmeubleForm));
+            groupBox1 = new GroupBox();
+            label2 = new Label();
+            ckDesactiv = new CheckBox();
+            tbNoteRepart = new TextBox();
+            label11 = new Label();
+            tbNote = new TextBox();
+            label10 = new Label();
+            tbLots = new MaskedTextBox();
+            label9 = new Label();
+            tbCompteBanque = new MaskedTextBox();
+            label8 = new Label();
+            tbVille = new TextBox();
+            label7 = new Label();
+            label6 = new Label();
+            tbCodePostal = new MaskedTextBox();
+            tbAdresse = new TextBox();
+            label5 = new Label();
+            tbNom = new TextBox();
+            label4 = new Label();
+            label3 = new Label();
+            tbDateCreation = new MaskedTextBox();
+            tbNumero = new TextBox();
+            lblRef = new Label();
+            label1 = new Label();
+            groupBox2 = new GroupBox();
+            lblExercice = new Label();
+            btnEnter = new Button();
+            lblTxtImmeuble = new Label();
+            lblTitre = new Label();
+            dataGridView = new DataGridView();
+            btnFirst = new Button();
+            imageList1 = new ImageList(components);
+            btnPrev = new Button();
+            btnNext = new Button();
+            btnLast = new Button();
+            btnQuit = new Button();
+            btnSave = new Button();
+            panel1 = new Panel();
+            btnModifLot = new Button();
+            btnModif = new Button();
+            tbAppel = new TextBox();
+            groupBox1.SuspendLayout();
+            groupBox2.SuspendLayout();
+            ((ISupportInitialize)dataGridView).BeginInit();
+            panel1.SuspendLayout();
+            SuspendLayout();
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.ckDesactiv);
-            this.groupBox1.Controls.Add(this.tbNoteRepart);
-            this.groupBox1.Controls.Add(this.label11);
-            this.groupBox1.Controls.Add(this.tbNote);
-            this.groupBox1.Controls.Add(this.label10);
-            this.groupBox1.Controls.Add(this.tbLots);
-            this.groupBox1.Controls.Add(this.label9);
-            this.groupBox1.Controls.Add(this.tbCompteBanque);
-            this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.tbVille);
-            this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.tbCodePostal);
-            this.groupBox1.Controls.Add(this.tbAdresse);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.tbNom);
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.tbDateCreation);
-            this.groupBox1.Controls.Add(this.tbNumero);
-            this.groupBox1.Controls.Add(this.lblRef);
-            this.groupBox1.Location = new System.Drawing.Point(12, 42);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(760, 235);
-            this.groupBox1.TabIndex = 1;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Description Immeuble";
-            // 
-            // ckDesactiv
-            // 
-            this.ckDesactiv.AutoSize = true;
-            this.ckDesactiv.Location = new System.Drawing.Point(14, 188);
-            this.ckDesactiv.Name = "ckDesactiv";
-            this.ckDesactiv.Size = new System.Drawing.Size(74, 17);
-            this.ckDesactiv.TabIndex = 20;
-            this.ckDesactiv.Text = "Désactivé";
-            this.ckDesactiv.UseVisualStyleBackColor = true;
-            // 
-            // tbNoteRepart
-            // 
-            this.tbNoteRepart.AcceptsReturn = true;
-            this.tbNoteRepart.AcceptsTab = true;
-            this.tbNoteRepart.Location = new System.Drawing.Point(463, 102);
-            this.tbNoteRepart.Multiline = true;
-            this.tbNoteRepart.Name = "tbNoteRepart";
-            this.tbNoteRepart.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tbNoteRepart.Size = new System.Drawing.Size(283, 76);
-            this.tbNoteRepart.TabIndex = 19;
-            // 
-            // label11
-            // 
-            this.label11.Location = new System.Drawing.Point(389, 102);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(72, 50);
-            this.label11.TabIndex = 18;
-            this.label11.Text = "Note &Répartition:";
-            // 
-            // tbNote
-            // 
-            this.tbNote.AcceptsReturn = true;
-            this.tbNote.AcceptsTab = true;
-            this.tbNote.Location = new System.Drawing.Point(86, 102);
-            this.tbNote.Multiline = true;
-            this.tbNote.Name = "tbNote";
-            this.tbNote.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tbNote.Size = new System.Drawing.Size(297, 76);
-            this.tbNote.TabIndex = 17;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(10, 105);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(33, 13);
-            this.label10.TabIndex = 16;
-            this.label10.Text = "&Note:";
-            // 
-            // tbLots
-            // 
-            this.tbLots.Location = new System.Drawing.Point(463, 73);
-            this.tbLots.Name = "tbLots";
-            this.tbLots.Size = new System.Drawing.Size(81, 20);
-            this.tbLots.TabIndex = 15;
-            this.tbLots.TextChanged += new System.EventHandler(this.tbTextChanged);
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(389, 76);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(58, 13);
-            this.label9.TabIndex = 14;
-            this.label9.Text = "Nb de &lots:";
-            // 
-            // tbCompteBanque
-            // 
-            this.tbCompteBanque.Location = new System.Drawing.Point(86, 73);
-            this.tbCompteBanque.Mask = "99999999999";
-            this.tbCompteBanque.Name = "tbCompteBanque";
-            this.tbCompteBanque.PromptChar = ' ';
-            this.tbCompteBanque.Size = new System.Drawing.Size(81, 20);
-            this.tbCompteBanque.TabIndex = 13;
-            this.tbCompteBanque.TextChanged += new System.EventHandler(this.tbTextChanged);
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(11, 76);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(77, 13);
-            this.label8.TabIndex = 12;
-            this.label8.Text = "Cpt &Banquaire:";
-            // 
-            // tbVille
-            // 
-            this.tbVille.Location = new System.Drawing.Point(596, 48);
-            this.tbVille.Name = "tbVille";
-            this.tbVille.Size = new System.Drawing.Size(150, 20);
-            this.tbVille.TabIndex = 11;
-            this.tbVille.TextChanged += new System.EventHandler(this.tbTextChanged);
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(558, 51);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(29, 13);
-            this.label7.TabIndex = 10;
-            this.label7.Text = "&Ville:";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(389, 51);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(67, 13);
-            this.label6.TabIndex = 9;
-            this.label6.Text = "&Code Postal:";
-            // 
-            // tbCodePostal
-            // 
-            this.tbCodePostal.Location = new System.Drawing.Point(463, 49);
-            this.tbCodePostal.Name = "tbCodePostal";
-            this.tbCodePostal.Size = new System.Drawing.Size(81, 20);
-            this.tbCodePostal.TabIndex = 8;
-            this.tbCodePostal.TextChanged += new System.EventHandler(this.tbTextChanged);
-            // 
-            // tbAdresse
-            // 
-            this.tbAdresse.Location = new System.Drawing.Point(86, 48);
-            this.tbAdresse.Name = "tbAdresse";
-            this.tbAdresse.Size = new System.Drawing.Size(297, 20);
-            this.tbAdresse.TabIndex = 7;
-            this.tbAdresse.TextChanged += new System.EventHandler(this.tbTextChanged);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(10, 52);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(48, 13);
-            this.label5.TabIndex = 6;
-            this.label5.Text = "&Adresse:";
-            // 
-            // tbNom
-            // 
-            this.tbNom.Location = new System.Drawing.Point(463, 22);
-            this.tbNom.Name = "tbNom";
-            this.tbNom.Size = new System.Drawing.Size(283, 20);
-            this.tbNom.TabIndex = 5;
-            this.tbNom.TextChanged += new System.EventHandler(this.tbTextChanged);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(389, 25);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(32, 13);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "&Nom:";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(215, 25);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(75, 13);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "&Date Création:";
-            // 
-            // tbDateCreation
-            // 
-            this.tbDateCreation.Location = new System.Drawing.Point(302, 22);
-            this.tbDateCreation.Mask = "00/00/0000";
-            this.tbDateCreation.Name = "tbDateCreation";
-            this.tbDateCreation.Size = new System.Drawing.Size(81, 20);
-            this.tbDateCreation.TabIndex = 2;
-            this.tbDateCreation.ValidatingType = typeof(System.DateTime);
-            this.tbDateCreation.TextChanged += new System.EventHandler(this.tbTextChanged);
-            // 
-            // tbNumero
-            // 
-            this.tbNumero.Location = new System.Drawing.Point(86, 22);
-            this.tbNumero.Name = "tbNumero";
-            this.tbNumero.Size = new System.Drawing.Size(100, 20);
-            this.tbNumero.TabIndex = 1;
-            this.tbNumero.TextChanged += new System.EventHandler(this.tbTextChanged);
-            // 
-            // lblRef
-            // 
-            this.lblRef.AutoSize = true;
-            this.lblRef.ForeColor = System.Drawing.Color.Blue;
-            this.lblRef.Location = new System.Drawing.Point(10, 25);
-            this.lblRef.Name = "lblRef";
-            this.lblRef.Size = new System.Drawing.Size(60, 13);
-            this.lblRef.TabIndex = 0;
-            this.lblRef.Text = "&Référence:";
-            this.lblRef.Click += new System.EventHandler(this.lblRef_Click);
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(230, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(358, 20);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Agence Bourgogne : Fichier des Immeubles";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.lblExercice);
-            this.groupBox2.Controls.Add(this.btnEnter);
-            this.groupBox2.Controls.Add(this.lblTxtImmeuble);
-            this.groupBox2.Controls.Add(this.lblTitre);
-            this.groupBox2.Controls.Add(this.dataGridView);
-            this.groupBox2.Location = new System.Drawing.Point(12, 283);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(760, 259);
-            this.groupBox2.TabIndex = 3;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Charges";
-            // 
-            // lblExercice
-            // 
-            this.lblExercice.AutoSize = true;
-            this.lblExercice.ForeColor = System.Drawing.Color.Blue;
-            this.lblExercice.Location = new System.Drawing.Point(359, 16);
-            this.lblExercice.Name = "lblExercice";
-            this.lblExercice.Size = new System.Drawing.Size(88, 13);
-            this.lblExercice.TabIndex = 117;
-            this.lblExercice.Text = "Exercice Courant";
-            this.lblExercice.Click += new System.EventHandler(this.lblExercice_Click);
-            // 
-            // btnEnter
-            // 
-            this.btnEnter.Location = new System.Drawing.Point(343, 118);
-            this.btnEnter.Name = "btnEnter";
-            this.btnEnter.Size = new System.Drawing.Size(75, 23);
-            this.btnEnter.TabIndex = 116;
-            this.btnEnter.Text = "button1";
-            this.btnEnter.UseVisualStyleBackColor = true;
-            this.btnEnter.Click += new System.EventHandler(this.btnEnter_Click);
-            // 
-            // lblTxtImmeuble
-            // 
-            this.lblTxtImmeuble.AutoSize = true;
-            this.lblTxtImmeuble.ForeColor = System.Drawing.Color.Blue;
-            this.lblTxtImmeuble.Location = new System.Drawing.Point(11, 16);
-            this.lblTxtImmeuble.Name = "lblTxtImmeuble";
-            this.lblTxtImmeuble.Size = new System.Drawing.Size(87, 13);
-            this.lblTxtImmeuble.TabIndex = 2;
-            this.lblTxtImmeuble.Text = "Textes Immeuble";
-            this.lblTxtImmeuble.Click += new System.EventHandler(this.lblTextesImmeuble_Click);
-            this.lblTxtImmeuble.Enter += new System.EventHandler(this.lblTitre_Click);
-            // 
-            // lblTitre
-            // 
-            this.lblTitre.AutoSize = true;
-            this.lblTitre.ForeColor = System.Drawing.Color.Blue;
-            this.lblTitre.Location = new System.Drawing.Point(643, 16);
-            this.lblTitre.Name = "lblTitre";
-            this.lblTitre.Size = new System.Drawing.Size(103, 13);
-            this.lblTitre.TabIndex = 1;
-            this.lblTitre.Text = "Mise à jour des &titres";
-            this.lblTitre.Click += new System.EventHandler(this.lblTitre_Click);
-            // 
-            // dataGridView
-            // 
-            this.dataGridView.AllowUserToAddRows = false;
-            this.dataGridView.AllowUserToDeleteRows = false;
-            this.dataGridView.AllowUserToResizeRows = false;
-            this.dataGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView.Location = new System.Drawing.Point(14, 43);
-            this.dataGridView.Name = "dataGridView";
-            this.dataGridView.RowHeadersVisible = false;
-            this.dataGridView.ShowCellErrors = false;
-            this.dataGridView.ShowEditingIcon = false;
-            this.dataGridView.ShowRowErrors = false;
-            this.dataGridView.Size = new System.Drawing.Size(732, 200);
-            this.dataGridView.TabIndex = 0;
-            this.dataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_CellValueChanged);
-            // 
-            // btnFirst
-            // 
-            this.btnFirst.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnFirst.ImageIndex = 0;
-            this.btnFirst.ImageList = this.imageList1;
-            this.btnFirst.Location = new System.Drawing.Point(4, 5);
-            this.btnFirst.Name = "btnFirst";
-            this.btnFirst.Size = new System.Drawing.Size(80, 25);
-            this.btnFirst.TabIndex = 4;
-            this.btnFirst.Text = "&Début";
-            this.btnFirst.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnFirst.UseVisualStyleBackColor = true;
-            this.btnFirst.Click += new System.EventHandler(this.btnFirst_Click);
-            // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Silver;
-            this.imageList1.Images.SetKeyName(0, "top.png");
-            this.imageList1.Images.SetKeyName(1, "bottom.png");
-            this.imageList1.Images.SetKeyName(2, "previous.png");
-            this.imageList1.Images.SetKeyName(3, "next.png");
-            this.imageList1.Images.SetKeyName(4, "save.png");
-            this.imageList1.Images.SetKeyName(5, "quit.png");
-            // 
-            // btnPrev
-            // 
-            this.btnPrev.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnPrev.ImageIndex = 2;
-            this.btnPrev.ImageList = this.imageList1;
-            this.btnPrev.Location = new System.Drawing.Point(90, 5);
-            this.btnPrev.Name = "btnPrev";
-            this.btnPrev.Size = new System.Drawing.Size(80, 25);
-            this.btnPrev.TabIndex = 5;
-            this.btnPrev.Text = "&Précédent";
-            this.btnPrev.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnPrev.UseVisualStyleBackColor = true;
-            this.btnPrev.Click += new System.EventHandler(this.btnPrev_Click);
-            // 
-            // btnNext
-            // 
-            this.btnNext.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnNext.ImageIndex = 3;
-            this.btnNext.ImageList = this.imageList1;
-            this.btnNext.Location = new System.Drawing.Point(176, 5);
-            this.btnNext.Name = "btnNext";
-            this.btnNext.Size = new System.Drawing.Size(80, 25);
-            this.btnNext.TabIndex = 6;
-            this.btnNext.Text = "&Suivant";
-            this.btnNext.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnNext.UseVisualStyleBackColor = true;
-            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
-            // 
-            // btnLast
-            // 
-            this.btnLast.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnLast.ImageIndex = 1;
-            this.btnLast.ImageList = this.imageList1;
-            this.btnLast.Location = new System.Drawing.Point(262, 5);
-            this.btnLast.Name = "btnLast";
-            this.btnLast.Size = new System.Drawing.Size(80, 25);
-            this.btnLast.TabIndex = 7;
-            this.btnLast.Text = "&Fin";
-            this.btnLast.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnLast.UseVisualStyleBackColor = true;
-            this.btnLast.Click += new System.EventHandler(this.btnLast_Click);
-            // 
-            // btnQuit
-            // 
-            this.btnQuit.CausesValidation = false;
-            this.btnQuit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnQuit.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnQuit.ImageIndex = 5;
-            this.btnQuit.ImageList = this.imageList1;
-            this.btnQuit.Location = new System.Drawing.Point(664, 5);
-            this.btnQuit.Name = "btnQuit";
-            this.btnQuit.Size = new System.Drawing.Size(80, 25);
-            this.btnQuit.TabIndex = 9;
-            this.btnQuit.Text = "&Quitter";
-            this.btnQuit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnQuit.UseVisualStyleBackColor = true;
-            this.btnQuit.Click += new System.EventHandler(this.btnQuit_Click);
-            // 
-            // btnSave
-            // 
-            this.btnSave.CausesValidation = false;
-            this.btnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnSave.ImageIndex = 4;
-            this.btnSave.ImageList = this.imageList1;
-            this.btnSave.Location = new System.Drawing.Point(578, 5);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(80, 25);
-            this.btnSave.TabIndex = 8;
-            this.btnSave.Text = "Enregi&strer";
-            this.btnSave.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // panel1
-            // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel1.Controls.Add(this.btnModifLot);
-            this.panel1.Controls.Add(this.btnModif);
-            this.panel1.Controls.Add(this.btnQuit);
-            this.panel1.Controls.Add(this.btnSave);
-            this.panel1.Controls.Add(this.btnLast);
-            this.panel1.Controls.Add(this.btnNext);
-            this.panel1.Controls.Add(this.btnPrev);
-            this.panel1.Controls.Add(this.btnFirst);
-            this.panel1.Location = new System.Drawing.Point(12, 548);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(760, 39);
-            this.panel1.TabIndex = 10;
-            // 
-            // btnModifLot
-            // 
-            this.btnModifLot.Location = new System.Drawing.Point(456, 5);
-            this.btnModifLot.Name = "btnModifLot";
-            this.btnModifLot.Size = new System.Drawing.Size(90, 25);
-            this.btnModifLot.TabIndex = 11;
-            this.btnModifLot.Text = "Modif. &Lot";
-            this.btnModifLot.UseVisualStyleBackColor = true;
-            this.btnModifLot.Click += new System.EventHandler(this.btnModifLot_Click);
-            // 
-            // btnModif
-            // 
-            this.btnModif.Location = new System.Drawing.Point(360, 5);
-            this.btnModif.Name = "btnModif";
-            this.btnModif.Size = new System.Drawing.Size(90, 25);
-            this.btnModif.TabIndex = 10;
-            this.btnModif.Text = "Modi&f. Repart";
-            this.btnModif.UseVisualStyleBackColor = true;
-            this.btnModif.Click += new System.EventHandler(this.btnModif_Click);
+            groupBox1.Controls.Add(label2);
+            groupBox1.Controls.Add(ckDesactiv);
+            groupBox1.Controls.Add(tbNoteRepart);
+            groupBox1.Controls.Add(label11);
+            groupBox1.Controls.Add(tbNote);
+            groupBox1.Controls.Add(label10);
+            groupBox1.Controls.Add(tbLots);
+            groupBox1.Controls.Add(label9);
+            groupBox1.Controls.Add(tbCompteBanque);
+            groupBox1.Controls.Add(label8);
+            groupBox1.Controls.Add(tbVille);
+            groupBox1.Controls.Add(label7);
+            groupBox1.Controls.Add(label6);
+            groupBox1.Controls.Add(tbCodePostal);
+            groupBox1.Controls.Add(tbAdresse);
+            groupBox1.Controls.Add(label5);
+            groupBox1.Controls.Add(tbNom);
+            groupBox1.Controls.Add(label4);
+            groupBox1.Controls.Add(label3);
+            groupBox1.Controls.Add(tbDateCreation);
+            groupBox1.Controls.Add(tbNumero);
+            groupBox1.Controls.Add(lblRef);
+            groupBox1.Location = new System.Drawing.Point(14, 48);
+            groupBox1.Margin = new Padding(4, 3, 4, 3);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Padding = new Padding(4, 3, 4, 3);
+            groupBox1.Size = new System.Drawing.Size(887, 271);
+            groupBox1.TabIndex = 1;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Description Immeuble";
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(351, 189);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(102, 13);
-            this.label2.TabIndex = 21;
-            this.label2.Text = "Note Appel de Fond";
+            label2.AutoSize = true;
+            label2.Location = new System.Drawing.Point(410, 218);
+            label2.Margin = new Padding(4, 0, 4, 0);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(113, 15);
+            label2.TabIndex = 21;
+            label2.Text = "Note Appel de Fond";
+            // 
+            // ckDesactiv
+            // 
+            ckDesactiv.AutoSize = true;
+            ckDesactiv.Location = new System.Drawing.Point(16, 217);
+            ckDesactiv.Margin = new Padding(4, 3, 4, 3);
+            ckDesactiv.Name = "ckDesactiv";
+            ckDesactiv.Size = new System.Drawing.Size(76, 19);
+            ckDesactiv.TabIndex = 20;
+            ckDesactiv.Text = "Désactivé";
+            ckDesactiv.UseVisualStyleBackColor = true;
+            // 
+            // tbNoteRepart
+            // 
+            tbNoteRepart.AcceptsReturn = true;
+            tbNoteRepart.AcceptsTab = true;
+            tbNoteRepart.Location = new System.Drawing.Point(540, 118);
+            tbNoteRepart.Margin = new Padding(4, 3, 4, 3);
+            tbNoteRepart.Multiline = true;
+            tbNoteRepart.Name = "tbNoteRepart";
+            tbNoteRepart.ScrollBars = ScrollBars.Both;
+            tbNoteRepart.Size = new System.Drawing.Size(330, 87);
+            tbNoteRepart.TabIndex = 19;
+            // 
+            // label11
+            // 
+            label11.Location = new System.Drawing.Point(454, 118);
+            label11.Margin = new Padding(4, 0, 4, 0);
+            label11.Name = "label11";
+            label11.Size = new System.Drawing.Size(84, 58);
+            label11.TabIndex = 18;
+            label11.Text = "Note &Répartition:";
+            // 
+            // tbNote
+            // 
+            tbNote.AcceptsReturn = true;
+            tbNote.AcceptsTab = true;
+            tbNote.Location = new System.Drawing.Point(100, 118);
+            tbNote.Margin = new Padding(4, 3, 4, 3);
+            tbNote.Multiline = true;
+            tbNote.Name = "tbNote";
+            tbNote.ScrollBars = ScrollBars.Both;
+            tbNote.Size = new System.Drawing.Size(346, 87);
+            tbNote.TabIndex = 17;
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Location = new System.Drawing.Point(12, 121);
+            label10.Margin = new Padding(4, 0, 4, 0);
+            label10.Name = "label10";
+            label10.Size = new System.Drawing.Size(36, 15);
+            label10.TabIndex = 16;
+            label10.Text = "&Note:";
+            // 
+            // tbLots
+            // 
+            tbLots.Location = new System.Drawing.Point(540, 84);
+            tbLots.Margin = new Padding(4, 3, 4, 3);
+            tbLots.Name = "tbLots";
+            tbLots.Size = new System.Drawing.Size(94, 23);
+            tbLots.TabIndex = 15;
+            tbLots.TextChanged += tbTextChanged;
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new System.Drawing.Point(454, 88);
+            label9.Margin = new Padding(4, 0, 4, 0);
+            label9.Name = "label9";
+            label9.Size = new System.Drawing.Size(64, 15);
+            label9.TabIndex = 14;
+            label9.Text = "Nb de &lots:";
+            // 
+            // tbCompteBanque
+            // 
+            tbCompteBanque.Location = new System.Drawing.Point(100, 84);
+            tbCompteBanque.Margin = new Padding(4, 3, 4, 3);
+            tbCompteBanque.Mask = "99999999999";
+            tbCompteBanque.Name = "tbCompteBanque";
+            tbCompteBanque.PromptChar = ' ';
+            tbCompteBanque.Size = new System.Drawing.Size(94, 23);
+            tbCompteBanque.TabIndex = 13;
+            tbCompteBanque.TextChanged += tbTextChanged;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new System.Drawing.Point(13, 88);
+            label8.Margin = new Padding(4, 0, 4, 0);
+            label8.Name = "label8";
+            label8.Size = new System.Drawing.Size(85, 15);
+            label8.TabIndex = 12;
+            label8.Text = "Cpt &Banquaire:";
+            // 
+            // tbVille
+            // 
+            tbVille.Location = new System.Drawing.Point(695, 55);
+            tbVille.Margin = new Padding(4, 3, 4, 3);
+            tbVille.Name = "tbVille";
+            tbVille.Size = new System.Drawing.Size(174, 23);
+            tbVille.TabIndex = 11;
+            tbVille.TextChanged += tbTextChanged;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new System.Drawing.Point(651, 59);
+            label7.Margin = new Padding(4, 0, 4, 0);
+            label7.Name = "label7";
+            label7.Size = new System.Drawing.Size(32, 15);
+            label7.TabIndex = 10;
+            label7.Text = "&Ville:";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new System.Drawing.Point(454, 59);
+            label6.Margin = new Padding(4, 0, 4, 0);
+            label6.Name = "label6";
+            label6.Size = new System.Drawing.Size(73, 15);
+            label6.TabIndex = 9;
+            label6.Text = "&Code Postal:";
+            // 
+            // tbCodePostal
+            // 
+            tbCodePostal.Location = new System.Drawing.Point(540, 57);
+            tbCodePostal.Margin = new Padding(4, 3, 4, 3);
+            tbCodePostal.Name = "tbCodePostal";
+            tbCodePostal.Size = new System.Drawing.Size(94, 23);
+            tbCodePostal.TabIndex = 8;
+            tbCodePostal.TextChanged += tbTextChanged;
+            // 
+            // tbAdresse
+            // 
+            tbAdresse.Location = new System.Drawing.Point(100, 55);
+            tbAdresse.Margin = new Padding(4, 3, 4, 3);
+            tbAdresse.Name = "tbAdresse";
+            tbAdresse.Size = new System.Drawing.Size(346, 23);
+            tbAdresse.TabIndex = 7;
+            tbAdresse.TextChanged += tbTextChanged;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new System.Drawing.Point(12, 60);
+            label5.Margin = new Padding(4, 0, 4, 0);
+            label5.Name = "label5";
+            label5.Size = new System.Drawing.Size(51, 15);
+            label5.TabIndex = 6;
+            label5.Text = "&Adresse:";
+            // 
+            // tbNom
+            // 
+            tbNom.Location = new System.Drawing.Point(540, 25);
+            tbNom.Margin = new Padding(4, 3, 4, 3);
+            tbNom.Name = "tbNom";
+            tbNom.Size = new System.Drawing.Size(330, 23);
+            tbNom.TabIndex = 5;
+            tbNom.TextChanged += tbTextChanged;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new System.Drawing.Point(454, 29);
+            label4.Margin = new Padding(4, 0, 4, 0);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(37, 15);
+            label4.TabIndex = 4;
+            label4.Text = "&Nom:";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new System.Drawing.Point(251, 29);
+            label3.Margin = new Padding(4, 0, 4, 0);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(82, 15);
+            label3.TabIndex = 3;
+            label3.Text = "&Date Création:";
+            // 
+            // tbDateCreation
+            // 
+            tbDateCreation.Location = new System.Drawing.Point(352, 25);
+            tbDateCreation.Margin = new Padding(4, 3, 4, 3);
+            tbDateCreation.Mask = "00/00/0000";
+            tbDateCreation.Name = "tbDateCreation";
+            tbDateCreation.Size = new System.Drawing.Size(94, 23);
+            tbDateCreation.TabIndex = 2;
+            tbDateCreation.ValidatingType = typeof(System.DateTime);
+            tbDateCreation.TextChanged += tbTextChanged;
+            // 
+            // tbNumero
+            // 
+            tbNumero.Location = new System.Drawing.Point(100, 25);
+            tbNumero.Margin = new Padding(4, 3, 4, 3);
+            tbNumero.Name = "tbNumero";
+            tbNumero.Size = new System.Drawing.Size(116, 23);
+            tbNumero.TabIndex = 1;
+            tbNumero.TextChanged += tbTextChanged;
+            // 
+            // lblRef
+            // 
+            lblRef.AutoSize = true;
+            lblRef.ForeColor = System.Drawing.Color.Blue;
+            lblRef.Location = new System.Drawing.Point(12, 29);
+            lblRef.Margin = new Padding(4, 0, 4, 0);
+            lblRef.Name = "lblRef";
+            lblRef.Size = new System.Drawing.Size(62, 15);
+            lblRef.TabIndex = 0;
+            lblRef.Text = "&Référence:";
+            lblRef.Click += lblRef_Click;
+            // 
+            // label1
+            // 
+            label1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            label1.AutoSize = true;
+            label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
+            label1.Location = new System.Drawing.Point(268, 10);
+            label1.Margin = new Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(358, 20);
+            label1.TabIndex = 2;
+            label1.Text = "Agence Bourgogne : Fichier des Immeubles";
+            label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // groupBox2
+            // 
+            groupBox2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox2.Controls.Add(lblExercice);
+            groupBox2.Controls.Add(btnEnter);
+            groupBox2.Controls.Add(lblTxtImmeuble);
+            groupBox2.Controls.Add(lblTitre);
+            groupBox2.Controls.Add(dataGridView);
+            groupBox2.Location = new System.Drawing.Point(14, 327);
+            groupBox2.Margin = new Padding(4, 3, 4, 3);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Padding = new Padding(4, 3, 4, 3);
+            groupBox2.Size = new System.Drawing.Size(887, 299);
+            groupBox2.TabIndex = 3;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Charges";
+            // 
+            // lblExercice
+            // 
+            lblExercice.AutoSize = true;
+            lblExercice.ForeColor = System.Drawing.Color.Blue;
+            lblExercice.Location = new System.Drawing.Point(419, 18);
+            lblExercice.Margin = new Padding(4, 0, 4, 0);
+            lblExercice.Name = "lblExercice";
+            lblExercice.Size = new System.Drawing.Size(95, 15);
+            lblExercice.TabIndex = 117;
+            lblExercice.Text = "Exercice Courant";
+            lblExercice.Click += lblExercice_Click;
+            // 
+            // btnEnter
+            // 
+            btnEnter.Location = new System.Drawing.Point(400, 136);
+            btnEnter.Margin = new Padding(4, 3, 4, 3);
+            btnEnter.Name = "btnEnter";
+            btnEnter.Size = new System.Drawing.Size(88, 27);
+            btnEnter.TabIndex = 116;
+            btnEnter.Text = "button1";
+            btnEnter.UseVisualStyleBackColor = true;
+            btnEnter.Click += btnEnter_Click;
+            // 
+            // lblTxtImmeuble
+            // 
+            lblTxtImmeuble.AutoSize = true;
+            lblTxtImmeuble.ForeColor = System.Drawing.Color.Blue;
+            lblTxtImmeuble.Location = new System.Drawing.Point(13, 18);
+            lblTxtImmeuble.Margin = new Padding(4, 0, 4, 0);
+            lblTxtImmeuble.Name = "lblTxtImmeuble";
+            lblTxtImmeuble.Size = new System.Drawing.Size(96, 15);
+            lblTxtImmeuble.TabIndex = 2;
+            lblTxtImmeuble.Text = "Textes Immeuble";
+            lblTxtImmeuble.Click += lblTextesImmeuble_Click;
+            lblTxtImmeuble.Enter += lblTitre_Click;
+            // 
+            // lblTitre
+            // 
+            lblTitre.AutoSize = true;
+            lblTitre.ForeColor = System.Drawing.Color.Blue;
+            lblTitre.Location = new System.Drawing.Point(750, 18);
+            lblTitre.Margin = new Padding(4, 0, 4, 0);
+            lblTitre.Name = "lblTitre";
+            lblTitre.Size = new System.Drawing.Size(115, 15);
+            lblTitre.TabIndex = 1;
+            lblTitre.Text = "Mise à jour des &titres";
+            lblTitre.Click += lblTitre_Click;
+            // 
+            // dataGridView
+            // 
+            dataGridView.AllowUserToAddRows = false;
+            dataGridView.AllowUserToDeleteRows = false;
+            dataGridView.AllowUserToResizeRows = false;
+            dataGridView.BackgroundColor = System.Drawing.Color.FromArgb(224, 224, 224);
+            dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView.Location = new System.Drawing.Point(16, 50);
+            dataGridView.Margin = new Padding(4, 3, 4, 3);
+            dataGridView.Name = "dataGridView";
+            dataGridView.RowHeadersVisible = false;
+            dataGridView.ShowCellErrors = false;
+            dataGridView.ShowEditingIcon = false;
+            dataGridView.ShowRowErrors = false;
+            dataGridView.Size = new System.Drawing.Size(854, 231);
+            dataGridView.TabIndex = 0;
+            dataGridView.CellValueChanged += dataGridView_CellValueChanged;
+            // 
+            // btnFirst
+            // 
+            btnFirst.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            btnFirst.ImageIndex = 0;
+            btnFirst.ImageList = imageList1;
+            btnFirst.Location = new System.Drawing.Point(5, 6);
+            btnFirst.Margin = new Padding(4, 3, 4, 3);
+            btnFirst.Name = "btnFirst";
+            btnFirst.Size = new System.Drawing.Size(93, 29);
+            btnFirst.TabIndex = 4;
+            btnFirst.Text = "&Début";
+            btnFirst.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            btnFirst.UseVisualStyleBackColor = true;
+            btnFirst.Click += btnFirst_Click;
+            // 
+            // imageList1
+            // 
+            imageList1.ColorDepth = ColorDepth.Depth8Bit;
+            imageList1.ImageStream = (ImageListStreamer)resources.GetObject("imageList1.ImageStream");
+            imageList1.TransparentColor = System.Drawing.Color.Silver;
+            imageList1.Images.SetKeyName(0, "top.png");
+            imageList1.Images.SetKeyName(1, "bottom.png");
+            imageList1.Images.SetKeyName(2, "previous.png");
+            imageList1.Images.SetKeyName(3, "next.png");
+            imageList1.Images.SetKeyName(4, "save.png");
+            imageList1.Images.SetKeyName(5, "quit.png");
+            // 
+            // btnPrev
+            // 
+            btnPrev.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            btnPrev.ImageIndex = 2;
+            btnPrev.ImageList = imageList1;
+            btnPrev.Location = new System.Drawing.Point(105, 6);
+            btnPrev.Margin = new Padding(4, 3, 4, 3);
+            btnPrev.Name = "btnPrev";
+            btnPrev.Size = new System.Drawing.Size(93, 29);
+            btnPrev.TabIndex = 5;
+            btnPrev.Text = "&Précédent";
+            btnPrev.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            btnPrev.UseVisualStyleBackColor = true;
+            btnPrev.Click += btnPrev_Click;
+            // 
+            // btnNext
+            // 
+            btnNext.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            btnNext.ImageIndex = 3;
+            btnNext.ImageList = imageList1;
+            btnNext.Location = new System.Drawing.Point(205, 6);
+            btnNext.Margin = new Padding(4, 3, 4, 3);
+            btnNext.Name = "btnNext";
+            btnNext.Size = new System.Drawing.Size(93, 29);
+            btnNext.TabIndex = 6;
+            btnNext.Text = "&Suivant";
+            btnNext.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            btnNext.UseVisualStyleBackColor = true;
+            btnNext.Click += btnNext_Click;
+            // 
+            // btnLast
+            // 
+            btnLast.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            btnLast.ImageIndex = 1;
+            btnLast.ImageList = imageList1;
+            btnLast.Location = new System.Drawing.Point(306, 6);
+            btnLast.Margin = new Padding(4, 3, 4, 3);
+            btnLast.Name = "btnLast";
+            btnLast.Size = new System.Drawing.Size(93, 29);
+            btnLast.TabIndex = 7;
+            btnLast.Text = "&Fin";
+            btnLast.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            btnLast.UseVisualStyleBackColor = true;
+            btnLast.Click += btnLast_Click;
+            // 
+            // btnQuit
+            // 
+            btnQuit.CausesValidation = false;
+            btnQuit.DialogResult = DialogResult.Cancel;
+            btnQuit.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            btnQuit.ImageIndex = 5;
+            btnQuit.ImageList = imageList1;
+            btnQuit.Location = new System.Drawing.Point(775, 6);
+            btnQuit.Margin = new Padding(4, 3, 4, 3);
+            btnQuit.Name = "btnQuit";
+            btnQuit.Size = new System.Drawing.Size(93, 29);
+            btnQuit.TabIndex = 9;
+            btnQuit.Text = "&Quitter";
+            btnQuit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            btnQuit.UseVisualStyleBackColor = true;
+            btnQuit.Click += btnQuit_Click;
+            // 
+            // btnSave
+            // 
+            btnSave.CausesValidation = false;
+            btnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            btnSave.ImageIndex = 4;
+            btnSave.ImageList = imageList1;
+            btnSave.Location = new System.Drawing.Point(674, 6);
+            btnSave.Margin = new Padding(4, 3, 4, 3);
+            btnSave.Name = "btnSave";
+            btnSave.Size = new System.Drawing.Size(93, 29);
+            btnSave.TabIndex = 8;
+            btnSave.Text = "Enregi&strer";
+            btnSave.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            btnSave.UseVisualStyleBackColor = true;
+            btnSave.Click += btnSave_Click;
+            // 
+            // panel1
+            // 
+            panel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel1.BorderStyle = BorderStyle.Fixed3D;
+            panel1.Controls.Add(btnModifLot);
+            panel1.Controls.Add(btnModif);
+            panel1.Controls.Add(btnQuit);
+            panel1.Controls.Add(btnSave);
+            panel1.Controls.Add(btnLast);
+            panel1.Controls.Add(btnNext);
+            panel1.Controls.Add(btnPrev);
+            panel1.Controls.Add(btnFirst);
+            panel1.Location = new System.Drawing.Point(14, 632);
+            panel1.Margin = new Padding(4, 3, 4, 3);
+            panel1.Name = "panel1";
+            panel1.Size = new System.Drawing.Size(886, 44);
+            panel1.TabIndex = 10;
+            // 
+            // btnModifLot
+            // 
+            btnModifLot.Location = new System.Drawing.Point(532, 6);
+            btnModifLot.Margin = new Padding(4, 3, 4, 3);
+            btnModifLot.Name = "btnModifLot";
+            btnModifLot.Size = new System.Drawing.Size(105, 29);
+            btnModifLot.TabIndex = 11;
+            btnModifLot.Text = "Modif. &Lot";
+            btnModifLot.UseVisualStyleBackColor = true;
+            btnModifLot.Click += btnModifLot_Click;
+            // 
+            // btnModif
+            // 
+            btnModif.Location = new System.Drawing.Point(420, 6);
+            btnModif.Margin = new Padding(4, 3, 4, 3);
+            btnModif.Name = "btnModif";
+            btnModif.Size = new System.Drawing.Size(105, 29);
+            btnModif.TabIndex = 10;
+            btnModif.Text = "Modi&f. Repart";
+            btnModif.UseVisualStyleBackColor = true;
+            btnModif.Click += btnModif_Click;
             // 
             // tbAppel
             // 
-            this.tbAppel.AcceptsReturn = true;
-            this.tbAppel.AcceptsTab = true;
-            this.tbAppel.Location = new System.Drawing.Point(475, 226);
-            this.tbAppel.Multiline = true;
-            this.tbAppel.Name = "tbAppel";
-            this.tbAppel.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tbAppel.Size = new System.Drawing.Size(283, 45);
-            this.tbAppel.TabIndex = 22;
+            tbAppel.AcceptsReturn = true;
+            tbAppel.AcceptsTab = true;
+            tbAppel.Location = new System.Drawing.Point(554, 261);
+            tbAppel.Margin = new Padding(4, 3, 4, 3);
+            tbAppel.Multiline = true;
+            tbAppel.Name = "tbAppel";
+            tbAppel.ScrollBars = ScrollBars.Both;
+            tbAppel.Size = new System.Drawing.Size(330, 51);
+            tbAppel.TabIndex = 22;
             // 
             // FicheImmeubleForm
             // 
-            this.AcceptButton = this.btnEnter;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.btnQuit;
-            this.ClientSize = new System.Drawing.Size(784, 599);
-            this.ControlBox = false;
-            this.Controls.Add(this.tbAppel);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.groupBox1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "FicheImmeubleForm";
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Fiche Immeuble";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FicheImmeubleForm_FormClosing);
-            this.Load += new System.EventHandler(this.FicheImmeubleForm_Load);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AcceptButton = btnEnter;
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            AutoSize = true;
+            CancelButton = btnQuit;
+            ClientSize = new System.Drawing.Size(915, 691);
+            ControlBox = false;
+            Controls.Add(tbAppel);
+            Controls.Add(groupBox2);
+            Controls.Add(panel1);
+            Controls.Add(label1);
+            Controls.Add(groupBox1);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            Margin = new Padding(4, 3, 4, 3);
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "FicheImmeubleForm";
+            ShowInTaskbar = false;
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Fiche Immeuble";
+            FormClosing += FicheImmeubleForm_FormClosing;
+            Load += FicheImmeubleForm_Load;
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
+            ((ISupportInitialize)dataGridView).EndInit();
+            panel1.ResumeLayout(false);
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 
