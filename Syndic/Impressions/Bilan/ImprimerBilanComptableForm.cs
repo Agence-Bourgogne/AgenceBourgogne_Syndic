@@ -134,8 +134,6 @@ public partial class ImprimerBilanComptableForm : Form
             reglements += charges;
         }
 
-// Mantis 134 mais Pa OK mantis 136 => 134 c'est relevé individuel
-//            reglements += totalCredit;
         soldeExercice = soldeBilan + reglements - depenses + avancePermanente;
 
         Console.WriteLine("Solde en Bilan : {0} {1} {2} {3}", soldeBilan, reglements, depenses, avancePermanente);
@@ -165,12 +163,6 @@ public partial class ImprimerBilanComptableForm : Form
                     " n.reference != '140' and n.reference != '145' ", true);
             BilanOperationsCoproprietairesAppelDeFond = OperationController.getController()
                 .getBilanOperationsCoproprietaires(immeuble.id, dtDebut.Value, dtFin.Value, " n.reference = '145' ");
-
-            //BaseApplication.GenerateDataSource(CompteGestionGeneral, "c:\\export_syndic\\compte_gestion.csv", Encoding.UTF8);
-            //BaseApplication.GenerateDataSource(BilanOperationsCoproprietairesSoldes, "c:\\export_syndic\\soldes.csv", Encoding.UTF8);
-            //BaseApplication.GenerateDataSource(BilanOperationsCoproprietairesPaiements, "c:\\export_syndic\\paiements.csv", Encoding.UTF8);
-            //BaseApplication.GenerateDataSource(BilanOperationsCoproprietairesAppelDeFond, "c:\\export_syndic\\appels.csv", Encoding.UTF8);
-
 
             Cumuls();
             var hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");

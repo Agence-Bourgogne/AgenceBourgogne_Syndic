@@ -17,10 +17,10 @@ namespace EspaceSyndic.Formulaires.OperationsGestion;
 
 public partial class ControlDataForm : Form
 {
-    private readonly HelpForm TotauxForm = new("ControlTotauxCloture");
+    private readonly HelpForm _totauxForm = new("ControlTotauxCloture");
 
-    private ImmeubleEntite immeuble;
-    private string TitreForm;
+    private ImmeubleEntite _immeuble;
+    private string _titreForm;
 
     public ControlDataForm()
     {
@@ -29,10 +29,10 @@ public partial class ControlDataForm : Form
 
     private void cbType_SelectedIndexChanged(object sender, EventArgs e)
     {
-        fillDataGrid();
+        FillDataGrid();
     }
 
-    private void fillDataGrid()
+    private void FillDataGrid()
     {
         if (tbRefImmeuble.Text != "")
             switch (cbType.SelectedIndex)
@@ -73,68 +73,68 @@ public partial class ControlDataForm : Form
     {
         if (tbRefImmeuble.Text != "")
         {
-            immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
-            if (immeuble != null)
-                Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
+            _immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
+            if (_immeuble != null)
+                Text = $"{_titreForm} pour l'immeuble : {_immeuble.nom} ({_immeuble.DateExercice})";
             FillComboExercice();
         }
         else
         {
-            Text = TitreForm;
+            Text = _titreForm;
         }
     }
 
     private void FillComboExercice()
     {
-        if (immeuble == null)
+        if (_immeuble == null)
             return;
-        var exercices = ExerciceComptableController.GetController().GetListExerciceFromImmeuble(immeuble.id);
+        var exercices = ExerciceComptableController.GetController().GetListExerciceFromImmeuble(_immeuble.id);
         cbExercice.DataSource = exercices;
 
         cbExercice.DisplayMember = "reference";
         cbExercice.ValueMember = "e.id";
-        if (immeuble != null)
+        if (_immeuble != null)
         {
-            var exercice = ExerciceComptableController.GetController().GetExerciceCourant(immeuble.id);
+            var exercice = ExerciceComptableController.GetController().GetExerciceCourant(_immeuble.id);
             cbExercice.SelectedValue = exercice.id;
         }
     }
 
-    private string getExerciceSelected()
+    private string GetExerciceSelected()
     {
-        var exercice_id = "";
+        var exerciceId = "";
 
         if (cbExercice.SelectedIndex >= 0)
         {
             var row = (DataRowView)cbExercice.SelectedItem;
             Console.Write(cbExercice.SelectedItem);
-            exercice_id = row["id"].ToString();
+            exerciceId = row["id"].ToString();
         }
 
-        return exercice_id;
+        return exerciceId;
     }
 
     private void ControlOperationsAppelDeFond()
     {
         Cursor.Current = Cursors.WaitCursor;
-        var immeuble_id = "";
+        var immeubleId = "";
         if (tbRefImmeuble.Text != "")
         {
-            immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
-            if (immeuble != null)
-                immeuble_id = immeuble.id;
+            _immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
+            if (_immeuble != null)
+                immeubleId = _immeuble.id;
         }
         else
         {
             return;
         }
 
-        var exercice = ExerciceComptableController.GetController().getEntiteById(getExerciceSelected());
+        var exercice = ExerciceComptableController.GetController().getEntiteById(GetExerciceSelected());
         var datDeb = exercice.date_deb;
         var datFin = exercice.date_fin;
 
-        var table = OperationController.getController().getAllAppelDeFondOperations(immeuble_id, datDeb, datFin);
-        headerOperation();
+        var table = OperationController.getController().getAllAppelDeFondOperations(immeubleId, datDeb, datFin);
+        HeaderOperation();
         dataGridView.Rows.Clear();
 
         foreach (DataRow row in table.Rows)
@@ -144,10 +144,10 @@ public partial class ControlDataForm : Form
             if (appels != null)
                 if (appels.Rows.Count == 0 || appels.Rows.Count > 1)
                 {
-                    var ref_copro = "";
+                    var refCopro = "";
                     if (entite.Coproprietaire != null)
-                        ref_copro = entite.Coproprietaire.reference;
-                    dataGridView.Rows.Add(entite.id, entite.date_reference.ToShortDateString(), ref_copro,
+                        refCopro = entite.Coproprietaire.reference;
+                    dataGridView.Rows.Add(entite.id, entite.date_reference.ToShortDateString(), refCopro,
                         entite.Nature.reference, entite.base_repart, entite.libelle, entite.debit.ToString(),
                         entite.credit.ToString(), entite.global.ToString(), appels.Rows.Count.ToString());
                 }
@@ -160,37 +160,37 @@ public partial class ControlDataForm : Form
     private void ControlOperationsFactures()
     {
         Cursor.Current = Cursors.WaitCursor;
-        var immeuble_id = "";
+        var immeubleId = "";
         if (tbRefImmeuble.Text != "")
         {
-            immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
-            if (immeuble != null)
-                immeuble_id = immeuble.id;
+            _immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
+            if (_immeuble != null)
+                immeubleId = _immeuble.id;
         }
         else
         {
             return;
         }
 
-        var exercice = ExerciceComptableController.GetController().getEntiteById(getExerciceSelected());
+        var exercice = ExerciceComptableController.GetController().getEntiteById(GetExerciceSelected());
         var datDeb = exercice.date_deb;
         var datFin = exercice.date_fin;
 
-        var table = OperationController.getController().getAllFactureOperations(immeuble_id, datDeb, datFin);
-        headerOperation();
+        var table = OperationController.getController().getAllFactureOperations(immeubleId, datDeb, datFin);
+        HeaderOperation();
         dataGridView.Rows.Clear();
 
         foreach (DataRow row in table.Rows)
         {
             var entite = new OperationEntite(row);
             var factures = SaisieFactureController.getController().getSaisieFacture(entite);
-            var ref_copro = "";
+            var refCopro = "";
             if (entite.Coproprietaire != null)
-                ref_copro = entite.Coproprietaire.reference;
+                refCopro = entite.Coproprietaire.reference;
             //Console.WriteLine("{0} {1} {2} {3} {4} {5}", row["date_operation"], ref_copro, row["libelle"], row["debit"], row["credit"], factures.Rows.Count);
             if (factures != null)
                 if (factures.Rows.Count == 0 || factures.Rows.Count > 1)
-                    dataGridView.Rows.Add(entite.id, entite.date_reference.ToShortDateString(), ref_copro,
+                    dataGridView.Rows.Add(entite.id, entite.date_reference.ToShortDateString(), refCopro,
                         entite.Nature.reference, entite.base_repart, entite.libelle, entite.debit.ToString(),
                         entite.credit.ToString(), entite.global.ToString(), factures.Rows.Count.ToString());
             //else
@@ -202,7 +202,7 @@ public partial class ControlDataForm : Form
         Cursor.Current = Cursors.Default;
     }
 
-    private void headerOperation()
+    private void HeaderOperation()
     {
         var cols = dataGridView.Columns;
         cols.Clear();
@@ -223,24 +223,24 @@ public partial class ControlDataForm : Form
     private void ControlOperationsReglements()
     {
         Cursor.Current = Cursors.WaitCursor;
-        var immeuble_id = "";
+        var immeubleId = "";
         if (tbRefImmeuble.Text != "")
         {
-            immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
-            if (immeuble != null)
-                immeuble_id = immeuble.id;
+            _immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
+            if (_immeuble != null)
+                immeubleId = _immeuble.id;
         }
         else
         {
             return;
         }
 
-        var exercice = ExerciceComptableController.GetController().getEntiteById(getExerciceSelected());
+        var exercice = ExerciceComptableController.GetController().getEntiteById(GetExerciceSelected());
         var datDeb = exercice.date_deb;
         var datFin = exercice.date_fin;
 
-        var table = OperationController.getController().getAllReglementsOperations(immeuble_id, datDeb, datFin);
-        headerOperation();
+        var table = OperationController.getController().getAllReglementsOperations(immeubleId, datDeb, datFin);
+        HeaderOperation();
         dataGridView.Rows.Clear();
         foreach (DataRow row in table.Rows)
         {
@@ -250,10 +250,10 @@ public partial class ControlDataForm : Form
             if (reglements != null)
                 if (reglements.Rows.Count == 0 || reglements.Rows.Count > 1)
                 {
-                    var ref_copro = "";
+                    var refCopro = "";
                     if (entite.Coproprietaire != null)
-                        ref_copro = entite.Coproprietaire.reference;
-                    dataGridView.Rows.Add(entite.id, entite.date_reference.ToShortDateString(), ref_copro,
+                        refCopro = entite.Coproprietaire.reference;
+                    dataGridView.Rows.Add(entite.id, entite.date_reference.ToShortDateString(), refCopro,
                         entite.Nature.reference, entite.base_repart, entite.libelle, entite.debit.ToString(),
                         entite.credit.ToString(), entite.global.ToString(), reglements.Rows.Count.ToString());
                 }
@@ -266,23 +266,23 @@ public partial class ControlDataForm : Form
     private void ControlReglements()
     {
         Cursor.Current = Cursors.WaitCursor;
-        var immeuble_id = "";
+        var immeubleId = "";
         if (tbRefImmeuble.Text != "")
         {
-            immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
-            if (immeuble != null)
-                immeuble_id = immeuble.id;
+            _immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
+            if (_immeuble != null)
+                immeubleId = _immeuble.id;
         }
         else
         {
             return;
         }
 
-        var exercice = ExerciceComptableController.GetController().getEntiteById(getExerciceSelected());
+        var exercice = ExerciceComptableController.GetController().getEntiteById(GetExerciceSelected());
         var datDeb = exercice.date_deb;
         var datFin = exercice.date_fin;
 
-        var table = SaisieReglementController.getController().GetAllElements(immeuble_id, datDeb, datFin);
+        var table = SaisieReglementController.getController().GetAllElements(immeubleId, datDeb, datFin);
 
         dataGridView.Rows.Clear();
         var cols = dataGridView.Columns;
@@ -322,19 +322,19 @@ public partial class ControlDataForm : Form
     private void ControlFactures()
     {
         Cursor.Current = Cursors.WaitCursor;
-        var immeuble_id = "";
+        var immeubleId = "";
         if (tbRefImmeuble.Text != "")
         {
-            immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
-            if (immeuble != null)
-                immeuble_id = immeuble.id;
+            _immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
+            if (_immeuble != null)
+                immeubleId = _immeuble.id;
         }
 
-        var exercice = ExerciceComptableController.GetController().getEntiteById(getExerciceSelected());
+        var exercice = ExerciceComptableController.GetController().getEntiteById(GetExerciceSelected());
         var datDeb = exercice.date_deb;
         var datFin = exercice.date_fin;
 
-        var table = SaisieFactureController.getController().GetAllElements(immeuble_id, datDeb, datFin);
+        var table = SaisieFactureController.getController().GetAllElements(immeubleId, datDeb, datFin);
         dataGridView.Rows.Clear();
         var cols = dataGridView.Columns;
         cols.Clear();
@@ -375,19 +375,19 @@ public partial class ControlDataForm : Form
     private void ControlAppelDeFond()
     {
         Cursor.Current = Cursors.WaitCursor;
-        var immeuble_id = "";
+        var immeubleId = "";
         if (tbRefImmeuble.Text != "")
         {
-            immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
-            if (immeuble != null)
-                immeuble_id = immeuble.id;
+            _immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
+            if (_immeuble != null)
+                immeubleId = _immeuble.id;
         }
 
-        var exercice = ExerciceComptableController.GetController().getEntiteById(getExerciceSelected());
+        var exercice = ExerciceComptableController.GetController().getEntiteById(GetExerciceSelected());
         var datDeb = exercice.date_deb;
         var datFin = exercice.date_fin;
 
-        var table = SaisieAppelFondController.getController().GetAllElements(immeuble_id, datDeb, datFin);
+        var table = SaisieAppelFondController.getController().GetAllElements(immeubleId, datDeb, datFin);
         dataGridView.Rows.Clear();
         var cols = dataGridView.Columns;
         cols.Clear();
@@ -445,11 +445,11 @@ public partial class ControlDataForm : Form
                 var datDeb = exercice.date_deb;
                 var datFin = exercice.date_fin;
 
-                var total_facture = SaisieFactureController.getController()
+                var totalFacture = SaisieFactureController.getController()
                     .getTotalOperationWithoutSolde(immeuble.id, datDeb, datFin);
-                var total_reglements = SaisieReglementController.getController()
+                var totalReglements = SaisieReglementController.getController()
                     .getSumReglements(immeuble.id, datDeb, datFin);
-                var total_appels = SaisieAppelFondController.getController()
+                var totalAppels = SaisieAppelFondController.getController()
                     .getTotalOperationWithoutSolde(immeuble.id, datDeb, datFin);
 
                 var soldeReprise = SaisieFactureController.getController()
@@ -464,7 +464,7 @@ public partial class ControlDataForm : Form
 
                 file.Write($"*** {immeuble.reference};{datDeb.ToShortDateString()};{datFin.ToShortDateString()};");
                 var results =
-                    $"{total_facture};{depenseOperation};;{total_reglements};{reglementOperation};;{total_appels};{Math.Abs(appelOperation)};;{Math.Abs(soldeReprise)};{valueSoldeImm}";
+                    $"{totalFacture};{depenseOperation};;{totalReglements};{reglementOperation};;{totalAppels};{Math.Abs(appelOperation)};;{Math.Abs(soldeReprise)};{valueSoldeImm}";
                 file.WriteLine(results);
             }
         }
@@ -475,33 +475,33 @@ public partial class ControlDataForm : Form
 
     private void ShowPostit()
     {
-        if (immeuble != null)
+        if (_immeuble != null)
         {
             //ExerciceComptableEntite exercice = immeuble.ExerciceCourant;
-            var exercice = ExerciceComptableController.GetController().getEntiteById(getExerciceSelected());
+            var exercice = ExerciceComptableController.GetController().getEntiteById(GetExerciceSelected());
             var datDeb = exercice.date_deb;
             var datFin = exercice.date_fin;
 
-            var total_facture = SaisieFactureController.getController()
-                .getTotalOperationWithoutSolde(immeuble.id, datDeb, datFin);
-            var total_reglements =
-                SaisieReglementController.getController().getSumReglements(immeuble.id, datDeb, datFin);
-            var total_appels = SaisieAppelFondController.getController()
-                .getTotalOperationWithoutSolde(immeuble.id, datDeb, datFin);
+            var totalFacture = SaisieFactureController.getController()
+                .getTotalOperationWithoutSolde(_immeuble.id, datDeb, datFin);
+            var totalReglements =
+                SaisieReglementController.getController().getSumReglements(_immeuble.id, datDeb, datFin);
+            var totalAppels = SaisieAppelFondController.getController()
+                .getTotalOperationWithoutSolde(_immeuble.id, datDeb, datFin);
 
             var soldeReprise = SaisieFactureController.getController()
-                .getSoldeAnterieurImmeuble(immeuble.id, datDeb, datFin);
+                .getSoldeAnterieurImmeuble(_immeuble.id, datDeb, datFin);
             var valueSoldeImm = OperationController.getController()
-                .getSoldeImmeuble(immeuble == null ? "" : immeuble.id, datDeb, datFin);
-            var depenseOperation = OperationController.getController().getOperationDepense(immeuble.id, datDeb, datFin);
+                .getSoldeImmeuble(_immeuble == null ? "" : _immeuble.id, datDeb, datFin);
+            var depenseOperation = OperationController.getController().getOperationDepense(_immeuble.id, datDeb, datFin);
             var reglementOperation = SaisieReglementController.getController()
-                .getTotalOperationWithoutSolde(immeuble.id, datDeb, datFin);
-            var appelOperation = OperationController.getController().getOperationAppel(immeuble.id, datDeb, datFin);
+                .getTotalOperationWithoutSolde(_immeuble.id, datDeb, datFin);
+            var appelOperation = OperationController.getController().getOperationAppel(_immeuble.id, datDeb, datFin);
 
 
-            var strTotaux = $"Factures: \t\t {total_facture}\r\n";
-            strTotaux += $"Règlements: \t\t {total_reglements}\r\n";
-            strTotaux += $"Appel de fonds: \t\t {total_appels}\r\n";
+            var strTotaux = $"Factures: \t\t {totalFacture}\r\n";
+            strTotaux += $"Règlements: \t\t {totalReglements}\r\n";
+            strTotaux += $"Appel de fonds: \t\t {totalAppels}\r\n";
 
             strTotaux += "\r\n";
             strTotaux += $"Operations Depenses: \t {depenseOperation}\r\n";
@@ -512,9 +512,9 @@ public partial class ControlDataForm : Form
             strTotaux += $"Solde Antérieur: \t {soldeReprise}\r\n";
             strTotaux += $"Solde Exercice: \t\t {valueSoldeImm}\r\n";
 
-            TotauxForm.DoFormText(this, strTotaux);
-            TotauxForm.Text = "Totaux";
-            TotauxForm.ShowForm(this);
+            _totauxForm.DoFormText(this, strTotaux);
+            _totauxForm.Text = "Totaux";
+            _totauxForm.ShowForm(this);
             Activate();
         }
     }
@@ -562,7 +562,7 @@ public partial class ControlDataForm : Form
     private void ControlDataForm_Load(object sender, EventArgs e)
     {
         btnEnter.Width = 0;
-        TitreForm = Text;
+        _titreForm = Text;
     }
 
     private void btnExport_Click(object sender, EventArgs e)
@@ -573,14 +573,14 @@ public partial class ControlDataForm : Form
 
     private void btnGrid_Click(object sender, EventArgs e)
     {
-        fillDataGrid();
+        FillDataGrid();
     }
 
     private void label2_Click(object sender, EventArgs e)
     {
-        if (immeuble == null)
+        if (_immeuble == null)
             return;
-        var form = new ReferenceExerciceForm(immeuble);
+        var form = new ReferenceExerciceForm(_immeuble);
         form.ShowDialog();
         tbRefImmeuble_Validating(null, null);
     }
@@ -593,7 +593,7 @@ public partial class ControlDataForm : Form
             foreach (DataGridViewRow row in dataGridView.SelectedRows)
                 OperationController.getController().DeleteEntite(row.Cells["id"].Value.ToString());
             trx.Commit();
-            fillDataGrid();
+            FillDataGrid();
         }
         catch (Exception ex)
         {
@@ -619,16 +619,18 @@ public partial class ControlDataForm : Form
     private void button1_Click(object sender, EventArgs e)
     {
         Cursor.Current = Cursors.WaitCursor;
+
         try
         {
-            var filename = Path.GetTempFileName().Replace(".tmp", ".csv");
+            var filename = Path.ChangeExtension(Path.GetTempFileName(), ".csv");
 
-            Console.WriteLine(filename);
             AllImmeuble(filename);
-            var proc = new Process();
 
-            proc.StartInfo.FileName = filename;
-            proc.Start();
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = filename,
+                UseShellExecute = true
+            });
         }
         catch (Exception ex)
         {
