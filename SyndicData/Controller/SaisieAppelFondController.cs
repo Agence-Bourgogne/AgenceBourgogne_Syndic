@@ -245,10 +245,6 @@ public class SaisieAppelFondController : AbstractBaseController<SaisieAppelFondE
         {
             var opeCtl = OperationController.getController();
             var repartCtl = RepartIndividuelleController.getController();
-            TimestampServer = Database.GetTimestampServer();
-
-            repartCtl.setTimestampServer(TimestampServer);
-            opeCtl.setTimestampServer(TimestampServer);
 
             var tbOpe = opeCtl.getOperationFromSaisie(saisie.id);
             var tbRepart = repartCtl.getRepartFromSaisie(saisie.id);
@@ -286,10 +282,6 @@ public class SaisieAppelFondController : AbstractBaseController<SaisieAppelFondE
             {
                 var opeCtl = OperationController.getController();
                 var repartCtl = RepartIndividuelleController.getController();
-                TimestampServer = Database.GetTimestampServer();
-
-                repartCtl.setTimestampServer(TimestampServer);
-                opeCtl.setTimestampServer(TimestampServer);
 
                 var tbOpe = opeCtl.getOperationFromSaisie(saisie.id);
                 var tbRepart = repartCtl.getRepartFromSaisie(saisie.id);

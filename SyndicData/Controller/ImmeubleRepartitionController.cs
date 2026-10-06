@@ -79,7 +79,7 @@ public class ImmeubleRepartitionController : AbstractBaseController<ImmeubleRepa
     {
         bool rc;
         specific_schema = immeuble_entite.reference;
-        TimestampServer = Database.GetTimestampServer();
+
         var cnx = Database.GetInstance();
         var trx = cnx.BeginTransaction();
 

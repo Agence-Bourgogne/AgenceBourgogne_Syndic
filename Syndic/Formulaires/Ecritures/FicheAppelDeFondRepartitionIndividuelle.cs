@@ -181,12 +181,8 @@ public partial class FicheAppelDeFondRepartitionIndividuelle : Form
 
         try
         {
-            var dt = DateTime.Now;
             var operationCtl = OperationController.getController();
             var repartCtl = RepartIndividuelleController.getController();
-
-            repartCtl.setTimestampServer(dt);
-            operationCtl.setTimestampServer(dt);
 
             if (!SaisieAppelFondController.getController().doInsertOrUpdate(saisie))
                 throw new Exception("Saisie Appel");

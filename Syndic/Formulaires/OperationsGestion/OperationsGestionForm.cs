@@ -543,7 +543,7 @@ public partial class OperationsGestionForm : Form, ICommonChangedListener
         if (dataGridView.SelectedRows.Count > 0)
         {
             var trx = Database.BeginTransaction();
-            OperationController.getController().setTimestampServer();
+
             try
             {
                 foreach (DataGridViewRow rowGrid in dataGridView.SelectedRows)

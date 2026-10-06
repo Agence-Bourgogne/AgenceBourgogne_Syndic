@@ -279,10 +279,7 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
         var trx = cnx.BeginTransaction();
         try
         {
-            TimestampServer = Database.GetTimestampServer();
-
             var ctl = OperationController.getController();
-            ctl.setTimestampServer(TimestampServer);
             if (table != null)
                 foreach (DataRow row in table.Rows)
                 {

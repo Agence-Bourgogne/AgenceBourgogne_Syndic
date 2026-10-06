@@ -14,6 +14,8 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
 {
     private static readonly LotDescriptionController controller = new();
 
+    private static readonly TimeProvider _timeProvider = TimeProvider.System;
+
     public override string getTable()
     {
         return "lot_description";
@@ -22,7 +24,6 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
     public static LotDescriptionController getController()
     {
         return controller;
-        //            return new LotDescriptionController();
     }
 
     public DataTable getDataGridListeLotDescription(ImmeubleEntite immeuble, bool bAddMontant = true,
@@ -69,8 +70,6 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
 
     public DataTable createLotRepartition(ImmeubleEntite immeuble, int nblot)
     {
-        TimestampServer = Database.GetTimestampServer();
-
         var cmd =
             $"select coalesce(max(numero_lot),0) as valeur from {getSchemaTable()} where immeuble_id = @immeuble_id";
         var numero_lot = 0;
@@ -83,7 +82,7 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
         var cnx = Database.GetInstance();
         var trx = cnx.BeginTransaction();
         var ctl = LotRepartitionController.getController();
-        ctl.setTimestampServer(TimestampServer);
+
         try
         {
             for (var i = 0; i < nblot; i++)
@@ -93,7 +92,7 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
                     numero_lot = ++numero_lot,
                     immeuble_id = immeuble.id,
                     coproprietaire_id = "",
-                    date_changement = TimestampServer,
+                    date_changement = _timeProvider.GetLocalNow().DateTime,
                     numero_batiment = "",
                     numero_escalier = "",
                     numero_etage = "",

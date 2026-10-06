@@ -16,7 +16,8 @@ public abstract class AbstractBaseController<TENTITE> where TENTITE : AbstractBa
 
     protected readonly NpgsqlDataAdapter adapter = new();
     protected string DefaultOrder = "reference";
-    protected DateTime TimestampServer;
+    private readonly TimeProvider _timeProvider = TimeProvider.System;
+
     public abstract string getTable();
 
     public virtual string getSchema()
@@ -36,16 +37,6 @@ public abstract class AbstractBaseController<TENTITE> where TENTITE : AbstractBa
             cnx = Database.GetInstance();
         adapter.SelectCommand = new NpgsqlCommand(
             $"select * from {getSchemaTable()} where statut = 1 order by {order}", cnx);
-    }
-
-    public void setTimestampServer(DateTime time)
-    {
-        TimestampServer = time;
-    }
-
-    public void setTimestampServer()
-    {
-        TimestampServer = Database.GetTimestampServer();
     }
 
     public DataTable GetTableList()
@@ -163,7 +154,6 @@ public abstract class AbstractBaseController<TENTITE> where TENTITE : AbstractBa
 
             try
             {
-                TimestampServer = Database.GetTimestampServer();
                 foreach (DataRow row in changes.Rows)
                 {
                     var entite = new TENTITE();
@@ -266,7 +256,6 @@ public abstract class AbstractBaseController<TENTITE> where TENTITE : AbstractBa
 
     public bool InsertOrUpdate(TENTITE entite)
     {
-        TimestampServer = Database.GetTimestampServer();
         return doInsertOrUpdate(entite);
     }
 
@@ -296,7 +285,7 @@ public abstract class AbstractBaseController<TENTITE> where TENTITE : AbstractBa
             operation = AuditDB.Operation.Insert;
         }
 
-        entite.audit_created = entite.audit_updated = TimestampServer;
+        entite.audit_created = entite.audit_updated = _timeProvider.GetLocalNow().DateTime;
         entite.audit_updated_by = entite.audit_created_by = BaseApplication.AuditString;
 
         var changes = entite.GetChanges();
@@ -310,7 +299,7 @@ public abstract class AbstractBaseController<TENTITE> where TENTITE : AbstractBa
         try
         {
             sqlCmd.ExecuteNonQuery();
-            AuditDB.Log(operation, entite, getSchema(), TimestampServer, BaseApplication.AuditString);
+            AuditDB.Log(operation, entite, getSchema(), _timeProvider.GetLocalNow().DateTime, BaseApplication.AuditString);
             entite.isNew = false;
             rc = true;
         }
@@ -357,7 +346,7 @@ public abstract class AbstractBaseController<TENTITE> where TENTITE : AbstractBa
         {
             sqlCmd.Parameters.AddWithValue("@id", entite.id);
             var nb = sqlCmd.ExecuteNonQuery();
-            AuditDB.Log(AuditDB.Operation.Delete, entite, getSchema(), TimestampServer, BaseApplication.AuditString);
+            AuditDB.Log(AuditDB.Operation.Delete, entite, getSchema(), _timeProvider.GetLocalNow().DateTime, BaseApplication.AuditString);
             rc = nb > 0;
         }
         catch (Exception e)

@@ -182,9 +182,7 @@ public class BudgetController : AbstractBaseController<BudgetEntite>
 
         try
         {
-            TimestampServer = Database.GetTimestampServer();
             var ctlLines = BudgetLigneController.getController();
-            ctlLines.setTimestampServer(TimestampServer);
             var budget_lines = ctlLines.getLinesBudget(budget_id);
             var budget = getEntiteById(budget_id);
             var updateLineOk = true;
