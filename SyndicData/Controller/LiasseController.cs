@@ -20,7 +20,6 @@ public class LiasseController : AbstractBaseController<LiasseEntite>
 
     public static LiasseController getController()
     {
-        //return new LiasseController();
         return controller;
     }
 
@@ -28,8 +27,6 @@ public class LiasseController : AbstractBaseController<LiasseEntite>
     {
         var cmd = $"select * from {getSchemaTable()} ";
         cmd += " where type_ecriture = @type_ecriture and statut = @statut";
-        //getSchemaTable());
-        //, (int)type, (int)GlobalConstantes.StatutOperation.Actif);
         adapter.SelectCommand = new NpgsqlCommand(cmd, Database.GetInstance());
 
         adapter.SelectCommand.Parameters.AddWithValue("@type_ecriture", type_ecriture.ToString());
@@ -74,8 +71,7 @@ public class LiasseController : AbstractBaseController<LiasseEntite>
         cmd += " order by audit_created desc ";
         if (limit != "")
             cmd += limit;
-        //getSchemaTable());
-        //, (int)type, (int)GlobalConstantes.StatutOperation.Actif);
+
         adapter.SelectCommand = new NpgsqlCommand(cmd, Database.GetInstance());
 
         adapter.SelectCommand.Parameters.AddWithValue("@type_ecriture", type_ecriture.ToString());

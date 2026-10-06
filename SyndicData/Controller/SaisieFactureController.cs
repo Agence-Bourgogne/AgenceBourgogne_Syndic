@@ -28,7 +28,6 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
     {
         var cmd = $"select f.*, i.reference as ref_imm from {getSchemaTable()} f ";
         cmd += " join agence.immeuble i on i.id = immeuble_id ";
-//            cmd += " where f.statut != @statut ";
         cmd += " where f.statut = 1 ";
         if (Database.NullDate != dtDeb)
             cmd += " and date_reference >= @dtDeb and date_reference <= @dtFin";
@@ -53,26 +52,6 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
         return getResultSQL(cmd, parameters);
     }
 
-    /*
-    public DataTable GetAllControlElements(string immeuble_id = "")
-    {
-        string cmd = String.Format("select f.*, i.reference as ref_imm, c.reference as ref_copro, n.reference as ref_nature from {0} f ", getSchemaTable());
-        cmd += " join agence.immeuble i on i.id = immeuble_id ";
-        cmd += " join agence.coproprietaire c on c.id = coproprietaire_id ";
-        cmd += " join agence.nature n on n.id = nature_id ";
-        cmd += " where f.statut = 1 ";
-        if (immeuble_id != "")
-            cmd += " and immeuble_id = @immeuble_id";
-        cmd += " order by i.reference";
-        List<NpgsqlParameter> parameters = new List<NpgsqlParameter>
-        {
-            new NpgsqlParameter("@immeuble_id", immeuble_id),
-            new NpgsqlParameter("@statut",(int) GlobalConstantes.StatutOperation.Valide),
-        };
-
-        return getResultSQL(cmd, parameters);
-    }
-     * */
     public DataTable getListeFactures(string liasse_id)
     {
         var schema = getSchema();
@@ -167,7 +146,7 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
         cmd += " order by e.date_reference ";
         adapter.SelectCommand = new NpgsqlCommand(cmd, Database.GetInstance());
         adapter.SelectCommand.Parameters.AddWithValue("@statut", (int)GlobalConstantes.StatutOperation.Cloture);
-        adapter.SelectCommand.Parameters.AddWithValue("@reglement", codereg);
+        adapter.SelectCommand.Parameters.AddWithValue("@reglement", Convert.ToInt32(codereg));
         adapter.SelectCommand.Parameters.AddWithValue("@nom_four", nom_four);
         var table = new DataTable();
         try
