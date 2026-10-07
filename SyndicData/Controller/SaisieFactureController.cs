@@ -148,10 +148,19 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
         adapter.SelectCommand.Parameters.AddWithValue("@statut", (int)GlobalConstantes.StatutOperation.Cloture);
         adapter.SelectCommand.Parameters.AddWithValue("@reglement", Convert.ToInt32(codereg));
         adapter.SelectCommand.Parameters.AddWithValue("@nom_four", nom_four);
+
         var table = new DataTable();
         try
         {
             adapter.Fill(table);
+
+            table.Columns.Add("date_reference_legacy", typeof(DateTime));
+
+            foreach (DataRow row in table.Rows)
+            {
+                var dateReference = (DateOnly)row["date_reference"];
+                row["date_reference_legacy"] = dateReference.ToDateTime(TimeOnly.MinValue);
+            }
         }
         catch (Exception e)
         {
