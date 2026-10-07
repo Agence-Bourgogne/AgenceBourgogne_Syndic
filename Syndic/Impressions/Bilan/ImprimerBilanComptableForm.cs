@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Windows.Forms;
 using CommonProjectsPartners.Utils;
 using EspaceSyndic.Formulaires.Exercice;
@@ -168,21 +169,24 @@ public partial class ImprimerBilanComptableForm : Form
             var hdr_descr = ParametresDB.getParam1("IMPRESSION", "HEADER_DESCRIPTION");
             var hdr_agence = ParametresDB.getParam1("IMPRESSION", "HEADER_AGENCE");
 
+            // Obligatoire car le rapport s'attend à des virgules sur les décimaux.
+            var reportCulture = CultureInfo.GetCultureInfo("fr_FR");
+
             var reportParams = new ReportParameter[]
             {
                 new("DateEdition", dtEdition.Value.ToShortDateString()),
                 new("DateDebut", dtDebut.Value.ToShortDateString()),
                 new("DateFin", dtFin.Value.ToShortDateString()),
-                new("chargesNormales", chargesNormales.ToString()),
-                new("chargesTravaux", chargesTravaux.ToString()),
-                new("chargesPrivatives", chargesPrivatives.ToString()),
-                new("soldeBilan", soldeBilan.ToString()),
-                new("reglements", reglements.ToString()),
-                new("depenses", depenses.ToString()),
-                new("avancePermanente", avancePermanente.ToString()),
-                new("soldeExercice", soldeExercice.ToString()),
-                new("totalDebit", totalDebit.ToString()),
-                new("totalCredit", totalCredit.ToString()),
+                new("chargesNormales", chargesNormales.ToString(reportCulture)),
+                new("chargesTravaux", chargesTravaux.ToString(reportCulture)),
+                new("chargesPrivatives", chargesPrivatives.ToString(reportCulture)),
+                new("soldeBilan", soldeBilan.ToString(reportCulture)),
+                new("reglements", reglements.ToString(reportCulture)),
+                new("depenses", depenses.ToString(reportCulture)),
+                new("avancePermanente", avancePermanente.ToString(reportCulture)),
+                new("soldeExercice", soldeExercice.ToString(reportCulture)),
+                new("totalDebit", totalDebit.ToString(reportCulture)),
+                new("totalCredit", totalCredit.ToString(reportCulture)),
                 new("Header_Description", hdr_descr),
                 new("Header_Agence", hdr_agence)
             };
