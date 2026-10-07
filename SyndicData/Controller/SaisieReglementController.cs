@@ -137,6 +137,14 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
         try
         {
             adapter.Fill(table);
+
+            table.Columns.Add("date_reference_legacy", typeof(DateTime));
+
+            foreach (DataRow row in table.Rows)
+            {
+                var dateReference = (DateOnly)row["date_reference"];
+                row["date_reference_legacy"] = dateReference.ToDateTime(TimeOnly.MinValue);
+            }
         }
         catch (NpgsqlException e)
         {

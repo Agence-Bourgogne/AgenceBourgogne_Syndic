@@ -176,8 +176,8 @@
           <DataField>libelle</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="date_reference">
-          <DataField>date_reference</DataField>
+        <Field Name="date_reference_legacy">
+          <DataField>date_reference_legacy</DataField>
           <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
         <Field Name="montant">
