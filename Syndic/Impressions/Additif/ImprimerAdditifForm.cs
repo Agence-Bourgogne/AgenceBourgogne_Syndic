@@ -5,6 +5,7 @@ using CommonProjectsPartners.Common;
 using CommonProjectsPartners.Utils;
 using EspaceSyndic.Formulaires.Common;
 using EspaceSyndic.Formulaires.Immeubles;
+using EspaceSyndic.Properties;
 using Microsoft.Reporting.WinForms;
 using Npgsql;
 using SyndicData.Common;
@@ -161,7 +162,7 @@ public partial class ImprimerAdditifForm : Form
         var table = CoproprietaireController.getController()
             .CoproprietaireImmeubleDescriptionWord(immeuble.id, parameters);
 
-        var modele = ParametresDB.getParam1("MODELES", "ADDITIF");
+        var modele = ParametresDB.getModeleOrCopyDefaultOne("ADDITIF", Resources.additif);
         BaseApplication.PublipostageLettreWord(table, modele);
     }
 

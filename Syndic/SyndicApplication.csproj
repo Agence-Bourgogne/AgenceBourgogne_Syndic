@@ -52,6 +52,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\additif.dotx" />
+	  <None Remove="Resources\convocation.dotx" />
+	  <None Remove="Resources\etiquettes.dotx" />
+	  <None Remove="Resources\relance1.dotx" />
+	  <None Remove="Resources\relance3.dotx" />
+	  <None Remove="Resources\relance4.dotx" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <EmbeddedResource Include="Impressions\Budget\TableauComptableAnnexe3.rdlc" />
 	  <EmbeddedResource Include="Impressions\Additif\ImprimerAdditifReport.rdlc" />
 	  <EmbeddedResource Include="Impressions\AppelDeFond\AppelDeFondDetailReport.rdlc" />
@@ -102,6 +111,30 @@
 		<ProjectReference Include="..\CommonProjectsPartners\CommonProjectsPartners.csproj" />
 		<ProjectReference Include="..\GenerateurGrandLivre\GenerateurGrandLivre.csproj" />
 		<ProjectReference Include="..\SyndicData\SyndicData.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="Resources\additif.dotx" />
+	  <Resource Include="Resources\convocation.dotx" />
+	  <Resource Include="Resources\etiquettes.dotx" />
+	  <Resource Include="Resources\relance1.dotx" />
+	  <Resource Include="Resources\relance3.dotx" />
+	  <Resource Include="Resources\relance4.dotx" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Properties\Resources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Resources.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Properties\Resources.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 </Project>

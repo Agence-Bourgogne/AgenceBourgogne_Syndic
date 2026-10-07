@@ -9,6 +9,7 @@ using CommonProjectsPartners.Utils;
 using EspaceSyndic.Formulaires;
 using EspaceSyndic.Formulaires.Immeubles;
 using EspaceSyndic.Impressions.RelevesComptes;
+using EspaceSyndic.Properties;
 using Microsoft.Reporting.WinForms;
 using SyndicData.Common;
 using SyndicData.Controller;
@@ -184,14 +185,7 @@ public partial class RetardsPaiementsForm : Form
                 if (dgv["type_relance", e.RowIndex].Value.ToString() != "")
                 {
                     var type_retard = (int)dgv["type_relance", e.RowIndex].Value;
-                    //if (type_retard == 1)
-                    //    dgv.Rows[e.RowIndex].DefaultCellStyle.BackColor = lblRel1.BackColor;
-                    //if (type_retard == 2)
-                    //    dgv.Rows[e.RowIndex].DefaultCellStyle.BackColor = lblRel2.BackColor;
-                    //if (type_retard == 3)
-                    //    dgv.Rows[e.RowIndex].DefaultCellStyle.BackColor = lblRel3.BackColor;
                     setLineColor(type_retard, e.RowIndex);
-                    //e.FormattingApplied = true;
                 }
         }
         catch (Exception)
@@ -217,16 +211,9 @@ public partial class RetardsPaiementsForm : Form
         BaseApplication.DataGridToExcel(dataGridView, colsToHide, "relance");
     }
 
-    //private void ckAll_CheckedChanged(object sender, EventArgs e)
-    //{
-    //    foreach (DataGridViewRow row in dataGridView.Rows)
-    //    {
-    //        row.Cells["relance"].Value = ckAll.Checked;
-    //    }
-    //}
     private void btnRelance_Click(object sender, EventArgs e)
     {
-        var modele = ParametresDB.getParam1("MODELES", "RELANCE1");
+        var modele = ParametresDB.getModeleOrCopyDefaultOne("RELANCE1", Resources.relance1);
 
         var relances = new List<RelanceEntite>[] { [], [], [], [] };
         var relancesRetard = new List<RelanceEntite>[] { [], [], [], [] };
@@ -289,7 +276,7 @@ public partial class RetardsPaiementsForm : Form
 
                 type++;
                 if (type >= 2)
-                    modele = ParametresDB.getParam1("MODELES", "RELANCE3");
+                    modele = ParametresDB.getModeleOrCopyDefaultOne( "RELANCE3", Resources.relance3);
             }
 
             if (duplicatas.Count > 0)
@@ -303,7 +290,7 @@ public partial class RetardsPaiementsForm : Form
 
                     if (table != null)
                     {
-                        modele = ParametresDB.getParam1("MODELES", "RELANCE4");
+                        modele = ParametresDB.getModeleOrCopyDefaultOne("RELANCE4", Resources.relance4);
                         BaseApplication.PublipostageLettreWord(table, modele);
                     }
                 }

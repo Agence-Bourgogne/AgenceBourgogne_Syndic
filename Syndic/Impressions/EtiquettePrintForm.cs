@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using CommonProjectsPartners.Common;
 using CommonProjectsPartners.Utils;
 using EspaceSyndic.Formulaires.Immeubles;
+using EspaceSyndic.Properties;
 using SyndicData.Common;
 using SyndicData.Controller;
 using SyndicData.Entites;
@@ -12,13 +13,19 @@ namespace EspaceSyndic.Impressions;
 
 public partial class EtiquettePrintForm : Form
 {
-    private readonly string TitreForm;
-    private ImmeubleEntite immeuble;
+    private readonly string _titreForm;
+    private ImmeubleEntite _immeuble;
 
     public EtiquettePrintForm()
     {
         InitializeComponent();
-        TitreForm = Text;
+        _titreForm = Text;
+    }
+
+    public sealed override string Text
+    {
+        get => base.Text;
+        set => base.Text = value;
     }
 
     private void lblImmeuble_Click(object sender, EventArgs e)
@@ -34,16 +41,16 @@ public partial class EtiquettePrintForm : Form
 
     private void tbRefImmeuble_Validating(object sender, CancelEventArgs e)
     {
-        immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
-        if (immeuble != null)
+        _immeuble = ImmeubleController.getController().getEntiteFromField("reference", tbRefImmeuble.Text);
+        if (_immeuble != null)
         {
-            Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
+            Text = $"{_titreForm} pour l'immeuble : {_immeuble.nom} ({_immeuble.DateExercice})";
             btnRapport.Enabled = true;
         }
         else
         {
             btnRapport.Enabled = false;
-            Text = TitreForm;
+            Text = _titreForm;
         }
     }
 
@@ -54,9 +61,12 @@ public partial class EtiquettePrintForm : Form
 
     private void btnRapport_Click(object sender, EventArgs e)
     {
-        var modele = ParametresDB.getParam1("MODELES", "ETIQUETTES");
+        const string nomModele = "ETIQUETTES";
+
+        var modele = ParametresDB.getModeleOrCopyDefaultOne(nomModele, Resources.etiquettes);
+
         BaseApplication.PublipostageEtiquetteWord(
-            CoproprietaireController.getController().CoproprietaireImmeubleDescriptionEtiquettes(immeuble.id), modele);
+            CoproprietaireController.getController().CoproprietaireImmeubleDescriptionEtiquettes(_immeuble.id), modele);
     }
 
 

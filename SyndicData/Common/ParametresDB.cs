@@ -1,8 +1,10 @@
-﻿using System;
-using System.Data;
-using System.Windows.Forms;
-using CommonProjectsPartners.Utils;
+﻿using CommonProjectsPartners.Utils;
 using Npgsql;
+using System;
+using System.Data;
+using System.IO;
+using System.Resources;
+using System.Windows.Forms;
 
 namespace SyndicData.Common;
 
@@ -45,6 +47,22 @@ public static class ParametresDB
         if (row != null)
             return row["param_1"].ToString();
         return default_value;
+    }
+
+    public static string getModeleOrCopyDefaultOne(string code, byte[] defaultModele)
+    {
+        const string groupName = "MODELES";
+
+        var modele = getParam1(groupName, code);
+
+        if (string.IsNullOrWhiteSpace(modele))
+        {
+            throw new FileNotFoundException($"Le chemin vers le modèle {code} est nul ou vide. Complétez-le.");
+        }
+
+        if(!File.Exists(modele)) File.WriteAllBytes(modele, defaultModele);
+
+        return modele;
     }
 
     public static DataTable getComboData(string groupe, string code = "")

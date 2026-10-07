@@ -11,6 +11,7 @@ using CommonProjectsPartners.Utils;
 using EspaceSyndic.Formulaires.Common;
 using EspaceSyndic.Formulaires.Config;
 using EspaceSyndic.Formulaires.Immeubles;
+using EspaceSyndic.Properties;
 using Microsoft.Reporting.WinForms;
 using Npgsql;
 using SyndicData.Common;
@@ -388,6 +389,7 @@ public partial class ImprimerConvocationForm : Form
         return parameters;
     }
 
+    // TODO : Horreur statique
     private void btnWord_Click(object sender, EventArgs e)
     {
         if (string.IsNullOrWhiteSpace(tbHeure.Text.Replace(":", "")))
@@ -407,7 +409,7 @@ public partial class ImprimerConvocationForm : Form
         var PathConvoc = @"C:\Syndic_Modeles\Convocations\";
         var LiasseConvoc = Path.Combine(PathConvoc,
             $"convocations_{immeuble.reference}_{dtDateAssemblee.Value:yyyyMMdd}");
-        var modeleConvocation = ParametresDB.getParam1("MODELES", "CONVOCATIONS");
+        var modeleConvocation = ParametresDB.getModeleOrCopyDefaultOne("CONVOCATIONS", Resources.convocation);
         var modelePresence = @"c:\syndic_modeles\feuillePresence.dotx";
         var modeleConvocTexte = @"c:\syndic_modeles\convocation_texte.dotx";
 
