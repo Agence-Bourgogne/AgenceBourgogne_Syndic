@@ -31,7 +31,7 @@ public partial class ImprimerListeReglementForm : Form
         var liasse_id = (string)cbLiasse.SelectedValue;
 
         if (string.IsNullOrEmpty(liasse_id))
-            MessageBox.Show(@"vous n'avez pas selectionner de liasse");
+            MessageBox.Show(@"Vous n'avez pas selectionné de liasse");
         saisieremisechequeBindingSource.DataSource = SaisieReglementController.getController()
             .GetListeReglementValideFromNature(liasse_id, cbReg.SelectedValue.ToString());
         reportViewer1.LocalReport.SubreportProcessing += SubreportProcessingEventHandler;
