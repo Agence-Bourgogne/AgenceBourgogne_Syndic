@@ -29,7 +29,6 @@ public class ImmeubleController : AbstractBaseController<ImmeubleEntite>
 
     public static ImmeubleController getController()
     {
-//            return new ImmeubleController();
         return controller;
     }
 
@@ -39,6 +38,15 @@ public class ImmeubleController : AbstractBaseController<ImmeubleEntite>
             $"select * from {getSchemaTable()} where extract(month from datecloture) in ({iMonths}) And statut<>9 order by reference ";
 
         var table = getResultSQL(cmd);
+
+        table.Columns.Add("datecloture_legacy", typeof(DateTime));
+
+        foreach (DataRow row in table.Rows)
+        {
+            var dateCloture = (DateOnly)row["datecloture"];
+            row["datecloture_legacy"] = dateCloture.ToDateTime(TimeOnly.MinValue);
+        }
+
         return table;
     }
 
@@ -98,7 +106,6 @@ public class ImmeubleController : AbstractBaseController<ImmeubleEntite>
         cmd +=
             " l.numero_lot, c.id as copro_id, l.id as lot_id, i.id as immeuble_id, round(l.avance::numeric,2) as avance, l.statut";
         cmd += $" from {getSchemaTable()} i ";
-//            cmd += String.Format(" join {0}.lot_description l on l.immeuble_id = i.id and l.statut=1 ", schema);
         cmd += $" join {schema}.lot_description l on l.immeuble_id = i.id ";
 
         cmd += $" join {schema}.coproprietaire c on l.coproprietaire_id = c.id ";
@@ -121,7 +128,6 @@ public class ImmeubleController : AbstractBaseController<ImmeubleEntite>
             new("@numero_lot", numero_lot)
         };
 
-        //Console.WriteLine(cmd);
         var table = getResultSQL(cmd, parameters);
         return table;
     }
@@ -136,22 +142,14 @@ public class ImmeubleController : AbstractBaseController<ImmeubleEntite>
         cmd += " i.reference, i.nom, i.rue, i.codepostal, i.ville, c.reference ref_copro, ";
         cmd +=
             " c.nom as nom_copro, c.prenom as prenom, coalesce(p.code, '') as codenvoi, c.adresse as adresse_copro, c.codepostal as cp_copro, concat(c.ville, '\n', c.pays) as ville_copro, ";
-        //cmd += " case when coalesce(c.nomcomp, '') != '' then c.nomcomp else c.nom end as nom_copro, ";
-        //cmd += " case when coalesce(c.nomcomp, '') != '' then '' else c.prenom end as prenom, ";
-        //cmd += " case when coalesce(c.nomcomp, '') != '' then p2.code else p.code end as codenvoi, ";
-        //cmd += " case when coalesce(c.nomcomp, '') != '' then c.adressecomp else c.adresse end as adresse_copro, ";
-        //cmd += " case when coalesce(c.nomcomp, '') != '' then c.codecomp else c.codepostal end as cp_copro, ";
-        //cmd += " case when coalesce(c.nomcomp, '') != '' then c.villecomp else c.ville end as ville_copro, ";
 
         cmd +=
             " l.numero_lot, c.id as copro_id, l.id as lot_id, i.id as immeuble_id, round(l.avance::numeric,2) as avance";
         cmd += $" from {getSchemaTable()} i ";
-//            cmd += String.Format ( " join {0}.lot_description l on l.immeuble_id = i.id ", schema);
         cmd += $" join {schema}.lot_description l on l.immeuble_id = i.id and l.statut=1 ";
         cmd += $" join {schema}.coproprietaire c on l.coproprietaire_id = c.id ";
         cmd +=
             " left join ( select groupe, code , iparam_1 from parametres ) p on p.groupe = 'CIVILITE' and c.codenvoi = iparam_1";
-        //cmd += String.Format(" left join ( select groupe, code , iparam_1 from parametres ) p2 on p2.groupe='CODEENVOICOMPTE' and c.codenvcomp = p2.iparam_1");
         cmd += " where immeuble_id = @immeuble_id";
         if (numlot != "")
         {

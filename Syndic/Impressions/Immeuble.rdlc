@@ -148,14 +148,14 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <Textbox Name="datecloture">
+                        <Textbox Name="datecloture_legacy">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!datecloture.Value</Value>
+                                  <Value>=Fields!datecloture_legacy.Value</Value>
                                   <Style>
                                     <Format>dd/MM/yyyy</Format>
                                   </Style>
@@ -166,7 +166,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>datecloture</rd:DefaultName>
+                          <rd:DefaultName>datecloture_legacy</rd:DefaultName>
                           <Top>1.04097cm</Top>
                           <Height>0.6cm</Height>
                           <Width>2.5cm</Width>
@@ -385,16 +385,8 @@
           <DataField>nombrelots</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
-        <Field Name="datecreation">
-          <DataField>datecreation</DataField>
-          <rd:TypeName>System.DateTime</rd:TypeName>
-        </Field>
-        <Field Name="datecloture">
-          <DataField>datecloture</DataField>
-          <rd:TypeName>System.DateTime</rd:TypeName>
-        </Field>
-        <Field Name="dateass">
-          <DataField>dateass</DataField>
+        <Field Name="datecloture_legacy">
+          <DataField>datecloture_legacy</DataField>
           <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
         <Field Name="lieuconv">
