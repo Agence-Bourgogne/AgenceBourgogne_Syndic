@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using CommonProjectsPartners.Utils;
 using Npgsql;
+using NpgsqlTypes;
 
 namespace CommonProjectsPartners.Common;
 
@@ -43,10 +44,10 @@ public static class AuditDB
                 sqlCmd.Parameters.AddWithValue("@name_entite", entite.GetType().Name);
                 sqlCmd.Parameters.AddWithValue("@entite_id", entite.GetId());
                 sqlCmd.Parameters.AddWithValue("@operation_entite", Enum.GetName(typeof(Operation), operation));
-                sqlCmd.Parameters.AddWithValue("@propertie_entite", change.propertie_entite);
-                sqlCmd.Parameters.AddWithValue("@propertie_type", change.propertie_type);
-                sqlCmd.Parameters.AddWithValue("@old_value", change.old_value);
-                sqlCmd.Parameters.AddWithValue("@new_value", change.new_value);
+                sqlCmd.Parameters.AddWithValue("@propertie_entite", NpgsqlDbType.Text, (object) change.propertie_entite ?? DBNull.Value);
+                sqlCmd.Parameters.AddWithValue("@propertie_type", NpgsqlDbType.Text, (object) change.propertie_type ?? DBNull.Value);
+                sqlCmd.Parameters.AddWithValue("@old_value", NpgsqlDbType.Text, (object) change.old_value ?? DBNull.Value);
+                sqlCmd.Parameters.AddWithValue("@new_value", NpgsqlDbType.Text, (object) change.new_value ?? DBNull.Value);
                 sqlCmd.Parameters.AddWithValue("@audit_date", auditDate);
                 sqlCmd.Parameters.AddWithValue("@audit_user", auditUser);
                 sqlCmd.ExecuteNonQuery();
