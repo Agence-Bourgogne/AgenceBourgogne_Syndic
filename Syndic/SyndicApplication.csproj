@@ -78,7 +78,6 @@
 	  <EmbeddedResource Include="Impressions\Convocations\ConvocationViergeReport.rdlc" />
 	  <EmbeddedResource Include="Impressions\Convocations\ConvocationWordReport.rdlc" />
 	  <EmbeddedResource Include="Impressions\Convocations\ConvocFeuillePresence.rdlc" />
-	  <EmbeddedResource Include="Impressions\Convocations\Report1.rdlc" />
 	  <EmbeddedResource Include="Impressions\EtiquetteReport.rdlc" />
 	  <EmbeddedResource Include="Impressions\Facture\ListeFacturationDetailReport.rdlc" />
 	  <EmbeddedResource Include="Impressions\Facture\ListeFacturationMasterReport.rdlc" />

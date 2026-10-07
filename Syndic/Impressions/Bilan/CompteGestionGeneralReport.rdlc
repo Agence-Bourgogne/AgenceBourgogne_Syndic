@@ -1199,10 +1199,6 @@
           <DataField>libelle</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="date_reference">
-          <DataField>date_reference</DataField>
-          <rd:TypeName>System.DateTime</rd:TypeName>
-        </Field>
         <Field Name="base_repart">
           <DataField>base_repart</DataField>
           <rd:TypeName>System.String</rd:TypeName>

@@ -634,18 +634,6 @@
           <DataField>note_repart</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="datecreation">
-          <DataField>datecreation</DataField>
-          <rd:TypeName>System.DateTime</rd:TypeName>
-        </Field>
-        <Field Name="datecloture">
-          <DataField>datecloture</DataField>
-          <rd:TypeName>System.DateTime</rd:TypeName>
-        </Field>
-        <Field Name="dateass">
-          <DataField>dateass</DataField>
-          <rd:TypeName>System.DateTime</rd:TypeName>
-        </Field>
         <Field Name="lieuconv">
           <DataField>lieuconv</DataField>
           <rd:TypeName>System.String</rd:TypeName>
