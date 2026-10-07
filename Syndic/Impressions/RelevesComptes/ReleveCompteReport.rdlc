@@ -568,13 +568,13 @@
               <TablixCells>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="date_reference">
+                    <Textbox Name="date_reference_legacy">
                       <CanGrow>true</CanGrow>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!date_reference.Value</Value>
+                              <Value>=Fields!date_reference_legacy.Value</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <Format>d</Format>
@@ -584,7 +584,7 @@
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>date_reference</rd:DefaultName>
+                      <rd:DefaultName>date_reference_legacy</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>Solid</Style>
@@ -717,13 +717,13 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="date_relance">
+                    <Textbox Name="date_relance_legacy">
                       <CanGrow>true</CanGrow>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!date_relance.Value</Value>
+                              <Value>=Fields!date_relance_legacy.Value</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <Format>d</Format>
@@ -733,7 +733,7 @@
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>date_relance</rd:DefaultName>
+                      <rd:DefaultName>date_relance_legacy</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>Solid</Style>
@@ -1653,8 +1653,8 @@
         <CommandText>/* Local Query */</CommandText>
       </Query>
       <Fields>
-        <Field Name="date_reference">
-          <DataField>date_reference</DataField>
+        <Field Name="date_reference_legacy">
+          <DataField>date_reference_legacy</DataField>
           <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
         <Field Name="libelle">
@@ -1669,8 +1669,8 @@
           <DataField>credit</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
-        <Field Name="date_relance">
-          <DataField>date_relance</DataField>
+        <Field Name="date_relance_legacy">
+          <DataField>date_relance_legacy</DataField>
           <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
       </Fields>

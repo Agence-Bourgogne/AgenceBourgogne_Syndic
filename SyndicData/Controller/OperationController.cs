@@ -608,8 +608,28 @@ public class OperationController : AbstractBaseController<OperationEntite>
 
     public DataTable getListeOperations(string immeuble_id, string lot_reference, string type, int statut = -1)
     {
-        return getListeOperations(immeuble_id, lot_reference, type, statut, DateTime.Parse("01/01/1970"),
+        var table = getListeOperations(immeuble_id, lot_reference, type, statut, DateTime.Parse("01/01/1970"),
             DateTime.Parse("01/01/1970"), "", "");
+
+        table.Columns.Add("date_reference_legacy", typeof(DateTime));
+        table.Columns.Add("date_relance_legacy", typeof(DateTime));
+
+        foreach (DataRow row in table.Rows)
+        {
+            if (row["date_reference"] != DBNull.Value)
+            {
+                var dateReference = (DateOnly)row["date_reference"];
+                row["date_reference_legacy"] = dateReference.ToDateTime(TimeOnly.MinValue);
+            }
+
+            if (row["date_relance"] != DBNull.Value)
+            {
+                var dateRelance = (DateOnly)row["date_relance"];
+                row["date_relance_legacy"] = dateRelance.ToDateTime(TimeOnly.MinValue);
+            }
+        }
+
+        return table;
     }
 
     public DataTable getListeOperations(string immeuble_id, string lot_reference, string type, int statut,
@@ -619,13 +639,9 @@ public class OperationController : AbstractBaseController<OperationEntite>
         var cmd = "Select ";
         var numlot = 0;
 
-//            cmd += " sf.id, n.reference as ref_nature, n.nom as nature, c.reference as ref_copro, concat(c.prenom, ' ',c .nom) as coproprietaire, date_reference, libelle, debit, credit, global, base_repart, ";
-// 1.0.0.11            
-        //cmd += " sf.id, n.reference as ref_nature, n.nom as nature, concat(c.prenom, ' ',c .nom) as coproprietaire, c.reference as ref_copro, date_reference, libelle, debit, credit, global, base_repart, ";
         cmd += " sf.id, n.reference as ref_nature, n.nom as nature, ";
         cmd += " coalesce(c .nom, '') as coproprietaire, coalesce(c.reference, ' ') as ref_copro, ";
         cmd += " date_reference, libelle, ";
-//            cmd += " debit, credit, ";
         cmd += " case when debit < 0 then 0 when credit < 0 then abs(credit) else debit end as debit, ";
         cmd += " case when debit < 0 then abs(debit) when credit <0 then 0 else credit end as credit,";
 
@@ -690,6 +706,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
             new("@libelle", libelle + "%"),
             new("@montant", Convertir.ToDecimal(montant))
         };
+
         return getResultSQL(cmd, parameters);
     }
 
