@@ -196,14 +196,14 @@
               <TablixCells>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="date_reference">
+                    <Textbox Name="date_reference_legacy">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!date_reference.Value</Value>
+                              <Value>=Fields!date_reference_legacy.Value</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <Format>dd/MM/yyyy</Format>
@@ -215,7 +215,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>date_reference</rd:DefaultName>
+                      <rd:DefaultName>date_reference_legacy</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>Solid</Style>
@@ -921,8 +921,8 @@
           <DataField>type</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
-        <Field Name="date_reference">
-          <DataField>date_reference</DataField>
+        <Field Name="date_reference_legacy">
+          <DataField>date_reference_legacy</DataField>
           <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
         <Field Name="nature">

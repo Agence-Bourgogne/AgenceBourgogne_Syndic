@@ -371,7 +371,20 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
             new("@appel_fond", ParametresDB.getParam1("NATURE", "SOLDE BILAN"))
         };
 
-        return getResultSQL(cmd, parameters);
+        var table = getResultSQL(cmd, parameters);
+
+        table.Columns.Add("date_reference_legacy", typeof(DateTime));
+
+        foreach (DataRow row in table.Rows)
+        {
+            if (row["date_reference"] != DBNull.Value)
+            {
+                var dateReference = (DateOnly)row["date_reference"];
+                row["date_reference_legacy"] = dateReference.ToDateTime(TimeOnly.MinValue);
+            }
+        }
+
+        return table;
     }
 
     public DataTable getSaisieFacture(OperationEntite operation)

@@ -830,7 +830,20 @@ public class OperationController : AbstractBaseController<OperationEntite>
             new("@statut", (int)GlobalConstantes.StatutOperation.Valide)
         };
 
-        return getResultSQL(cmd, parameters);
+        var table = getResultSQL(cmd, parameters);
+
+        table.Columns.Add("date_reference_legacy", typeof(DateTime));
+
+        foreach (DataRow row in table.Rows)
+        {
+            if (row["date_reference"] != DBNull.Value)
+            {
+                var dateReference = (DateOnly)row["date_reference"];
+                row["date_reference_legacy"] = dateReference.ToDateTime(TimeOnly.MinValue);
+            }
+        }
+
+        return table;
     }
 
     public DataTable getOperationFromSaisie(string saisie_id)
