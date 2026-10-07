@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using Microsoft.WindowsAPICodePack.Dialogs;
 using SyndicData.Controller;
 using SyndicData.Entites.ExerciceComptable;
 
@@ -97,12 +96,12 @@ namespace EspaceSyndic.Impressions.RelevesComptes
 
             try
             {
-                using var dialog = new CommonOpenFileDialog();
+                using var dialog = new FolderBrowserDialog();
+                dialog.Description = "Sélectionnez le dossier de destination";
+                dialog.UseDescriptionForTitle = true;
+                dialog.ShowNewFolderButton = true;
 
-                dialog.IsFolderPicker = true;
-                dialog.Title = "Sélectionnez le dossier de destination";
-
-                if (dialog.ShowDialog() != CommonFileDialogResult.Ok)
+                if (dialog.ShowDialog() != DialogResult.OK)
                 {
                     MessageBox.Show(
                         "Aucune destination sélectionnée.",
@@ -114,7 +113,7 @@ namespace EspaceSyndic.Impressions.RelevesComptes
                     return;
                 }
 
-                var dossierDestination = new DirectoryInfo(dialog.FileName);
+                var dossierDestination = new DirectoryInfo(dialog.SelectedPath);
 
                 if (!dossierDestination.Exists)
                 {
