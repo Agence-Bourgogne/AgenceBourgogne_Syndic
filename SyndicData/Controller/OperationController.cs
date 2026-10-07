@@ -342,7 +342,6 @@ public class OperationController : AbstractBaseController<OperationEntite>
         var cmd = "select immeuble_id, coproprietaire_id , libelle, ";
         cmd += " case when debit < 0 then 0 when credit < 0 then abs(credit) else debit end as debit, ";
         cmd += " case when debit < 0 then abs(debit) when credit <0 then 0 else credit end as credit,";
-        //cmd += " debit, credit, ";
         cmd += " id, date_reference";
         cmd += $" from {getSchemaTable()} ";
         cmd += " where immeuble_id=@immeuble_id  and coproprietaire_id=@coproprietaire_id and statut = @statut ";
@@ -360,8 +359,21 @@ public class OperationController : AbstractBaseController<OperationEntite>
             new("@dtDeb", dtDeb),
             new("@dtFin", dtFin)
         };
-        Console.WriteLine(cmd);
-        return getResultSQL(cmd, parameters);
+
+        var table = getResultSQL(cmd, parameters);
+
+        table.Columns.Add("date_reference_legacy", typeof(DateTime));
+
+        foreach (DataRow row in table.Rows)
+        {
+            if (row["date_reference"] != DBNull.Value)
+            {
+                var dateReference = (DateOnly)row["date_reference"];
+                row["date_reference_legacy"] = dateReference.ToDateTime(TimeOnly.MinValue);
+            }
+        }
+
+        return table;
     }
 
     public DataTable getSoldeRepriseCoproprietaireVide(string coproprietaire_id)
@@ -369,22 +381,16 @@ public class OperationController : AbstractBaseController<OperationEntite>
         var cmd =
             "select  concat(i.reference, ' ', i.nom) as immeuble, l.immeuble_id, l.id as lot_id, numero_lot, i.comptebanque, ";
         cmd += " 0 as solde , 0 as debit, 0 as credit ";
-//            cmd += String.Format(" from {0} o ", getSchemaTable());
         cmd += $" From {getSchema()}.lot_description l ";
         cmd += $" join {getSchema()}.immeuble i on (l.immeuble_id = i.id)";
         cmd += " where l.coproprietaire_id=@coproprietaire_id ";
-        //cmd += " and type_mouvement = @type_mouvement";
-        //cmd += " group by 1, 2, 3, 4, 5";
+
         var parameters = new List<NpgsqlParameter>
         {
-//                new NpgsqlParameter("@immeuble_id", immeuble_id),
             new("@statut", (int)GlobalConstantes.StatutOperation.Valide),
             new("@type_mouvement", nameof(GlobalConstantes.TypeMouvement.Recette)),
             new("@coproprietaire_id", coproprietaire_id)
         };
-
-        //Console.WriteLine(cmd);
-        //Console.WriteLine("Copro:{0}", coproprietaire_id);
 
         var table = getResultSQL(cmd, parameters);
         return table;
@@ -398,20 +404,15 @@ public class OperationController : AbstractBaseController<OperationEntite>
         cmd += $" from {getSchemaTable()} o ";
         cmd += $" join {getSchema()}.lot_description l on (o.lot_id = l.id)";
         cmd += $" join {getSchema()}.immeuble i on (o.immeuble_id = i.id)";
-//            cmd += " where o.coproprietaire_id=@coproprietaire_id and o.statut = @statut ";
         cmd += " where l.coproprietaire_id=@coproprietaire_id and o.statut = @statut ";
         cmd += " and type_mouvement = @type_mouvement";
         cmd += " group by 1, 2, 3, 4, 5";
         var parameters = new List<NpgsqlParameter>
         {
-//                new NpgsqlParameter("@immeuble_id", immeuble_id),
             new("@statut", (int)GlobalConstantes.StatutOperation.Valide),
             new("@type_mouvement", nameof(GlobalConstantes.TypeMouvement.Recette)),
             new("@coproprietaire_id", coproprietaire_id)
         };
-
-        //Console.WriteLine(cmd);
-        //Console.WriteLine("Copro:{0}", coproprietaire_id);
 
         var table = getResultSQL(cmd, parameters);
         return table;
@@ -422,19 +423,11 @@ public class OperationController : AbstractBaseController<OperationEntite>
     {
         var cmd = " select ";
         cmd += " l.numero_lot,   c.nom,   o.libelle,   o.base_repart, ";
-        //cmd += " o.debit, o.credit, ";
-
         cmd += " case when debit < 0 then 0 when credit < 0 then abs(credit) else debit end as debit, ";
         cmd += " case when debit < 0 then abs(debit) when credit <0 then 0 else credit end as credit,";
-        //cmd += " sum(case when debit < 0 then 0 when credit < 0 then abs(credit) else debit end) as debit, ";
-        //cmd += " sum(case when debit < 0 then abs(debit) when credit <0 then 0 else credit end) as credit,";
-
         cmd += " n.reference, \n";
         cmd += " case when n.reference = @solde_bilan then 0 else o.debit end as debit_no_solde, \n";
         cmd += " case when n.reference = @solde_bilan then 0 else o.credit end as credit_no_solde, o.type_mouvement \n";
-        //cmd += " sum(case when n.reference = @solde_bilan then 0 else o.debit end) as debit_no_solde, \n";
-        //cmd += " sum(case when n.reference = @solde_bilan then 0 else o.credit end) as credit_no_solde, o.type_mouvement \n";
-
         cmd += " FROM  ";
         cmd += $" {getSchema()}.operation o\n";
         cmd += $" join {getSchema()}.coproprietaire c on c.id = o.coproprietaire_id\n";
@@ -442,12 +435,10 @@ public class OperationController : AbstractBaseController<OperationEntite>
         cmd += $" join {getSchema()}.nature n on n.id = o.nature_id\n";
         cmd += " where o.immeuble_id = @immeuble_id \n";
         cmd += " AND o.statut != @statut and o.statut != @statut_del \n";
-        cmd += " and o.type_mouvement =@mouvement "; // and n.reference != @appel_fond \n";
+        cmd += " and o.type_mouvement =@mouvement ";
         cmd += " and o.date_reference >= @dtdeb and o.date_reference <= @dtFin \n";
         if (natures != "")
             cmd += " and " + natures;
-
-        //cmd += " group by 1, 2, 3,4, 7, c.reference, o.date_reference, o.type_mouvement ";
 
         if (!bPaiement)
             cmd += " ORDER BY  n.reference ASC, l.numero_lot, c.reference ASC,  o.date_reference \n";
@@ -467,7 +458,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
             new("@appel_fond", ParametresDB.getParam1("NATURE", "APPEL DE FONDS")),
             new("@solde_bilan", ParametresDB.getParam1("NATURE", "SOLDE BILAN"))
         };
-        //Console.WriteLine(cmd);
+
         var table = getResultSQL(cmd, parameters);
         return table;
     }
@@ -479,8 +470,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
 
         cmd +=
             "concat(c.nom , ' ', prenom) as coproprietaire, c.reference , i.reference as ref_immeuble, i.nom as immeuble, numero_lot, ";
-        cmd += " (sum(credit)- sum(debit)) as solde , "; //sum(debit) as debit, sum(credit) as credit, ";
-//            cmd += "da.date_appel, ";
+        cmd += " (sum(credit)- sum(debit)) as solde , ";
         cmd +=
             "da.date_appel, c.daterel1 as première_relance, c.daterel2 as seconde_relance, c.daterel3 as mise_en_demeure,";
         cmd += " case ";
@@ -488,12 +478,6 @@ public class OperationController : AbstractBaseController<OperationEntite>
         cmd += "when c.daterel2 is not null then 2 ";
         cmd += "when c.daterel1 is not null then 1 ";
         cmd += "else null end as type_relance, ";
-        //cmd += " case ";
-        //cmd += "when c.daterel3 is not null then c.daterel3 ";
-        //cmd += "when c.daterel2 is not null then c.daterel2 ";
-        //cmd += "when c.daterel1 is not null then c.daterel1 ";
-        //cmd += "else null end as date_relance, ";
-        //cmd += "i.datecloture as date_cloture, ";
         cmd += " case when coalesce(c.nomcomp,'') != '' then 1 else 0 end as duplicata, ";
         cmd += " o.immeuble_id, lot_id , c.id";
         cmd += $" from {getSchemaTable()} o";

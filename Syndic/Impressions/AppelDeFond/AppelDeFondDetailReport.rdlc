@@ -48,8 +48,8 @@
           <DataField>id</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="date_reference">
-          <DataField>date_reference</DataField>
+        <Field Name="date_reference_legacy">
+          <DataField>date_reference_legacy</DataField>
           <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
       </Fields>
@@ -479,14 +479,14 @@
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="date_operation">
+                        <Textbox Name="date_reference_legacy">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!date_reference.Value</Value>
+                                  <Value>=Fields!date_reference_legacy.Value</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <Format>dd/MM/yyyy</Format>
@@ -496,7 +496,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>date_operation</rd:DefaultName>
+                          <rd:DefaultName>date_reference_legacy</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>

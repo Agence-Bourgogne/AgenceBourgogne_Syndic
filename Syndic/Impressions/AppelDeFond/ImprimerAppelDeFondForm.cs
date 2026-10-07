@@ -184,14 +184,6 @@ public partial class ImprimerAppelDeFondForm : Form
             }
     }
 
-    private void reportViewer1_ReportExport(object sender, ReportExportEventArgs e)
-    {
-    }
-
-    private void reportViewer1_RenderingComplete(object sender, RenderingCompleteEventArgs e)
-    {
-    }
-
     private void btnEnter_Click(object sender, EventArgs e)
     {
         ControlsWindows.FocusNextTabbedControl(this);

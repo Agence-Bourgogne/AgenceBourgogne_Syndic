@@ -245,8 +245,6 @@ namespace EspaceSyndic.Impressions.AppelDeFond
             reportViewer1.ShowFindControls = false;
             reportViewer1.Size = new System.Drawing.Size(885, 557);
             reportViewer1.TabIndex = 1;
-            reportViewer1.ReportExport += reportViewer1_ReportExport;
-            reportViewer1.RenderingComplete += reportViewer1_RenderingComplete;
             // 
             // imageList1
             // 
