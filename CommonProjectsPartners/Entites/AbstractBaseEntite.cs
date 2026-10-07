@@ -6,6 +6,7 @@ using System.Reflection;
 using CommonProjectsPartners.Common;
 using CommonProjectsPartners.Utils;
 using Npgsql;
+using NpgsqlTypes;
 
 namespace CommonProjectsPartners.Entites;
 
@@ -168,12 +169,51 @@ public abstract class AbstractBaseEntite : IAuditable
         return message;
     }
 
+    private static NpgsqlDbType DbTypeFromReflection(FieldInfo fieldInfo)
+    {
+        var type = Nullable.GetUnderlyingType(fieldInfo.FieldType)
+                   ?? fieldInfo.FieldType;
+
+        return type switch
+        {
+            _ when type == typeof(string)        => NpgsqlDbType.Text,
+            _ when type == typeof(bool)          => NpgsqlDbType.Boolean,
+            _ when type == typeof(short)         => NpgsqlDbType.Smallint,
+            _ when type == typeof(int)           => NpgsqlDbType.Integer,
+            _ when type == typeof(long)          => NpgsqlDbType.Bigint,
+            _ when type == typeof(float)         => NpgsqlDbType.Real,
+            _ when type == typeof(double)        => NpgsqlDbType.Double,
+            _ when type == typeof(decimal)       => NpgsqlDbType.Numeric,
+            _ when type == typeof(Guid)          => NpgsqlDbType.Uuid,
+            _ when type == typeof(DateTime)      => NpgsqlDbType.Timestamp,
+            _ when type == typeof(DateTimeOffset)=> NpgsqlDbType.TimestampTz,
+            _ when type == typeof(DateOnly)      => NpgsqlDbType.Date,
+            _ when type == typeof(TimeOnly)      => NpgsqlDbType.Time,
+            _ when type == typeof(TimeSpan)      => NpgsqlDbType.Interval,
+            _ when type == typeof(byte[])        => NpgsqlDbType.Bytea,
+            _ when type.IsEnum                   => NpgsqlDbType.Integer,
+
+            _ => throw new NotSupportedException(
+                $"No PostgreSQL mapping for {fieldInfo.FieldType}")
+        };
+    }
+
     public virtual void SetInsertOrUpdateParameters(NpgsqlCommand sqlCmd)
     {
         foreach (var fieldupd in updatables)
         {
             var field = fieldupd.fieldinfo;
-            sqlCmd.Parameters.AddWithValue("@" + field.Name, field.GetValue(this));
+
+            if(field is null) continue;
+
+            var value = field.GetValue(this);
+
+            if (value is null)
+            {
+                sqlCmd.Parameters.AddWithValue("@" + field.Name, DbTypeFromReflection(field), DBNull.Value);
+            }
+            else
+                sqlCmd.Parameters.AddWithValue("@" + field.Name, value);
         }
 
         sqlCmd.Parameters.AddWithValue("@audit_created", audit_created);
