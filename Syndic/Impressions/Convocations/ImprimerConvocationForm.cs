@@ -211,7 +211,7 @@ public partial class ImprimerConvocationForm : Form
             Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
             infoForm.DoFormText(this, immeuble.note);
             if (immeuble.dateass.Year > 2000)
-                dtDateAssemblee.Value = immeuble.dateass;
+                dtDateAssemblee.Value = immeuble.dateass.ToDateTime(TimeOnly.MinValue);
             tbLieu.Text = GetLieuAssemblee();
             btnRapport.Enabled = btnWord.Enabled = btnExport.Enabled = true;
         }
@@ -465,7 +465,7 @@ public partial class ImprimerConvocationForm : Form
 
     private void MajdateAssemblee()
     {
-        immeuble.dateass = dtDateAssemblee.Value;
+        immeuble.dateass = DateOnly.FromDateTime(dtDateAssemblee.Value);
         ImmeubleController.getController().InsertOrUpdate(immeuble);
     }
 

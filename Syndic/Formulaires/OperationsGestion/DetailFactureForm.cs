@@ -166,7 +166,7 @@ public partial class DetailFactureForm : DetailOperationForm
         var montant = Convertir.ToDecimal(tbMontant.Text);
         var ref_nature = tbNature.Text;
         var ref_fournisseur = tbFournisseur.Text;
-        var date_reference = DateTime.Parse(tbDateCreation.Text);
+        var date_reference = DateOnly.Parse(tbDateCreation.Text);
         var comment = tbComment.Text;
         var comment_fournisseur = tbCommentaireFournisseur.Text;
         var base_repart = tbBase.Text.Trim();

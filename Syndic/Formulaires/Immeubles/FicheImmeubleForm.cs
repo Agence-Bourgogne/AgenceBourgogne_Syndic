@@ -140,7 +140,7 @@ public partial class FicheImmeubleForm : Form
         immeuble.codepostal = tbCodePostal.Text;
         immeuble.nom = tbNom.Text;
         immeuble.ville = tbVille.Text;
-        immeuble.datecreation = Convert.ToDateTime(tbDateCreation.Text);
+        immeuble.datecreation = DateOnly.Parse(tbDateCreation.Text);
         immeuble.comptebanque = tbCompteBanque.Text;
         immeuble.nombrelots = Convert.ToInt32(tbLots.Text);
         immeuble.note = tbNote.Text;

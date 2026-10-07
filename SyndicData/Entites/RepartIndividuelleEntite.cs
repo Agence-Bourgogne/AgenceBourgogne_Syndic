@@ -8,7 +8,7 @@ namespace SyndicData.Entites;
 public class RepartIndividuelleEntite : AbstractBaseEntite
 {
     public decimal ancien;
-    public DateTime date_reference;
+    public DateOnly date_reference;
     public decimal global;
     public string immeuble_id;
     public decimal index;
@@ -57,41 +57,6 @@ public class RepartIndividuelleEntite : AbstractBaseEntite
         base.setValues(row);
     }
 
-    public static RepartIndividuelleEntite setData(OperationEntite operation, SaisieFactureEntite saisie,
-        DataRow oldRow)
-    {
-        var repart = new RepartIndividuelleEntite(oldRow)
-        {
-            saisie_id = saisie.id,
-            type_saisie = (int)GlobalConstantes.TypeSaisie.Facture,
-            immeuble_id = saisie.immeuble_id,
-            reference = saisie.base_repart,
-            operation_id = operation.id,
-            date_reference = operation.date_reference,
-            lot_id = operation.lot_id
-        };
-
-
-        return repart;
-    }
-
-    /*
-    public static RepartIndividuelleEntite setData(OperationEntite operation, SaisieAppelFondEntite saisie, DataRow oldRow)
-    {
-        RepartIndividuelleEntite repart = new RepartIndividuelleEntite(oldRow);
-
-        repart.saisie_id = saisie.id;
-        repart.type_saisie = (int)GlobalConstantes.TypeSaisie.AppelDeFond;
-        repart.immeuble_id = saisie.immeuble_id;
-        repart.reference = saisie.base_repart;
-
-        repart.operation_id = operation.id;
-        repart.date_reference = operation.date_reference;
-        repart.lot_id = operation.lot_id;
-
-        return repart;
-    }
-     */
     public static RepartIndividuelleEntite setData(OperationEntite operation, RepartIndividuelleEntite oldRepart,
         GlobalConstantes.TypeSaisie type)
     {

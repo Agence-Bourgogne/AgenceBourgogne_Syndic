@@ -11,24 +11,21 @@ public class SaisieReglementEntite : AbstractBaseEntite
     public string banque;
     public string comptebanque;
     public string coproprietaire_id;
-    public DateTime date_operation;
-    public DateTime date_reference;
+    public DateOnly date_operation;
+    public DateOnly date_reference;
     public string emetteur;
 
     public string immeuble_id;
-//        public enum Statut { Inactif, Actif, Valide };
 
     public string liasse_id;
     public string libelle;
 
     public decimal montant;
 
-//        public string lot_id;	
     public string nature_id;
 
     public int numero_operation;
 
-//        public decimal base_global;
     public int statut;
 
     public SaisieReglementEntite()
@@ -81,14 +78,12 @@ public class SaisieReglementEntite : AbstractBaseEntite
         updatables.Add(new UpdateField("coproprietaire_id", true, members));
         updatables.Add(new UpdateField("immeuble_id", true, members));
         updatables.Add(new UpdateField("comptebanque", true, members));
-//            updatables.Add(new UpdateField("lot_id", true, members));
         updatables.Add(new UpdateField("nature_id", true, members));
         updatables.Add(new UpdateField("libelle", true, members));
         updatables.Add(new UpdateField("date_reference", true, members));
         updatables.Add(new UpdateField("montant", true, members));
         updatables.Add(new UpdateField("emetteur", true, members));
         updatables.Add(new UpdateField("banque", true, members));
-//            updatables.Add(new UpdateField("base_global", true, members));
         updatables.Add(new UpdateField("statut", true, members));
 
         base.setValues(row);

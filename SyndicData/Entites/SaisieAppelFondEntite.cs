@@ -11,8 +11,8 @@ public class SaisieAppelFondEntite : AbstractBaseEntite
 
     private NatureEntite _nature;
     public string base_repart;
-    public DateTime date_operation;
-    public DateTime date_reference;
+    public DateOnly date_operation;
+    public DateOnly date_reference;
     public string immeuble_id;
 
     public string liasse_id;
@@ -22,9 +22,7 @@ public class SaisieAppelFondEntite : AbstractBaseEntite
     public string nature_id;
 
     public int numero_operation;
-
-//        public decimal base_global;
-    public int statut = 0; //(int)GlobalConstantes.StatutOperation.Brouillon;
+    public int statut = 0;
 
     public SaisieAppelFondEntite()
     {

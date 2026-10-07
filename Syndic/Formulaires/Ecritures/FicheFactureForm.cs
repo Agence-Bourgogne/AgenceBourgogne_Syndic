@@ -366,7 +366,7 @@ public partial class FicheFactureForm : Form
             return false;
         }
 
-        var dtFac = Convert.ToDateTime(tbDateCreation.Text);
+        var dtFac = DateOnly.Parse(tbDateCreation.Text);
         var exercice = ExerciceComptableController.GetController().GetExerciceFromDate(immeuble.id, dtFac);
 
         if (exercice != null)
@@ -389,7 +389,7 @@ public partial class FicheFactureForm : Form
         saisie.nature_id = nature.id;
         saisie.fournisseur_id = fournisseur.id;
         saisie.montant = Convertir.ToDecimal(tbMontant.Text);
-        saisie.date_reference = Convert.ToDateTime(tbDateCreation.Text);
+        saisie.date_reference = DateOnly.Parse(tbDateCreation.Text);
         saisie.libelle = tbComment.Text;
         saisie.comment_fournisseur = tbCommentaireFournisseur.Text;
         saisie.base_repart = tbBase.Text;
@@ -511,7 +511,7 @@ public partial class FicheFactureForm : Form
             liasse_id = liasse_id,
             numero_operation = numero_operation
         };
-        saisie.date_operation = saisie.date_reference = Convert.ToDateTime(tbDateCreation.Text);
+        saisie.date_operation = saisie.date_reference = DateOnly.Parse(tbDateCreation.Text);
         saisie = FillSaisieFromForm(saisie);
         saisie.statut = (int)GlobalConstantes.StatutOperation.Brouillon;
 

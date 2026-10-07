@@ -153,7 +153,7 @@ public partial class DetailAppelDeFondForm : DetailOperationForm
         var bRepartChanged = false;
         var montant = Convertir.ToDecimal(tbMontant.Text);
         var ref_nature = tbNature.Text;
-        var date_reference = DateTime.Parse(tbDateCreation.Text);
+        var date_reference = DateOnly.Parse(tbDateCreation.Text);
         var comment = tbComment.Text;
         var nature = NatureController.getController().getEntiteFromField("reference", ref_nature);
 

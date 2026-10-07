@@ -65,15 +65,6 @@ public static class Database
         return connection;
     }
 
-    public static DateTime GetTimestampServer(NpgsqlConnection cnx = null)
-    {
-        if (cnx == null)
-            cnx = GetInstance();
-        var sqlCmd = new NpgsqlCommand("select localtimestamp", cnx);
-        var response = sqlCmd.ExecuteScalar();
-        return Convert.ToDateTime(response);
-    }
-
     public static void SerializeCSV(DataTable sourceTable, TextWriter writer, bool includeHeaders = true)
     {
         if (includeHeaders)

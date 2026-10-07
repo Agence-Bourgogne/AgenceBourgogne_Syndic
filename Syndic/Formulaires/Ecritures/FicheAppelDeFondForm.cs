@@ -336,7 +336,7 @@ public partial class FicheAppelDeFondForm : Form
         saisie.immeuble_id = immeuble.id;
         saisie.nature_id = nature.id;
         saisie.montant = Convertir.ToDecimal(tbMontant.Text);
-        saisie.date_reference = Convert.ToDateTime(tbDateCreation.Text);
+        saisie.date_reference = DateOnly.Parse(tbDateCreation.Text);
         saisie.libelle = tbComment.Text;
         saisie.base_repart = tbBase.Text;
         return saisie;
@@ -357,7 +357,7 @@ public partial class FicheAppelDeFondForm : Form
             return false;
         }
 
-        var dtFac = Convert.ToDateTime(tbDateCreation.Text);
+        var dtFac = DateOnly.Parse(tbDateCreation.Text);
         var exercice = ExerciceComptableController.GetController().GetExerciceFromDate(immeuble.id, dtFac);
 
         if (exercice != null)
@@ -499,7 +499,7 @@ public partial class FicheAppelDeFondForm : Form
         {
             liasse_id = liasse_id
         };
-        saisie.date_operation = saisie.date_reference = Convert.ToDateTime(tbDateCreation.Text);
+        saisie.date_operation = saisie.date_reference = DateOnly.Parse(tbDateCreation.Text);
         saisie.numero_operation = numero_operation;
         saisie = FillSaisieFromForm(saisie);
         saisie.statut = (int)GlobalConstantes.StatutOperation.Brouillon;

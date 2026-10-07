@@ -151,8 +151,8 @@ public partial class ImprimerAppelDeFondForm : Form
             }
             else
             {
-                dtDeb.Value = immeuble.ExerciceCourant.date_deb;
-                dtFin.Value = immeuble.ExerciceCourant.date_fin;
+                dtDeb.Value = immeuble.ExerciceCourant.date_deb.ToDateTime(TimeOnly.MinValue);
+                dtFin.Value = immeuble.ExerciceCourant.date_fin.ToDateTime(TimeOnly.MinValue);
             }
 
             lotsString.Clear();

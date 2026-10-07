@@ -370,7 +370,7 @@ public partial class SaisieBudgetForm : Form
         return liasse;
     }
 
-    private SaisieFactureEntite createFactureReprise(LiasseEntite liasse, DateTime dateDeb, decimal valueSoldeImm)
+    private SaisieFactureEntite createFactureReprise(LiasseEntite liasse, DateOnly dateDeb, decimal valueSoldeImm)
     {
         var facture = new SaisieFactureEntite
         {
@@ -383,7 +383,6 @@ public partial class SaisieBudgetForm : Form
         facture.liasse_id = liasse.id;
         facture.montant = valueSoldeImm;
         facture.libelle = ParametresDB.getParam1("CLOTURE", "LIBELLE FACTURE");
-        //facture.libelle = "SOLDE DE COPROPRIETE";
         facture.statut = (int)GlobalConstantes.StatutOperation.Valide;
 
         return facture;
@@ -425,9 +424,7 @@ public partial class SaisieBudgetForm : Form
             var trx = cnx.BeginTransaction();
             try
             {
-                // TODO Voir pour TimestampServer
-                // TODO Revoir la gestion exception
-                if (exercice_suivant != null && exercice_suivant.Rows.Count > 0)
+                if (exercice_suivant is { Rows.Count: > 0 })
                 {
                     var exerciceSuivantEntite = new ExerciceComptableEntite(exercice_suivant.Rows[0]);
                     var soldeImm = SaisieFactureController.getController().getCurrentSoldeImmeuble(

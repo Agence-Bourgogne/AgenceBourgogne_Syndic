@@ -439,7 +439,7 @@ public abstract class AbstractBaseController<TENTITE> where TENTITE : AbstractBa
         return table;
     }
 
-    public bool ChangeEtat(string immeuble_id, DateTime date_deb, DateTime date_fin, int statut, int statut_del)
+    public bool ChangeEtat(string immeuble_id, DateOnly date_deb, DateOnly date_fin, int statut, int statut_del)
     {
         var cmd = $" update {getSchemaTable()} set statut = @statut ";
         cmd += "  where immeuble_id= @immeuble_id and date_reference >= @dtDeb and date_reference <= @dtFin ";

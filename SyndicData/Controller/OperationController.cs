@@ -693,39 +693,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
         return getResultSQL(cmd, parameters);
     }
 
-    /*
-    public decimal[]  getTotalOperationWithoutSolde(string immeuble_id, DateTime dtDeb, DateTime dtFin)
-    {
-        decimal[] sum = new decimal[2];
-        string nature = "140";
-
-        string cmd = string.Format("select sum(debit) as debit, sum(credit) as credit from {0} f", getSchemaTable());
-        cmd += string.Format(" join agence.nature n on n.id = f.nature_id ", getSchema());
-        cmd += " where immeuble_id = @immeuble_id and date_reference >= @dtDeb and date_reference <= @dtFin";
-        cmd += " and n.reference <> @nature and f.statut = @statut";
-
-        List<NpgsqlParameter> parameters = new List<NpgsqlParameter>
-        {
-            new NpgsqlParameter("@immeuble_id", immeuble_id),
-            new NpgsqlParameter("@nature", nature),
-            new NpgsqlParameter("@dtDeb", dtDeb),
-            new NpgsqlParameter("@dtFin", dtFin),
-            new NpgsqlParameter("@statut", (int) GlobalConstantes.StatutOperation.Valide),
-        };
-
-        DataTable table = getResultSQL(cmd, parameters);
-
-        if (table != null)
-            if (table.Rows.Count > 0)
-            {
-                DataRow row = table.Rows[0];
-                sum[0] = Convertir.ToDecimal(row["debit"]);
-                sum[1] = Convertir.ToDecimal(row["credit"]);
-            }
-        return sum;
-    }
-     * */
-    public decimal getOperationDepense(string immeuble_id, DateTime dtDeb, DateTime dtFin, string copro_id = "")
+    public decimal getOperationDepense(string immeuble_id, DateOnly dtDeb, DateOnly dtFin, string copro_id = "")
     {
         decimal depense = 0;
 
@@ -755,13 +723,13 @@ public class OperationController : AbstractBaseController<OperationEntite>
         return depense;
     }
 
-    public decimal getOperationAppel(string immeuble_id, DateTime dtDeb, DateTime dtFin, string copro_id = "")
+    public decimal getOperationAppel(string immeuble_id, DateOnly dtDeb, DateOnly dtFin, string copro_id = "")
     {
         decimal sum = 0;
         var nature = "140";
 
         var cmd = $"select sum(credit)-sum(debit) as montant from {getSchema()}.operation f";
-        cmd += string.Format(" left join agence.nature n on n.id = f.nature_id ", getSchema());
+        cmd += " left join agence.nature n on n.id = f.nature_id ";
         cmd += " where immeuble_id = @immeuble_id and date_reference >= @dtDeb and date_reference <= @dtFin";
         cmd += " and type_mouvement=@type_mouvement and type_operation = @type_operation";
         cmd += " and n.reference <> @nature ";
@@ -793,14 +761,13 @@ public class OperationController : AbstractBaseController<OperationEntite>
         return sum;
     }
 
-    public decimal getSoldeImmeuble(string immeuble_id, DateTime dtDeb, DateTime dtFin, string copro_id = "")
+    public decimal getSoldeImmeuble(string immeuble_id, DateOnly dtDeb, DateOnly dtFin, string copro_id = "")
     {
         decimal depense = 0, solde_ante = 0, reglements = 0;
 
         depense = getOperationDepense(immeuble_id, dtDeb, dtFin, copro_id);
 
         var cmd =
-            // Solde precedent
             $"select coalesce(sum(credit)-sum(debit),0) as solde_ant from {getSchemaTable()} o ";
         cmd += $" left join {getSchema()}.nature n on n.id = nature_id ";
         cmd += $" left join {getSchema()}.coproprietaire c on c.id = coproprietaire_id ";
@@ -825,9 +792,6 @@ public class OperationController : AbstractBaseController<OperationEntite>
 
         reglements = SaisieReglementController.getController()
             .getTotalOperationWithoutSolde(immeuble_id, dtDeb, dtFin, copro_id);
-
-
-        //Console.WriteLine("Soldes {0} + {1} - {2} = {3}", solde_ante, reglements, depense, solde_ante + reglements - depense );
 
         return solde_ante + reglements + depense;
     }
@@ -870,8 +834,6 @@ public class OperationController : AbstractBaseController<OperationEntite>
         cmd += "c.id as ref_copro, n.reference as ref_nature, sf.base_repart, trim(n.nom) as nom, ";
         cmd += "case when f.reference <> '999' then trim(f.nom) else trim(sf.comment_fournisseur) end as fournisseur, ";
         cmd += "trim(o.Libelle) as libelle, ir.valeur as mill_generaux, lr.valeur as mill_indiv, ";
-//            cmd += " sum(global) as global, sum(debit) as debit, sum (credit) as credit, n.charge_locative::numeric as charge_loc, ir.nom as base_nom, 0 as who";
-//            cmd += " sum(global) as global, sum(debit) as debit, sum (credit) as credit, ";
         cmd += " sum(global) as global, ";
         cmd += " sum(case when debit < 0 then 0 when credit < 0 then abs(credit) else debit end) as debit, ";
         cmd += " sum(case when debit < 0 then abs(debit) when credit < 0 then 0 else credit end ) as credit, ";
@@ -908,20 +870,14 @@ public class OperationController : AbstractBaseController<OperationEntite>
         cmd2 += "c.id as ref_copro, n.reference as ref_nature, sf.base_repart , trim(n.nom) as nom, ";
         cmd2 +=
             "case when f.reference <> '999' then trim(f.nom) else trim(sf.comment_fournisseur) end as fournisseur, ";
-        //cmd2 += "trim(o.Libelle) as libelle, ir.valeur as mill_generaux, lr.valeur as mill_indiv, sum(global) as global, sum(debit) as debit, sum (credit) as credit, n.charge_locative::numeric as charge_loc, ir.nom as base_nom";
+        
         cmd2 += "trim(o.Libelle) as libelle, ";
 
-        //cmd2 += " case when o.base_repart != '86' and o.base_repart != '87' then ir.valeur else ri.global end as mill_generaux, ";
-        //cmd2 += " case when o.base_repart != '86' and o.base_repart != '87' then lr.valeur else ri.index end as mill_indiv, ";
-
-        //cmd2 += " case when o.base_repart != '86' and o.base_repart != '87' then case when ir.valeur <> 0 then ir.valeur else round(ri.global,0) end else ri.global end as mill_generaux,  ";
-        //cmd2 += " case when o.base_repart != '86' and o.base_repart != '87' then case when ir.valeur <> 0 then lr.valeur else round(ri.index,0) end else ri.index end as mill_indiv,  ";
         cmd2 +=
             " case when o.base_repart Not like '8%' then case when ir.valeur <> 0 then ir.valeur else round(ri.global,0) end else round(ri.global,0) end as mill_generaux,  ";
         cmd2 +=
             " case when o.base_repart Not like '8%' then case when ir.valeur <> 0 then lr.valeur else round(ri.index,0) end else round(ri.index,0) end as mill_indiv,  ";
 
-//            cmd2 += " sum(o.global) as global, sum(debit) as debit, sum (credit) as credit, ";
         cmd2 += " sum(o.global) as global, ";
         cmd2 += " sum(case when debit < 0 then 0 when credit < 0 then abs(credit) else debit end) as debit, ";
         cmd2 += " sum(case when debit < 0 then abs(debit) when credit < 0 then 0 else credit end ) as credit, ";
@@ -952,11 +908,6 @@ public class OperationController : AbstractBaseController<OperationEntite>
 
         cmd2 +=
             " group by 1, 2, 3, 4, 5, 6, 7, 8, 12, 13, ancien, nouveau, index, o.ref_cpt, o.saisie_id, o.date_reference, o.numero_operation";
-
-        //            cmd += " order by 1, 2";
-
-        //Console.WriteLine(cmd);
-        //Console.WriteLine(cmd2);
 
         var cmd_all =
             $" select * from ({cmd} union {cmd2}) as x order by 1, 2, 3, date_reference, numero_operation, saisie_id, ref_cpt";
@@ -998,11 +949,9 @@ public class OperationController : AbstractBaseController<OperationEntite>
     {
         var schema = getSchema();
 
-        //, dtDeb.AddDays(-1).ToShortDateString() 
-
         var cmdSolde =
             $" select coproprietaire_id, 1 as ordre, 'Solde Antérieur au {dtDeb.AddDays(-1).ToShortDateString()} ' as libelle, ";
-//            cmdSolde += " debit, credit ";
+
         cmdSolde += " case when debit < 0 then 0 when credit < 0 then abs(credit) else debit end as debit, ";
         cmdSolde += " case when debit < 0 then abs(debit) when credit <0 then 0 else credit end as credit ";
         cmdSolde += $" from {getSchemaTable()} o ";
@@ -1011,7 +960,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
             " where immeuble_id = @immeuble_id and date_reference >=@dateDeb and date_reference <= @dateFin and o.statut in (@statut, @statut_cloture)";
 
         var cmdReglements = "select coproprietaire_id , 2 as ordre , 'Règlements de l''exercice' , ";
-//            cmdReglements += String.Format(" 0, sum(montant) from {0}.saisie_reglement sr", schema);
+
         cmdReglements +=
             $" sum(case when montant<0 then abs(montant) else 0 end) as debit, sum(case when montant<0 then 0 else montant end) as credit from {schema}.saisie_reglement sr";
         cmdReglements +=
@@ -1020,7 +969,6 @@ public class OperationController : AbstractBaseController<OperationEntite>
             " where immeuble_id = @immeuble_id and date_reference >=@dateDeb and date_reference <= @dateFin and sr.statut in ( @statut, @statut_cloture)";
         cmdReglements += " group by 1";
 
-        //string cmdPaiements = String.Format(" select coproprietaire_id, 3 as ordre,  'Votre Relevé', sum(debit), sum(abs(credit)) from {0} o", getSchemaTable());
         var cmdPaiements =
             $" select coproprietaire_id, 3 as ordre,  'Votre Relevé', sum(debit), abs(sum(credit)) from {getSchemaTable()} o";
         cmdPaiements +=
@@ -1168,9 +1116,8 @@ public class OperationController : AbstractBaseController<OperationEntite>
         cmd += $" left join {schema}.lot_description l on l.id = lot_id";
         cmd += " where o.immeuble_id = @immeuble_id and type_mouvement=@type_mouvement and nature_id = @nature_id ";
         cmd +=
-            " and date_reference = @date_reference and trim(libelle) = @libelle and o.statut!= @statut and base_repart=@base_repart"; //and global = @montant ";
-        //if (appel.liasse_id.StartsWith("Reprise"))
-        //    cmd += " and saisie_id = 'Reprise'";
+            " and date_reference = @date_reference and trim(libelle) = @libelle and o.statut!= @statut and base_repart=@base_repart";
+
         if (appel.base_repart == "80")
         {
             if (appel.lot_id != null)
@@ -1194,7 +1141,6 @@ public class OperationController : AbstractBaseController<OperationEntite>
             new("@lot_id", appel.lot_id),
             new("@statut", (int)GlobalConstantes.StatutOperation.Supprime)
         };
-//            Console.WriteLine(cmd);
 
         var table = getResultSQL(cmd, parameters);
         if (table != null)
@@ -1353,32 +1299,6 @@ public class OperationController : AbstractBaseController<OperationEntite>
             throw new Exception("Annulation operation Failed");
     }
 
-    public DataTable getOperationRepriseReglement()
-    {
-        var cmd =
-            "select *, concat('*** ', i.reference) as ref_imm from agence.operation o join agence.immeuble i on i.id = immeuble_id where liasse_id like 'Reprise%'  ";
-        cmd += " and type_mouvement = 'Recette' and type_operation = 'Tresorerie' and o.statut=1";
-        cmd += " order by i.reference ";
-        return getResultSQL(cmd);
-    }
-
-    public DataTable getOperationRepriseAppels()
-    {
-        var cmd =
-            "select *, concat('*** ', i.reference) as ref_imm from agence.operation o join agence.immeuble i on i.id = immeuble_id where liasse_id like 'Reprise%'  ";
-        cmd += " and type_mouvement = 'Recette' and type_operation = 'AppelDeFond' and o.statut=1";
-        cmd += " order by i.reference ";
-        return getResultSQL(cmd);
-    }
-
-    public DataTable getOperationRepriseFacture()
-    {
-        var cmd =
-            "select *, concat('*** ', i.reference) as ref_imm from agence.operation o join agence.immeuble i on i.id = immeuble_id where liasse_id like 'Reprise%' and type_mouvement = 'Depense' and o.statut = 1";
-        cmd += " order by i.reference ";
-        return getResultSQL(cmd);
-    }
-
     public DataTable getOperations(OperationEntite entite)
     {
         var schema = getSchema();
@@ -1403,17 +1323,11 @@ public class OperationController : AbstractBaseController<OperationEntite>
             new("@libelle", entite.libelle.Trim()),
             new("@statut", (int)GlobalConstantes.StatutOperation.Supprime)
         };
-//            Console.WriteLine(cmd);
+
         return getResultSQL(cmd, parameters);
     }
 
-    public DataTable getBadOperations()
-    {
-        return getResultSQL(
-            "select o.*, i.reference as ref_imm from agence.operation o join agence.immeuble i on i.id = immeuble_id where lot_id = '0' order by i.reference ");
-    }
-
-    public DataTable getAllFactureOperations(string immeuble_id, DateTime dtDeb, DateTime dtFin)
+    public DataTable getAllFactureOperations(string immeuble_id, DateOnly dtDeb, DateOnly dtFin)
     {
         var cmd =
             $"select * from {getSchemaTable()} where immeuble_id = @immeuble_id and type_mouvement = @type_mouvement and statut != @statut";
@@ -1429,7 +1343,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
         return getResultSQL(cmd, parameters);
     }
 
-    public DataTable getAllReglementsOperations(string immeuble_id, DateTime dtDeb, DateTime dtFin)
+    public DataTable getAllReglementsOperations(string immeuble_id, DateOnly dtDeb, DateOnly dtFin)
     {
         var cmd =
             $"select * from {getSchemaTable()} where immeuble_id = @immeuble_id and type_mouvement = @type_mouvement and type_operation =@type_operation and statut != @statut";
@@ -1446,7 +1360,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
         return getResultSQL(cmd, parameters);
     }
 
-    public DataTable getAllAppelDeFondOperations(string immeuble_id, DateTime dtDeb, DateTime dtFin)
+    public DataTable getAllAppelDeFondOperations(string immeuble_id, DateOnly dtDeb, DateOnly dtFin)
     {
         var cmd =
             $"select * from {getSchemaTable()} where immeuble_id = @immeuble_id and type_mouvement = @type_mouvement and type_operation =@type_operation and statut != @statut";

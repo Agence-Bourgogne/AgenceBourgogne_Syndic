@@ -81,11 +81,11 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
             Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
 
             var exercice =
-                immeuble.ExerciceCourant; //ExerciceComptableController.getController().getExerciceCourant(immeuble.id);
+                immeuble.ExerciceCourant;
             if (exercice != null)
             {
-                dtDebut.Value = exercice.date_deb;
-                dtFin.Value = exercice.date_fin;
+                dtDebut.Value = exercice.date_deb.ToDateTime(TimeOnly.MinValue);
+                dtFin.Value = exercice.date_fin.ToDateTime(TimeOnly.MinValue);
             }
 
             // Milliemes de chaque Copro

@@ -6,8 +6,8 @@ namespace SyndicData.Entites.ExerciceComptable;
 
 public class ExerciceComptableEntite : AbstractBaseEntite
 {
-    public DateTime date_deb;
-    public DateTime date_fin;
+    public DateOnly date_deb;
+    public DateOnly date_fin;
     public string immeuble_id;
     public string nom;
     public string reference;

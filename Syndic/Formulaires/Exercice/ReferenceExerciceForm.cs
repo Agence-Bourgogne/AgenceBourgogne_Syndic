@@ -35,8 +35,8 @@ public partial class ReferenceExerciceForm : Form
             if (exercice.id != "")
             {
                 dtDeb.ValueChanged -= dtDeb_ValueChanged;
-                dtFin.Value = exercice.date_fin;
-                dtDeb.Value = exercice.date_deb;
+                dtFin.Value = exercice.date_fin.ToDateTime(TimeOnly.MinValue);
+                dtDeb.Value = exercice.date_deb.ToDateTime(TimeOnly.MinValue);
                 dtDeb.ValueChanged += dtDeb_ValueChanged;
             }
 
@@ -104,8 +104,8 @@ public partial class ReferenceExerciceForm : Form
             exercice = new ExerciceComptableEntite();
 
         exercice.reference = exercice.nom = tbReference.Text;
-        exercice.date_deb = dtDeb.Value;
-        exercice.date_fin = dtFin.Value;
+        exercice.date_deb = DateOnly.FromDateTime(dtDeb.Value);
+        exercice.date_fin = DateOnly.FromDateTime(dtFin.Value);
         bResult = ExerciceComptableController.GetController().InsertOrUpdate(exercice);
 
         var immeuble = ImmeubleController.getController().getEntiteById(exercice.immeuble_id);
@@ -144,8 +144,8 @@ public partial class ReferenceExerciceForm : Form
             var row = (DataRowView)dataGridView.SelectedRows[0].DataBoundItem;
             var entite = ExerciceComptableController.GetController().getEntiteById(row["id"].ToString());
             tbReference.Text = entite.reference;
-            dtDeb.Value = entite.date_deb;
-            dtFin.Value = entite.date_fin;
+            dtDeb.Value = entite.date_deb.ToDateTime(TimeOnly.MinValue);
+            dtFin.Value = entite.date_fin.ToDateTime(TimeOnly.MinValue);
         }
     }
 

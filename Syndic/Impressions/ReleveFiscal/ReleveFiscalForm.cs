@@ -76,8 +76,8 @@ public partial class ReleveFiscalForm : Form
             var exercice = immeuble.ExerciceCourant;
             if (exercice != null)
             {
-                dtDebut.Value = exercice.date_deb;
-                dtFin.Value = exercice.date_fin;
+                dtDebut.Value = exercice.date_deb.ToDateTime(TimeOnly.MinValue);
+                dtFin.Value = exercice.date_fin.ToDateTime(TimeOnly.MinValue);
             }
 
             Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";

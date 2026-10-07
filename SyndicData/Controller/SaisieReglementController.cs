@@ -25,7 +25,7 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
         return controller;
     }
 
-    public DataTable GetAllElements(string immeuble_id, DateTime dtDeb, DateTime dtFin)
+    public DataTable GetAllElements(string immeuble_id, DateOnly dtDeb, DateOnly dtFin)
     {
         var cmd = $"select r.*, c.reference as ref_copro, i.reference as ref_imm from {getSchemaTable()} r ";
         cmd += " join agence.coproprietaire c on c.id = r.coproprietaire_id ";
@@ -35,9 +35,10 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
         if (immeuble_id != "")
             cmd += " and immeuble_id = @immeuble_id";
 
-        if (dtDeb != Database.NullDate)
+        if (dtDeb != DateOnly.FromDateTime(Database.NullDate))
             cmd += " and date_reference >= @dtDeb";
-        if (dtFin != Database.NullDate)
+
+        if (dtFin != DateOnly.FromDateTime(Database.NullDate))
             cmd += " and date_reference <= @dtFin";
 
         cmd += " order by i.reference";
@@ -64,15 +65,12 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
         cmd += " c.reference as coproprietaire_ref, ";
         cmd += " i.reference as immeuble_ref, ";
         cmd += " n.reference as nature_ref, ";
-
-        //            cmd += " l.numero_lot as \"Lot\", e.lot_id, " 
         cmd += " e.emetteur, e.banque, ";
         cmd += " e.liasse_id, e.immeuble_id, e.nature_id, e.coproprietaire_id, ";
         cmd += "  e.id";
         cmd += $" from {getSchemaTable()} e ";
         cmd += $" left join {schema}.immeuble i on i.id = e.immeuble_id";
         cmd += $" left join {schema}.coproprietaire c on c.id = e.coproprietaire_id";
-        //cmd += String.Format(" left join {0}.lot_description l on l.id = e.lot_id", schema);
         cmd += $" left join {schema}.nature n on n.id = e.nature_id";
 
         cmd += " where liasse_id = @liasse_id and e.statut = @statut ";
@@ -206,7 +204,7 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
         return getResultSQL(cmd, parameters);
     }
 
-    public decimal getSumReglements(string immeuble_id, DateTime dtDeb, DateTime dtFin)
+    public decimal getSumReglements(string immeuble_id, DateOnly dtDeb, DateOnly dtFin)
     {
         decimal sum = 0;
         var cmd = $"Select sum(montant) as montant from {getSchemaTable()}";
@@ -233,14 +231,14 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
         return sum;
     }
 
-    public decimal getTotalOperationWithoutSolde(string immeuble_id, DateTime dtDeb, DateTime dtFin,
+    public decimal getTotalOperationWithoutSolde(string immeuble_id, DateOnly dtDeb, DateOnly dtFin,
         string copro_id = "")
     {
         decimal sum = 0;
         var nature = "140";
 
         var cmd = $"select coalesce(sum(credit)-sum(debit),0) as montant from {getSchema()}.operation f";
-        cmd += string.Format(" left join agence.nature n on n.id = f.nature_id ", getSchema());
+        cmd += " left join agence.nature n on n.id = f.nature_id ";
         cmd += " where immeuble_id = @immeuble_id and date_reference >= @dtDeb and date_reference <= @dtFin";
         cmd += " and type_mouvement=@type_mouvement and type_operation = @type_operation";
         cmd += " and n.reference <> @nature ";
@@ -272,7 +270,7 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
         return sum;
     }
 
-    public bool AnnuleElement(SaisieReglementEntite entite, DataTable table)
+    private bool AnnuleElement(SaisieReglementEntite entite, DataTable table)
     {
         var rc = false;
         var cnx = Database.GetInstance();

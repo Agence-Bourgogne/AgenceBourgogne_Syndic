@@ -36,8 +36,8 @@ public partial class NouvelExerciceOnlyForm : Form
         else
         {
             var exercice = ExerciceComptableController.GetController().getEntiteById(exercice_id);
-            dtDeb.Value = exercice.date_deb;
-            dtFin.Value = exercice.date_fin;
+            dtDeb.Value = exercice.date_deb.ToDateTime(TimeOnly.MinValue);
+            dtFin.Value = exercice.date_fin.ToDateTime(TimeOnly.MinValue);
             tbReference.Text = exercice.reference;
         }
     }
@@ -75,8 +75,8 @@ public partial class NouvelExerciceOnlyForm : Form
                     statut = (int)GlobalConstantes.StatutExercice.Ouvert
                 };
 
-            exercice.date_deb = dtDeb.Value;
-            exercice.date_fin = dtFin.Value;
+            exercice.date_deb = DateOnly.FromDateTime(dtDeb.Value);
+            exercice.date_fin = DateOnly.FromDateTime(dtFin.Value);
             exercice.immeuble_id = immeuble_id;
             exercice.reference = tbReference.Text;
             exercice.nom = tbReference.Text;

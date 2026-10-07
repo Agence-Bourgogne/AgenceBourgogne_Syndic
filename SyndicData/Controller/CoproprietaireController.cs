@@ -306,7 +306,7 @@ public class CoproprietaireController : AbstractBaseController<CoproprietaireEnt
         return getResultSQL(cmd, parameters);
     }
 
-    public bool MiseAjourDateRelances(string copro_ids, DateTime daterel, int type)
+    public bool MiseAjourDateRelances(string copro_ids, DateOnly daterel, int type)
     {
         var cmd = $"update {getSchemaTable()} ";
         cmd += type switch

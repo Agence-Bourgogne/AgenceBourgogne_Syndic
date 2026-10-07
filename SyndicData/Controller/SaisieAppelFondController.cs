@@ -25,7 +25,7 @@ public class SaisieAppelFondController : AbstractBaseController<SaisieAppelFondE
         //return new SaisieAppelFondController();
     }
 
-    public DataTable GetAllElements(string immeuble_id, DateTime dtDeb, DateTime dtFin)
+    public DataTable GetAllElements(string immeuble_id, DateOnly dtDeb, DateOnly dtFin)
     {
         var cmd = $"select r.*, i.reference as ref_imm from {getSchemaTable()} r ";
         cmd += " join agence.immeuble i on i.id = r.immeuble_id ";
@@ -34,9 +34,9 @@ public class SaisieAppelFondController : AbstractBaseController<SaisieAppelFondE
         if (immeuble_id != "")
             cmd += " and immeuble_id = @immeuble_id";
 
-        if (dtDeb != Database.NullDate)
+        if (dtDeb != DateOnly.FromDateTime(Database.NullDate))
             cmd += " and date_reference >= @dtDeb";
-        if (dtFin != Database.NullDate)
+        if (dtFin != DateOnly.FromDateTime(Database.NullDate))
             cmd += " and date_reference <= @dtFin";
 
         cmd += " order by i.reference";
@@ -198,7 +198,7 @@ public class SaisieAppelFondController : AbstractBaseController<SaisieAppelFondE
         return getResultSQL(cmd, parameters);
     }
 
-    public decimal getTotalOperationWithoutSolde(string immeuble_id, DateTime dtDeb, DateTime dtFin)
+    public decimal getTotalOperationWithoutSolde(string immeuble_id, DateOnly dtDeb, DateOnly dtFin)
     {
         decimal sum = 0;
         var nature = "140";

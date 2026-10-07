@@ -14,7 +14,6 @@ public class LotRepartitionEntite : AbstractBaseEntite
 
     public int valeur;
 
-    //public int statut;
     public LotRepartitionEntite()
     {
         id = "";
@@ -39,7 +38,6 @@ public class LotRepartitionEntite : AbstractBaseEntite
         updatables.Add(new UpdateField("ligne", true, members));
         updatables.Add(new UpdateField("colonne", true, members));
         updatables.Add(new UpdateField("type_ventilation", true, members));
-        //updatables.Add(new UpdateField("statut", true, members));
 
         base.setValues(row);
     }

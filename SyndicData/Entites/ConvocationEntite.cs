@@ -9,7 +9,7 @@ namespace SyndicData.Entites;
 public class ConvocationEntite : AbstractBaseEntite
 {
     private List<ConvocationDescriptionEntite> _description;
-    public DateTime date_assemblee;
+    public DateOnly date_assemblee;
     public string heure_assemblee;
     public string immeuble_id;
     public string lieu_assemblee;

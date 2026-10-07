@@ -34,7 +34,7 @@ public class RepartIndividuelleController : AbstractBaseController<RepartIndivid
         return getResultSQL(cmd, parameters);
     }
 
-    public DataTable getFactureRepartFromAppel(string immeuble_id, string reference, DateTime date_reference)
+    public DataTable getFactureRepartFromAppel(string immeuble_id, string reference, DateOnly date_reference)
     {
         var cmd =
             $"select * from {getSchemaTable()} where immeuble_id = @immeuble_id and type_saisie = {(int)GlobalConstantes.TypeSaisie.AppelDeFond} and reference = @reference and date_reference = @date_reference and statut!= @statut";

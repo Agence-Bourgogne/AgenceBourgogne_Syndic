@@ -60,7 +60,7 @@ public partial class ClotureExerciceForm : Form
             exercice = immeuble.ExerciceCourant;
             if (exercice != null)
             {
-                dtDeb.Value = exercice.date_fin.AddDays(1);
+                dtDeb.Value = exercice.date_fin.AddDays(1).ToDateTime(TimeOnly.MinValue);
                 dtFin.Value = dtDeb.Value.AddYears(1).AddDays(-1);
             }
 
@@ -69,7 +69,7 @@ public partial class ClotureExerciceForm : Form
             Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
 
             var valueSoldeImm = OperationController.getController()
-                .getSoldeImmeuble(immeuble == null ? "" : immeuble.id, datDeb, datFin);
+                .getSoldeImmeuble(immeuble == null ? "" : immeuble.id, DateOnly.FromDateTime(datDeb), DateOnly.FromDateTime(datFin));
             tbSolde.Text = valueSoldeImm.ToString();
         }
         else
@@ -89,19 +89,16 @@ public partial class ClotureExerciceForm : Form
     {
         if (tbRefImmeuble.Text == "")
             return;
-        if ( /*immeuble != null & */cbTypeOpe.SelectedIndex >= 0)
+        if (cbTypeOpe.SelectedIndex >= 0)
             switch (cbTypeOpe.SelectedIndex)
             {
                 case 0:
-                    //regKey = "listes\\factures";
                     FillFromFacture();
                     break;
                 case 1:
-                    //regKey = "listes\\appels";
                     FillFromAppelsDeFond();
                     break;
                 case 2:
-                    //regKey = "listes\\reglements";
                     FillFromReglements();
                     break;
                 case 3:
@@ -124,14 +121,13 @@ public partial class ClotureExerciceForm : Form
                     break;
             }
 
-        var datDeb = dtDeb.Value.AddYears(-1);
-        var datFin = dtDeb.Value.AddDays(-1);
+        var datDeb = DateOnly.FromDateTime(dtDeb.Value.AddYears(-1));
+        var datFin = DateOnly.FromDateTime(dtDeb.Value.AddDays(-1));
 
         if (immeuble != null)
         {
             var total_facture = SaisieFactureController.getController()
                 .getTotalOperationWithoutSolde(immeuble.id, datDeb, datFin);
-//                decimal total_appels = SaisieAppelFondController.getController().getTotalOperationWithoutSolde(immeuble.id, datDeb, datFin);
             var total_reglements = SaisieReglementController.getController()
                 .getTotalOperationWithoutSolde(immeuble.id, datDeb, datFin);
             var soldeReprise = SaisieFactureController.getController()
@@ -144,21 +140,16 @@ public partial class ClotureExerciceForm : Form
 
             strTotaux += "\r\n";
             strTotaux += $"Operations Depenses: \t {depenseOperation}\r\n";
-//                strTotaux += String.Format("Operations Reglements: \t {0}\r\n", reglementOperation);
 
             strTotaux += "\r\n";
             strTotaux += $"Solde Antérieur: \t {soldeReprise}\r\n";
             strTotaux += $"Solde Exercice: \t\t {valueSoldeImm}\r\n";
-            //strTotaux += String.Format("Opération Débit: \t {0}\r\n", total_operations[0]);
-            //strTotaux += String.Format("Opération Crédit: \t {0}\r\n", total_operations[1]);
-            //strTotaux += String.Format("Débit - Crédit: \t\t {0}", total_operations[0] - total_operations[1]);
 
             TotauxForm.DoFormText(this, strTotaux);
             TotauxForm.Text = "Totaux";
             TotauxForm.ShowForm(this);
             Activate();
 
-//                decimal valueSoldeImm = OperationController.getController().getSoldeImmeuble(immeuble == null ? "" : immeuble.id, datDeb, datFin);
             tbSolde.Text = valueSoldeImm.ToString();
         }
     }
@@ -464,7 +455,7 @@ public partial class ClotureExerciceForm : Form
         return liasse;
     }
 
-    private SaisieFactureEntite createFactureReprise(LiasseEntite liasse, DateTime dateDeb, decimal valueSoldeImm)
+    private SaisieFactureEntite createFactureReprise(LiasseEntite liasse, DateOnly dateDeb, decimal valueSoldeImm)
     {
         var facture = new SaisieFactureEntite
         {

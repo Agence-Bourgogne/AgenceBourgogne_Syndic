@@ -245,7 +245,7 @@ public partial class FicheReglementForm : Form
         saisie.coproprietaire_id = coproprietaire.id;
         saisie.nature_id = nature.id;
         saisie.montant = Convertir.ToDecimal(tbMontant.Text);
-        saisie.date_reference = Convert.ToDateTime(tbDate.Text);
+        saisie.date_reference = DateOnly.Parse(tbDate.Text);
         saisie.libelle = tbLibelle.Text;
         saisie.emetteur = tbEmetteur.Text;
         saisie.banque = tbBanque.Text;
@@ -292,7 +292,7 @@ public partial class FicheReglementForm : Form
             return false;
         }
 
-        var dtFac = Convert.ToDateTime(tbDate.Text);
+        var dtFac = DateOnly.Parse(tbDate.Text);
         var exercice = ExerciceComptableController.GetController().GetExerciceFromDate(immeuble.id, dtFac);
 
         if (exercice != null)
@@ -414,7 +414,7 @@ public partial class FicheReglementForm : Form
                 liasse_id = liasse_id
             };
 
-            saisie.date_operation = saisie.date_reference = Convert.ToDateTime(tbDate.Text);
+            saisie.date_operation = saisie.date_reference = DateOnly.Parse(tbDate.Text);
             saisie.numero_operation = numero_operation;
             saisie.immeuble_id = immeuble_id;
             saisie.comptebanque = compte_banque;

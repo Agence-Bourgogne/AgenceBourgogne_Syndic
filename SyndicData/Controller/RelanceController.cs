@@ -52,7 +52,7 @@ public static class RelanceController
         return Convertir.ToDecimal(montant);
     }
 
-    public static bool GenerateRelance(List<RelanceEntite>[] relances, DateTime dt)
+    public static bool GenerateRelance(List<RelanceEntite>[] relances, DateOnly dt)
     {
         var rc = false;
 

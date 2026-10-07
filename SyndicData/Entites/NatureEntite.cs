@@ -16,7 +16,6 @@ public class NatureEntite : AbstractBaseEntite
 
     public int type_charge;
 
-    //        public string nom_comptabilite;
     public NatureEntite()
     {
         id = "";
@@ -42,7 +41,6 @@ public class NatureEntite : AbstractBaseEntite
         updatables.Add(new UpdateField("type_charge", true, members));
         updatables.Add(new UpdateField("budgetisable", true, members));
         updatables.Add(new UpdateField("statut", true, members));
-        //            updatables.Add(new UpdateField("nom_comptabilite", true, members));
 
         base.setValues(row);
     }

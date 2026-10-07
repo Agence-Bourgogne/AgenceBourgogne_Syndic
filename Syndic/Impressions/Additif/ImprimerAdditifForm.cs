@@ -97,7 +97,7 @@ public partial class ImprimerAdditifForm : Form
             infoForm.DoFormText(this, immeuble.note);
             try
             {
-                dtDateAssemblee.Value = immeuble.dateass;
+                dtDateAssemblee.Value = immeuble.dateass.ToDateTime(TimeOnly.MinValue);
             }
             catch (Exception)
             {

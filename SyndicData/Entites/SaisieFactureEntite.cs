@@ -12,8 +12,8 @@ public class SaisieFactureEntite : AbstractBaseEntite
     private NatureEntite _nature;
     public string base_repart;
     public string comment_fournisseur;
-    public DateTime date_operation;
-    public DateTime date_reference;
+    public DateOnly date_operation;
+    public DateOnly date_reference;
     public string fournisseur_id;
 
     public string immeuble_id;
@@ -24,7 +24,7 @@ public class SaisieFactureEntite : AbstractBaseEntite
     public string nature_id;
     public int numero_operation;
     public int reglement;
-    public int statut = 0; //(int)GlobalConstantes.StatutOperation.Brouillon;
+    public int statut = 0;
 
     public SaisieFactureEntite()
     {

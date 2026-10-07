@@ -12,10 +12,7 @@ public class FournisseurEntite : AbstractBaseEntite
     public string interlocuteur;
     public string nom;
     public string numsecu;
-
     public string numurs;
-
-    //public int id;
     public string reference;
     public int reglement;
     public string siret;

@@ -69,7 +69,7 @@ public partial class CreateFacturefromOperationForm : Form
         var montant = Convertir.ToDecimal(tbMontant.Text);
         var ref_nature = tbNature.Text;
         var ref_fournisseur = tbFournisseur.Text;
-        var date_reference = DateTime.Parse(tbDateCreation.Text);
+        var date_reference = DateOnly.Parse(tbDateCreation.Text);
         var comment = tbComment.Text;
         var comment_fournisseur = tbCommentaireFournisseur.Text;
         var base_repart = tbBase.Text;
@@ -98,7 +98,6 @@ public partial class CreateFacturefromOperationForm : Form
             entite.date_operation = entite.date_reference = date_reference;
             entite.nature_id = nature.id;
             entite.fournisseur_id = fournisseur.id;
-//                entite.date_reference = date_reference;
             entite.comment_fournisseur = comment_fournisseur;
             entite.liasse_id = "Correction";
             entite.libelle = comment;

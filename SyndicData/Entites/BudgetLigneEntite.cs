@@ -10,8 +10,6 @@ public class BudgetLigneEntite : AbstractBaseEntite
 
     public decimal montant;
 
-//        public string reference;
-    //public string libelle;
     public string nature_id;
     public int statut;
 
@@ -33,8 +31,6 @@ public class BudgetLigneEntite : AbstractBaseEntite
         updatables.Clear();
 
         updatables.Add(new UpdateField("budget_id", true, members));
-        //updatables.Add(new UpdateField("reference", true, members));
-        //updatables.Add(new UpdateField("libelle", true, members));
         updatables.Add(new UpdateField("nature_id", true, members));
         updatables.Add(new UpdateField("base_repart", true, members));
         updatables.Add(new UpdateField("montant", true, members));

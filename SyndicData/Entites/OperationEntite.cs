@@ -18,8 +18,8 @@ public class OperationEntite : AbstractBaseEntite
     public string base_repart;
     public string coproprietaire_id;
     public decimal credit;
-    public DateTime date_operation;
-    public DateTime date_reference;
+    public DateOnly date_operation;
+    public DateOnly date_reference;
     public decimal debit;
     public decimal global;
     public string immeuble_id;
@@ -34,7 +34,6 @@ public class OperationEntite : AbstractBaseEntite
     public string saisie_id;
 
     public int statut;
-//        public enum Statut { Inactif, Actif, Valide };
 
     public string type_mouvement;
     public string type_operation;

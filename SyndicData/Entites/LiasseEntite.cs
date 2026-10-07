@@ -6,8 +6,6 @@ namespace SyndicData.Entites;
 
 public class LiasseEntite : AbstractBaseEntite
 {
-//        public enum Type { Ecriture, Cheques, AppelDeFond};
-//        public enum Statut { Actif, Inactif , Valide };
     public const string NOUVELLE_ID = "new";
     public const string NOUVELLE_DESI = "Nouvelle";
     public decimal montant;

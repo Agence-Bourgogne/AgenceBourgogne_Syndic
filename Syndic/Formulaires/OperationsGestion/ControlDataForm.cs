@@ -187,15 +187,12 @@ public partial class ControlDataForm : Form
             var refCopro = "";
             if (entite.Coproprietaire != null)
                 refCopro = entite.Coproprietaire.reference;
-            //Console.WriteLine("{0} {1} {2} {3} {4} {5}", row["date_operation"], ref_copro, row["libelle"], row["debit"], row["credit"], factures.Rows.Count);
+
             if (factures != null)
                 if (factures.Rows.Count == 0 || factures.Rows.Count > 1)
                     dataGridView.Rows.Add(entite.id, entite.date_reference.ToShortDateString(), refCopro,
                         entite.Nature.reference, entite.base_repart, entite.libelle, entite.debit.ToString(),
                         entite.credit.ToString(), entite.global.ToString(), factures.Rows.Count.ToString());
-            //else
-            //    dataGridView.Rows.Add(new string[] { entite.id, entite.date_reference.ToShortDateString(), ref_copro, entite.Nature.reference, entite.base_repart, entite.libelle, 
-            //            entite.debit.ToString(), entite.credit.ToString(), entite.global.ToString(), factures.Rows.Count.ToString() });
         }
 
         ShowPostit();

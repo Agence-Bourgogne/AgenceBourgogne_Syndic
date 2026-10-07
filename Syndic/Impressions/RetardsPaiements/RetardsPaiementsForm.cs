@@ -245,7 +245,7 @@ public partial class RetardsPaiementsForm : Form
 
             var type = 0;
 
-            var dt = DateTime.Parse(dtEdition.Value.ToShortDateString());
+            var dt = DateOnly.FromDateTime(dtEdition.Value);
 
             if (!bHaveSelection)
             {

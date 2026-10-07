@@ -17,10 +17,10 @@ public class CoproprietaireEntite : AbstractBaseEntite
     public int codenvoi;
     public string codepostal;
     public bool commerce;
-    public DateTime dateappel;
-    public DateTime daterel1;
-    public DateTime daterel2;
-    public DateTime daterel3;
+    public DateOnly dateappel;
+    public DateOnly daterel1;
+    public DateOnly daterel2;
+    public DateOnly daterel3;
     public bool declaration;
     public string email;
     public bool huissier;

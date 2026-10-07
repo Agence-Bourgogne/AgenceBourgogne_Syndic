@@ -24,19 +24,19 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
         return controller;
     }
 
-    public DataTable GetAllElements(string immeuble_id, DateTime dtDeb, DateTime dtFin)
+    public DataTable GetAllElements(string immeuble_id, DateOnly dtDeb, DateOnly dtFin)
     {
         var cmd = $"select f.*, i.reference as ref_imm from {getSchemaTable()} f ";
         cmd += " join agence.immeuble i on i.id = immeuble_id ";
         cmd += " where f.statut = 1 ";
-        if (Database.NullDate != dtDeb)
+        if (dtDeb != DateOnly.FromDateTime(Database.NullDate))
             cmd += " and date_reference >= @dtDeb and date_reference <= @dtFin";
 
         if (immeuble_id != "")
             cmd += " and immeuble_id = @immeuble_id";
-        if (dtDeb != Database.NullDate)
+        if (dtDeb != DateOnly.FromDateTime(Database.NullDate))
             cmd += " and date_reference >= @dtDeb";
-        if (dtFin != Database.NullDate)
+        if (dtFin != DateOnly.FromDateTime(Database.NullDate))
             cmd += " and date_reference <= @dtFin";
 
 
@@ -258,7 +258,7 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
         return getResultSQL(cmd, parameters);
     }
 
-    public decimal getTotalOperationWithoutSolde(string immeuble_id, DateTime dtDeb, DateTime dtFin)
+    public decimal getTotalOperationWithoutSolde(string immeuble_id, DateOnly dtDeb, DateOnly dtFin)
     {
         decimal sum = 0;
         var nature = "140";
@@ -312,7 +312,7 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
         return getResultSQL(cmd, parameters);
     }
 
-    public DataTable getCurrentSoldeImmeuble(string immeuble_id, DateTime dtDeb, DateTime dtFin)
+    public DataTable getCurrentSoldeImmeuble(string immeuble_id, DateOnly dtDeb, DateOnly dtFin)
     {
         var cmd = $"select * from {getSchemaTable()} sf ";
         cmd += $" join {getSchema()}.nature n on n.id = nature_id";
@@ -326,12 +326,10 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
             new("@dtFin", dtFin),
             new("@solde_bilan", ParametresDB.getParam1("NATURE", "SOLDE BILAN"))
         };
-        //Console.WriteLine(cmd);
-        //Console.WriteLine(immeuble_id);
         return getResultSQL(cmd, parameters);
     }
 
-    public decimal getSoldeAnterieurImmeuble(string immeuble_id, DateTime dtDeb, DateTime dtFin)
+    public decimal getSoldeAnterieurImmeuble(string immeuble_id, DateOnly dtDeb, DateOnly dtFin)
     {
         var table = getCurrentSoldeImmeuble(immeuble_id, dtDeb, dtFin);
         decimal solde = 0;

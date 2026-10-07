@@ -12,9 +12,9 @@ public class ImmeubleEntite : AbstractBaseEntite
     private ExerciceComptableEntite _exercice;
     public string codepostal;
     public string comptebanque;
-    public DateTime dateass;
-    public DateTime datecloture;
-    public DateTime datecreation;
+    public DateOnly dateass;
+    public DateOnly datecloture;
+    public DateOnly datecreation;
     private DataTable immeuble_repart;
     public string lieuconv;
     private DataTable listeLots;
@@ -31,7 +31,7 @@ public class ImmeubleEntite : AbstractBaseEntite
     public ImmeubleEntite()
     {
         id = "";
-        datecreation = DateTime.Now;
+        datecreation = DateOnly.FromDateTime(DateTime.Now);
         setValues(null);
     }
 

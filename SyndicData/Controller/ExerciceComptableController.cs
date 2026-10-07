@@ -292,7 +292,7 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
         return dt;
     }
 
-    public ExerciceComptableEntite GetExerciceFromDate(string immeubleId, DateTime dtDeb)
+    public ExerciceComptableEntite GetExerciceFromDate(string immeubleId, DateOnly dtDeb)
     {
         var cmd = " select * ";
         ExerciceComptableEntite entite = null;
