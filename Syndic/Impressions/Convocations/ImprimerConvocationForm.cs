@@ -484,12 +484,6 @@ public partial class ImprimerConvocationForm : Form
         Activate();
     }
 
-    private void btnPV_Click(object sender, EventArgs e)
-    {
-        var form = new PvAssembleeForm();
-        form.ShowDialog();
-    }
-
     private void btnExport_Click(object sender, EventArgs e)
     {
         var parameters = new ReportParameter[]

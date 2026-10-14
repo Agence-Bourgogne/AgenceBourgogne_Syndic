@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
 using CommonProjectsPartners.Entites;
-using CommonProjectsPartners.Utils;
 using SyndicData.Common;
 using SyndicData.Controller;
 using SyndicData.Entites;
@@ -155,12 +154,6 @@ public partial class FicheFournisseurForm : Form
     private void tbTextChanged(object sender, EventArgs e)
     {
         modified = true;
-    }
-
-    private void btnEnter_Click(object sender, EventArgs e)
-    {
-//            btnEnter.Width = 0;
-        ControlsWindows.FocusNextTabbedControl(this);
     }
 
     private void lblRef_Click(object sender, EventArgs e)

@@ -37,7 +37,6 @@ namespace EspaceSyndic.Impressions.Convocations
             imageList1 = new ImageList(components);
             panelButton = new Panel();
             btnExport = new Button();
-            btnPV = new Button();
             btnRepart = new Button();
             btnWord = new Button();
             btnEnter = new Button();
@@ -84,7 +83,6 @@ namespace EspaceSyndic.Impressions.Convocations
             panelButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panelButton.BorderStyle = BorderStyle.Fixed3D;
             panelButton.Controls.Add(btnExport);
-            panelButton.Controls.Add(btnPV);
             panelButton.Controls.Add(btnRepart);
             panelButton.Controls.Add(btnWord);
             panelButton.Controls.Add(btnEnter);
@@ -111,22 +109,7 @@ namespace EspaceSyndic.Impressions.Convocations
             btnExport.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btnExport.UseVisualStyleBackColor = true;
             btnExport.Click += btnExport_Click;
-            // 
-            // btnPV
-            // 
-            btnPV.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnPV.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            btnPV.ImageIndex = 8;
-            btnPV.ImageList = imageList1;
-            btnPV.Location = new System.Drawing.Point(381, 1);
-            btnPV.Margin = new Padding(4);
-            btnPV.Name = "btnPV";
-            btnPV.Size = new System.Drawing.Size(116, 29);
-            btnPV.TabIndex = 123;
-            btnPV.Text = "Pv Assemblee";
-            btnPV.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            btnPV.UseVisualStyleBackColor = true;
-            btnPV.Click += btnPV_Click;
+
             // 
             // btnRepart
             // 
@@ -442,8 +425,6 @@ namespace EspaceSyndic.Impressions.Convocations
         protected Label label2;
         protected Label label5;
         protected MaskedTextBox tbHeure;
-        //private Datasets.CoproprietaireImmeuble coproprietaireImmeuble;
-        //private Datasets.CoproprietaireImmeubleTableAdapters.CoproImmeubleTableAdapter coproImmeubleTableAdapter;
         private DateTimePicker dtDateAssemblee;
         private DateTimePicker dtDateEntete;
         protected Label label6;
@@ -451,7 +432,6 @@ namespace EspaceSyndic.Impressions.Convocations
         private Button btnEnter;
         private Button btnWord;
         private Button btnRepart;
-        private Button btnPV;
         private Button btnExport;
         private Label label7;
     }
