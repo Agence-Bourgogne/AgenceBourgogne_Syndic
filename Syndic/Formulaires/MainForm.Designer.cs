@@ -55,13 +55,11 @@ namespace EspaceSyndic.Formulaires
             editionsToolStripMenuItem = new ToolStripMenuItem();
             convocationsToolStripMenuItem = new ToolStripMenuItem();
             additifsToolStripMenuItem = new ToolStripMenuItem();
-            accusésDeReceptionToolStripMenuItem = new ToolStripMenuItem();
             feuillesDePrésenceToolStripMenuItem = new ToolStripMenuItem();
             bilanGénéralEtCompteExploitationToolStripMenuItem = new ToolStripMenuItem();
             relevésIndividuelsToolStripMenuItem = new ToolStripMenuItem();
             budgetPrévisionnelToolStripMenuItem = new ToolStripMenuItem();
             bordereauRemiseDeChèquesToolStripMenuItem = new ToolStripMenuItem();
-            relevésCommercesToolStripMenuItem = new ToolStripMenuItem();
             clotureExerciceToolStripMenuItem = new ToolStripMenuItem();
             grandLivreToolStripMenuItem = new ToolStripMenuItem();
             utilitairesToolStripMenuItem = new ToolStripMenuItem();
@@ -71,7 +69,6 @@ namespace EspaceSyndic.Formulaires
             tableauRemiseDeClefsToolStripMenuItem = new ToolStripMenuItem();
             balanceReglementsFacturesPourUnImmeubleToolStripMenuItem = new ToolStripMenuItem();
             balanceReglementsAppelsDeFondImmeubleToolStripMenuItem = new ToolStripMenuItem();
-            balanceReglementsFacturesPourLeCompteSyndicToolStripMenuItem = new ToolStripMenuItem();
             outilsToolStripMenuItem = new ToolStripMenuItem();
             parametresToolStripMenuItem = new ToolStripMenuItem();
             parametresGenerauxToolStripMenuItem = new ToolStripMenuItem();
@@ -240,7 +237,7 @@ namespace EspaceSyndic.Formulaires
             // 
             // editionsToolStripMenuItem
             // 
-            editionsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { convocationsToolStripMenuItem, additifsToolStripMenuItem, accusésDeReceptionToolStripMenuItem, feuillesDePrésenceToolStripMenuItem, bilanGénéralEtCompteExploitationToolStripMenuItem, relevésIndividuelsToolStripMenuItem, budgetPrévisionnelToolStripMenuItem, bordereauRemiseDeChèquesToolStripMenuItem, relevésCommercesToolStripMenuItem, clotureExerciceToolStripMenuItem, grandLivreToolStripMenuItem });
+            editionsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { convocationsToolStripMenuItem, additifsToolStripMenuItem, feuillesDePrésenceToolStripMenuItem, bilanGénéralEtCompteExploitationToolStripMenuItem, relevésIndividuelsToolStripMenuItem, budgetPrévisionnelToolStripMenuItem, bordereauRemiseDeChèquesToolStripMenuItem, clotureExerciceToolStripMenuItem, grandLivreToolStripMenuItem });
             editionsToolStripMenuItem.Name = "editionsToolStripMenuItem";
             editionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             editionsToolStripMenuItem.Text = "E&ditions";
@@ -258,13 +255,6 @@ namespace EspaceSyndic.Formulaires
             additifsToolStripMenuItem.Size = new System.Drawing.Size(309, 22);
             additifsToolStripMenuItem.Text = "Additifs";
             additifsToolStripMenuItem.Click += additifsToolStripMenuItem_Click;
-            // 
-            // accusésDeReceptionToolStripMenuItem
-            // 
-            accusésDeReceptionToolStripMenuItem.Enabled = false;
-            accusésDeReceptionToolStripMenuItem.Name = "accusésDeReceptionToolStripMenuItem";
-            accusésDeReceptionToolStripMenuItem.Size = new System.Drawing.Size(309, 22);
-            accusésDeReceptionToolStripMenuItem.Text = "Accusés de Reception";
             // 
             // feuillesDePrésenceToolStripMenuItem
             // 
@@ -304,13 +294,6 @@ namespace EspaceSyndic.Formulaires
             bordereauRemiseDeChèquesToolStripMenuItem.Text = "Bordereau Remise de Chèques";
             bordereauRemiseDeChèquesToolStripMenuItem.Click += bordereauRemiseDeChèquesToolStripMenuItem_Click;
             // 
-            // relevésCommercesToolStripMenuItem
-            // 
-            relevésCommercesToolStripMenuItem.Enabled = false;
-            relevésCommercesToolStripMenuItem.Name = "relevésCommercesToolStripMenuItem";
-            relevésCommercesToolStripMenuItem.Size = new System.Drawing.Size(309, 22);
-            relevésCommercesToolStripMenuItem.Text = "Relevés Commerces";
-            // 
             // clotureExerciceToolStripMenuItem
             // 
             clotureExerciceToolStripMenuItem.Name = "clotureExerciceToolStripMenuItem";
@@ -328,7 +311,7 @@ namespace EspaceSyndic.Formulaires
             // 
             // utilitairesToolStripMenuItem
             // 
-            utilitairesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { immeublesToolStripMenuItem1, editionEtiquettesToolStripMenuItem, editionComptesFiscauxParImmeublesToolStripMenuItem, tableauRemiseDeClefsToolStripMenuItem, balanceReglementsFacturesPourUnImmeubleToolStripMenuItem, balanceReglementsAppelsDeFondImmeubleToolStripMenuItem, balanceReglementsFacturesPourLeCompteSyndicToolStripMenuItem });
+            utilitairesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { immeublesToolStripMenuItem1, editionEtiquettesToolStripMenuItem, editionComptesFiscauxParImmeublesToolStripMenuItem, tableauRemiseDeClefsToolStripMenuItem, balanceReglementsFacturesPourUnImmeubleToolStripMenuItem, balanceReglementsAppelsDeFondImmeubleToolStripMenuItem });
             utilitairesToolStripMenuItem.Name = "utilitairesToolStripMenuItem";
             utilitairesToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
             utilitairesToolStripMenuItem.Text = "Utilitaires";
@@ -375,13 +358,6 @@ namespace EspaceSyndic.Formulaires
             balanceReglementsAppelsDeFondImmeubleToolStripMenuItem.Size = new System.Drawing.Size(351, 22);
             balanceReglementsAppelsDeFondImmeubleToolStripMenuItem.Text = "Balance Règlements-Appel de Fonds Immeuble";
             balanceReglementsAppelsDeFondImmeubleToolStripMenuItem.Click += balanceReglementsAppelsDeFondImmeubleToolStripMenuItem_Click;
-            // 
-            // balanceReglementsFacturesPourLeCompteSyndicToolStripMenuItem
-            // 
-            balanceReglementsFacturesPourLeCompteSyndicToolStripMenuItem.Enabled = false;
-            balanceReglementsFacturesPourLeCompteSyndicToolStripMenuItem.Name = "balanceReglementsFacturesPourLeCompteSyndicToolStripMenuItem";
-            balanceReglementsFacturesPourLeCompteSyndicToolStripMenuItem.Size = new System.Drawing.Size(351, 22);
-            balanceReglementsFacturesPourLeCompteSyndicToolStripMenuItem.Text = "Balance Règlements-Factures Pour le compte Syndic";
             // 
             // outilsToolStripMenuItem
             // 
@@ -527,7 +503,6 @@ namespace EspaceSyndic.Formulaires
         private ToolStripMenuItem editionsToolStripMenuItem;
         private ToolStripMenuItem convocationsToolStripMenuItem;
         private ToolStripMenuItem additifsToolStripMenuItem;
-        private ToolStripMenuItem accusésDeReceptionToolStripMenuItem;
         private ToolStripMenuItem feuillesDePrésenceToolStripMenuItem;
         private Label label1;
         private Label label2;
@@ -545,20 +520,17 @@ namespace EspaceSyndic.Formulaires
         private ToolStripMenuItem bilanGénéralEtCompteExploitationToolStripMenuItem;
         private ToolStripMenuItem relevésIndividuelsToolStripMenuItem;
         private ToolStripMenuItem budgetPrévisionnelToolStripMenuItem;
-        private ToolStripMenuItem relevésCommercesToolStripMenuItem;
         private ToolStripMenuItem immeublesToolStripMenuItem1;
         private ToolStripMenuItem editionEtiquettesToolStripMenuItem;
         private ToolStripMenuItem editionComptesFiscauxParImmeublesToolStripMenuItem;
         private ToolStripMenuItem balanceReglementsFacturesPourUnImmeubleToolStripMenuItem;
         private ToolStripMenuItem balanceReglementsAppelsDeFondImmeubleToolStripMenuItem;
-        private ToolStripMenuItem balanceReglementsFacturesPourLeCompteSyndicToolStripMenuItem;
         private ToolStripMenuItem parametresGenerauxToolStripMenuItem;
         private ToolStripMenuItem visualisationOperationDeGestionToolStripMenuItem;
         private ToolStripMenuItem clotureExerciceToolStripMenuItem;
         private ToolStripMenuItem deconnexionToolStripMenuItem;
         private ToolStripMenuItem quitterToolStripMenuItem1;
         private ToolStripMenuItem controleDesDonnéesToolStripMenuItem;
-        private ToolStripMenuItem aideMenuItem;
         private ToolStripMenuItem impressionRéglementsToolStripMenuItem;
         private ToolStripMenuItem modèlesDeDocumentsToolStripMenuItem;
         private ToolStripMenuItem impressionListeFacturesToolStripMenuItem;
