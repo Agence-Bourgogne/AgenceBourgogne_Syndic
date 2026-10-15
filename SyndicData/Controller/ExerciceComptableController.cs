@@ -106,7 +106,8 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
              WHEN n.reference = '{natureSoldeBilan}' THEN o.credit - o.debit
              ELSE 0
              END
-             ), 0) AS solde_anterieur
+             ), 0) AS solde_anterieur,
+             e.date_deb AS date_debut_exercice
              FROM agence.coproprietaire c
              INNER JOIN agence.operation o
              ON o.coproprietaire_id = c.id
@@ -117,7 +118,7 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
              WHERE o.immeuble_id = e.immeuble_id
              AND o.date_reference >= e.date_deb
              AND o.date_reference <= e.date_fin
-             GROUP BY c.id, c.reference, c.nom, c.prenom, e.date_fin
+             GROUP BY c.id, c.reference, c.nom, c.prenom, e.date_deb
              ORDER BY c.reference
              """;
 
@@ -134,7 +135,8 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
                 reference: row.Field<string>("reference"),
                 nom: row.Field<string>("nom"),
                 prenom: row.Field<string>("prenom"),
-                soldeAnterieur: row.Field<decimal>("solde_anterieur")
+                soldeAnterieur: row.Field<decimal>("solde_anterieur"),
+                dateDebutExercice: row.Field<DateOnly>("date_debut_exercice")
             ))
             .ToList();
 
@@ -187,7 +189,7 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
                     c.prenom,
                     c.nom,
                     opérationsCopropriétaire,
-                    c.soldeAnterieur);
+                    new Solde(c.dateDebutExercice, c.soldeAnterieur));
             })
             .ToArray();
     }

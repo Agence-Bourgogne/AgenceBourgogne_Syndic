@@ -1,5 +1,4 @@
 ﻿@using GrandLivre.Templates.Helpers
-@using SyndicData.Entites.ExerciceComptable
 @model GrandLivre.Templates.Models.Exercice
 
 @{
@@ -22,7 +21,7 @@
         45000 Orléans
     </div>
 
-        <div class="header-titre">Grand livre - Exercice du @Model.Debut.ToString(dateFormat) au @Model.Fin.ToString(dateFormat)</div>
+    <div class="header-titre">Grand livre - Exercice du @Model.Debut.ToString(dateFormat) au @Model.Fin.ToString(dateFormat)</div>
 
     <h1>Copropriété : @Model.Copropriete.Nom</h1>
     <p>Adresse : @Model.Copropriete.Adresse</p>
@@ -34,16 +33,6 @@
             
             @{
                 var soldeCompte = 0m;
-            }
-
-            @if (compte is CompteCoproprietaire compteCoproprietaire)
-            {
-                soldeCompte = compteCoproprietaire.SoldeAnterieur;
-
-                <p>
-                    <strong>Solde antérieur : </strong>
-                        @compteCoproprietaire.SoldeAnterieur.ToInsecableCurrency()
-                </p>
             }
 
             <table>
