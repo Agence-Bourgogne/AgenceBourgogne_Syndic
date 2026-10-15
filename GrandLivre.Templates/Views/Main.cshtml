@@ -2,6 +2,9 @@
 @using SyndicData.Entites.ExerciceComptable
 @model GrandLivre.Templates.Models.Exercice
 
+@{
+    const string dateFormat = "MM/dd/yyyy";
+}
 
 <!DOCTYPE html>
 <html>
@@ -19,7 +22,7 @@
         45000 Orléans
     </div>
 
-    <div class="header-titre">Grand livre - Exercice du @Model.Debut au @Model.Fin</div>
+        <div class="header-titre">Grand livre - Exercice du @Model.Debut.ToString(dateFormat) au @Model.Fin.ToString(dateFormat)</div>
 
     <h1>Copropriété : @Model.Copropriete.Nom</h1>
     <p>Adresse : @Model.Copropriete.Adresse</p>
@@ -77,7 +80,7 @@
                         var representationSoldeCrediteur = soldeCompte >= 0 ? soldeCompte.ToInsecableCurrency() : string.Empty;
 
                         <tr>
-                            <td>@operation.Date.ToString("d")</td>
+                                <td>@operation.Date.ToString(dateFormat)</td>
                             <td>@operation.Libelle</td>
                             <td>@operation.Tiers</td>
                             <td class="montant">@representationDebit</td>
