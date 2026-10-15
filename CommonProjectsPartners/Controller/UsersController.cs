@@ -7,29 +7,29 @@ public class UsersController : AbstractBaseController<UserEntite>
 {
     private static readonly UsersController controller = new();
 
-    public override string getTable()
+    protected override string GetTable()
     {
         return "users";
     }
 
-    public static UsersController getController()
+    public static UsersController GetController()
     {
         return controller;
     }
 
-    public override string getSchema()
+    protected override string GetSchema()
     {
         return "";
     }
 
-    public override string getSchemaTable()
+    public override string GetSchemaTable()
     {
-        return getTable();
+        return GetTable();
     }
 
     public DataTable getListeUsers()
     {
-        var cmd = $" select u.*, r.nom as role from {getSchemaTable()} u ";
+        var cmd = $" select u.*, r.nom as role from {GetSchemaTable()} u ";
         cmd += " join roles r on r.id  = u.roles_id";
         cmd += " order by reference";
 

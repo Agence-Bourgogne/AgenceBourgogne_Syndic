@@ -43,7 +43,7 @@ public static class AuditDB
                 sqlCmd.Parameters.AddWithValue("@schema_entite", schema);
                 sqlCmd.Parameters.AddWithValue("@name_entite", entite.GetType().Name);
                 sqlCmd.Parameters.AddWithValue("@entite_id", entite.GetId());
-                sqlCmd.Parameters.AddWithValue("@operation_entite", Enum.GetName(typeof(Operation), operation));
+                sqlCmd.Parameters.AddWithValue("@operation_entite", Enum.GetName(operation) ?? throw new ArgumentOutOfRangeException(nameof(operation)));
                 sqlCmd.Parameters.AddWithValue("@propertie_entite", NpgsqlDbType.Text, (object) change.propertie_entite ?? DBNull.Value);
                 sqlCmd.Parameters.AddWithValue("@propertie_type", NpgsqlDbType.Text, (object) change.propertie_type ?? DBNull.Value);
                 sqlCmd.Parameters.AddWithValue("@old_value", NpgsqlDbType.Text, (object) change.old_value ?? DBNull.Value);

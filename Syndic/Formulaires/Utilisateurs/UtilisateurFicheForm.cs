@@ -27,7 +27,7 @@ public partial class UtilisateurFicheForm : Form
 
     protected void InitializeCombos()
     {
-        cbRole.DataSource = RolesController.getController().GetComboRoles();
+        cbRole.DataSource = RolesController.GetController().GetComboRoles();
         cbRole.ValueMember = "id";
         cbRole.DisplayMember = "nom";
     }
@@ -43,7 +43,7 @@ public partial class UtilisateurFicheForm : Form
         user.prenom = tbPrenom.Text;
         user.roles_id = cbRole.SelectedValue.ToString();
 
-        return UsersController.getController().InsertOrUpdate(user);
+        return UsersController.GetController().InsertOrUpdate(user);
     }
 
     protected void setModified(bool bModified)
@@ -137,12 +137,12 @@ public partial class UtilisateurFicheForm : Form
 
     protected AbstractBaseEntite getCurrentEntite(string entite_id)
     {
-        return UsersController.getController().getEntiteById(entite_id);
+        return UsersController.GetController().getEntiteById(entite_id);
     }
 
     protected AbstractBaseEntite getEntite(string where)
     {
-        return UsersController.getController().getEntite(where);
+        return UsersController.GetController().getEntite(where);
     }
 
     protected void btnFirst_Click(object sender, EventArgs e)

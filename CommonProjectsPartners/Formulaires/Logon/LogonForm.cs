@@ -25,7 +25,7 @@ public partial class LogonForm : Form
 
     private bool ValidUser(bool bShowMessage = true)
     {
-        _userConnected = UsersController.getController().getEntiteFromField("reference", tbUser.Text);
+        _userConnected = UsersController.GetController().getEntiteFromField("reference", tbUser.Text);
         if (_userConnected != null)
         {
             var encryptPassword = tbPassword.Text;

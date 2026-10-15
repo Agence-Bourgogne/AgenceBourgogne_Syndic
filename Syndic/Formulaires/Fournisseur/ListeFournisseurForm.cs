@@ -135,9 +135,9 @@ public partial class ListeFournisseurForm : Form
             updateEditMode(false);
             var form = new FicheFournisseurForm();
 
-            form.entite = entite;
+            form.Entite = entite;
             if (!"".Equals(entite.id))
-                form.entite = controller.getEntiteById(entite.id);
+                form.Entite = controller.getEntiteById(entite.id);
 
             form.Icon = Icon;
             form.StartPosition = FormStartPosition.CenterScreen;
@@ -193,7 +193,7 @@ public partial class ListeFournisseurForm : Form
             else
             {
                 var fiche = new FicheFournisseurForm();
-                fiche.entite = controller.getEntiteFromField("reference", form.reference);
+                fiche.Entite = controller.getEntiteFromField("reference", form.reference);
                 fiche.ShowDialog();
             }
         }

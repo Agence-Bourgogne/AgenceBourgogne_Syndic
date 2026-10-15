@@ -12,7 +12,7 @@ public class NatureController : AbstractBaseController<NatureEntite>
         DefaultOrder = "reference";
     }
 
-    public override string getTable()
+    protected override string GetTable()
     {
         return "nature";
     }

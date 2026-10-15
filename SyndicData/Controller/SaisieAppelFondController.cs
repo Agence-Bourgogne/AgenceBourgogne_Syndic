@@ -14,7 +14,7 @@ public class SaisieAppelFondController : AbstractBaseController<SaisieAppelFondE
 {
     private static readonly SaisieAppelFondController controller = new();
 
-    public override string getTable()
+    protected override string GetTable()
     {
         return "saisie_appel_fond";
     }
@@ -27,7 +27,7 @@ public class SaisieAppelFondController : AbstractBaseController<SaisieAppelFondE
 
     public DataTable GetAllElements(string immeuble_id, DateOnly dtDeb, DateOnly dtFin)
     {
-        var cmd = $"select r.*, i.reference as ref_imm from {getSchemaTable()} r ";
+        var cmd = $"select r.*, i.reference as ref_imm from {GetSchemaTable()} r ";
         cmd += " join agence.immeuble i on i.id = r.immeuble_id ";
         cmd += " where r.statut!=@statut";
 
@@ -53,7 +53,7 @@ public class SaisieAppelFondController : AbstractBaseController<SaisieAppelFondE
 
     public DataTable getGridRowSaisieAppelFond(string liasse_id)
     {
-        var schema = getSchema();
+        var schema = GetSchema();
         var cmd = " Select concat(i.reference, ':',  i.nom) as \"Immeuble\", ";
 
 //            cmd += " concat ( n.reference, ':', n.nom) as \"Nature\", ";
@@ -69,7 +69,7 @@ public class SaisieAppelFondController : AbstractBaseController<SaisieAppelFondE
 //            cmd += " when e.base = '80' then ld.numero_lot::character else '' end as lot, ";
         //TODO Gerer le lot
         cmd += " e.id";
-        cmd += $" from {getSchemaTable()} e ";
+        cmd += $" from {GetSchemaTable()} e ";
         cmd += $" left join {schema}.immeuble i on i.id = e.immeuble_id";
         cmd += $" left join {schema}.nature n on n.id = e.nature_id";
         cmd += $" left Join {schema}.operation o on e.id = o.saisie_id and e.base_repart='80' ";
@@ -97,13 +97,13 @@ public class SaisieAppelFondController : AbstractBaseController<SaisieAppelFondE
     public DataTable getListeOperations(string immeuble, DateTime dtDeb, DateTime dtFin, string libelle = "",
         string montant = "", bool bValidOnly = true, string base_repart = "")
     {
-        var schema = getSchema();
+        var schema = GetSchema();
         var cmd = "Select ";
 
 //            cmd += " sf.id, i.reference as ref_immeuble, n.reference as ref_nature, n.nom as nature, date_reference, libelle, montant, base_repart, sf.statut ";
         cmd +=
             " sf.id, i.reference as ref_immeuble, date_reference, n.reference as ref_nature, base_repart, libelle, montant, sf.statut, sf.liasse_id ";
-        cmd += $" from {getSchemaTable()} sf";
+        cmd += $" from {GetSchemaTable()} sf";
         cmd += $" left join {schema}.nature n on n.id = nature_id ";
         cmd += $" join {schema}.immeuble i on i.id = immeuble_id ";
 
@@ -148,7 +148,7 @@ public class SaisieAppelFondController : AbstractBaseController<SaisieAppelFondE
     public DataTable getListeViewOperations(string immeuble, DateTime dtDeb, DateTime dtFin, string libelle = "",
         string montant = "", bool bValidOnly = true, string base_repart = "")
     {
-        var schema = getSchema();
+        var schema = GetSchema();
         var cmd = "Select ";
 
         //            cmd += " sf.id, i.reference as ref_immeuble, n.reference as ref_nature, n.nom as nature, date_reference, libelle, montant, base_repart, sf.statut ";
@@ -156,7 +156,7 @@ public class SaisieAppelFondController : AbstractBaseController<SaisieAppelFondE
         cmd +=
             " case when base_repart = '80' then (select numero_lot::character varying from agence.lot_description where id in (select lot_id from agence.operation where saisie_id = sf.id)) else '' end as lot, ";
         cmd += " libelle, montant, sf.statut, sf.liasse_id ";
-        cmd += $" from {getSchemaTable()} sf";
+        cmd += $" from {GetSchemaTable()} sf";
         cmd += $" left join {schema}.nature n on n.id = nature_id ";
         cmd += $" join {schema}.immeuble i on i.id = immeuble_id ";
 
@@ -203,8 +203,8 @@ public class SaisieAppelFondController : AbstractBaseController<SaisieAppelFondE
         decimal sum = 0;
         var nature = "140";
 
-        var cmd = $"select sum(montant) as montant from {getSchemaTable()} f";
-        cmd += string.Format(" join agence.nature n on n.id = f.nature_id ", getSchema());
+        var cmd = $"select sum(montant) as montant from {GetSchemaTable()} f";
+        cmd += string.Format(" join agence.nature n on n.id = f.nature_id ", GetSchema());
         cmd += " where immeuble_id = @immeuble_id and date_reference >= @dtDeb and date_reference <= @dtFin";
         cmd += " and n.reference <> @nature and f.statut != @statut";
 
@@ -232,7 +232,7 @@ public class SaisieAppelFondController : AbstractBaseController<SaisieAppelFondE
     public DataTable GetAllElements()
     {
         var cmd =
-            $"select a.*, i.reference as ref_imm from {getSchemaTable()} a join agence.immeuble i on i.id = immeuble_id where a.statut = 1 order by i.reference";
+            $"select a.*, i.reference as ref_imm from {GetSchemaTable()} a join agence.immeuble i on i.id = immeuble_id where a.statut = 1 order by i.reference";
         return getResultSQL(cmd);
     }
 
@@ -395,7 +395,7 @@ public class SaisieAppelFondController : AbstractBaseController<SaisieAppelFondE
 
     public DataTable getSaisieAppel(OperationEntite operation)
     {
-        var cmd = $"select o.* from {getSchemaTable()} o";
+        var cmd = $"select o.* from {GetSchemaTable()} o";
         //cmd += " join agence.coproprietaire c on c.id = o.coproprietaire_id ";
         cmd +=
             " where immeuble_id = @immeuble_id and date_reference = @date_reference and nature_id = @nature_id and trim(libelle) = trim(@libelle)";

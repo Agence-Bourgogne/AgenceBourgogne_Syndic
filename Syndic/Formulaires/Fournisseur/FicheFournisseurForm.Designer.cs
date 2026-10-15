@@ -153,7 +153,7 @@ namespace EspaceSyndic.Formulaires.Fournisseur
             tbUrsaff.Name = "tbUrsaff";
             tbUrsaff.Size = new System.Drawing.Size(116, 23);
             tbUrsaff.TabIndex = 35;
-            tbUrsaff.TextChanged += tbTextChanged;
+            tbUrsaff.TextChanged += TbTextChanged;
             // 
             // label14
             // 
@@ -172,7 +172,7 @@ namespace EspaceSyndic.Formulaires.Fournisseur
             tbApe.Name = "tbApe";
             tbApe.Size = new System.Drawing.Size(116, 23);
             tbApe.TabIndex = 33;
-            tbApe.TextChanged += tbTextChanged;
+            tbApe.TextChanged += TbTextChanged;
             // 
             // label13
             // 
@@ -191,7 +191,7 @@ namespace EspaceSyndic.Formulaires.Fournisseur
             tbSecu.Name = "tbSecu";
             tbSecu.Size = new System.Drawing.Size(116, 23);
             tbSecu.TabIndex = 31;
-            tbSecu.TextChanged += tbTextChanged;
+            tbSecu.TextChanged += TbTextChanged;
             // 
             // label12
             // 
@@ -210,7 +210,7 @@ namespace EspaceSyndic.Formulaires.Fournisseur
             tbSiret.Name = "tbSiret";
             tbSiret.Size = new System.Drawing.Size(116, 23);
             tbSiret.TabIndex = 29;
-            tbSiret.TextChanged += tbTextChanged;
+            tbSiret.TextChanged += TbTextChanged;
             // 
             // label11
             // 
@@ -241,7 +241,7 @@ namespace EspaceSyndic.Formulaires.Fournisseur
             tbComment.Name = "tbComment";
             tbComment.Size = new System.Drawing.Size(779, 95);
             tbComment.TabIndex = 27;
-            tbComment.TextChanged += tbTextChanged;
+            tbComment.TextChanged += TbTextChanged;
             // 
             // label9
             // 
@@ -271,7 +271,7 @@ namespace EspaceSyndic.Formulaires.Fournisseur
             tbTel.Name = "tbTel";
             tbTel.Size = new System.Drawing.Size(116, 23);
             tbTel.TabIndex = 25;
-            tbTel.TextChanged += tbTextChanged;
+            tbTel.TextChanged += TbTextChanged;
             // 
             // tbVille
             // 
@@ -280,7 +280,7 @@ namespace EspaceSyndic.Formulaires.Fournisseur
             tbVille.Name = "tbVille";
             tbVille.Size = new System.Drawing.Size(339, 23);
             tbVille.TabIndex = 21;
-            tbVille.TextChanged += tbTextChanged;
+            tbVille.TextChanged += TbTextChanged;
             // 
             // label7
             // 
@@ -310,7 +310,7 @@ namespace EspaceSyndic.Formulaires.Fournisseur
             tbCodePostal.Name = "tbCodePostal";
             tbCodePostal.Size = new System.Drawing.Size(94, 23);
             tbCodePostal.TabIndex = 19;
-            tbCodePostal.TextChanged += tbTextChanged;
+            tbCodePostal.TextChanged += TbTextChanged;
             // 
             // tbAdresse
             // 
@@ -321,7 +321,7 @@ namespace EspaceSyndic.Formulaires.Fournisseur
             tbAdresse.Name = "tbAdresse";
             tbAdresse.Size = new System.Drawing.Size(339, 52);
             tbAdresse.TabIndex = 17;
-            tbAdresse.TextChanged += tbTextChanged;
+            tbAdresse.TextChanged += TbTextChanged;
             // 
             // label5
             // 
@@ -340,7 +340,7 @@ namespace EspaceSyndic.Formulaires.Fournisseur
             tbInterlocuteur.Name = "tbInterlocuteur";
             tbInterlocuteur.Size = new System.Drawing.Size(339, 23);
             tbInterlocuteur.TabIndex = 9;
-            tbInterlocuteur.TextChanged += tbTextChanged;
+            tbInterlocuteur.TextChanged += TbTextChanged;
             // 
             // label3
             // 
@@ -359,7 +359,7 @@ namespace EspaceSyndic.Formulaires.Fournisseur
             tbNom.Name = "tbNom";
             tbNom.Size = new System.Drawing.Size(339, 23);
             tbNom.TabIndex = 7;
-            tbNom.TextChanged += tbTextChanged;
+            tbNom.TextChanged += TbTextChanged;
             // 
             // label4
             // 
@@ -378,7 +378,7 @@ namespace EspaceSyndic.Formulaires.Fournisseur
             tbRef.Name = "tbRef";
             tbRef.Size = new System.Drawing.Size(116, 23);
             tbRef.TabIndex = 5;
-            tbRef.TextChanged += tbTextChanged;
+            tbRef.TextChanged += TbTextChanged;
             // 
             // lblRef
             // 

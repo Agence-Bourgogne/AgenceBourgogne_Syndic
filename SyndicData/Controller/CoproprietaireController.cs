@@ -20,7 +20,7 @@ public class CoproprietaireController : AbstractBaseController<CoproprietaireEnt
         DefaultOrder = "reference";
     }
 
-    public override string getTable()
+    protected override string GetTable()
     {
         return "coproprietaire";
     }
@@ -35,7 +35,7 @@ public class CoproprietaireController : AbstractBaseController<CoproprietaireEnt
     {
         var order = DefaultOrder;
         var cmd =
-            $"Select id, reference, concat(nom, ' ', prenom) as nom , concat(nomcomp) as Gerant from {getSchemaTable()} ";
+            $"Select id, reference, concat(nom, ' ', prenom) as nom , concat(nomcomp) as Gerant from {GetSchemaTable()} ";
         if (filter != "")
             cmd += " where " + filter;
         cmd += $" order by {order}";
@@ -46,7 +46,7 @@ public class CoproprietaireController : AbstractBaseController<CoproprietaireEnt
     {
         var order = DefaultOrder;
         var cmd =
-            $"Select id, reference, concat(nom, ' ', prenom) as nom , concat(nomcomp) as Gerant, statut from {getSchemaTable()} ";
+            $"Select id, reference, concat(nom, ' ', prenom) as nom , concat(nomcomp) as Gerant, statut from {GetSchemaTable()} ";
         if (filter != "")
             cmd += " where " + filter;
         cmd += $" order by {order}";
@@ -57,7 +57,7 @@ public class CoproprietaireController : AbstractBaseController<CoproprietaireEnt
     {
         var order = DefaultOrder;
         var cmd =
-            $"Select id, reference, trim(email) as trimmed_email, concat(nom, ' ', prenom) as nom , concat(nomcomp) as Gerant from {getSchemaTable()} ";
+            $"Select id, reference, trim(email) as trimmed_email, concat(nom, ' ', prenom) as nom , concat(nomcomp) as Gerant from {GetSchemaTable()} ";
         cmd += " where " + filter;
         cmd += $"  And statut = {(int)AbstractBaseEntite.StatutEntite.Actif}";
         cmd += $" order by {order}";
@@ -68,9 +68,9 @@ public class CoproprietaireController : AbstractBaseController<CoproprietaireEnt
     {
         var order = DefaultOrder;
 
-        var cmd = $"select i.reference as ref_immeuble, c.*, '' as titre, '' as poste from {getSchemaTable()} c";
-        cmd += $" join {getSchema()}.lot_description ld on c.id = ld.coproprietaire_id ";
-        cmd += $" join {getSchema()}.immeuble i on i.id = ld.immeuble_id ";
+        var cmd = $"select i.reference as ref_immeuble, c.*, '' as titre, '' as poste from {GetSchemaTable()} c";
+        cmd += $" join {GetSchema()}.lot_description ld on c.id = ld.coproprietaire_id ";
+        cmd += $" join {GetSchema()}.immeuble i on i.id = ld.immeuble_id ";
         cmd += $" order by {order} ";
         adapter.SelectCommand = new NpgsqlCommand(cmd, Database.GetInstance());
     }
@@ -79,9 +79,9 @@ public class CoproprietaireController : AbstractBaseController<CoproprietaireEnt
     {
         var order = DefaultOrder;
         //select i.reference as ref_immeuble, c.*, '' as titre, '' as poste from agence.coproprietaire c join agence.lot_description ld on c.id = ld.coproprietaire_id  join agence.immeuble i on i.id = ld.immeuble_id 
-        var cmd = $"select i.reference as ref_immeuble, c.*, '' as titre, '' as poste from {getSchemaTable()} c";
-        cmd += $" join {getSchema()}.lot_description ld on c.id = ld.coproprietaire_id ";
-        cmd += $" join {getSchema()}.immeuble i on i.id = ld.immeuble_id ";
+        var cmd = $"select i.reference as ref_immeuble, c.*, '' as titre, '' as poste from {GetSchemaTable()} c";
+        cmd += $" join {GetSchema()}.lot_description ld on c.id = ld.coproprietaire_id ";
+        cmd += $" join {GetSchema()}.immeuble i on i.id = ld.immeuble_id ";
         if (bFiltre)
             cmd += $"  where c.statut = {(int)AbstractBaseEntite.StatutEntite.Actif}";
 
@@ -115,9 +115,9 @@ public class CoproprietaireController : AbstractBaseController<CoproprietaireEnt
         cmd += " regexp_replace(adressecomp, E'[\\n\\r]+', ' ', 'g') as \"Adresse Agence\",";
         cmd += " villecomp as \"Ville Agence\", codecomp as \"CP Agence\",";
         cmd += " t.code as \"Titre\", p.code as \"Poste\" ";
-        cmd += $" from {getSchemaTable()} c";
-        cmd += $" join {getSchema()}.lot_description ld on c.id = ld.coproprietaire_id ";
-        cmd += $" join {getSchema()}.immeuble i on i.id = ld.immeuble_id ";
+        cmd += $" from {GetSchemaTable()} c";
+        cmd += $" join {GetSchema()}.lot_description ld on c.id = ld.coproprietaire_id ";
+        cmd += $" join {GetSchema()}.immeuble i on i.id = ld.immeuble_id ";
         cmd +=
             " INNER JOIN(SELECT groupe, code, iparam_1 FROM  parametres WHERE (groupe = 'CIVILITE')) t ON t.iparam_1 = c.codenvoi ";
         cmd +=
@@ -132,10 +132,10 @@ public class CoproprietaireController : AbstractBaseController<CoproprietaireEnt
         var cmd =
             "SELECT p.code, c.nom, c.reference, c.prenom, c.adresse , c.codepostal, concat(c.ville, '\n', c.pays) as ville, c.id AS copro_id, d.immeuble_id, i.reference AS imm_reference, i.nom AS imm_nom, ";
         cmd += " i.rue AS imm_rue, i.ville AS imm_ville, i.codepostal AS imm_codepostal, r.valeur, d.numero_lot";
-        cmd += $" FROM {getSchema()}.lot_description d  ";
-        cmd += $" INNER JOIN {getSchema()}.coproprietaire c ON d.coproprietaire_id = c.id ";
+        cmd += $" FROM {GetSchema()}.lot_description d  ";
+        cmd += $" INNER JOIN {GetSchema()}.coproprietaire c ON d.coproprietaire_id = c.id ";
         cmd +=
-            $" INNER JOIN (SELECT  id, immeuble_id, lot_id, reference, valeur, ligne, colonne, type_ventilation FROM {getSchema()}.lot_repartition";
+            $" INNER JOIN (SELECT  id, immeuble_id, lot_id, reference, valeur, ligne, colonne, type_ventilation FROM {GetSchema()}.lot_repartition";
         cmd += " WHERE (reference = '10')) r ON d.id = r.lot_id ";
         cmd += " INNER JOIN agence.immeuble i ON d.immeuble_id = i.id ";
         cmd +=
@@ -168,10 +168,10 @@ public class CoproprietaireController : AbstractBaseController<CoproprietaireEnt
         var cmd =
             "SELECT p.code, c.nom, c.reference, c.prenom, c.adresse , c.codepostal, concat(c.ville, '\n', c.pays) as ville, c.id AS copro_id, d.immeuble_id, i.reference AS imm_reference, i.nom AS imm_nom, ";
         cmd += " i.rue AS imm_rue, i.ville AS imm_ville, i.codepostal AS imm_codepostal, r.valeur, d.numero_lot";
-        cmd += $" FROM {getSchema()}.lot_description d  ";
-        cmd += $" INNER JOIN {getSchema()}.coproprietaire c ON d.coproprietaire_id = c.id ";
+        cmd += $" FROM {GetSchema()}.lot_description d  ";
+        cmd += $" INNER JOIN {GetSchema()}.coproprietaire c ON d.coproprietaire_id = c.id ";
         cmd +=
-            $" INNER JOIN (SELECT  id, immeuble_id, lot_id, reference, valeur, ligne, colonne, type_ventilation FROM {getSchema()}.lot_repartition";
+            $" INNER JOIN (SELECT  id, immeuble_id, lot_id, reference, valeur, ligne, colonne, type_ventilation FROM {GetSchema()}.lot_repartition";
         cmd += " WHERE (reference = '10')) r ON d.id = r.lot_id ";
         cmd += " INNER JOIN agence.immeuble i ON d.immeuble_id = i.id ";
         cmd +=
@@ -205,10 +205,10 @@ public class CoproprietaireController : AbstractBaseController<CoproprietaireEnt
         var cmd =
             "SELECT p.code, c.nom, c.reference, c.prenom, replace(c.adresse, '\r\n',' ') as adresse , c.codepostal, concat(c.ville, '\n', c.pays) as ville, c.id AS copro_id, d.immeuble_id, i.reference AS imm_reference, i.nom AS imm_nom, ";
         cmd += " i.rue AS imm_rue, i.ville AS imm_ville, i.codepostal AS imm_codepostal, r.valeur, d.numero_lot";
-        cmd += $" FROM {getSchema()}.lot_description d  ";
-        cmd += $" INNER JOIN {getSchema()}.coproprietaire c ON d.coproprietaire_id = c.id ";
+        cmd += $" FROM {GetSchema()}.lot_description d  ";
+        cmd += $" INNER JOIN {GetSchema()}.coproprietaire c ON d.coproprietaire_id = c.id ";
         cmd +=
-            $" INNER JOIN (SELECT  id, immeuble_id, lot_id, reference, valeur, ligne, colonne, type_ventilation FROM {getSchema()}.lot_repartition";
+            $" INNER JOIN (SELECT  id, immeuble_id, lot_id, reference, valeur, ligne, colonne, type_ventilation FROM {GetSchema()}.lot_repartition";
         cmd += " WHERE (reference = '10')) r ON d.id = r.lot_id ";
         cmd += " INNER JOIN agence.immeuble i ON d.immeuble_id = i.id ";
         cmd +=
@@ -236,7 +236,7 @@ public class CoproprietaireController : AbstractBaseController<CoproprietaireEnt
 
     public DataTable HeaderConvocationWord(string immeuble_id, NpgsqlParameter[] static_parameters = null)
     {
-        var schema = getSchema();
+        var schema = GetSchema();
         var cmd = " Select ";
         cmd += "'' as Civilite, '' as Coproprietaire, '' as ReferenceCoproprietaire, \n";
         cmd += "'' AdresseCoproprietaire, '' as VilleCoproprietaire, '' as CodePostalCoproprietaire,\n";
@@ -271,7 +271,7 @@ public class CoproprietaireController : AbstractBaseController<CoproprietaireEnt
     public DataTable CoproprietaireImmeubleDescriptionWord(string immeuble_id,
         NpgsqlParameter[] static_parameters = null)
     {
-        var schema = getSchema();
+        var schema = GetSchema();
         var cmd = " Select ";
         cmd +=
             "p.code as Civilite, concat(c.nom , ' ', prenom) as Coproprietaire, c.reference as ReferenceCoproprietaire, \n";
@@ -308,7 +308,7 @@ public class CoproprietaireController : AbstractBaseController<CoproprietaireEnt
 
     public bool MiseAjourDateRelances(string copro_ids, DateOnly daterel, int type)
     {
-        var cmd = $"update {getSchemaTable()} ";
+        var cmd = $"update {GetSchemaTable()} ";
         cmd += type switch
         {
             0 => " set daterel1 = @daterel , daterel2 = null, daterel3 = null",
@@ -327,8 +327,8 @@ public class CoproprietaireController : AbstractBaseController<CoproprietaireEnt
 
     public void resetDatesRelance()
     {
-        var cmd = $"update {getSchemaTable()} set daterel1 = null, daterel2=null, daterel3 = null where id in ";
-        cmd += $" (select coproprietaire_id from {getSchema()}.operation o ";
+        var cmd = $"update {GetSchemaTable()} set daterel1 = null, daterel2=null, daterel3 = null where id in ";
+        cmd += $" (select coproprietaire_id from {GetSchema()}.operation o ";
         cmd += " where o.statut = @statut and type_mouvement = @mouvement ";
         cmd += " group by 1 having sum(credit) - sum(debit) >= 0 ) ";
         var parameters = new List<NpgsqlParameter>
@@ -343,7 +343,7 @@ public class CoproprietaireController : AbstractBaseController<CoproprietaireEnt
     public void resetDatesRelance(string coproRef)
     {
         var cmd =
-            $"update {getSchemaTable()} set daterel1 = null, daterel2=null, daterel3 = null where reference = @coproref ";
+            $"update {GetSchemaTable()} set daterel1 = null, daterel2=null, daterel3 = null where reference = @coproref ";
         var parameters = new List<NpgsqlParameter>
         {
             new("@coproref", coproRef)

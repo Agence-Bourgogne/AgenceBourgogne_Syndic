@@ -7,7 +7,7 @@ namespace CommonProjectsPartners.Entites;
 public class UserEntite : AbstractBaseEntite
 {
     public string nom;
-    public string password;
+    private string password;
     public string prenom;
     public string reference;
     public string resources_id;
@@ -31,7 +31,7 @@ public class UserEntite : AbstractBaseEntite
         set => password = CryptoUtils.Encrypt(value);
     }
 
-    public RoleEntite Role => RolesController.getController().getEntiteById(roles_id);
+    private RoleEntite Role => RolesController.GetController().getEntiteById(roles_id);
 
     public bool IsAdmin
     {

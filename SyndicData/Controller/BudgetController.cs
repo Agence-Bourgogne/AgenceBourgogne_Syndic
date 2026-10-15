@@ -20,7 +20,7 @@ public class BudgetController : AbstractBaseController<BudgetEntite>
         DefaultOrder = "reference";
     }
 
-    public override string getTable()
+    protected override string GetTable()
     {
         return "budget";
     }
@@ -34,7 +34,7 @@ public class BudgetController : AbstractBaseController<BudgetEntite>
     public DataTable getViewBudgets(string immeuble_id, string exercice_id)
     {
         string exercice_precedent_id = "", exercice_suivant_id = "", exercice_n_2_id = "";
-        var schema = getSchema();
+        var schema = GetSchema();
         {
             var table = ExerciceComptableController.GetController().GetExercicePrecedent(exercice_id);
             if (table != null)

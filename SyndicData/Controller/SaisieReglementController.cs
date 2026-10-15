@@ -14,7 +14,7 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
 {
     private static readonly SaisieReglementController controller = new();
 
-    public override string getTable()
+    protected override string GetTable()
     {
         return "saisie_reglement";
     }
@@ -27,7 +27,7 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
 
     public DataTable GetAllElements(string immeuble_id, DateOnly dtDeb, DateOnly dtFin)
     {
-        var cmd = $"select r.*, c.reference as ref_copro, i.reference as ref_imm from {getSchemaTable()} r ";
+        var cmd = $"select r.*, c.reference as ref_copro, i.reference as ref_imm from {GetSchemaTable()} r ";
         cmd += " join agence.coproprietaire c on c.id = r.coproprietaire_id ";
         cmd += " join agence.immeuble i on i.id = r.immeuble_id ";
         cmd += " where r.statut!=@statut";
@@ -55,7 +55,7 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
 
     public DataTable getGridRowSaisieReglement(string liasse_id)
     {
-        var schema = getSchema();
+        var schema = GetSchema();
         var cmd = " Select ";
         cmd += " concat(c.reference, ':',  c.nom, ' ', c.prenom) as \"Coproprietaire\", ";
         cmd += " concat(i.reference, ':',  i.nom) as \"Immeuble\", ";
@@ -68,7 +68,7 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
         cmd += " e.emetteur, e.banque, ";
         cmd += " e.liasse_id, e.immeuble_id, e.nature_id, e.coproprietaire_id, ";
         cmd += "  e.id";
-        cmd += $" from {getSchemaTable()} e ";
+        cmd += $" from {GetSchemaTable()} e ";
         cmd += $" left join {schema}.immeuble i on i.id = e.immeuble_id";
         cmd += $" left join {schema}.coproprietaire c on c.id = e.coproprietaire_id";
         cmd += $" left join {schema}.nature n on n.id = e.nature_id";
@@ -94,8 +94,8 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
 
     public DataTable GetListeReglementValideFromNature(string liasse_id, string ref_nature)
     {
-        var cmd = $" select * from {getSchemaTable()} r";
-        if (ref_nature != "" && ref_nature != "0") cmd += $" join {getSchema()}.nature n on n.id = nature_id ";
+        var cmd = $" select * from {GetSchemaTable()} r";
+        if (ref_nature != "" && ref_nature != "0") cmd += $" join {GetSchema()}.nature n on n.id = nature_id ";
         cmd += " where liasse_id = @liasse_id and r.statut = @statut ";
         if (ref_nature != "" && ref_nature != "0")
             cmd += " and n.reference = @nature_ref ";
@@ -123,8 +123,8 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
     public DataTable GetListeReglementValideFromCompteBanque(string liasse_id, string nature_id, string comptebanque)
     {
         var cmd = "SELECT date_reference, montant, emetteur, banque, reference ";
-        cmd += $" FROM {getSchemaTable()} f";
-        cmd += $" join {getSchema()}.coproprietaire c ON f.coproprietaire_id = c.id";
+        cmd += $" FROM {GetSchemaTable()} f";
+        cmd += $" join {GetSchema()}.coproprietaire c ON f.coproprietaire_id = c.id";
         cmd +=
             " where liasse_id = @liasse_id and nature_id = @nature_id and comptebanque = @comptebanque and f.statut = @statut";
 
@@ -158,13 +158,13 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
     public DataTable getListeOperations(string immeuble, string lot_reference, DateTime dtDeb, DateTime dtFin,
         string ref_nature = "", string libelle = "", string montant = "", bool bValidOnly = true)
     {
-        var schema = getSchema();
+        var schema = GetSchema();
         var cmd = "Select ";
         var numlot = 0;
 
         cmd +=
             " sf.id, i.reference as ref_immeuble, date_reference, n.reference as ref_nature, libelle, montant, c.reference as ref_copro, concat(c.prenom, ' ',c .nom) as coproprietaire, banque, sf.statut ";
-        cmd += $" from {getSchemaTable()} sf";
+        cmd += $" from {GetSchemaTable()} sf";
         cmd += $" join {schema}.immeuble i on i.id = immeuble_id ";
         cmd += $" left join {schema}.nature n on n.id = nature_id ";
         cmd += $" left join {schema}.coproprietaire c on c.id = coproprietaire_id ";
@@ -215,7 +215,7 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
     public decimal getSumReglements(string immeuble_id, DateOnly dtDeb, DateOnly dtFin)
     {
         decimal sum = 0;
-        var cmd = $"Select sum(montant) as montant from {getSchemaTable()}";
+        var cmd = $"Select sum(montant) as montant from {GetSchemaTable()}";
         cmd += " where immeuble_id = @immeuble_id and date_reference >= @dtDeb and date_reference <= @dtFin ";
         cmd += " and statut != @statut";
 
@@ -245,7 +245,7 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
         decimal sum = 0;
         var nature = "140";
 
-        var cmd = $"select coalesce(sum(credit)-sum(debit),0) as montant from {getSchema()}.operation f";
+        var cmd = $"select coalesce(sum(credit)-sum(debit),0) as montant from {GetSchema()}.operation f";
         cmd += " left join agence.nature n on n.id = f.nature_id ";
         cmd += " where immeuble_id = @immeuble_id and date_reference >= @dtDeb and date_reference <= @dtFin";
         cmd += " and type_mouvement=@type_mouvement and type_operation = @type_operation";
@@ -320,7 +320,7 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
 
     public bool AnnuleElement(SaisieReglementEntite entite)
     {
-        var cmd = $"Select * from {getSchema()}.operation where saisie_id = @saisie_id";
+        var cmd = $"Select * from {GetSchema()}.operation where saisie_id = @saisie_id";
         var parameters = new List<NpgsqlParameter>
         {
             new("@saisie_id", entite.id)
@@ -332,7 +332,7 @@ public class SaisieReglementController : AbstractBaseController<SaisieReglementE
 
     public DataTable getSaisieReglement(OperationEntite operation)
     {
-        var cmd = $"select o.*, c.reference as ref_copro from {getSchemaTable()} o";
+        var cmd = $"select o.*, c.reference as ref_copro from {GetSchemaTable()} o";
         cmd += " join agence.coproprietaire c on c.id = o.coproprietaire_id ";
         cmd +=
             " where immeuble_id = @immeuble_id and coproprietaire_id =@coproprietaire_id and date_reference = @date_reference and nature_id = @nature_id and trim(libelle) = trim(@libelle)";

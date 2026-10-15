@@ -17,7 +17,7 @@ public class ImmeubleController : AbstractBaseController<ImmeubleEntite>
         DefaultOrder = "reference";
     }
 
-    public override string getTable()
+    protected override string GetTable()
     {
         return "immeuble";
     }
@@ -35,7 +35,7 @@ public class ImmeubleController : AbstractBaseController<ImmeubleEntite>
     public DataTable GetListeFromMonthCloture(string iMonths)
     {
         var cmd =
-            $"select * from {getSchemaTable()} where extract(month from datecloture) in ({iMonths}) And statut<>9 order by reference ";
+            $"select * from {GetSchemaTable()} where extract(month from datecloture) in ({iMonths}) And statut<>9 order by reference ";
 
         var table = getResultSQL(cmd);
 
@@ -53,7 +53,7 @@ public class ImmeubleController : AbstractBaseController<ImmeubleEntite>
     public DataTable GetDescriptionCoproprietairesImmeubleAF(string immeuble_id, string numlot = "",
         bool isFiscal = false, string saisie_id = "")
     {
-        var schema = getSchema();
+        var schema = GetSchema();
         var cmd = "select";
         var numero_lot = 0;
         cmd += " i.reference, i.nom, i.rue, i.codepostal, i.ville, c.reference ref_copro, ";
@@ -62,7 +62,7 @@ public class ImmeubleController : AbstractBaseController<ImmeubleEntite>
             " c.nom as nom_copro, c.prenom as prenom, p.code codenvoi, c.adresse as adresse_copro, c.codepostal as cp_copro, concat(c.ville, ' ', c.pays ) as ville_copro, ";
         cmd += " c.nomcomp, c.adressecomp, c.villecomp, p2.code as codenvcomp, codecomp, ";
         cmd += " l.numero_lot,  c.id as copro_id, l.id as lot_id, i.id as immeuble_id";
-        cmd += $" from {getSchemaTable()} i ";
+        cmd += $" from {GetSchemaTable()} i ";
         cmd += $" join {schema}.lot_description l on l.immeuble_id = i.id ";
         cmd += $" join {schema}.coproprietaire c on l.coproprietaire_id = c.id ";
         cmd +=
@@ -97,7 +97,7 @@ public class ImmeubleController : AbstractBaseController<ImmeubleEntite>
     public DataTable GetDescriptionCoproprietairesImmeubleReleveIndividuel(string immeuble_id, string numlot = "",
         bool isFiscal = false)
     {
-        var schema = getSchema();
+        var schema = GetSchema();
         var cmd = "select";
         var numero_lot = 0;
         cmd += " i.reference, i.nom, i.rue, i.codepostal, i.ville, c.reference ref_copro, ";
@@ -105,7 +105,7 @@ public class ImmeubleController : AbstractBaseController<ImmeubleEntite>
             " c.nom as nom_copro, c.prenom as prenom, coalesce(p.code, '') as codenvoi, c.adresse as adresse_copro, c.codepostal as cp_copro, concat(c.ville, ' ', c.pays) as ville_copro, ";
         cmd +=
             " l.numero_lot, c.id as copro_id, l.id as lot_id, i.id as immeuble_id, round(l.avance::numeric,2) as avance, l.statut";
-        cmd += $" from {getSchemaTable()} i ";
+        cmd += $" from {GetSchemaTable()} i ";
         cmd += $" join {schema}.lot_description l on l.immeuble_id = i.id ";
 
         cmd += $" join {schema}.coproprietaire c on l.coproprietaire_id = c.id ";
@@ -136,7 +136,7 @@ public class ImmeubleController : AbstractBaseController<ImmeubleEntite>
     public DataTable GetDescriptionCoproprietairesImmeuble(string immeuble_id, string numlot = "",
         bool isFiscal = false)
     {
-        var schema = getSchema();
+        var schema = GetSchema();
         var cmd = "select";
         var numero_lot = 0;
         cmd += " i.reference, i.nom, i.rue, i.codepostal, i.ville, c.reference ref_copro, ";
@@ -145,7 +145,7 @@ public class ImmeubleController : AbstractBaseController<ImmeubleEntite>
 
         cmd +=
             " l.numero_lot, c.id as copro_id, l.id as lot_id, i.id as immeuble_id, round(l.avance::numeric,2) as avance";
-        cmd += $" from {getSchemaTable()} i ";
+        cmd += $" from {GetSchemaTable()} i ";
         cmd += $" join {schema}.lot_description l on l.immeuble_id = i.id and l.statut=1 ";
         cmd += $" join {schema}.coproprietaire c on l.coproprietaire_id = c.id ";
         cmd +=
@@ -176,8 +176,8 @@ public class ImmeubleController : AbstractBaseController<ImmeubleEntite>
     {
         ImmeubleEntite immeuble = null;
 
-        var cmd = $" select i.* from {getSchemaTable()} i";
-        cmd += $" join {getSchema()}.lot_description ld on ld.immeuble_id = i.id ";
+        var cmd = $" select i.* from {GetSchemaTable()} i";
+        cmd += $" join {GetSchema()}.lot_description ld on ld.immeuble_id = i.id ";
         cmd += " where ld.coproprietaire_id = @copro_id";
 
         var parameters = new List<NpgsqlParameter>

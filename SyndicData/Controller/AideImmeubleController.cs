@@ -9,7 +9,7 @@ public class AideImmeubleController : AbstractBaseController<AideImmeubleEntite>
 {
     private static readonly AideImmeubleController controller = new();
 
-    public override string getTable()
+    protected override string GetTable()
     {
         return "aide_immeuble";
     }
@@ -21,7 +21,7 @@ public class AideImmeubleController : AbstractBaseController<AideImmeubleEntite>
 
     public AideImmeubleEntite getAideImmeuble(string immeuble_id, string code)
     {
-        var cmd = $"select * from {getSchemaTable()} where immeuble_id = @immeuble_id and code = @code";
+        var cmd = $"select * from {GetSchemaTable()} where immeuble_id = @immeuble_id and code = @code";
 
         var parameters = new List<NpgsqlParameter>
         {

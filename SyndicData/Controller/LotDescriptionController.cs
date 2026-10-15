@@ -16,7 +16,7 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
 
     private static readonly TimeProvider _timeProvider = TimeProvider.System;
 
-    public override string getTable()
+    protected override string GetTable()
     {
         return "lot_description";
     }
@@ -30,7 +30,7 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
         bool bAddValeur = true, bool bAddindex = false)
     {
         var cmd =
-            $"select @fields from {getSchemaTable()} l  @join1 where l.immeuble_id = @immeuble_id order by numero_lot";
+            $"select @fields from {GetSchemaTable()} l  @join1 where l.immeuble_id = @immeuble_id order by numero_lot";
         var fields = "";
 
         if (bAddindex)
@@ -47,7 +47,7 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
 
         fields += "l.id, numero_lot, l.coproprietaire_id, c.reference as coproprietaire, c.nom, c.prenom, ";
         fields += " numero_batiment, numero_escalier, numero_etage, avance, l.statut";
-        var join1 = $" left join {getSchema()}.coproprietaire  C on (c.id = l.coproprietaire_id)";
+        var join1 = $" left join {GetSchema()}.coproprietaire  C on (c.id = l.coproprietaire_id)";
 
         cmd = cmd.Replace("@fields", fields);
         cmd = cmd.Replace("@join1", join1);
@@ -71,7 +71,7 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
     public DataTable createLotRepartition(ImmeubleEntite immeuble, int nblot)
     {
         var cmd =
-            $"select coalesce(max(numero_lot),0) as valeur from {getSchemaTable()} where immeuble_id = @immeuble_id";
+            $"select coalesce(max(numero_lot),0) as valeur from {GetSchemaTable()} where immeuble_id = @immeuble_id";
         var numero_lot = 0;
 
         var table = getResultSQL(cmd, [new NpgsqlParameter("@immeuble_id", immeuble.id)]);
@@ -140,8 +140,8 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
         if (immeuble == null) // || copro == null)
             return null;
         var cmd = "select l.id, l.numero_lot as reference, concat(c.nom, ' ', c.prenom ) as nom ";
-        cmd += $" from {getSchema()}.lot_description l";
-        cmd += $" join  {getSchema()}.coproprietaire c on c.id = l.coproprietaire_id ";
+        cmd += $" from {GetSchema()}.lot_description l";
+        cmd += $" join  {GetSchema()}.coproprietaire c on c.id = l.coproprietaire_id ";
         //            cmd += String.Format(" ";
         cmd += " where l.immeuble_id = @immeuble_id ";
         cmd += " and l.statut = 1";
@@ -156,8 +156,8 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
         if (immeuble == null) // || copro == null)
             return null;
         var cmd = "select l.id, l.numero_lot as reference, concat(l.numero_lot, ' - ', c.nom, ' ', c.prenom ) as nom ";
-        cmd += $" from {getSchema()}.lot_description l";
-        cmd += $" join  {getSchema()}.coproprietaire c on c.id = l.coproprietaire_id ";
+        cmd += $" from {GetSchema()}.lot_description l";
+        cmd += $" join  {GetSchema()}.coproprietaire c on c.id = l.coproprietaire_id ";
         //            cmd += String.Format(" ";
         cmd += " where l.immeuble_id = @immeuble_id and c.statut = @statut_actif";
         if (copro != null)
@@ -177,20 +177,20 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
 
     public DataTable getListeLot(string immeuble_id)
     {
-        var cmd = $"select * from {getSchemaTable()} where immeuble_id = @immeuble_id";
+        var cmd = $"select * from {GetSchemaTable()} where immeuble_id = @immeuble_id";
         return getResultSQL(cmd, [new NpgsqlParameter("@immeuble_id", immeuble_id)]);
     }
 
     public DataTable getListeLotFiscaux(string immeuble_id)
     {
         var cmd =
-            $"select * from {getSchemaTable()} l join {getSchema()}.coproprietaire c on c.id = l.coproprietaire_id where l.immeuble_id = @immeuble_id and c.declaration=true";
+            $"select * from {GetSchemaTable()} l join {GetSchema()}.coproprietaire c on c.id = l.coproprietaire_id where l.immeuble_id = @immeuble_id and c.declaration=true";
         return getResultSQL(cmd, [new NpgsqlParameter("@immeuble_id", immeuble_id)]);
     }
 
     public List<LotDescriptionEntite> getListeLotDescription(string immeuble_id)
     {
-        var cmd = $"select * from {getSchemaTable()} where immeuble_id = @immeuble_id";
+        var cmd = $"select * from {GetSchemaTable()} where immeuble_id = @immeuble_id";
         var table = getResultSQL(cmd, [new NpgsqlParameter("@immeuble_id", immeuble_id)]);
         var liste = new List<LotDescriptionEntite>();
         if (table != null)
@@ -203,7 +203,7 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
     public List<LotDescriptionEntite> getListeLotDescriptionFiscaux(string immeuble_id)
     {
         var cmd =
-            $"select * from {getSchemaTable()} l join {getSchema()}.coproprietaire c on c.id = l.coproprietaire_id where immeuble_id = @immeuble_id and c.declaration=true";
+            $"select * from {GetSchemaTable()} l join {GetSchema()}.coproprietaire c on c.id = l.coproprietaire_id where immeuble_id = @immeuble_id and c.declaration=true";
         var table = getResultSQL(cmd, [new NpgsqlParameter("@immeuble_id", immeuble_id)]);
         var liste = new List<LotDescriptionEntite>();
         if (table != null)
@@ -219,7 +219,7 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
         var numlot = Convertir.ToInt(numLot);
 
         var cmd =
-            $"select * from {getSchemaTable()} where immeuble_id = @immeuble_id and numero_lot = @numero_lot ";
+            $"select * from {GetSchemaTable()} where immeuble_id = @immeuble_id and numero_lot = @numero_lot ";
 
         var table = getResultSQL(cmd,
             [new NpgsqlParameter("@immeuble_id", immeuble_id), new NpgsqlParameter("@numero_lot", numlot)]);
@@ -235,7 +235,7 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
     {
         LotDescriptionEntite lot = null;
 
-        var cmd = $"select * from {getSchemaTable()} where coproprietaire_id = @coproprietaire_id ";
+        var cmd = $"select * from {GetSchemaTable()} where coproprietaire_id = @coproprietaire_id ";
 
         var table = getResultSQL(cmd, [new NpgsqlParameter("@coproprietaire_id", coproprietaire_id)]);
 
@@ -250,7 +250,7 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
         LotDescriptionEntite lot = null;
 
         var cmd =
-            $"select * from {getSchemaTable()} where immeuble_id = @immeuble_id and coproprietaire_id = @coproprietaire_id ";
+            $"select * from {GetSchemaTable()} where immeuble_id = @immeuble_id and coproprietaire_id = @coproprietaire_id ";
 
         var table = getResultSQL(cmd, [
             new NpgsqlParameter("@immeuble_id", immeuble_id),
@@ -266,7 +266,7 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
     public decimal getAvanceImmeuble(string immeuble_id)
     {
         decimal avance = 0;
-        var cmd = $" select sum(avance) as avance from {getSchemaTable()} where immeuble_id = @immeuble_id";
+        var cmd = $" select sum(avance) as avance from {GetSchemaTable()} where immeuble_id = @immeuble_id";
         var table = getResultSQL(cmd, [
             new NpgsqlParameter("@immeuble_id", immeuble_id)
         ]);
@@ -280,8 +280,8 @@ public class LotDescriptionController : AbstractBaseController<LotDescriptionEnt
     {
         LotDescriptionEntite lot = null;
 
-        var cmd = $"select * from {getSchemaTable()} ";
-        cmd += $" join {getSchema()}.immeuble i on i.id = immeuble_id ";
+        var cmd = $"select * from {GetSchemaTable()} ";
+        cmd += $" join {GetSchema()}.immeuble i on i.id = immeuble_id ";
         cmd += " where i.reference = @ref_imm and numero_lot = @numero_lot";
         var parameters = new List<NpgsqlParameter>
         {
