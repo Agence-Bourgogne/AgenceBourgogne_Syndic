@@ -18,7 +18,7 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
         DefaultOrder = "reference";
     }
 
-    protected override string GetTable()
+    public override string getTable()
     {
         return "exercice_comptable";
     }
@@ -31,9 +31,9 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
     public DataTable GetListExerciceFromImmeuble(string immeubleId)
     {
         var cmd =
-            $"select e.id, e.reference, e.statut, b.id as budget_id, date_deb, date_fin, b.statut as statut_budget, sum(montant) as montant from {GetSchemaTable()} e";
-        cmd += $" left join {GetSchema()}.budget b on e.id = b.exercice_id";
-        cmd += $" left join {GetSchema()}.budget_ligne bl on (b.id = bl.budget_id and bl.statut!= @statut_budget)";
+            $"select e.id, e.reference, e.statut, b.id as budget_id, date_deb, date_fin, b.statut as statut_budget, sum(montant) as montant from {getSchemaTable()} e";
+        cmd += $" left join {getSchema()}.budget b on e.id = b.exercice_id";
+        cmd += $" left join {getSchema()}.budget_ligne bl on (b.id = bl.budget_id and bl.statut!= @statut_budget)";
         cmd += " where immeuble_id = @immeuble_id and e.statut != @statut ";
         cmd += " group by 1, 2, 3, 4, 5, 6, 7";
         cmd += " order by date_deb desc";
@@ -57,7 +57,7 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
                        e.reference AS reference_exercice,
                        e.date_deb,
                        e.date_fin
-                   from {GetSchemaTable()} e
+                   from {getSchemaTable()} e
                    join agence.immeuble i on i.id = e.immeuble_id
                    where e.date_deb <= @date_maximale
                      and e.date_fin >= @date_minimale
@@ -275,7 +275,7 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
         dt = dt.AddDays(1 - dt.DayOfYear);
 
         var cmd =
-            $"select date_fin as date_last from {GetSchemaTable()} where immeuble_id = @immeuble_id order by date_fin desc limit 1";
+            $"select date_fin as date_last from {getSchemaTable()} where immeuble_id = @immeuble_id order by date_fin desc limit 1";
 
         var parameters = new List<NpgsqlParameter>
         {
@@ -296,7 +296,7 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
     {
         var cmd = " select * ";
         ExerciceComptableEntite entite = null;
-        cmd += $" from {GetSchemaTable()} ";
+        cmd += $" from {getSchemaTable()} ";
         cmd += " where immeuble_id = @immeuble_id and date_deb >= @dtDeb and date_fin <= @dtFin ";
 
         var parameters = new List<NpgsqlParameter>
@@ -316,9 +316,9 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
     {
         var cmd = " select * ";
         ExerciceComptableEntite entite = null;
-        cmd += $" from {GetSchemaTable()} ";
+        cmd += $" from {getSchemaTable()} ";
         cmd += " where id = ";
-        cmd += $" (select id from {GetSchemaTable()} ";
+        cmd += $" (select id from {getSchemaTable()} ";
         cmd += " where immeuble_id = @immeuble_id and statut = @statut";
         cmd += " order by date_deb limit 1)";
 
@@ -337,11 +337,11 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
 
     public DataTable GetExercicePrecedent(string exerciceId)
     {
-        var schema = GetSchema();
+        var schema = getSchema();
         var cmd = " select * ";
-        cmd += $" from {GetSchemaTable()} ";
+        cmd += $" from {getSchemaTable()} ";
         cmd += " where id = ";
-        cmd += $" (select id from {GetSchemaTable()} ";
+        cmd += $" (select id from {getSchemaTable()} ";
         cmd += $" where date_deb < (select  date_deb from {schema}.exercice_comptable where id = @exercice_id)";
         cmd += $" and immeuble_id = (select  immeuble_id from {schema}.exercice_comptable where id = @exercice_id)";
         cmd += " order by date_deb desc limit 1)";
@@ -356,11 +356,11 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
 
     public DataTable GetExerciceSuivant(string exerciceId)
     {
-        var schema = GetSchema();
+        var schema = getSchema();
         var cmd = " select * ";
-        cmd += $" from {GetSchemaTable()} ";
+        cmd += $" from {getSchemaTable()} ";
         cmd += " where id = ";
-        cmd += $" (select id from {GetSchemaTable()} ";
+        cmd += $" (select id from {getSchemaTable()} ";
         cmd += $" where date_deb > (select  date_deb from {schema}.exercice_comptable where id = @exercice_id)";
         cmd += $" and immeuble_id = (select  immeuble_id from {schema}.exercice_comptable where id = @exercice_id)";
         cmd += " order by date_deb asc limit 1)";

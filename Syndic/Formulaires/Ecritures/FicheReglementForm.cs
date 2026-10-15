@@ -19,25 +19,19 @@ namespace EspaceSyndic.Formulaires.Ecritures;
 
 public partial class FicheReglementForm : Form
 {
-    private readonly InfoKeyHelpForm _infoKey = new("aide_clavier_reglement");
-    private readonly string _titreForm;
-    private bool _bLoadEcriture;
-    private CoproprietaireEntite _coproprietaire;
-    private ImmeubleEntite _immeuble;
+    private readonly InfoKeyHelpForm infoKey = new("aide_clavier_reglement");
+    private readonly string TitreForm;
+    protected bool bLoadEcriture;
+    private CoproprietaireEntite coproprietaire;
+    private ImmeubleEntite immeuble;
 
-    private LotDescriptionEntite _lot;
-    private NatureEntite _nature;
+    private LotDescriptionEntite lot;
+    private NatureEntite nature;
 
     public FicheReglementForm()
     {
         InitializeComponent();
-        _titreForm = Text;
-    }
-
-    public sealed override string Text
-    {
-        get => base.Text;
-        set => base.Text = value;
+        TitreForm = Text;
     }
 
     private void FicheReglementForm_Load(object sender, EventArgs e)
@@ -84,15 +78,15 @@ public partial class FicheReglementForm : Form
 
     private void ShowSoldeCopro()
     {
-        if (_coproprietaire == null)
+        if (coproprietaire == null)
         {
             dataGridViewLots.DataSource = OperationController.getController().getSoldeRepriseCoproprietaire("");
         }
         else
         {
-            var table = OperationController.getController().getSoldeRepriseCoproprietaire(_coproprietaire.id);
+            var table = OperationController.getController().getSoldeRepriseCoproprietaire(coproprietaire.id);
             if (table.Rows.Count <= 0)
-                table = OperationController.getController().getSoldeRepriseCoproprietaireVide(_coproprietaire.id);
+                table = OperationController.getController().getSoldeRepriseCoproprietaireVide(coproprietaire.id);
             dataGridViewLots.DataSource = table;
         }
 
@@ -108,7 +102,7 @@ public partial class FicheReglementForm : Form
     {
         var enable = true;
 
-        enable &= _coproprietaire != null;
+        enable &= coproprietaire != null;
         enable &= tbNature.AutoCompleteCustomSource.Contains(tbNature.Text);
         enable &= !tbMontant.Text.Equals("");
 
@@ -158,25 +152,25 @@ public partial class FicheReglementForm : Form
 
     private void tbCopro_Validating(object sender, CancelEventArgs e)
     {
-        _infoKey.DoFormText(this);
-        Text = _titreForm;
+        infoKey.DoFormText(this);
+        Text = TitreForm;
 
         if (tbCopro.Text != "")
         {
-            _coproprietaire = CoproprietaireController.getController().getEntiteFromField("reference", tbCopro.Text);
-            if (_coproprietaire != null)
+            coproprietaire = CoproprietaireController.getController().getEntiteFromField("reference", tbCopro.Text);
+            if (coproprietaire != null)
             {
                 tbCopro.BackColor = /*tbLibCopro.BackColor = */Color.White;
-                tbLibCopro.Text = $"{_coproprietaire.nom.Trim()} {_coproprietaire.prenom}";
-                tbEmetteur.Text = _coproprietaire.nomcomp.Trim();
+                tbLibCopro.Text = $"{coproprietaire.nom.Trim()} {coproprietaire.prenom}";
+                tbEmetteur.Text = coproprietaire.nomcomp.Trim();
                 if (tbEmetteur.Text == "")
-                    tbEmetteur.Text = _coproprietaire.nom;
-                var immeuble = _coproprietaire.Immeuble;
+                    tbEmetteur.Text = coproprietaire.nom;
+                var immeuble = coproprietaire.Immeuble;
                 if (immeuble != null)
-                    Text = $"{_titreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
+                    Text = $"{TitreForm} pour l'immeuble : {immeuble.nom} ({immeuble.DateExercice})";
 
 
-                if (_coproprietaire.huissier)
+                if (coproprietaire.huissier)
                 {
                     tbCopro.BackColor = Color.Red;
                     tbLibCopro.Text = "Attention Dossier Transmis à un huissier";
@@ -218,11 +212,11 @@ public partial class FicheReglementForm : Form
 
     private void tbNature_Validating(object sender, CancelEventArgs e)
     {
-        _nature = NatureController.getController().getEntiteFromField("reference", tbNature.Text);
-        if (_nature != null)
+        nature = NatureController.getController().getEntiteFromField("reference", tbNature.Text);
+        if (nature != null)
         {
             tbNature.BackColor = Color.White;
-            tbLibNature.Text = _nature.nom;
+            tbLibNature.Text = nature.nom;
         }
         else
         {
@@ -248,8 +242,8 @@ public partial class FicheReglementForm : Form
 
     private SaisieReglementEntite FillSaisieFromForm(SaisieReglementEntite saisie)
     {
-        saisie.coproprietaire_id = _coproprietaire.id;
-        saisie.nature_id = _nature.id;
+        saisie.coproprietaire_id = coproprietaire.id;
+        saisie.nature_id = nature.id;
         saisie.montant = Convertir.ToDecimal(tbMontant.Text);
         saisie.date_reference = DateOnly.Parse(tbDate.Text);
         saisie.libelle = tbLibelle.Text;
@@ -269,8 +263,8 @@ public partial class FicheReglementForm : Form
         }
         else
         {
-            _nature = NatureController.getController().getEntiteFromField("reference", tbNature.Text);
-            if (_nature == null) msg += "Nature Invalide\r\n";
+            nature = NatureController.getController().getEntiteFromField("reference", tbNature.Text);
+            if (nature == null) msg += "Nature Invalide\r\n";
         }
 
 
@@ -280,17 +274,17 @@ public partial class FicheReglementForm : Form
             return false;
         }
 
-        if (_coproprietaire != null)
+        if (coproprietaire != null)
         {
-            _lot = _coproprietaire.LotDescription;
-            if (_lot == null)
+            lot = coproprietaire.LotDescription;
+            if (lot == null)
             {
                 MessageBox.Show(@"Attention Coproprietaire non Affecté à un lot");
                 return false;
             }
 
-            _immeuble = _coproprietaire.Immeuble;
-            if (_immeuble == null) MessageBox.Show(@"Lot coproprietaire sans immeuble");
+            immeuble = coproprietaire.Immeuble;
+            if (immeuble == null) MessageBox.Show(@"Lot coproprietaire sans immeuble");
         }
         else
         {
@@ -299,7 +293,7 @@ public partial class FicheReglementForm : Form
         }
 
         var dtFac = DateOnly.Parse(tbDate.Text);
-        var exercice = ExerciceComptableController.GetController().GetExerciceFromDate(_immeuble.id, dtFac);
+        var exercice = ExerciceComptableController.GetController().GetExerciceFromDate(immeuble.id, dtFac);
 
         if (exercice != null)
             if (exercice.statut != (int)GlobalConstantes.StatutExercice.Ouvert)
@@ -345,7 +339,7 @@ public partial class FicheReglementForm : Form
 
                     ClearFicheSaisie();
 
-                    _coproprietaire = null;
+                    coproprietaire = null;
                     ShowSoldeCopro();
                     FillDatagridEcritures();
                     tbCopro.Focus();
@@ -411,8 +405,8 @@ public partial class FicheReglementForm : Form
             }
             else
             {
-                immeuble_id = _lot.immeuble_id;
-                compte_banque = _immeuble.comptebanque;
+                immeuble_id = lot.immeuble_id;
+                compte_banque = immeuble.comptebanque;
             }
 
             var saisie = new SaisieReglementEntite
@@ -441,7 +435,7 @@ public partial class FicheReglementForm : Form
             ClearFicheSaisie();
             if (bNewLiasse)
                 selectComboLiasse(liasse_id);
-            _coproprietaire = null;
+            coproprietaire = null;
             ShowSoldeCopro();
             FillDatagridEcritures();
             tbCopro.Focus();
@@ -488,7 +482,7 @@ public partial class FicheReglementForm : Form
     private bool UpdateSaisieInOperation(SaisieReglementEntite saisie)
     {
         var allValide = true;
-        var cmd = $"select * from {OperationController.getController().GetSchemaTable()} ";
+        var cmd = $"select * from {OperationController.getController().getSchemaTable()} ";
         cmd += " where saisie_id = @saisie_id and immeuble_id = @immeuble_id and lot_id = @lot_id";
         var controller = OperationController.getController();
         foreach (DataGridViewRow rowGrid in dataGridViewLots.Rows)
@@ -538,7 +532,7 @@ public partial class FicheReglementForm : Form
 
     private void FillDatagridEcritures()
     {
-        _bLoadEcriture = true;
+        bLoadEcriture = true;
         var liasse_id = cbLiasse.SelectedValue.ToString();
         var source = SaisieReglementController.getController().getGridRowSaisieReglement(liasse_id);
         dataGridViewEcriture.DataSource = source;
@@ -574,7 +568,7 @@ public partial class FicheReglementForm : Form
             tbDiff.Text = (total - current).ToString();
         }
 
-        _bLoadEcriture = false;
+        bLoadEcriture = false;
     }
 
     private void btnSave_Click(object sender, EventArgs e)
@@ -603,7 +597,7 @@ public partial class FicheReglementForm : Form
 
     private void dataGridViewEcriture_SelectionChanged(object sender, EventArgs e)
     {
-        if (!_bLoadEcriture)
+        if (!bLoadEcriture)
             if (dataGridViewEcriture.SelectedRows.Count > 0)
             {
                 var rowGrid = (DataRowView)dataGridViewEcriture.SelectedRows[0].DataBoundItem;
@@ -650,7 +644,7 @@ public partial class FicheReglementForm : Form
 
     private void btnHelp_Click(object sender, EventArgs e)
     {
-        _infoKey.ShowForm(this);
+        infoKey.ShowForm(this);
     }
 
     private void btnDelete_Click(object sender, EventArgs e)

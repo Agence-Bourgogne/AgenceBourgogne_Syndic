@@ -10,21 +10,24 @@ using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace CommonProjectsPartners.Controller;
 
-public abstract class AbstractBaseController<TEntite> where TEntite : AbstractBaseEntite, new()
+public abstract class AbstractBaseController<TENTITE> where TENTITE : AbstractBaseEntite, new()
 {
-    private static NpgsqlConnection cnx;
+    public static NpgsqlConnection cnx;
 
     protected readonly NpgsqlDataAdapter adapter = new();
     protected string DefaultOrder = "reference";
     private readonly TimeProvider _timeProvider = TimeProvider.System;
 
-    protected abstract string GetTable();
+    public abstract string getTable();
 
-    protected virtual string GetSchema() => BaseApplication.schema;
-
-    public virtual string GetSchemaTable()
+    public virtual string getSchema()
     {
-        return string.Format($"{GetSchema()}.{GetTable()}");
+        return BaseApplication.schema;
+    }
+
+    public virtual string getSchemaTable()
+    {
+        return string.Format($"{getSchema()}.{getTable()}");
     }
 
     protected virtual void setListSelectCommand()
@@ -33,7 +36,7 @@ public abstract class AbstractBaseController<TEntite> where TEntite : AbstractBa
         if (cnx == null)
             cnx = Database.GetInstance();
         adapter.SelectCommand = new NpgsqlCommand(
-            $"select * from {GetSchemaTable()} where statut = 1 order by {order}", cnx);
+            $"select * from {getSchemaTable()} where statut = 1 order by {order}", cnx);
     }
 
     public DataTable GetTableList()
@@ -42,7 +45,7 @@ public abstract class AbstractBaseController<TEntite> where TEntite : AbstractBa
         if (cnx == null)
             cnx = Database.GetInstance();
         adapter.SelectCommand = new NpgsqlCommand(
-            $"select * from {GetSchemaTable()} where statut = 1 order by {order}", cnx);
+            $"select * from {getSchemaTable()} where statut = 1 order by {order}", cnx);
         var table = new DataTable();
         try
         {
@@ -62,7 +65,7 @@ public abstract class AbstractBaseController<TEntite> where TEntite : AbstractBa
         var order = DefaultOrder;
         if (cnx == null)
             cnx = Database.GetInstance();
-        adapter.SelectCommand = new NpgsqlCommand($"select * from {GetSchemaTable()} order by {order}", cnx);
+        adapter.SelectCommand = new NpgsqlCommand($"select * from {getSchemaTable()} order by {order}", cnx);
 
         var table = new DataTable();
         try
@@ -95,14 +98,14 @@ public abstract class AbstractBaseController<TEntite> where TEntite : AbstractBa
         return table;
     }
 
-    public List<TEntite> GetListEntite()
+    public List<TENTITE> GetListEntite()
     {
         var table = GetList();
-        var list = new List<TEntite>();
+        var list = new List<TENTITE>();
 
         foreach (DataRow row in table.Rows)
         {
-            var entite = new TEntite();
+            var entite = new TENTITE();
             entite.setValues(row);
             list.Add(entite);
         }
@@ -113,7 +116,7 @@ public abstract class AbstractBaseController<TEntite> where TEntite : AbstractBa
     public virtual DataTable GetFindList(string filter)
     {
         var order = DefaultOrder;
-        var cmd = $"Select id, reference, nom from {GetSchemaTable()} ";
+        var cmd = $"Select id, reference, nom from {getSchemaTable()} ";
         cmd += " where statut != @statut_del";
 
         if (filter != "")
@@ -153,7 +156,7 @@ public abstract class AbstractBaseController<TEntite> where TEntite : AbstractBa
             {
                 foreach (DataRow row in changes.Rows)
                 {
-                    var entite = new TEntite();
+                    var entite = new TENTITE();
                     if (row.RowState == DataRowState.Added || row.RowState == DataRowState.Modified)
                     {
                         entite.setValues(row);
@@ -179,21 +182,21 @@ public abstract class AbstractBaseController<TEntite> where TEntite : AbstractBa
         return true;
     }
 
-    public TEntite getEntiteById(string id)
+    public TENTITE getEntiteById(string id)
     {
         return getEntiteFromField("id", id);
     }
 
-    public TEntite getEntiteFromField(string field, string value)
+    public TENTITE getEntiteFromField(string field, string value)
     {
         return getEntite($" where {field} = @value",
             [new NpgsqlParameter("@value", value)]);
     }
 
-    public TEntite getEntite(string where, List<NpgsqlParameter> parameters = null)
+    public TENTITE getEntite(string where, List<NpgsqlParameter> parameters = null)
     {
-        var entite = default(TEntite);
-        var cmd = $"select * from {GetSchemaTable()} {where} limit 1";
+        var entite = default(TENTITE);
+        var cmd = $"select * from {getSchemaTable()} {where} limit 1";
         var adapter = new NpgsqlDataAdapter();
         if (cnx == null)
             cnx = Database.GetInstance();
@@ -210,7 +213,7 @@ public abstract class AbstractBaseController<TEntite> where TEntite : AbstractBa
             if (table.Rows.Count > 0)
             {
                 var row = table.Rows[0];
-                entite = new TEntite();
+                entite = new TENTITE();
                 entite.setValues(row);
                 return entite;
             }
@@ -227,7 +230,7 @@ public abstract class AbstractBaseController<TEntite> where TEntite : AbstractBa
 
     public DataTable getDataTable(string where, List<NpgsqlParameter> parameters = null)
     {
-        var cmd = $"select * from {GetSchemaTable()} {where} limit 1";
+        var cmd = $"select * from {getSchemaTable()} {where} limit 1";
         var adapter = new NpgsqlDataAdapter();
         if (cnx == null)
             cnx = Database.GetInstance();
@@ -251,7 +254,7 @@ public abstract class AbstractBaseController<TEntite> where TEntite : AbstractBa
         return null;
     }
 
-    public bool InsertOrUpdate(TEntite entite)
+    public bool InsertOrUpdate(TENTITE entite)
     {
         return doInsertOrUpdate(entite);
     }
@@ -261,7 +264,7 @@ public abstract class AbstractBaseController<TEntite> where TEntite : AbstractBa
         return true;
     }
 
-    public bool doInsertOrUpdate(TEntite entite)
+    public bool doInsertOrUpdate(TENTITE entite)
     {
         var rc = false;
 
@@ -289,14 +292,14 @@ public abstract class AbstractBaseController<TEntite> where TEntite : AbstractBa
         if (!entite.isNew && changes.Count < 1)
             return true;
 
-        var cmd = entite.GetInsertOrUdpateCommand(GetSchemaTable());
+        var cmd = entite.GetInsertOrUdpateCommand(getSchemaTable());
         var sqlCmd = new NpgsqlCommand(cmd, cnx);
         entite.SetInsertOrUpdateParameters(sqlCmd);
 
         try
         {
             sqlCmd.ExecuteNonQuery();
-            AuditDB.Log(operation, entite, GetSchema(), _timeProvider.GetLocalNow().DateTime, BaseApplication.AuditString);
+            AuditDB.Log(operation, entite, getSchema(), _timeProvider.GetLocalNow().DateTime, BaseApplication.AuditString);
             entite.isNew = false;
             rc = true;
         }
@@ -312,7 +315,7 @@ public abstract class AbstractBaseController<TEntite> where TEntite : AbstractBa
     {
         var source = new AutoCompleteStringCollection();
 
-        var cmd = $"Select {field} from {GetSchemaTable()} order by reference";
+        var cmd = $"Select {field} from {getSchemaTable()} order by reference";
         if (cnx == null)
             cnx = Database.GetInstance();
 
@@ -335,7 +338,7 @@ public abstract class AbstractBaseController<TEntite> where TEntite : AbstractBa
     public void deleteEntite(AbstractBaseEntite entite)
     {
         var rc = false;
-        var cmd = $"delete from {GetSchemaTable()} where id = @id";
+        var cmd = $"delete from {getSchemaTable()} where id = @id";
         if (cnx == null)
             cnx = Database.GetInstance();
         var sqlCmd = new NpgsqlCommand(cmd, cnx);
@@ -343,7 +346,7 @@ public abstract class AbstractBaseController<TEntite> where TEntite : AbstractBa
         {
             sqlCmd.Parameters.AddWithValue("@id", entite.id);
             var nb = sqlCmd.ExecuteNonQuery();
-            AuditDB.Log(AuditDB.Operation.Delete, entite, GetSchema(), _timeProvider.GetLocalNow().DateTime, BaseApplication.AuditString);
+            AuditDB.Log(AuditDB.Operation.Delete, entite, getSchema(), _timeProvider.GetLocalNow().DateTime, BaseApplication.AuditString);
             rc = nb > 0;
         }
         catch (Exception e)
@@ -403,7 +406,7 @@ public abstract class AbstractBaseController<TEntite> where TEntite : AbstractBa
     {
         var valeur = 0;
         var cmd =
-            $"select coalesce(max(numero_operation), 0 ) as valeur from {GetSchemaTable()} where date_reference = @date_reference";
+            $"select coalesce(max(numero_operation), 0 ) as valeur from {getSchemaTable()} where date_reference = @date_reference";
         var table = getResultSQL(cmd, [new NpgsqlParameter("@date_reference", dateRef)]);
         if (table != null) valeur = (int)table.Rows[0]["valeur"] + 1;
 
@@ -412,7 +415,7 @@ public abstract class AbstractBaseController<TEntite> where TEntite : AbstractBa
 
     public DataTable getListeSaisiesNonValidees(string liasse_id, int statutOperation)
     {
-        var cmd = $"select * from {GetSchemaTable()} ";
+        var cmd = $"select * from {getSchemaTable()} ";
         cmd += " where liasse_id = @liasse_id and statut = @statut ";
 
         if (cnx == null)
@@ -438,7 +441,7 @@ public abstract class AbstractBaseController<TEntite> where TEntite : AbstractBa
 
     public bool ChangeEtat(string immeuble_id, DateOnly date_deb, DateOnly date_fin, int statut, int statut_del)
     {
-        var cmd = $" update {GetSchemaTable()} set statut = @statut ";
+        var cmd = $" update {getSchemaTable()} set statut = @statut ";
         cmd += "  where immeuble_id= @immeuble_id and date_reference >= @dtDeb and date_reference <= @dtFin ";
         cmd += " and statut != @statut_del";
         var parameters = new List<NpgsqlParameter>

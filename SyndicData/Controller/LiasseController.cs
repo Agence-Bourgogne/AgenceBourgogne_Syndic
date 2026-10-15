@@ -13,7 +13,7 @@ public class LiasseController : AbstractBaseController<LiasseEntite>
 {
     private static readonly LiasseController controller = new();
 
-    protected override string GetTable()
+    public override string getTable()
     {
         return "liasse";
     }
@@ -25,7 +25,7 @@ public class LiasseController : AbstractBaseController<LiasseEntite>
 
     public DataTable getLiasseActives(GlobalConstantes.TypeOperation type_ecriture, bool bAddNew = true)
     {
-        var cmd = $"select * from {GetSchemaTable()} ";
+        var cmd = $"select * from {getSchemaTable()} ";
         cmd += " where type_ecriture = @type_ecriture and statut = @statut";
         adapter.SelectCommand = new NpgsqlCommand(cmd, Database.GetInstance());
 
@@ -66,7 +66,7 @@ public class LiasseController : AbstractBaseController<LiasseEntite>
 
     public DataTable GetLiassesValidees(GlobalConstantes.TypeOperation type_ecriture, string limit = "")
     {
-        var cmd = $"select * from {GetSchemaTable()} ";
+        var cmd = $"select * from {getSchemaTable()} ";
         cmd += " where type_ecriture = @type_ecriture and statut = @statut";
         cmd += " order by audit_created desc ";
         if (limit != "")

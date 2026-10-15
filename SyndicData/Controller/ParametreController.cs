@@ -10,12 +10,12 @@ public class ParametreController : AbstractBaseController<ParametreEntite>
 {
     public static readonly ParametreController controller = new();
 
-    protected override string GetTable()
+    public override string getTable()
     {
         return "parametres";
     }
 
-    protected override string GetSchema()
+    public override string getSchema()
     {
         return "public";
     }
@@ -24,7 +24,7 @@ public class ParametreController : AbstractBaseController<ParametreEntite>
     {
         if (string.IsNullOrEmpty(groupe.param_1))
             return null;
-        var cmd = $" select * from {GetSchemaTable()} ";
+        var cmd = $" select * from {getSchemaTable()} ";
 
         cmd += " where groupe = @code ";
         if (groupe.param_2 != null)
@@ -40,7 +40,7 @@ public class ParametreController : AbstractBaseController<ParametreEntite>
 
     public ParametreEntite getGroupeEntite(string code)
     {
-        var cmd = $" select * from {GetSchemaTable()} ";
+        var cmd = $" select * from {getSchemaTable()} ";
 
         cmd += " where groupe = 'HDR_GROUPE' and code = @code ";
         var parameters = new List<NpgsqlParameter>

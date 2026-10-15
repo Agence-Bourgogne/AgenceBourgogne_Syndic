@@ -15,7 +15,7 @@ public class ImmeubleRepartitionController : AbstractBaseController<ImmeubleRepa
     private static readonly ImmeubleRepartitionController controller = new();
     public string specific_schema = "";
 
-    protected override string GetTable()
+    public override string getTable()
     {
         return "immeuble_repartition";
     }
@@ -34,7 +34,7 @@ public class ImmeubleRepartitionController : AbstractBaseController<ImmeubleRepa
     public DataTable getRepartitionImmeuble(string immeuble_id)
     {
         adapter.SelectCommand = new NpgsqlCommand(
-            $"select * from {GetSchemaTable()} where immeuble_id=@immeuble_id and statut=@statut order by ligne, colonne",
+            $"select * from {getSchemaTable()} where immeuble_id=@immeuble_id and statut=@statut order by ligne, colonne",
             Database.GetInstance());
         var table = new DataTable();
         adapter.SelectCommand.Parameters.AddWithValue("@immeuble_id", immeuble_id);
@@ -67,7 +67,7 @@ public class ImmeubleRepartitionController : AbstractBaseController<ImmeubleRepa
     private bool HaveRepartitionIndividuelle(string immeuble_id)
     {
         var valeur = 0;
-        var cmd = $"select coalesce(count(*),0)::integer as valeur  from {GetSchemaTable()} ";
+        var cmd = $"select coalesce(count(*),0)::integer as valeur  from {getSchemaTable()} ";
         cmd += " where immeuble_id = @immeuble_id and ligne = 8 ";
 
         var table = getResultSQL(cmd, [new NpgsqlParameter("@immeuble_id", immeuble_id)]);
@@ -149,7 +149,7 @@ public class ImmeubleRepartitionController : AbstractBaseController<ImmeubleRepa
     {
         var bExist = false;
         var cmd =
-            $"select immeuble_id, reference from {GetSchemaTable()} where immeuble_id=@immeuble_id and reference = @reference";
+            $"select immeuble_id, reference from {getSchemaTable()} where immeuble_id=@immeuble_id and reference = @reference";
 
         var parameters = new List<NpgsqlParameter>
         {
@@ -166,7 +166,7 @@ public class ImmeubleRepartitionController : AbstractBaseController<ImmeubleRepa
     public ImmeubleRepartitionEntite getRepartFromImmeubleBase(string immeuble_id, string base_ref)
     {
         adapter.SelectCommand = new NpgsqlCommand(
-            $"select * from {GetSchemaTable()} where immeuble_id=@immeuble_id and reference = @reference",
+            $"select * from {getSchemaTable()} where immeuble_id=@immeuble_id and reference = @reference",
             Database.GetInstance());
         var table = new DataTable();
         adapter.SelectCommand.Parameters.AddWithValue("@immeuble_id", immeuble_id);

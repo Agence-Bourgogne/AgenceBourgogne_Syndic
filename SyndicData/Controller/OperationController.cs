@@ -13,7 +13,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
 {
     private static readonly OperationController controller = new();
 
-    protected override string GetTable()
+    public override string getTable()
     {
         return "operation";
     }
@@ -191,7 +191,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
     {
         var controller = getController();
         var repartCtl = RepartIndividuelleController.getController();
-        var cmd = $"select * from {GetSchemaTable()} ";
+        var cmd = $"select * from {getSchemaTable()} ";
         cmd +=
             " where immeuble_id=@immeuble_id  and liasse_id=@liasse_id and numero_operation = @numero_operation and statut = @statut";
         var statut = (int)GlobalConstantes.StatutOperation.Brouillon;
@@ -343,7 +343,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
         cmd += " case when debit < 0 then 0 when credit < 0 then abs(credit) else debit end as debit, ";
         cmd += " case when debit < 0 then abs(debit) when credit <0 then 0 else credit end as credit,";
         cmd += " id, date_reference";
-        cmd += $" from {GetSchemaTable()} ";
+        cmd += $" from {getSchemaTable()} ";
         cmd += " where immeuble_id=@immeuble_id  and coproprietaire_id=@coproprietaire_id and statut = @statut ";
         cmd += " and type_mouvement = @type_mouvement";
         cmd += " and date_reference >= @dtDeb ";
@@ -381,8 +381,8 @@ public class OperationController : AbstractBaseController<OperationEntite>
         var cmd =
             "select  concat(i.reference, ' ', i.nom) as immeuble, l.immeuble_id, l.id as lot_id, numero_lot, i.comptebanque, ";
         cmd += " 0 as solde , 0 as debit, 0 as credit ";
-        cmd += $" From {GetSchema()}.lot_description l ";
-        cmd += $" join {GetSchema()}.immeuble i on (l.immeuble_id = i.id)";
+        cmd += $" From {getSchema()}.lot_description l ";
+        cmd += $" join {getSchema()}.immeuble i on (l.immeuble_id = i.id)";
         cmd += " where l.coproprietaire_id=@coproprietaire_id ";
 
         var parameters = new List<NpgsqlParameter>
@@ -401,9 +401,9 @@ public class OperationController : AbstractBaseController<OperationEntite>
         var cmd =
             "select  concat(i.reference, ' ', i.nom) as immeuble, o.immeuble_id, lot_id, numero_lot, i.comptebanque, ";
         cmd += " (sum(credit)- sum(debit)) as solde , sum(debit) as debit, sum(credit) as credit ";
-        cmd += $" from {GetSchemaTable()} o ";
-        cmd += $" join {GetSchema()}.lot_description l on (o.lot_id = l.id)";
-        cmd += $" join {GetSchema()}.immeuble i on (o.immeuble_id = i.id)";
+        cmd += $" from {getSchemaTable()} o ";
+        cmd += $" join {getSchema()}.lot_description l on (o.lot_id = l.id)";
+        cmd += $" join {getSchema()}.immeuble i on (o.immeuble_id = i.id)";
         cmd += " where l.coproprietaire_id=@coproprietaire_id and o.statut = @statut ";
         cmd += " and type_mouvement = @type_mouvement";
         cmd += " group by 1, 2, 3, 4, 5";
@@ -429,10 +429,10 @@ public class OperationController : AbstractBaseController<OperationEntite>
         cmd += " case when n.reference = @solde_bilan then 0 else o.debit end as debit_no_solde, \n";
         cmd += " case when n.reference = @solde_bilan then 0 else o.credit end as credit_no_solde, o.type_mouvement \n";
         cmd += " FROM  ";
-        cmd += $" {GetSchema()}.operation o\n";
-        cmd += $" join {GetSchema()}.coproprietaire c on c.id = o.coproprietaire_id\n";
-        cmd += $" join {GetSchema()}.lot_description l on l.id = o.lot_id\n";
-        cmd += $" join {GetSchema()}.nature n on n.id = o.nature_id\n";
+        cmd += $" {getSchema()}.operation o\n";
+        cmd += $" join {getSchema()}.coproprietaire c on c.id = o.coproprietaire_id\n";
+        cmd += $" join {getSchema()}.lot_description l on l.id = o.lot_id\n";
+        cmd += $" join {getSchema()}.nature n on n.id = o.nature_id\n";
         cmd += " where o.immeuble_id = @immeuble_id \n";
         cmd += " AND o.statut != @statut and o.statut != @statut_del \n";
         cmd += " and o.type_mouvement =@mouvement ";
@@ -465,7 +465,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
 
     public DataTable getListSoldeCoproprietaires(bool bNotDesactive = true)
     {
-        var schema = GetSchema();
+        var schema = getSchema();
         var cmd = " Select ";
 
         cmd +=
@@ -480,7 +480,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
         cmd += "else null end as type_relance, ";
         cmd += " case when coalesce(c.nomcomp,'') != '' then 1 else 0 end as duplicata, ";
         cmd += " o.immeuble_id, lot_id , c.id";
-        cmd += $" from {GetSchemaTable()} o";
+        cmd += $" from {getSchemaTable()} o";
         cmd += $" left join {schema}.lot_description l on (o.lot_id = l.id) ";
         cmd += $" left join {schema}.immeuble i on (o.immeuble_id = i.id) ";
         cmd += $" join {schema}.coproprietaire c on (o.coproprietaire_id = c.id) ";
@@ -509,7 +509,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
 
     public DataTable GetDataForRelance(string ids, string date_edition, int type_relance)
     {
-        var schema = GetSchema();
+        var schema = getSchema();
         var cmd = " Select ";
 
         cmd += " case when coalesce(nomcomp,'')<>'' then x.code else p.code end as Civilite, ";
@@ -532,7 +532,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
         cmd +=
             "p.code civ_copro, concat(c.nom , ' ', prenom) as nom_copro, c.adresse as adrs_copro, concat(c.ville, ' ', c.pays) as ville_copro, c.codepostal as cp_copro ,";
         cmd += " c.id as copro_id";
-        cmd += $" from {GetSchemaTable()} o";
+        cmd += $" from {getSchemaTable()} o";
         cmd += $" join {schema}.immeuble i on (o.immeuble_id = i.id) ";
         cmd += $" join {schema}.coproprietaire c on (o.coproprietaire_id = c.id) ";
         cmd += $" join {schema}.lot_description l on (o.coproprietaire_id = l.coproprietaire_id) ";
@@ -561,18 +561,18 @@ public class OperationController : AbstractBaseController<OperationEntite>
 
     public DataTable GetReleveFiscalCoproprietaire(string coproprietaire_id, DateTime dtDeb, DateTime dtFin)
     {
-        var schema = GetSchema();
+        var schema = getSchema();
         var cmd = " select ";
 
         cmd += " n.reference, n.nom, o.libelle, o.debit, o.credit, n.declaration, ";
         cmd += "case when fo.reference <> '999' then trim(fo.nom) else trim(f.comment_fournisseur) end as fournisseur ";
-        cmd += $" from {GetSchemaTable()} o";
+        cmd += $" from {getSchemaTable()} o";
         cmd += $" join {schema}.nature n on (o.nature_id = n.id  and trim(n.declaration) <> '')";
         //
-        cmd += $" left join {GetSchema()}.saisie_facture f on  ";
+        cmd += $" left join {getSchema()}.saisie_facture f on  ";
 //            cmd += " (f.nature_id = o.nature_id and f.immeuble_id = o.immeuble_id and trim(f.libelle) = trim(o.libelle) and o.base_repart = f.base_repart and o.date_reference = f.date_reference )";
         cmd += "f.id = o.saisie_id ";
-        cmd += $" left join {GetSchema()}.fournisseur fo on (f.fournisseur_id = fo.id)";
+        cmd += $" left join {getSchema()}.fournisseur fo on (f.fournisseur_id = fo.id)";
         //
         cmd += " where coproprietaire_id = @coproprietaire_id ";
         cmd += " and o.statut = @statut";
@@ -619,7 +619,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
     public DataTable getListeOperations(string immeuble_id, string lot_reference, string type, int statut,
         DateTime dtDeb, DateTime dtFin, string ref_nature, string base_repart, string libelle = "", string montant = "")
     {
-        var schema = GetSchema();
+        var schema = getSchema();
         var cmd = "Select ";
         var numlot = 0;
 
@@ -639,7 +639,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
 
         cmd += " sf.statut ";
 
-        cmd += $" from {GetSchemaTable()} sf";
+        cmd += $" from {getSchemaTable()} sf";
         cmd += $" left join {schema}.nature n on n.id = nature_id ";
         cmd += $" left join {schema}.lot_description l on l.id = lot_id ";
         cmd += $" left join {schema}.coproprietaire c on c.id = l.coproprietaire_id ";
@@ -698,9 +698,9 @@ public class OperationController : AbstractBaseController<OperationEntite>
     {
         decimal depense = 0;
 
-        var cmd = $"select coalesce(sum(credit)-sum(debit),0) as depense from {GetSchemaTable()} o ";
-        cmd += $" left join {GetSchema()}.nature n on n.id = nature_id ";
-        cmd += $" left join {GetSchema()}.coproprietaire c on c.id = coproprietaire_id ";
+        var cmd = $"select coalesce(sum(credit)-sum(debit),0) as depense from {getSchemaTable()} o ";
+        cmd += $" left join {getSchema()}.nature n on n.id = nature_id ";
+        cmd += $" left join {getSchema()}.coproprietaire c on c.id = coproprietaire_id ";
         cmd += " where immeuble_id = @immeuble_id ";
         if (copro_id != "")
             cmd += " and c.id = @copro_id";
@@ -729,7 +729,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
         decimal sum = 0;
         var nature = "140";
 
-        var cmd = $"select sum(credit)-sum(debit) as montant from {GetSchema()}.operation f";
+        var cmd = $"select sum(credit)-sum(debit) as montant from {getSchema()}.operation f";
         cmd += " left join agence.nature n on n.id = f.nature_id ";
         cmd += " where immeuble_id = @immeuble_id and date_reference >= @dtDeb and date_reference <= @dtFin";
         cmd += " and type_mouvement=@type_mouvement and type_operation = @type_operation";
@@ -769,9 +769,9 @@ public class OperationController : AbstractBaseController<OperationEntite>
         depense = getOperationDepense(immeuble_id, dtDeb, dtFin, copro_id);
 
         var cmd =
-            $"select coalesce(sum(credit)-sum(debit),0) as solde_ant from {GetSchemaTable()} o ";
-        cmd += $" left join {GetSchema()}.nature n on n.id = nature_id ";
-        cmd += $" left join {GetSchema()}.coproprietaire c on c.id = coproprietaire_id ";
+            $"select coalesce(sum(credit)-sum(debit),0) as solde_ant from {getSchemaTable()} o ";
+        cmd += $" left join {getSchema()}.nature n on n.id = nature_id ";
+        cmd += $" left join {getSchema()}.coproprietaire c on c.id = coproprietaire_id ";
         cmd += " where immeuble_id = @immeuble_id ";
         if (copro_id != "")
             cmd += " and c.id = @copro_id";
@@ -802,7 +802,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
         var cmd = "select 1 as type, date_reference, libelle, ";
         cmd += " case when debit = 0 then null else debit end as debit, ";
         cmd += " case when credit = 0 then null else credit end as credit ";
-        cmd += $" from {GetSchemaTable()} o ";
+        cmd += $" from {getSchemaTable()} o ";
         cmd += " where immeuble_id = @immeuble_id and o.statut = @statut";
         cmd += " and type_mouvement = @type_mouvement";
         cmd += " order by 1, 2 ";
@@ -832,7 +832,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
 
     public DataTable getOperationFromSaisie(string saisie_id)
     {
-        var cmd = $"select * from {GetSchemaTable()} where saisie_id =@saisie_id and statut != @statut";
+        var cmd = $"select * from {getSchemaTable()} where saisie_id =@saisie_id and statut != @statut";
         return getResultSQL(cmd,
         [
             new NpgsqlParameter("@saisie_id", saisie_id),
@@ -842,7 +842,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
 
     public DataTable GetReleveIndividuels(string immeuble_id, DateTime dtDeb, DateTime dtFin)
     {
-        var schema = GetSchema();
+        var schema = getSchema();
         var cmd = " select ";
 
         cmd += "c.id as ref_copro, n.reference as ref_nature, sf.base_repart, trim(n.nom) as nom, ";
@@ -856,7 +856,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
 
         cmd += " , 0 as ancien, 0 as nouveau, o.ref_cpt, o.saisie_id, o.date_reference, o.numero_operation ";
 
-        cmd += $" from {GetSchemaTable()} o ";
+        cmd += $" from {getSchemaTable()} o ";
         cmd += $" join {schema}.nature n on n.id = o.nature_id ";
         cmd += $" join {schema}.coproprietaire c on c.id = o.coproprietaire_id ";
         cmd +=
@@ -900,7 +900,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
         cmd2 += " ir.nom as base_nom, 1 as who";
         cmd2 += " , ri.ancien,";
         cmd2 += " ri.nouveau , o.ref_cpt, o.saisie_id, o.date_reference, o.numero_operation ";
-        cmd2 += $" from {GetSchemaTable()} o ";
+        cmd2 += $" from {getSchemaTable()} o ";
         cmd2 += $" join {schema}.nature n on n.id = o.nature_id ";
         cmd2 += $" join {schema}.coproprietaire c on c.id = o.coproprietaire_id ";
         cmd2 += $" join {schema}.saisie_facture sf on sf.id = saisie_id";
@@ -961,14 +961,14 @@ public class OperationController : AbstractBaseController<OperationEntite>
     public DataTable getSoldesRelevesIndividuels(string immeuble_id, DateTime dtDeb, DateTime dtFin,
         bool bAppelOnly = false)
     {
-        var schema = GetSchema();
+        var schema = getSchema();
 
         var cmdSolde =
             $" select coproprietaire_id, 1 as ordre, 'Solde Antérieur au {dtDeb.AddDays(-1).ToShortDateString()} ' as libelle, ";
 
         cmdSolde += " case when debit < 0 then 0 when credit < 0 then abs(credit) else debit end as debit, ";
         cmdSolde += " case when debit < 0 then abs(debit) when credit <0 then 0 else credit end as credit ";
-        cmdSolde += $" from {GetSchemaTable()} o ";
+        cmdSolde += $" from {getSchemaTable()} o ";
         cmdSolde += $" join {schema}.nature n on n.id = o.nature_id and n.reference = @solde_bilan ";
         cmdSolde +=
             " where immeuble_id = @immeuble_id and date_reference >=@dateDeb and date_reference <= @dateFin and o.statut in (@statut, @statut_cloture)";
@@ -984,7 +984,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
         cmdReglements += " group by 1";
 
         var cmdPaiements =
-            $" select coproprietaire_id, 3 as ordre,  'Votre Relevé', sum(debit), abs(sum(credit)) from {GetSchemaTable()} o";
+            $" select coproprietaire_id, 3 as ordre,  'Votre Relevé', sum(debit), abs(sum(credit)) from {getSchemaTable()} o";
         cmdPaiements +=
             $" join {schema}.nature n on n.id = o.nature_id and n.reference NOT in (@solde_bilan, @appel_fond )";
         cmdPaiements +=
@@ -992,7 +992,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
         cmdPaiements += " group by 1";
 
         var cmdAppel =
-            $" select coproprietaire_id, 4 as ordre, 'Appels de fonds de l''exercice' as libelle, sum(debit) as debit, sum(credit) as credit from {GetSchemaTable()} o";
+            $" select coproprietaire_id, 4 as ordre, 'Appels de fonds de l''exercice' as libelle, sum(debit) as debit, sum(credit) as credit from {getSchemaTable()} o";
         cmdAppel += $" join {schema}.nature n on n.id = o.nature_id and n.reference = @appel_fond ";
         cmdAppel +=
             " where immeuble_id = @immeuble_id and date_reference >=@dateDeb and date_reference <= @dateFin and o.statut in ( @statut, @statut_cloture) ";
@@ -1027,11 +1027,11 @@ public class OperationController : AbstractBaseController<OperationEntite>
 
     public DataTable getFactureOperations(SaisieFactureEntite facture)
     {
-        var schema = GetSchema();
+        var schema = getSchema();
         var cmd =
             "select o.id, n.reference as ref_nature, n.nom as nature, c.reference as ref_copro, concat ( c.prenom, ' ', c.nom) as coproprietaire, libelle, debit, credit, base_repart, o.statut, o.saisie_id";
 
-        cmd += $" from {GetSchemaTable()} o ";
+        cmd += $" from {getSchemaTable()} o ";
         cmd += $" left join {schema}.nature n on n.id = nature_id ";
         cmd += $" left join {schema}.coproprietaire c on c.id = coproprietaire_id";
         cmd += " where immeuble_id = @immeuble_id and type_mouvement=@type_mouvement and nature_id = @nature_id";
@@ -1067,7 +1067,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
 
     public DataTable getNativeFactureOperations(SaisieFactureEntite facture)
     {
-        var cmd = $" select * from {GetSchemaTable()} o ";
+        var cmd = $" select * from {getSchemaTable()} o ";
 
         cmd += " where immeuble_id = @immeuble_id and type_mouvement=@type_mouvement and nature_id = @nature_id ";
         cmd += " and date_reference = @date_reference and base_repart = @base_repart and global = @montant ";
@@ -1091,11 +1091,11 @@ public class OperationController : AbstractBaseController<OperationEntite>
 
     public DataTable getReglementOperations(SaisieReglementEntite reglement)
     {
-        var schema = GetSchema();
+        var schema = getSchema();
         var cmd =
             "select o.id, n.reference as ref_nature, n.nom as nature, c.reference as ref_copro, concat ( c.prenom, ' ', c.nom) as coproprietaire, libelle, debit, credit, o.statut, base_repart, o.saisie_id";
 
-        cmd += $" from {GetSchemaTable()} o ";
+        cmd += $" from {getSchemaTable()} o ";
         cmd += $" left join {schema}.nature n on n.id = nature_id ";
         cmd += $" join {schema}.coproprietaire c on c.id = coproprietaire_id";
         cmd +=
@@ -1120,11 +1120,11 @@ public class OperationController : AbstractBaseController<OperationEntite>
 
     public DataTable getAppelDeFondOperations(SaisieAppelFondEntite appel)
     {
-        var schema = GetSchema();
+        var schema = getSchema();
         var cmd =
             "select o.id, n.reference as ref_nature, n.nom as nature, c.reference as ref_copro, c.nom as coproprietaire, l.numero_lot, libelle, debit, credit, o.statut, base_repart, o.saisie_id";
 
-        cmd += $" from {GetSchemaTable()} o ";
+        cmd += $" from {getSchemaTable()} o ";
         cmd += $" left join {schema}.nature n on n.id = nature_id ";
         cmd += $" left join {schema}.coproprietaire c on c.id = coproprietaire_id";
         cmd += $" left join {schema}.lot_description l on l.id = lot_id";
@@ -1169,10 +1169,10 @@ public class OperationController : AbstractBaseController<OperationEntite>
 
     public DataTable getSaisieOperations(string saisie_id)
     {
-        var schema = GetSchema();
+        var schema = getSchema();
         var cmd =
             "select o.id, n.reference as ref_nature, n.nom as nature, c.reference as ref_copro, c.nom as coproprietaire, libelle, l.numero_lot, debit, credit, o.statut, base_repart, o.saisie_id";
-        cmd += $" from {GetSchemaTable()} o ";
+        cmd += $" from {getSchemaTable()} o ";
         cmd += $" left join {schema}.nature n on n.id = nature_id ";
         cmd += $" left join {schema}.coproprietaire c on c.id = coproprietaire_id";
         cmd += $" left join {schema}.lot_description l on l.id = lot_id";
@@ -1187,7 +1187,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
 
     public DataTable getNativeSaisieOperations(string saisie_id)
     {
-        var cmd = $" select * from {GetSchemaTable()} o ";
+        var cmd = $" select * from {getSchemaTable()} o ";
         cmd += " where saisie_id = @saisie_id and o.statut!=@statut";
         var parameters = new List<NpgsqlParameter>
         {
@@ -1271,7 +1271,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
     {
         var lot_num = "";
         var cmd =
-            $"select numero_lot from {GetSchemaTable()} o join {GetSchema()}.lot_description d on d.id = o.lot_id ";
+            $"select numero_lot from {getSchemaTable()} o join {getSchema()}.lot_description d on d.id = o.lot_id ";
         cmd += " where saisie_id =@saisie_id and o.statut != @statut";
         var parameters = new List<NpgsqlParameter>
         {
@@ -1315,11 +1315,11 @@ public class OperationController : AbstractBaseController<OperationEntite>
 
     public DataTable getOperations(OperationEntite entite)
     {
-        var schema = GetSchema();
+        var schema = getSchema();
         var cmd =
             "select o.id, n.reference as ref_nature, n.nom as nature, c.reference as ref_copro, concat ( c.prenom, ' ', c.nom) as coproprietaire, libelle, debit, credit, base_repart, o.statut, o.saisie_id";
 
-        cmd += $" from {GetSchemaTable()} o ";
+        cmd += $" from {getSchemaTable()} o ";
         cmd += $" left join {schema}.nature n on n.id = nature_id ";
         cmd += $" left join {schema}.coproprietaire c on c.id = coproprietaire_id";
 
@@ -1344,7 +1344,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
     public DataTable getAllFactureOperations(string immeuble_id, DateOnly dtDeb, DateOnly dtFin)
     {
         var cmd =
-            $"select * from {GetSchemaTable()} where immeuble_id = @immeuble_id and type_mouvement = @type_mouvement and statut != @statut";
+            $"select * from {getSchemaTable()} where immeuble_id = @immeuble_id and type_mouvement = @type_mouvement and statut != @statut";
         cmd += " and date_reference >= @dtDeb and date_reference <= @dtFin";
         var parameters = new List<NpgsqlParameter>
         {
@@ -1360,7 +1360,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
     public DataTable getAllReglementsOperations(string immeuble_id, DateOnly dtDeb, DateOnly dtFin)
     {
         var cmd =
-            $"select * from {GetSchemaTable()} where immeuble_id = @immeuble_id and type_mouvement = @type_mouvement and type_operation =@type_operation and statut != @statut";
+            $"select * from {getSchemaTable()} where immeuble_id = @immeuble_id and type_mouvement = @type_mouvement and type_operation =@type_operation and statut != @statut";
         cmd += " and date_reference >= @dtDeb and date_reference <= @dtFin";
         var parameters = new List<NpgsqlParameter>
         {
@@ -1377,7 +1377,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
     public DataTable getAllAppelDeFondOperations(string immeuble_id, DateOnly dtDeb, DateOnly dtFin)
     {
         var cmd =
-            $"select * from {GetSchemaTable()} where immeuble_id = @immeuble_id and type_mouvement = @type_mouvement and type_operation =@type_operation and statut != @statut";
+            $"select * from {getSchemaTable()} where immeuble_id = @immeuble_id and type_mouvement = @type_mouvement and type_operation =@type_operation and statut != @statut";
         cmd += " and date_reference >= @dtDeb and date_reference <= @dtFin";
         var parameters = new List<NpgsqlParameter>
         {
@@ -1393,7 +1393,7 @@ public class OperationController : AbstractBaseController<OperationEntite>
 
     public OperationEntite getOperationFromFacture(SaisieFactureEntite facture, string copro_id)
     {
-        var schema = GetSchema();
+        var schema = getSchema();
         OperationEntite op = null;
         var sql = $"select * from {schema}.operation o ";
         sql += $" join {schema}.lot_description ld on ld.coproprietaire_id = o.coproprietaire_id";

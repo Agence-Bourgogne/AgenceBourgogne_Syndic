@@ -10,7 +10,7 @@ internal class ConvocationController : AbstractBaseController<ConvocationEntite>
 {
     private static readonly ConvocationController controller = new();
 
-    protected override string GetTable()
+    public override string getTable()
     {
         return "convocation";
     }
@@ -24,7 +24,7 @@ internal class ConvocationController : AbstractBaseController<ConvocationEntite>
     {
         List<ConvocationDescriptionEntite> list = null;
 
-        var cmd = $" select * from {GetSchema()}.convocation_description where convocation_id = @convocation_id";
+        var cmd = $" select * from {getSchema()}.convocation_description where convocation_id = @convocation_id";
 
         var parameters = new List<NpgsqlParameter>
         {

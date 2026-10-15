@@ -12,7 +12,7 @@ public class FournisseurController : AbstractBaseController<FournisseurEntite>
         DefaultOrder = "reference";
     }
 
-    protected override string GetTable()
+    public override string getTable()
     {
         return "fournisseur";
     }

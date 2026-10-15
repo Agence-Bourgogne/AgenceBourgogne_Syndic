@@ -14,7 +14,7 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
 {
     private static readonly SaisieFactureController controller = new();
 
-    protected override string GetTable()
+    public override string getTable()
     {
         return "saisie_facture";
     }
@@ -26,7 +26,7 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
 
     public DataTable GetAllElements(string immeuble_id, DateOnly dtDeb, DateOnly dtFin)
     {
-        var cmd = $"select f.*, i.reference as ref_imm from {GetSchemaTable()} f ";
+        var cmd = $"select f.*, i.reference as ref_imm from {getSchemaTable()} f ";
         cmd += " join agence.immeuble i on i.id = immeuble_id ";
         cmd += " where f.statut = 1 ";
         if (dtDeb != DateOnly.FromDateTime(Database.NullDate))
@@ -54,7 +54,7 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
 
     public DataTable getListeFactures(string liasse_id)
     {
-        var schema = GetSchema();
+        var schema = getSchema();
         var cmd = " Select ";
         cmd += " i.reference as ref_immeuble, ";
         cmd += " i.nom as immeuble, ";
@@ -71,7 +71,7 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
 
         cmd += " e.liasse_id, e.immeuble_id, e.fournisseur_id, e.nature_id, ";
         cmd += " e.id";
-        cmd += $" from {GetSchemaTable()} e ";
+        cmd += $" from {getSchemaTable()} e ";
 
         cmd += $" left join {schema}.immeuble i on i.id = e.immeuble_id";
         cmd += $" left join {schema}.fournisseur f on f.id = e.fournisseur_id";
@@ -111,8 +111,8 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
         var cmd = "Select ";
         cmd +=
             " p.nom as nom, iparam_1 as code, fo.reference, case when fo.reference <> '999' then fo.nom else f.comment_fournisseur end as nom_four";
-        cmd += $" from {GetSchema()}.saisie_facture f  ";
-        cmd += $" join {GetSchema()}.fournisseur fo on fo.id = f.fournisseur_id ";
+        cmd += $" from {getSchema()}.saisie_facture f  ";
+        cmd += $" join {getSchema()}.fournisseur fo on fo.id = f.fournisseur_id ";
         cmd +=
             " join ( select  groupe, nom, iparam_1 from parametres where groupe='FACTURE_REGLEMENT' ) p on coalesce(f.reglement, 0 ) = iparam_1 ";
 
@@ -124,7 +124,7 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
 
     public DataTable getListeFacturation(List<string> liasses, string codereg, string reference, string nom_four)
     {
-        var schema = GetSchema();
+        var schema = getSchema();
         var cmd = "Select ";
         cmd += " i.reference as immeuble, e.date_reference , n.reference as nature, e.base_repart, ";
         cmd += " f.reference as num_fournisseur, ";
@@ -173,7 +173,7 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
 
     public DataTable getCompteGestionGeneral(string immeuble_id, DateTime dtDeb, DateTime dtFin)
     {
-        var schema = GetSchema();
+        var schema = getSchema();
         var cmd = "Select ";
 
         cmd += "n.reference, n.nom as nature, ";
@@ -182,7 +182,7 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
         cmd += " case when sf.montant >0 then sf.montant else 0 end as debit, ";
         cmd += " case when sf.montant <0 then sf.montant*-1 else 0 end as credit ";
 
-        cmd += $"from {GetSchemaTable()} sf ";
+        cmd += $"from {getSchemaTable()} sf ";
         cmd += $"left join {schema}.nature n on ( n.id = nature_id) ";
         cmd += $"left join {schema}.fournisseur f on ( f.id = fournisseur_id )";
         cmd += " where immeuble_id = @immeuble_id ";
@@ -210,7 +210,7 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
         string fournisseur = "", string libelle = "", string montant = "", bool bValidOnly = true,
         string base_repart = "")
     {
-        var schema = GetSchema();
+        var schema = getSchema();
         var cmd = "Select ";
 
         cmd +=
@@ -218,7 +218,7 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
         cmd += " case when f.reference <> '999' then f.nom else sf.comment_fournisseur end as fournisseur, ";
         cmd += " sf.statut ";
 
-        cmd += $" from {GetSchemaTable()} sf";
+        cmd += $" from {getSchemaTable()} sf";
         cmd += $" left join {schema}.fournisseur f on f.id = fournisseur_id ";
         cmd += $" left join {schema}.nature n on n.id = nature_id ";
         cmd += $" join {schema}.immeuble i on i.id = immeuble_id ";
@@ -272,8 +272,8 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
         decimal sum = 0;
         var nature = "140";
 
-        var cmd = $"select sum(montant) as montant from {GetSchemaTable()} f";
-        cmd += string.Format(" join agence.nature n on n.id = f.nature_id ", GetSchema());
+        var cmd = $"select sum(montant) as montant from {getSchemaTable()} f";
+        cmd += string.Format(" join agence.nature n on n.id = f.nature_id ", getSchema());
         cmd += " where immeuble_id = @immeuble_id and date_reference >= @dtDeb and date_reference <= @dtFin";
         cmd += " and n.reference <> @nature and f.statut != @statut";
 
@@ -300,11 +300,11 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
 
     public DataTable getBudgetRealise(string immeuble_id, DateTime dtDeb, DateTime dtFin)
     {
-        var schema = GetSchema();
+        var schema = getSchema();
         var cmd = "Select ";
 
         cmd += " sf.nature_id, sf.base_repart, sum(montant) as montant";
-        cmd += $" from {GetSchemaTable()} sf";
+        cmd += $" from {getSchemaTable()} sf";
         cmd += $" join {schema}.nature n on (n.id = nature_id and n.budgetisable = true) ";
 
         cmd += " where immeuble_id = @immeuble_id";
@@ -323,8 +323,8 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
 
     public DataTable getCurrentSoldeImmeuble(string immeuble_id, DateOnly dtDeb, DateOnly dtFin)
     {
-        var cmd = $"select * from {GetSchemaTable()} sf ";
-        cmd += $" join {GetSchema()}.nature n on n.id = nature_id";
+        var cmd = $"select * from {getSchemaTable()} sf ";
+        cmd += $" join {getSchema()}.nature n on n.id = nature_id";
         cmd += " where immeuble_id = @immeuble_id and sf.statut != @statut and n.reference = @solde_bilan";
         cmd += " and date_reference >= @dtDeb and date_reference <= @dtFin";
         var parameters = new List<NpgsqlParameter>
@@ -354,12 +354,12 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
         var cmdFacture = " select 1 as type, date_reference, libelle, ";
         cmdFacture += " case when montant < 0 then null else montant end as debit , ";
         cmdFacture += " case when montant < 0 then (montant*-1) else null end as credit ";
-        cmdFacture += $" from {GetSchemaTable()} sf ";
-        cmdFacture += $" join {GetSchema()}.nature n on n.id = sf.nature_id and n.reference != @appel_fond";
+        cmdFacture += $" from {getSchemaTable()} sf ";
+        cmdFacture += $" join {getSchema()}.nature n on n.id = sf.nature_id and n.reference != @appel_fond";
         cmdFacture += " where immeuble_id = @immeuble_id and sf.statut=@statut";
 
         var cmdReglement = " select 2 as type, date_reference, libelle, null, montant ";
-        cmdReglement += $" from {GetSchema()}.saisie_reglement sr ";
+        cmdReglement += $" from {getSchema()}.saisie_reglement sr ";
         cmdReglement += " where immeuble_id = @immeuble_id and sr.statut =@statut";
 
         var cmd = $" select * from ({cmdFacture} union {cmdReglement} ) t order by 1, date_reference";
@@ -389,7 +389,7 @@ public class SaisieFactureController : AbstractBaseController<SaisieFactureEntit
 
     public DataTable getSaisieFacture(OperationEntite operation)
     {
-        var cmd = $"select o.*, i.reference as ref_imm from {GetSchemaTable()} o";
+        var cmd = $"select o.*, i.reference as ref_imm from {getSchemaTable()} o";
         cmd += " join agence.immeuble i on i.id = o.immeuble_id ";
         cmd +=
             " where immeuble_id = @immeuble_id and date_reference = @date_reference and nature_id = @nature_id and trim(libelle) = trim(@libelle)";

@@ -9,9 +9,9 @@ namespace EspaceSyndic.Formulaires.Fournisseur;
 
 public partial class FicheFournisseurForm : Form
 {
-    private readonly FournisseurController _controller = new();
-    public FournisseurEntite Entite;
-    private bool _modified;
+    public readonly FournisseurController controller = new();
+    public FournisseurEntite entite;
+    private bool modified;
 
     public FicheFournisseurForm(bool bShowNav = true)
     {
@@ -22,43 +22,43 @@ public partial class FicheFournisseurForm : Form
     private void FicheFournisseurForm_Load(object sender, EventArgs e)
     {
         ParametresDB.FillComboFromParams(cbReglement, "FACTURE_REGLEMENT");
-        SetFicheValues(null);
+        setFicheValues(null);
     }
 
-    private void SetFicheValues(FournisseurEntite newEntite)
+    private void setFicheValues(FournisseurEntite newEntite)
     {
         if (newEntite != null)
-            Entite = newEntite;
+            entite = newEntite;
 
-        tbRef.Text = Entite.reference;
-        tbNom.Text = Entite.nom;
-        tbInterlocuteur.Text = Entite.interlocuteur;
-        tbTel.Text = Entite.telephone;
-        tbAdresse.Text = Entite.adresse;
-        tbCodePostal.Text = Entite.codepostal;
-        tbVille.Text = Entite.ville;
-        cbReglement.SelectedValue = Entite.reglement;
-        tbComment.Text = Entite.commentaire;
-        tbSiret.Text = Entite.siret;
-        tbSecu.Text = Entite.numsecu;
-        tbApe.Text = Entite.codeape;
-        tbUrsaff.Text = Entite.numurs;
-        ckDesactiv.Checked = Entite.statut == (int)AbstractBaseEntite.StatutEntite.Supprime;
+        tbRef.Text = entite.reference;
+        tbNom.Text = entite.nom;
+        tbInterlocuteur.Text = entite.interlocuteur;
+        tbTel.Text = entite.telephone;
+        tbAdresse.Text = entite.adresse;
+        tbCodePostal.Text = entite.codepostal;
+        tbVille.Text = entite.ville;
+        cbReglement.SelectedValue = entite.reglement;
+        tbComment.Text = entite.commentaire;
+        tbSiret.Text = entite.siret;
+        tbSecu.Text = entite.numsecu;
+        tbApe.Text = entite.codeape;
+        tbUrsaff.Text = entite.numurs;
+        ckDesactiv.Checked = entite.statut == (int)AbstractBaseEntite.StatutEntite.Supprime;
 
-        _modified = false;
+        modified = false;
     }
 
-    private void GetNewEntite(string where, string message)
+    private void getNewEntite(string where, string message)
     {
-        if (_modified)
-            if (!SaveForm(true))
+        if (modified)
+            if (!saveForm(true))
                 return;
 
         try
         {
-            var newEntite = _controller.getEntite(where);
+            var newEntite = controller.getEntite(where);
             if (newEntite != null)
-                SetFicheValues(newEntite);
+                setFicheValues(newEntite);
         }
         catch (Exception)
         {
@@ -73,10 +73,10 @@ public partial class FicheFournisseurForm : Form
 
     private void btnSave_Click(object sender, EventArgs e)
     {
-        SaveForm();
+        saveForm();
     }
 
-    private bool SaveForm(bool bShowMessage = false, bool bShowResult = true)
+    private bool saveForm(bool bShowMessage = false, bool bShowResult = true)
     {
         if (bShowMessage)
         {
@@ -88,72 +88,72 @@ public partial class FicheFournisseurForm : Form
         }
 
 
-        Entite.reference = tbRef.Text;
-        if (Entite.reference == "")
+        entite.reference = tbRef.Text;
+        if (entite.reference == "")
         {
             MessageBox.Show(@"Référence invalide");
             return false;
         }
 
-        Entite.nom = tbNom.Text;
-        Entite.interlocuteur = tbInterlocuteur.Text;
-        Entite.telephone = tbTel.Text;
-        Entite.adresse = tbAdresse.Text;
-        Entite.ville = tbVille.Text;
-        Entite.codepostal = tbCodePostal.Text;
-        Entite.reglement = Convert.ToInt32(cbReglement.SelectedValue);
+        entite.nom = tbNom.Text;
+        entite.interlocuteur = tbInterlocuteur.Text;
+        entite.telephone = tbTel.Text;
+        entite.adresse = tbAdresse.Text;
+        entite.ville = tbVille.Text;
+        entite.codepostal = tbCodePostal.Text;
+        entite.reglement = Convert.ToInt32(cbReglement.SelectedValue);
 //            entite.codereg = tbCodeRegion.Text.Equals("") ? 0 : Convert.ToInt32(tbCodeRegion.Text);
-        Entite.commentaire = tbComment.Text;
-        Entite.siret = tbSiret.Text;
-        Entite.numsecu = tbSecu.Text;
-        Entite.codeape = tbApe.Text;
-        Entite.numurs = tbUrsaff.Text;
-        Entite.statut = ckDesactiv.Checked
+        entite.commentaire = tbComment.Text;
+        entite.siret = tbSiret.Text;
+        entite.numsecu = tbSecu.Text;
+        entite.codeape = tbApe.Text;
+        entite.numurs = tbUrsaff.Text;
+        entite.statut = ckDesactiv.Checked
             ? (int)AbstractBaseEntite.StatutEntite.Supprime
             : (int)AbstractBaseEntite.StatutEntite.Actif;
-        if (_controller.InsertOrUpdate(Entite))
+        if (controller.InsertOrUpdate(entite))
         {
             if (bShowResult)
                 MessageBox.Show(@"Modifications entregistrées");
-            _modified = false;
+            modified = false;
             return true;
         }
 
         return false;
     }
 
-    private void btnFirst_Click(object sender, EventArgs e)
+    protected void btnFirst_Click(object sender, EventArgs e)
     {
-        GetNewEntite("order by reference::integer", "Début de liste atteint");
+        getNewEntite("order by reference::integer", "Début de liste atteint");
     }
 
-    private void btnPrev_Click(object sender, EventArgs e)
+    protected void btnPrev_Click(object sender, EventArgs e)
     {
-        GetNewEntite($"where reference::integer < {Entite.reference} order by reference::integer desc",
+        getNewEntite($"where reference::integer < {entite.reference} order by reference::integer desc",
             "Début de liste atteint");
     }
 
-    private void btnNext_Click(object sender, EventArgs e)
+    protected void btnNext_Click(object sender, EventArgs e)
     {
-        GetNewEntite($"where reference::integer > {Entite.reference} order by reference::integer ",
+        getNewEntite($"where reference::integer > {entite.reference} order by reference::integer ",
             "Fin de liste atteinte");
     }
 
-    private void btnLast_Click(object sender, EventArgs e)
+    protected void btnLast_Click(object sender, EventArgs e)
     {
-        GetNewEntite("order by reference::integer desc", "Fin de liste atteinte");
+        getNewEntite("order by reference::integer desc", "Fin de liste atteinte");
     }
 
     private void FicheFournisseurForm_FormClosing(object sender, FormClosingEventArgs e)
     {
-        if (_modified)
-            if (!SaveForm(true))
+        if (modified)
+            if (!saveForm(true))
                 e.Cancel = true;
     }
 
-    private void TbTextChanged(object sender, EventArgs e)
+    private void tbTextChanged(object sender, EventArgs e)
     {
-        _modified = true;
+        modified = true;
     }
 
     private void lblRef_Click(object sender, EventArgs e)
@@ -161,8 +161,8 @@ public partial class FicheFournisseurForm : Form
         var form = new FindFournisseurForm(tbRef);
         if (DialogResult.Cancel != form.ShowDialog())
         {
-            Entite = _controller.getEntiteFromField("reference", tbRef.Text);
-            SetFicheValues(Entite);
+            entite = controller.getEntiteFromField("reference", tbRef.Text);
+            setFicheValues(entite);
         }
     }
 }

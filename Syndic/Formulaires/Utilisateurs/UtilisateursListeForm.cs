@@ -49,7 +49,7 @@ public partial class UtilisateursListeForm : Form
 
     protected DataTable getFormListe()
     {
-        return UsersController.GetController().getListeUsers();
+        return UsersController.getController().getListeUsers();
     }
 
     protected void ShowFicheForm(string entite_id)

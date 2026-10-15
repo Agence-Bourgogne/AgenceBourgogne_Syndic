@@ -19,7 +19,7 @@
 		<AssemblyTitle>EspaceSyndic</AssemblyTitle>
 		<Product>EspaceSyndic</Product>
 
-		<Version>2.1.2</Version>
+		<Version>2.1.1</Version>
 		<AssemblyVersion>$(Version)</AssemblyVersion>
 		<FileVersion>$(Version)</FileVersion>
 		<InformationalVersion>$(Version)</InformationalVersion>
@@ -133,6 +133,10 @@
 	    <Generator>ResXFileCodeGenerator</Generator>
 	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Formulaires\Controles\" />
 	</ItemGroup>
 
 </Project>

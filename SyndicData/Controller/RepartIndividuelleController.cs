@@ -12,7 +12,7 @@ public class RepartIndividuelleController : AbstractBaseController<RepartIndivid
 {
     private static readonly RepartIndividuelleController controller = new();
 
-    protected override string GetTable()
+    public override string getTable()
     {
         return "repart_individuelle";
     }
@@ -25,7 +25,7 @@ public class RepartIndividuelleController : AbstractBaseController<RepartIndivid
 
     public DataTable getRepartFromSaisie(string saisie_id)
     {
-        var cmd = $"select * from {GetSchemaTable()} where saisie_id = @saisie_id and statut!= @statut";
+        var cmd = $"select * from {getSchemaTable()} where saisie_id = @saisie_id and statut!= @statut";
         var parameters = new List<NpgsqlParameter>
         {
             new("@saisie_id", saisie_id),
@@ -37,7 +37,7 @@ public class RepartIndividuelleController : AbstractBaseController<RepartIndivid
     public DataTable getFactureRepartFromAppel(string immeuble_id, string reference, DateOnly date_reference)
     {
         var cmd =
-            $"select * from {GetSchemaTable()} where immeuble_id = @immeuble_id and type_saisie = {(int)GlobalConstantes.TypeSaisie.AppelDeFond} and reference = @reference and date_reference = @date_reference and statut!= @statut";
+            $"select * from {getSchemaTable()} where immeuble_id = @immeuble_id and type_saisie = {(int)GlobalConstantes.TypeSaisie.AppelDeFond} and reference = @reference and date_reference = @date_reference and statut!= @statut";
         var parameters = new List<NpgsqlParameter>
         {
             new("@immeuble_id", immeuble_id),
@@ -51,8 +51,8 @@ public class RepartIndividuelleController : AbstractBaseController<RepartIndivid
     public DataTable getLastRepartFromSaisie(string immeuble_id, string base_repart, GlobalConstantes.TypeSaisie saisie)
     {
         var where =
-            $"select saisie_id from {GetSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and type_saisie = @saisie order by audit_created desc limit 1";
-        var cmd = $"select * from {GetSchemaTable()} where statut != @statut and saisie_id = ({where})";
+            $"select saisie_id from {getSchemaTable()} where immeuble_id = @immeuble_id and reference = @base_repart and type_saisie = @saisie order by audit_created desc limit 1";
+        var cmd = $"select * from {getSchemaTable()} where statut != @statut and saisie_id = ({where})";
         var parameters = new List<NpgsqlParameter>
         {
             new("@immeuble_id", immeuble_id),

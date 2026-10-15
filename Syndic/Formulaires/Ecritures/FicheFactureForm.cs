@@ -206,11 +206,11 @@ public partial class FicheFactureForm : Form
     private void btnFournisseurAdd_Click(object sender, EventArgs e)
     {
         var form = new FicheFournisseurForm(false);
-        form.Entite = new FournisseurEntite();
+        form.entite = new FournisseurEntite();
         form.ShowDialog();
-        if (!form.Entite.id.Equals(""))
+        if (!form.entite.id.Equals(""))
         {
-            tbFournisseur.Text = form.Entite.reference;
+            tbFournisseur.Text = form.entite.reference;
             tbFournisseur_Validating(null, null);
         }
 
