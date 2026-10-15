@@ -19,7 +19,7 @@
         45000 Orléans
     </div>
 
-        <div class="header-titre">Grand livre - Exercice du @Model.Debut au @Model.Fin</div>
+    <div class="header-titre">Grand livre - Exercice du @Model.Debut au @Model.Fin</div>
 
     <h1>Copropriété : @Model.Copropriete.Nom</h1>
     <p>Adresse : @Model.Copropriete.Adresse</p>
@@ -70,11 +70,11 @@
                         totalCredit += credit;
                         soldeCompte += operation.Montant;
 
-                            var representationDebit = debit > 0 ? debit.ToInsecableCurrency() : string.Empty;
-                            var representationCredit = credit > 0 || string.IsNullOrEmpty(representationDebit) ? credit.ToInsecableCurrency() : string.Empty;
+                        var representationDebit = debit > 0 ? debit.ToInsecableCurrency() : string.Empty;
+                        var representationCredit = credit > 0 || string.IsNullOrEmpty(representationDebit) ? credit.ToInsecableCurrency() : string.Empty;
 
-                            var representationSoldeDebiteur = soldeCompte < 0 ? (-soldeCompte).ToInsecableCurrency() : string.Empty;
-                            var representationSoldeCrediteur = soldeCompte >= 0 ? soldeCompte.ToInsecableCurrency() : string.Empty;
+                        var representationSoldeDebiteur = soldeCompte < 0 ? (-soldeCompte).ToInsecableCurrency() : string.Empty;
+                        var representationSoldeCrediteur = soldeCompte >= 0 ? soldeCompte.ToInsecableCurrency() : string.Empty;
 
                         <tr>
                             <td>@operation.Date.ToString("d")</td>
@@ -89,13 +89,13 @@
                 </tbody>
                 <tfoot>
                     @{
-                            var soldeDebiteurFinal = totalDebit > totalCredit ? (totalDebit - totalCredit).ToInsecableCurrency() : string.Empty;
-                            var soldeCrediteurFinal = totalCredit > totalDebit ? (totalCredit - totalDebit).ToInsecableCurrency() : string.Empty;
+                        var soldeDebiteurFinal = totalDebit > totalCredit ? (totalDebit - totalCredit).ToInsecableCurrency() : string.Empty;
+                        var soldeCrediteurFinal = totalCredit > totalDebit ? (totalCredit - totalDebit).ToInsecableCurrency() : string.Empty;
                         if (string.IsNullOrEmpty(soldeCrediteurFinal) && string.IsNullOrEmpty(soldeDebiteurFinal)) 
-                                soldeCrediteurFinal = 0m.ToInsecableCurrency();
+                            soldeCrediteurFinal = 0m.ToInsecableCurrency();
 
-                            var representationTotalDebit = totalDebit.ToInsecableCurrency();
-                            var representationTotalCredit = totalCredit.ToInsecableCurrency();
+                        var representationTotalDebit = totalDebit.ToInsecableCurrency();
+                        var representationTotalCredit = totalCredit.ToInsecableCurrency();
                     }
                 <tr>
                     <td colspan="3">TOTAL</td>
