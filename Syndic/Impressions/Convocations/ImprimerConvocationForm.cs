@@ -146,12 +146,7 @@ public partial class ImprimerConvocationForm : Form
         btnEnter.Width = 0;
 
         reportViewer1.LocalReport.SubreportProcessing += LocalReport_SubreportProcessing;
-#if DEBUG
-
-#else
-           btnPV.Visible = false;
-           btnExport.Visible = false;
-#endif
+        btnExport.Visible = false;
     }
 
     private string GetLieuAssemblee()
