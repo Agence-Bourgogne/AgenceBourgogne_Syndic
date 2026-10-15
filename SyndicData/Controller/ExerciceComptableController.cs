@@ -115,8 +115,8 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
              LEFT JOIN agence.nature n
              ON o.nature_id = n.id
              WHERE o.immeuble_id = e.immeuble_id
-             AND o.date_operation >= e.date_deb
-             AND o.date_operation <= e.date_fin
+             AND o.date_reference >= e.date_deb
+             AND o.date_reference <= e.date_fin
              GROUP BY c.id, c.reference, c.nom, c.prenom, e.date_fin
              ORDER BY c.reference
              """;
@@ -140,7 +140,7 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
 
         const string operationsQuery =
             $"""
-             SELECT o.coproprietaire_id as coproprietaire_id, o.date_operation, o.libelle, o.debit, o.credit, sr.emetteur as tiers
+             SELECT o.coproprietaire_id as coproprietaire_id, o.date_reference, o.libelle, o.debit, o.credit, sr.emetteur as tiers
              FROM agence.operation o
              INNER JOIN agence.nature n ON o.nature_id = n.id 
              INNER JOIN agence.exercice_comptable e ON e.id = @exercice_id
@@ -148,10 +148,10 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
              LEFT JOIN agence.saisie_reglement sr ON o.saisie_id = sr.id
              WHERE o.immeuble_id = e.immeuble_id 
              AND n.reference != '{natureSoldeBilan}'
-             AND o.date_operation >= e.date_deb
-             AND o.date_operation <= e.date_fin
+             AND o.date_reference >= e.date_deb
+             AND o.date_reference <= e.date_fin
              AND sf.id IS NULL
-             ORDER BY o.date_operation
+             ORDER BY o.date_reference
              """;
 
         var operationsTable = getResultSQL(operationsQuery, parameters);
@@ -159,7 +159,7 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
         var operations = operationsTable.AsEnumerable()
             .Select(row => (
                 coproprietaireId: row.Field<string>("coproprietaire_id"),
-                dateOperation: row.Field<DateOnly>("date_operation"),
+                dateOperation: row.Field<DateOnly>("date_reference"),
                 libelle: row.Field<string>("libelle"),
                 debit: row.Field<decimal?>("debit"),
                 credit: row.Field<decimal?>("credit"),
@@ -197,7 +197,7 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
         const string operationsQuery =
             """
              SELECT 
-             sf.date_operation, 
+             sf.date_reference, 
              sf.libelle, 
              sf.montant AS montant,
              n.nom AS nature_nom, 
@@ -212,8 +212,8 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
              LEFT JOIN agence.fournisseur f ON sf.fournisseur_id = f.id
              LEFT JOIN agence.reglement_facture rf ON sf.id = rf.facture_id
              WHERE sf.immeuble_id = e.immeuble_id
-             AND sf.date_operation >= e.date_deb
-             AND sf.date_operation <= e.date_fin
+             AND sf.date_reference >= e.date_deb
+             AND sf.date_reference <= e.date_fin
              ORDER BY sf.numero_operation
              """;
 
@@ -226,7 +226,7 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
 
         var operationsCopropriété = operationsTable.AsEnumerable()
             .Select(row => (
-                date_operation: row.Field<DateOnly>("date_operation"),
+                date_reference: row.Field<DateOnly>("date_reference"),
                 libelle: row.Field<string>("libelle"),
                 montant: row.Field<decimal>("montant"),
                 nature_nom: row.Field<string>("nature_nom"),
@@ -248,12 +248,12 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
                 {
                     // Une facture est au débit si son montant est positif. Sinon c'est un avoir.
                     var montant = -operation.montant;
-                    operationsSurCompte.Add(new OperationSurCompte(operation.date_operation, operation.libelle, operation.tiers, montant));
+                    operationsSurCompte.Add(new OperationSurCompte(operation.date_reference, operation.libelle, operation.tiers, montant));
 
                     if (operation.date_reglement is null) solde += montant;
                     else
                     {
-                        var libelléRéglement = $"Règlement {operation.libelle} du {operation.date_operation:d}";
+                        var libelléRéglement = $"Règlement {operation.libelle} du {operation.date_reference:d}";
                         operationsSurCompte.Add(new OperationSurCompte(operation.date_reglement.Value, libelléRéglement, operation.tiers, -montant));
 
                         // Pas d'opération sur le solde, car l'ajout de l'opération miroir fait forcément 0
