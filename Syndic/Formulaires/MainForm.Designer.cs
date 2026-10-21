@@ -57,7 +57,6 @@ namespace EspaceSyndic.Formulaires
             feuillesDePrésenceToolStripMenuItem = new ToolStripMenuItem();
             bilanGénéralEtCompteExploitationToolStripMenuItem = new ToolStripMenuItem();
             relevésIndividuelsToolStripMenuItem = new ToolStripMenuItem();
-            budgetPrévisionnelToolStripMenuItem = new ToolStripMenuItem();
             clotureExerciceToolStripMenuItem = new ToolStripMenuItem();
             grandLivreToolStripMenuItem = new ToolStripMenuItem();
             utilitairesToolStripMenuItem = new ToolStripMenuItem();
@@ -235,7 +234,7 @@ namespace EspaceSyndic.Formulaires
             // 
             // editionsToolStripMenuItem
             // 
-            editionsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { convocationsToolStripMenuItem, feuillesDePrésenceToolStripMenuItem, bilanGénéralEtCompteExploitationToolStripMenuItem, relevésIndividuelsToolStripMenuItem, budgetPrévisionnelToolStripMenuItem, clotureExerciceToolStripMenuItem, grandLivreToolStripMenuItem });
+            editionsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { convocationsToolStripMenuItem, feuillesDePrésenceToolStripMenuItem, bilanGénéralEtCompteExploitationToolStripMenuItem, relevésIndividuelsToolStripMenuItem, clotureExerciceToolStripMenuItem, grandLivreToolStripMenuItem });
             editionsToolStripMenuItem.Name = "editionsToolStripMenuItem";
             editionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             editionsToolStripMenuItem.Text = "E&ditions";
@@ -269,14 +268,6 @@ namespace EspaceSyndic.Formulaires
             relevésIndividuelsToolStripMenuItem.Size = new System.Drawing.Size(309, 22);
             relevésIndividuelsToolStripMenuItem.Text = "Relevés Individuels";
             relevésIndividuelsToolStripMenuItem.Click += relevesIndividuelsToolStripMenuItem_Click;
-            // 
-            // budgetPrévisionnelToolStripMenuItem
-            // 
-            budgetPrévisionnelToolStripMenuItem.Name = "budgetPrévisionnelToolStripMenuItem";
-            budgetPrévisionnelToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.B;
-            budgetPrévisionnelToolStripMenuItem.Size = new System.Drawing.Size(309, 22);
-            budgetPrévisionnelToolStripMenuItem.Text = "Budgets Prévisionnels";
-            budgetPrévisionnelToolStripMenuItem.Click += budgetPrévisionnelToolStripMenuItem_Click;
             // 
             // clotureExerciceToolStripMenuItem
             // 
@@ -501,7 +492,6 @@ namespace EspaceSyndic.Formulaires
         private ToolStripMenuItem retardDePaiementsToolStripMenuItem;
         private ToolStripMenuItem bilanGénéralEtCompteExploitationToolStripMenuItem;
         private ToolStripMenuItem relevésIndividuelsToolStripMenuItem;
-        private ToolStripMenuItem budgetPrévisionnelToolStripMenuItem;
         private ToolStripMenuItem immeublesToolStripMenuItem1;
         private ToolStripMenuItem editionEtiquettesToolStripMenuItem;
         private ToolStripMenuItem editionComptesFiscauxParImmeublesToolStripMenuItem;

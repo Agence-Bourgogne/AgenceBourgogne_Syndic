@@ -5,7 +5,6 @@ using System.Windows.Forms;
 using CommonProjectsPartners.Common;
 using CommonProjectsPartners.Formulaires.Config;
 using CommonProjectsPartners.Formulaires.Logon;
-using EspaceSyndic.Formulaires.Budget;
 using EspaceSyndic.Formulaires.Config;
 using EspaceSyndic.Formulaires.Coproprietaire;
 using EspaceSyndic.Formulaires.Ecritures;
@@ -256,11 +255,6 @@ public partial class MainForm : Form
     private void relevesIndividuelsToolStripMenuItem_Click(object sender, EventArgs e)
     {
         ShowForm<ReleveIndividuelsPrintForm>();
-    }
-
-    private void budgetPrévisionnelToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm<BudgetSruForm>();
     }
 
     private void clotureExerciceToolStripMenuItem_Click(object sender, EventArgs e)
