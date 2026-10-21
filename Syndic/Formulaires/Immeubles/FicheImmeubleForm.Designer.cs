@@ -60,7 +60,6 @@ namespace EspaceSyndic.Formulaires.Immeubles
             groupBox2 = new GroupBox();
             lblExercice = new Label();
             btnEnter = new Button();
-            lblTxtImmeuble = new Label();
             lblTitre = new Label();
             dataGridView = new DataGridView();
             btnFirst = new Button();
@@ -353,7 +352,6 @@ namespace EspaceSyndic.Formulaires.Immeubles
             groupBox2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             groupBox2.Controls.Add(lblExercice);
             groupBox2.Controls.Add(btnEnter);
-            groupBox2.Controls.Add(lblTxtImmeuble);
             groupBox2.Controls.Add(lblTitre);
             groupBox2.Controls.Add(dataGridView);
             groupBox2.Location = new System.Drawing.Point(14, 327);
@@ -387,19 +385,6 @@ namespace EspaceSyndic.Formulaires.Immeubles
             btnEnter.Text = "button1";
             btnEnter.UseVisualStyleBackColor = true;
             btnEnter.Click += btnEnter_Click;
-            // 
-            // lblTxtImmeuble
-            // 
-            lblTxtImmeuble.AutoSize = true;
-            lblTxtImmeuble.ForeColor = System.Drawing.Color.Blue;
-            lblTxtImmeuble.Location = new System.Drawing.Point(13, 18);
-            lblTxtImmeuble.Margin = new Padding(4, 0, 4, 0);
-            lblTxtImmeuble.Name = "lblTxtImmeuble";
-            lblTxtImmeuble.Size = new System.Drawing.Size(96, 15);
-            lblTxtImmeuble.TabIndex = 2;
-            lblTxtImmeuble.Text = "Textes Immeuble";
-            lblTxtImmeuble.Click += lblTextesImmeuble_Click;
-            lblTxtImmeuble.Enter += lblTitre_Click;
             // 
             // lblTitre
             // 
@@ -660,7 +645,6 @@ namespace EspaceSyndic.Formulaires.Immeubles
         private TextBox tbNoteRepart;
         private Label label11;
         private Label lblTitre;
-        private Label lblTxtImmeuble;
         private Button btnEnter;
         private Label lblExercice;
         private CheckBox ckDesactiv;
