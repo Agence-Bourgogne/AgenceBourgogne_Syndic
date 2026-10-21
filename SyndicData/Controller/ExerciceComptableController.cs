@@ -13,20 +13,11 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
 {
     private static readonly ExerciceComptableController Controller = new();
 
-    private ExerciceComptableController()
-    {
-        DefaultOrder = "reference";
-    }
+    private ExerciceComptableController() => DefaultOrder = "reference";
 
-    public override string getTable()
-    {
-        return "exercice_comptable";
-    }
+    public override string getTable() => "exercice_comptable";
 
-    public static ExerciceComptableController GetController()
-    {
-        return Controller;
-    }
+    public static ExerciceComptableController GetController() => Controller;
 
     public DataTable GetListExerciceFromImmeuble(string immeubleId)
     {
@@ -402,5 +393,100 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
         }
 
         return exerciceSuivant;
+    }
+
+    private const string NatureSoldeBancaire = "149";
+
+    public IEnumerable<OperationSurCompte> FetchReleveBancaireFor(string idExercice)
+    {
+
+        const string releveBancaireQuery = $"""
+                                            (SELECT 
+                                            e.date_deb as date, 
+                                            o.libelle, 
+                                            -(o.debit) AS montant,
+                                            n.reference AS nature,
+                                            'Banque' AS tiers
+                                            FROM agence.operation o
+                                            INNER JOIN agence.exercice_comptable e ON e.id = @exercice_id
+                                            LEFT JOIN agence.nature n ON o.nature_id = n.id
+                                            WHERE o.immeuble_id = e.immeuble_id
+                                            AND o.date_reference >= e.date_deb
+                                            AND o.date_reference <= e.date_fin
+                                            and n.reference = '{NatureSoldeBancaire}'
+                                            limit 1)
+
+                                            UNION
+
+                                            (SELECT 
+                                            sf.date_reference as date, 
+                                            sf.libelle, 
+                                            sf.montant AS montant,
+                                            n.reference AS nature,
+                                            f.nom AS tiers
+                                            FROM agence.saisie_facture sf
+                                            INNER JOIN agence.exercice_comptable e ON e.id = @exercice_id
+                                            LEFT JOIN agence.nature n ON sf.nature_id = n.id
+                                            LEFT JOIN agence.fournisseur f ON sf.fournisseur_id = f.id
+                                            WHERE sf.immeuble_id = e.immeuble_id
+                                            AND sf.date_reference >= e.date_deb
+                                            AND sf.date_reference <= e.date_fin
+                                            and n.reference != '140')
+
+                                            union
+
+                                            (select 
+                                            sr.date_reference as date,
+                                            sr.libelle,
+                                            -(sr.montant) as montant,
+                                            n.reference AS nature,
+                                            CONCAT(cp.nom, ' ', cp.prenom) as tiers
+                                            from agence.saisie_reglement sr 
+                                            INNER JOIN agence.exercice_comptable e ON e.id = @exercice_id
+                                            LEFT JOIN agence.nature n ON sr.nature_id = n.id
+                                            LEFT JOIN agence.coproprietaire cp ON sr.coproprietaire_id  = cp.id
+                                            WHERE sr.immeuble_id = e.immeuble_id
+                                            AND sr.date_reference >= e.date_deb
+                                            AND sr.date_reference <= e.date_fin)
+
+                                            ORDER BY date
+                                            """;
+
+
+        var parameters = new List<NpgsqlParameter>
+        {
+            new("@exercice_id", idExercice)
+        };
+
+        var operationsTable = getResultSQL(releveBancaireQuery, parameters);
+
+        return operationsTable.AsEnumerable()
+            .Select(row => (
+                date: row.Field<DateOnly>("date"),
+                libelle: row.Field<string>("libelle"),
+                montant: row.Field<decimal>("montant"),
+                nature: row.Field<string>("nature"),
+                tiers: row.Field<string>("tiers")
+            ))
+            .Order(new SoldeInitialPrioritaireComparer())
+            .Select(tuple => new OperationSurCompte(tuple.date, tuple.libelle, tuple.tiers, tuple.montant));
+    }
+
+    private class SoldeInitialPrioritaireComparer : 
+        IComparer<(DateOnly date, string libelle, decimal montant, string nature, string tiers)>
+    {
+        public int Compare(
+            (DateOnly date, string libelle, decimal montant, string nature, string tiers) x, 
+            (DateOnly date, string libelle, decimal montant, string nature, string tiers) y)
+        {
+            var xIsSoldeInitial = x.nature == NatureSoldeBancaire;
+            var yIsSoldeInitial = y.nature == NatureSoldeBancaire;
+
+            if (xIsSoldeInitial && yIsSoldeInitial) return 0;
+            if (xIsSoldeInitial) return -1;
+            if (yIsSoldeInitial) return 1;
+
+            return Comparer<DateOnly>.Default.Compare(x.date, y.date);
+        }
     }
 }

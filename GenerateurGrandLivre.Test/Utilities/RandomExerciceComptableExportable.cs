@@ -23,4 +23,5 @@ internal class RandomExerciceComptableExportable : IExerciceComptableExportable
     public string NomImmeuble { get; }
     public string AdresseImmeuble { get; }
     public IEnumerable<CompteComptable> FetchComptesComptables() => [];
+    public IEnumerable<OperationSurCompte> FetchReleveBancaire() => [];
 }

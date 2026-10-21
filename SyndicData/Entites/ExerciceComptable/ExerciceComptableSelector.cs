@@ -35,4 +35,5 @@ public class ExerciceComptableSelector : IExerciceComptableExportable
     public string NomImmeuble { get; }
     public string AdresseImmeuble { get; }
     public IEnumerable<CompteComptable> FetchComptesComptables() => _controller.FetchComptesComptablesFor(_idExercice);
+    public IEnumerable<OperationSurCompte> FetchReleveBancaire() => _controller.FetchReleveBancaireFor(_idExercice);
 }

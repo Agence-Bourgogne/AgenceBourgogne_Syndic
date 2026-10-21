@@ -13,4 +13,5 @@ public interface IExerciceComptableExportable
     string NomImmeuble { get; }
     string AdresseImmeuble { get; }
     IEnumerable<CompteComptable> FetchComptesComptables();
+    IEnumerable<OperationSurCompte> FetchReleveBancaire();
 }

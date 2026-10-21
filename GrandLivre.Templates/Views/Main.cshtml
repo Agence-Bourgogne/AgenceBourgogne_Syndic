@@ -101,12 +101,78 @@
         </div>
     }
     
-    <h2>Banque</h2>
-    
-    @foreach (var ligne in Model.ReleveBancaire)
-    {
+    <div>
 
-    }
+        <h2>Banque</h2>
+                
+        @{
+            var soldeCompteBancaire = 0m;
+        }
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Libellé</th>
+                    <th>Tiers</th>
+                    <th class="montant">Débit</th>
+                    <th class="montant">Crédit</th>
+                    <th class="montant">Solde Débiteur</th>
+                    <th class="montant">Solde Créditeur</th>
+                </tr>
+            </thead>
+                    
+            @{
+                decimal totalDebitBancaire = 0, totalCreditBancaire = 0;
+            }
+            
+            <tbody>
+                @foreach (var operation in Model.ReleveBancaire)
+                {
+                    var debit = operation.Montant < 0 ? -operation.Montant : 0;
+                    var credit = operation.Montant >= 0 ? operation.Montant : 0;
+                    
+                    totalDebitBancaire += debit;
+                    totalCreditBancaire += credit;
+                    soldeCompteBancaire += operation.Montant;
+
+                    var representationDebit = debit > 0 ? debit.ToInsecableCurrency() : string.Empty;
+                    var representationCredit = credit > 0 || string.IsNullOrEmpty(representationDebit) ? credit.ToInsecableCurrency() : string.Empty; 
+                    var representationSoldeDebiteur = soldeCompteBancaire < 0 ? (-soldeCompteBancaire).ToInsecableCurrency() : string.Empty;
+                    var representationSoldeCrediteur = soldeCompteBancaire >= 0 ? soldeCompteBancaire.ToInsecableCurrency() : string.Empty;
+
+                    <tr>
+                        <td>@operation.Date.ToString(dateFormat)</td>
+                        <td>@operation.Libelle</td>
+                        <td>@operation.Tiers</td>
+                        <td class="montant">@representationDebit</td>
+                        <td class="montant">@representationCredit</td>
+                        <td class="montant">@representationSoldeDebiteur</td>
+                        <td class="montant">@representationSoldeCrediteur</td>
+                    </tr>
+                }
+            </tbody>
+
+            <tfoot>
+                @{
+                    var soldeDebiteurFinalBancaire = totalDebitBancaire > totalCreditBancaire ? (totalDebitBancaire - totalCreditBancaire).ToInsecableCurrency() : string.Empty;
+                    var soldeCrediteurFinalBancaire = totalCreditBancaire > totalDebitBancaire ? (totalCreditBancaire - totalDebitBancaire).ToInsecableCurrency() : string.Empty;
+                    if (string.IsNullOrEmpty(soldeCrediteurFinalBancaire) && string.IsNullOrEmpty(soldeDebiteurFinalBancaire))
+                        soldeCrediteurFinalBancaire = 0m.ToInsecableCurrency();
+
+                    var representationTotalDebitBancaire = totalDebitBancaire.ToInsecableCurrency();
+                    var representationTotalCreditBancaire = totalCreditBancaire.ToInsecableCurrency();
+                }
+                <tr>
+                    <td colspan="3">TOTAL</td>
+                    <td class="montant">@representationTotalDebitBancaire</td>
+                    <td class="montant">@representationTotalCreditBancaire</td>
+                    <td class="montant">@soldeDebiteurFinalBancaire</td>
+                    <td class="montant">@soldeCrediteurFinalBancaire</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 </header>
 </body>
 </html>

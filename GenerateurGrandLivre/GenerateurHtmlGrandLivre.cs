@@ -6,16 +6,11 @@ namespace GenerateurGrandLivre;
 
 internal class GenerateurHtmlGrandLivre
 {
-    private readonly RazorLightEngine _engine;
-
-    public GenerateurHtmlGrandLivre()
-    {
-        _engine = new RazorLightEngineBuilder()
-            .UseEmbeddedResourcesProject(
-                typeof(Exercice).Assembly)
-            .UseMemoryCachingProvider()
-            .Build();
-    }
+    private readonly RazorLightEngine _engine = new RazorLightEngineBuilder()
+        .UseEmbeddedResourcesProject(
+            typeof(Exercice).Assembly)
+        .UseMemoryCachingProvider()
+        .Build();
 
     public Task<string> GénérerHtmlAsync(IExerciceComptableExportable exerciceComptable)
     {
@@ -31,10 +26,11 @@ internal class GenerateurHtmlGrandLivre
 
     private static Exercice Factory(IExerciceComptableExportable exerciceComptable)
     {
-        var fullData = exerciceComptable.FetchComptesComptables();
+        var comptesComptables = exerciceComptable.FetchComptesComptables();
+        var relevéBancaire = exerciceComptable.FetchReleveBancaire();
 
         return new Exercice(
             new Copropriete(exerciceComptable.NomImmeuble, exerciceComptable.AdresseImmeuble), 
-            exerciceComptable.DateDebut, exerciceComptable.DateFin, exerciceComptable.Reference, fullData);
+            exerciceComptable.DateDebut, exerciceComptable.DateFin, exerciceComptable.Reference, comptesComptables, relevéBancaire);
     }
 }
