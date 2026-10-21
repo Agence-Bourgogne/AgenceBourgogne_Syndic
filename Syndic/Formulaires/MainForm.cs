@@ -16,7 +16,6 @@ using EspaceSyndic.Formulaires.Nature;
 using EspaceSyndic.Formulaires.OperationsGestion;
 using EspaceSyndic.Formulaires.Utilisateurs;
 using EspaceSyndic.Impressions;
-using EspaceSyndic.Impressions.Additif;
 using EspaceSyndic.Impressions.AppelDeFond;
 using EspaceSyndic.Impressions.Balances;
 using EspaceSyndic.Impressions.Bilan;
@@ -267,11 +266,6 @@ public partial class MainForm : Form
     private void budgetPrévisionnelToolStripMenuItem_Click(object sender, EventArgs e)
     {
         ShowForm<BudgetSruForm>();
-    }
-
-    private void additifsToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm<ImprimerAdditifForm>();
     }
 
     private void clotureExerciceToolStripMenuItem_Click(object sender, EventArgs e)

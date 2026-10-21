@@ -54,7 +54,6 @@ namespace EspaceSyndic.Formulaires
             retardDePaiementsToolStripMenuItem = new ToolStripMenuItem();
             editionsToolStripMenuItem = new ToolStripMenuItem();
             convocationsToolStripMenuItem = new ToolStripMenuItem();
-            additifsToolStripMenuItem = new ToolStripMenuItem();
             feuillesDePrésenceToolStripMenuItem = new ToolStripMenuItem();
             bilanGénéralEtCompteExploitationToolStripMenuItem = new ToolStripMenuItem();
             relevésIndividuelsToolStripMenuItem = new ToolStripMenuItem();
@@ -237,7 +236,7 @@ namespace EspaceSyndic.Formulaires
             // 
             // editionsToolStripMenuItem
             // 
-            editionsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { convocationsToolStripMenuItem, additifsToolStripMenuItem, feuillesDePrésenceToolStripMenuItem, bilanGénéralEtCompteExploitationToolStripMenuItem, relevésIndividuelsToolStripMenuItem, budgetPrévisionnelToolStripMenuItem, bordereauRemiseDeChèquesToolStripMenuItem, clotureExerciceToolStripMenuItem, grandLivreToolStripMenuItem });
+            editionsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { convocationsToolStripMenuItem, feuillesDePrésenceToolStripMenuItem, bilanGénéralEtCompteExploitationToolStripMenuItem, relevésIndividuelsToolStripMenuItem, budgetPrévisionnelToolStripMenuItem, bordereauRemiseDeChèquesToolStripMenuItem, clotureExerciceToolStripMenuItem, grandLivreToolStripMenuItem });
             editionsToolStripMenuItem.Name = "editionsToolStripMenuItem";
             editionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             editionsToolStripMenuItem.Text = "E&ditions";
@@ -248,13 +247,6 @@ namespace EspaceSyndic.Formulaires
             convocationsToolStripMenuItem.Size = new System.Drawing.Size(309, 22);
             convocationsToolStripMenuItem.Text = "Convocations";
             convocationsToolStripMenuItem.Click += convocationsToolStripMenuItem_Click;
-            // 
-            // additifsToolStripMenuItem
-            // 
-            additifsToolStripMenuItem.Name = "additifsToolStripMenuItem";
-            additifsToolStripMenuItem.Size = new System.Drawing.Size(309, 22);
-            additifsToolStripMenuItem.Text = "Additifs";
-            additifsToolStripMenuItem.Click += additifsToolStripMenuItem_Click;
             // 
             // feuillesDePrésenceToolStripMenuItem
             // 
@@ -502,7 +494,6 @@ namespace EspaceSyndic.Formulaires
         private ToolStripMenuItem appelsDeFondsNouvelExerciceToolStripMenuItem;
         private ToolStripMenuItem editionsToolStripMenuItem;
         private ToolStripMenuItem convocationsToolStripMenuItem;
-        private ToolStripMenuItem additifsToolStripMenuItem;
         private ToolStripMenuItem feuillesDePrésenceToolStripMenuItem;
         private Label label1;
         private Label label2;

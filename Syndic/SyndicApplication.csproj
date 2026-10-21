@@ -62,7 +62,6 @@
 
 	<ItemGroup>
 	  <EmbeddedResource Include="Impressions\Budget\TableauComptableAnnexe3.rdlc" />
-	  <EmbeddedResource Include="Impressions\Additif\ImprimerAdditifReport.rdlc" />
 	  <EmbeddedResource Include="Impressions\AppelDeFond\AppelDeFondDetailReport.rdlc" />
 	  <EmbeddedResource Include="Impressions\AppelDeFond\AppelDeFondMasterReport.rdlc" />
 	  <EmbeddedResource Include="Impressions\Balances\BalanceReport.rdlc" />
@@ -133,10 +132,6 @@
 	    <Generator>ResXFileCodeGenerator</Generator>
 	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Formulaires\Controles\" />
 	</ItemGroup>
 
 </Project>
