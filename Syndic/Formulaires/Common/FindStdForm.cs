@@ -12,18 +12,18 @@ public partial class FindStdForm : Form
     public string reference = "";
     protected DataTable source = null;
 
-    public FindStdForm()
+    protected FindStdForm()
     {
         InitializeComponent();
     }
 
-    public FindStdForm(TextBox tbResult)
+    protected FindStdForm(TextBox tbResult)
     {
         InitializeComponent();
         this.tbResult = tbResult;
     }
 
-    public virtual void FillListFromFilter(string filter)
+    protected virtual void FillListFromFilter(string filter)
     {
         if (source != null)
         {

@@ -18,12 +18,12 @@ public partial class DetailOperationForm : Form
     protected FournisseurEntite fournisseur;
     protected NatureEntite nature;
 
-    public DetailOperationForm()
+    protected DetailOperationForm()
     {
         InitializeComponent();
     }
 
-    public DetailOperationForm(string facture_id)
+    protected DetailOperationForm(string facture_id)
     {
         InitializeComponent();
         entite_id = facture_id;

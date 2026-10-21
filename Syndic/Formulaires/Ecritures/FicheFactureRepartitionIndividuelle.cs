@@ -321,7 +321,7 @@ public partial class FicheFactureRepartitionIndividuelle : Form
     private void dataGridViewLots_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
     {
         var name = dataGridViewLots.Columns[e.ColumnIndex].Name;
-        if (name == "nouveau" || name == "ancien" || name == "index" || name == "montant")
+        if (name is "nouveau" or "ancien" or "index" or "montant")
             if (Convertir.ToDecimal(e.Value) == 0)
                 e.Value = "";
     }

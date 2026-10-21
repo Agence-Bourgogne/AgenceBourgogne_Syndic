@@ -8,9 +8,8 @@ namespace EspaceSyndic.Formulaires.Utilisateurs;
 
 public partial class UtilisateurFicheForm : Form
 {
-    protected readonly string entite_id = "";
-    protected bool bFromEnter;
-    protected string currentReference;
+    private readonly string entite_id = "";
+    private string currentReference;
     private bool modified;
     private UserEntite user;
 
@@ -25,17 +24,15 @@ public partial class UtilisateurFicheForm : Form
         this.entite_id = entite_id;
     }
 
-    protected void InitializeCombos()
+    private void InitializeCombos()
     {
         cbRole.DataSource = RolesController.getController().GetComboRoles();
         cbRole.ValueMember = "id";
         cbRole.DisplayMember = "nom";
     }
 
-    protected bool saveValue()
+    private bool saveValue()
     {
-//            bool rc = true;
-
         currentReference = tbReference.Text;
         user.reference = tbReference.Text;
         user.Password = tbPassword.Text;
@@ -46,7 +43,7 @@ public partial class UtilisateurFicheForm : Form
         return UsersController.getController().InsertOrUpdate(user);
     }
 
-    protected void setModified(bool bModified)
+    private void setModified(bool bModified)
     {
         modified = bModified;
         if (!modified)
@@ -61,7 +58,7 @@ public partial class UtilisateurFicheForm : Form
         }
     }
 
-    protected void setFicheValues(AbstractBaseEntite entite)
+    private void setFicheValues(AbstractBaseEntite entite)
     {
         if (entite != null)
             user = (UserEntite)entite;
@@ -79,7 +76,7 @@ public partial class UtilisateurFicheForm : Form
         setModified(false);
     }
 
-    protected DialogResult saveForm(bool bShowMessage = false, bool bShowResult = true)
+    private DialogResult saveForm(bool bShowMessage = false, bool bShowResult = true)
     {
         if (!modified)
             return DialogResult.OK;
@@ -108,7 +105,7 @@ public partial class UtilisateurFicheForm : Form
         return DialogResult.Cancel;
     }
 
-    protected void getNewEntite(string where, string message)
+    private void getNewEntite(string where, string message)
     {
         if (saveForm(true, false) == DialogResult.Cancel)
             return;
@@ -135,37 +132,37 @@ public partial class UtilisateurFicheForm : Form
         tbPassword.UseSystemPasswordChar = ckPassword.Checked;
     }
 
-    protected AbstractBaseEntite getCurrentEntite(string entite_id)
+    private AbstractBaseEntite getCurrentEntite(string entite_id)
     {
         return UsersController.getController().getEntiteById(entite_id);
     }
 
-    protected AbstractBaseEntite getEntite(string where)
+    private AbstractBaseEntite getEntite(string where)
     {
         return UsersController.getController().getEntite(where);
     }
 
-    protected void btnFirst_Click(object sender, EventArgs e)
+    private void btnFirst_Click(object sender, EventArgs e)
     {
         getNewEntite("order by reference", "Début de liste atteint");
     }
 
-    protected void btnPrev_Click(object sender, EventArgs e)
+    private void btnPrev_Click(object sender, EventArgs e)
     {
         getNewEntite($"where reference < '{currentReference}' order by reference desc", "Début de liste atteint");
     }
 
-    protected void btnNext_Click(object sender, EventArgs e)
+    private void btnNext_Click(object sender, EventArgs e)
     {
         getNewEntite($"where reference > '{currentReference}' order by reference ", "Fin de liste atteinte");
     }
 
-    protected void btnLast_Click(object sender, EventArgs e)
+    private void btnLast_Click(object sender, EventArgs e)
     {
         getNewEntite("order by reference desc", "Fin de liste atteinte");
     }
 
-    protected void tbTextChanged(object sender, EventArgs e)
+    private void TbTextChanged(object sender, EventArgs e)
     {
         modified = true;
         if (!Text.EndsWith("*"))
@@ -174,9 +171,7 @@ public partial class UtilisateurFicheForm : Form
 
     private void btnEnter_Click(object sender, EventArgs e)
     {
-        bFromEnter = true;
         ControlsWindows.FocusNextTabbedControl(this);
-        bFromEnter = false;
     }
 
     private void BaseFicheForm_FormClosing(object sender, FormClosingEventArgs e)

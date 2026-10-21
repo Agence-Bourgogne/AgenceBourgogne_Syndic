@@ -116,7 +116,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
             this.tbPassword.Size = new System.Drawing.Size(283, 20);
             this.tbPassword.TabIndex = 3;
             this.tbPassword.UseSystemPasswordChar = true;
-            this.tbPassword.TextChanged += new System.EventHandler(this.tbTextChanged);
+            this.tbPassword.TextChanged += new System.EventHandler(this.TbTextChanged);
             // 
             // label1
             // 
@@ -133,7 +133,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
             this.tbPrenom.Name = "tbPrenom";
             this.tbPrenom.Size = new System.Drawing.Size(283, 20);
             this.tbPrenom.TabIndex = 7;
-            this.tbPrenom.TextChanged += new System.EventHandler(this.tbTextChanged);
+            this.tbPrenom.TextChanged += new System.EventHandler(this.TbTextChanged);
             // 
             // lblPrenom
             // 
@@ -150,7 +150,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
             this.tbNom.Name = "tbNom";
             this.tbNom.Size = new System.Drawing.Size(283, 20);
             this.tbNom.TabIndex = 5;
-            this.tbNom.TextChanged += new System.EventHandler(this.tbTextChanged);
+            this.tbNom.TextChanged += new System.EventHandler(this.TbTextChanged);
             // 
             // label4
             // 
@@ -168,7 +168,7 @@ namespace EspaceSyndic.Formulaires.Utilisateurs
             this.tbReference.Name = "tbReference";
             this.tbReference.Size = new System.Drawing.Size(283, 20);
             this.tbReference.TabIndex = 1;
-            this.tbReference.TextChanged += new System.EventHandler(this.tbTextChanged);
+            this.tbReference.TextChanged += new System.EventHandler(this.TbTextChanged);
             // 
             // lblReference
             // 

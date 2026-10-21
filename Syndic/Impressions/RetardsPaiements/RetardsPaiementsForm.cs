@@ -21,7 +21,6 @@ public partial class RetardsPaiementsForm : Form
 {
     private readonly BindingSource sourceData = new();
     public string immeuble_ref = "";
-    private int type_rel;
 
     public RetardsPaiementsForm()
     {
@@ -53,7 +52,6 @@ public partial class RetardsPaiementsForm : Form
             cols["immeuble"].Visible = false;
             cols["type_relance"].Visible = false;
             cols["id"].Visible = false;
-            type_rel = cols["type_relance"].Index;
             ControlsWindows.ToTitleCase(cols);
             cols["relance"].Width = 40;
             cols["coproprietaire"].MinimumWidth = 180;

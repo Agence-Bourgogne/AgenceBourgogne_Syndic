@@ -142,7 +142,7 @@ public partial class ControlDataForm : Form
             var entite = new OperationEntite(row);
             var appels = SaisieAppelFondController.getController().getSaisieAppel(entite);
             if (appels != null)
-                if (appels.Rows.Count == 0 || appels.Rows.Count > 1)
+                if (appels.Rows.Count is 0 or > 1)
                 {
                     var refCopro = "";
                     if (entite.Coproprietaire != null)
@@ -189,7 +189,7 @@ public partial class ControlDataForm : Form
                 refCopro = entite.Coproprietaire.reference;
 
             if (factures != null)
-                if (factures.Rows.Count == 0 || factures.Rows.Count > 1)
+                if (factures.Rows.Count is 0 or > 1)
                     dataGridView.Rows.Add(entite.id, entite.date_reference.ToShortDateString(), refCopro,
                         entite.Nature.reference, entite.base_repart, entite.libelle, entite.debit.ToString(),
                         entite.credit.ToString(), entite.global.ToString(), factures.Rows.Count.ToString());
@@ -245,7 +245,7 @@ public partial class ControlDataForm : Form
             var reglements = SaisieReglementController.getController().getSaisieReglement(entite);
 
             if (reglements != null)
-                if (reglements.Rows.Count == 0 || reglements.Rows.Count > 1)
+                if (reglements.Rows.Count is 0 or > 1)
                 {
                     var refCopro = "";
                     if (entite.Coproprietaire != null)

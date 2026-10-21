@@ -285,11 +285,6 @@ public partial class MainForm : Form
         }
     }
 
-    public static MainForm GetInstance()
-    {
-        return instance;
-    }
-
     private void Connection()
     {
         try

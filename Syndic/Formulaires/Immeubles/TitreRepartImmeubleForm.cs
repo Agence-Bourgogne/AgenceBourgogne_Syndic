@@ -83,7 +83,7 @@ public partial class TitreRepartImmeubleForm : Form
                 entite.reference = rowGrid.Cells["reference"].Value.ToString();
                 if (controller.ExistRepartitionReference(immeuble_id, entite.reference))
                 {
-                    MessageBox.Show(string.Format("Base Existante pour cet immeuble", entite.reference));
+                    MessageBox.Show("Base Existante pour cet immeuble");
                     return;
                 }
 
@@ -144,7 +144,7 @@ public partial class TitreRepartImmeubleForm : Form
 
         var rowGrid = dataGridView.SelectedRows[0];
 
-        rowGrid?.Cells["reference"].Value = tbBase.Text;
+        rowGrid.Cells["reference"].Value = tbBase.Text;
     }
 
     private void tbTitre_TextChanged(object sender, EventArgs e)
@@ -153,7 +153,7 @@ public partial class TitreRepartImmeubleForm : Form
             return;
         var rowGrid = dataGridView.SelectedRows[0];
 
-        rowGrid?.Cells["nom"].Value = tbTitre.Text;
+        rowGrid.Cells["nom"].Value = tbTitre.Text;
     }
 
 
@@ -163,7 +163,7 @@ public partial class TitreRepartImmeubleForm : Form
             return;
         var rowGrid = dataGridView.SelectedRows[0];
 
-        rowGrid?.Cells["ligne"].Value = tbLigne.Text;
+        rowGrid.Cells["ligne"].Value = tbLigne.Text;
     }
 
     private void tbColonne_TextChanged(object sender, EventArgs e)
@@ -172,6 +172,6 @@ public partial class TitreRepartImmeubleForm : Form
             return;
         var rowGrid = dataGridView.SelectedRows[0];
 
-        rowGrid?.Cells["colonne"].Value = tbColonne.Text;
+        rowGrid.Cells["colonne"].Value = tbColonne.Text;
     }
 }

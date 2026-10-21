@@ -157,7 +157,7 @@ public abstract class AbstractBaseController<TENTITE> where TENTITE : AbstractBa
                 foreach (DataRow row in changes.Rows)
                 {
                     var entite = new TENTITE();
-                    if (row.RowState == DataRowState.Added || row.RowState == DataRowState.Modified)
+                    if (row.RowState is DataRowState.Added or DataRowState.Modified)
                     {
                         entite.setValues(row);
                         if (!"".Equals(entite.id))

@@ -10,8 +10,6 @@ namespace EspaceSyndic.Formulaires.Utilisateurs;
 
 public partial class UtilisateursListeForm : Form
 {
-    protected readonly string regKey = "";
-
     public UtilisateursListeForm()
     {
         InitializeComponent();
@@ -22,7 +20,7 @@ public partial class UtilisateursListeForm : Form
         FillDataGrid();
     }
 
-    protected void HideAndResizeColumns(DataGridViewColumnCollection cols)
+    private static void HideAndResizeColumns(DataGridViewColumnCollection cols)
     {
         cols["id"].Visible = false;
         cols["audit_created"].Visible = false;
@@ -35,47 +33,34 @@ public partial class UtilisateursListeForm : Form
         cols["resources_id"].Visible = false;
     }
 
-    protected void FillDataGrid()
+    private void FillDataGrid()
     {
-        dataGridView.DataSource = getFormListe();
+        dataGridView.DataSource = GetFormListe();
         if (dataGridView.DataSource != null)
         {
             var cols = dataGridView.Columns;
             HideAndResizeColumns(cols);
             ControlsWindows.ToTitleCase(cols);
-            OrderColumns();
         }
     }
 
-    protected DataTable getFormListe()
+    private static DataTable GetFormListe()
     {
         return UsersController.getController().getListeUsers();
     }
 
-    protected void ShowFicheForm(string entite_id)
+    private void ShowFicheForm(string entiteId)
     {
-        var form = new UtilisateurFicheForm(entite_id);
+        var form = new UtilisateurFicheForm(entiteId);
         ShowForm(form);
     }
 
-    protected void OrderColumns()
-    {
-        if (regKey == "")
-            return;
-        foreach (DataGridViewColumn col in dataGridView.Columns)
-        {
-            var index = (int)CommonRegistry.getRegistryValue(regKey, col.Name, -1);
-            if (index != -1)
-                col.DisplayIndex = index;
-        }
-    }
-
-    protected void btnNew_Click(object sender, EventArgs e)
+    private void btnNew_Click(object sender, EventArgs e)
     {
         ShowFicheForm(null);
     }
 
-    protected void ShowForm(Form form)
+    private void ShowForm(Form form)
     {
         Enabled = false;
         form.ShowDialog();
@@ -83,12 +68,12 @@ public partial class UtilisateursListeForm : Form
         FillDataGrid();
     }
 
-    protected void btnFiche_Click(object sender, EventArgs e)
+    private void btnFiche_Click(object sender, EventArgs e)
     {
         ShowFicheFromSelectedRow();
     }
 
-    protected void ShowFicheFromSelectedRow()
+    private void ShowFicheFromSelectedRow()
     {
         if (dataGridView.SelectedRows.Count > 0)
         {
@@ -103,14 +88,14 @@ public partial class UtilisateursListeForm : Form
         ShowFicheFromSelectedRow();
     }
 
-    protected List<string> getExportColsToHide()
+    private List<string> GetExportColsToHide()
     {
         return ["id", "audit_created", "audit_created_by", "audit_updated", "audit_updated_by"];
     }
 
     private void btnExport_Click(object sender, EventArgs e)
     {
-        BaseApplication.DataGridToExcel(dataGridView, getExportColsToHide());
+        BaseApplication.DataGridToExcel(dataGridView, GetExportColsToHide());
     }
 
     private void btnQuit_Click(object sender, EventArgs e)

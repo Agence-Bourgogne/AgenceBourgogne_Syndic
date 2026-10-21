@@ -425,9 +425,9 @@ public partial class ImprimerConvocationForm : Form
         MajdateAssemblee();
 
         var tableCopro = CoproprietaireController.getController()
-            .CoproprietaireImmeubleDescriptionWord(immeuble.id, parameters.ToArray());
+            .CoproprietaireImmeubleDescriptionWord(immeuble.id, [.. parameters]);
         var tableHdr = CoproprietaireController.getController()
-            .HeaderConvocationWord(immeuble.id, parameters.ToArray());
+            .HeaderConvocationWord(immeuble.id, [.. parameters]);
 
         BaseApplication.GenerateDataSource(tableHdr, @"c:\syndic_modeles\csv\convoc_hdr.csv", Encoding.UTF8);
 

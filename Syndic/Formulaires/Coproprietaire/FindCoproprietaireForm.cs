@@ -39,7 +39,7 @@ public class FindCoproprietaireForm : FindStdForm
         }
     }
 
-    public override void FillListFromFilter(string filter)
+    protected override void FillListFromFilter(string filter)
     {
         if (tbGerant.Text != "")
             filter += $" and LOWER(nomcomp) like LOWER('{tbGerant.Text}%') ";

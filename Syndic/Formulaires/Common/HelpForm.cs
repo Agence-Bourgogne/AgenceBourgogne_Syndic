@@ -35,7 +35,7 @@ public partial class HelpForm : Form
     {
     }
 
-    public void setLocation(int defPosX, int defPosY)
+    private void setLocation(int defPosX, int defPosY)
     {
         var newPosX = (int)CommonRegistry.getRegistryValue(helpKey, "Location X", defPosX);
         var newPosY = (int)CommonRegistry.getRegistryValue(helpKey, "Location Y", defPosY);
@@ -43,9 +43,9 @@ public partial class HelpForm : Form
         Location = new Point(newPosX, newPosY);
     }
 
-    public void setVisibility(Form parent)
+    private void setVisibility(Form parent)
     {
-        var visibility = (int)CommonRegistry.getRegistryValue(helpKey, "Visible", 1) == 1 ? true : false;
+        var visibility = (int)CommonRegistry.getRegistryValue(helpKey, "Visible", 1) == 1;
         if (tbHelp.Text.Replace("\n", "").Trim() == "")
             visibility = false;
         Visible = false;

@@ -6,7 +6,7 @@ namespace EspaceSyndic.Formulaires.Fournisseur;
 
 internal class FindFournisseurForm : FindStdForm
 {
-    public readonly FournisseurController controller = new();
+    private readonly FournisseurController controller = new();
 
 
     public FindFournisseurForm()
@@ -19,7 +19,7 @@ internal class FindFournisseurForm : FindStdForm
     }
 
 
-    public override void FillListFromFilter(string filter)
+    protected override void FillListFromFilter(string filter)
     {
         source = controller.GetFindList(filter);
         base.FillListFromFilter(filter);

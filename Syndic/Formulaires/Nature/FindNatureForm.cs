@@ -6,7 +6,7 @@ namespace EspaceSyndic.Formulaires.Nature;
 
 internal class FindNatureForm : FindStdForm
 {
-    public readonly NatureController controller = new();
+    private readonly NatureController controller = new();
 
     public FindNatureForm()
     {
@@ -17,7 +17,7 @@ internal class FindNatureForm : FindStdForm
     {
     }
 
-    public override void FillListFromFilter(string filter)
+    protected override void FillListFromFilter(string filter)
     {
         source = controller.GetFindList(filter);
         base.FillListFromFilter(filter);

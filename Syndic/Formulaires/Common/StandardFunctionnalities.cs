@@ -5,7 +5,7 @@ namespace EspaceSyndic.Formulaires.Common;
 
 internal static class StandardFunctionnalities
 {
-    public static string GetKeyPressText(string keyValue)
+    private static string GetKeyPressText(string keyValue)
     {
         var keyString = "";
         var row = ParametresDB.get("KEY_CODE", keyValue);

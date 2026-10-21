@@ -6,7 +6,7 @@ namespace EspaceSyndic.Formulaires.Immeubles;
 
 internal class FindImmeubleForm : FindStdForm
 {
-    public readonly ImmeubleController controller = new();
+    private readonly ImmeubleController controller = new();
 
     public FindImmeubleForm()
     {
@@ -17,7 +17,7 @@ internal class FindImmeubleForm : FindStdForm
     {
     }
 
-    public override void FillListFromFilter(string filter)
+    protected override void FillListFromFilter(string filter)
     {
         source = controller.GetFindList(filter);
         base.FillListFromFilter(filter);

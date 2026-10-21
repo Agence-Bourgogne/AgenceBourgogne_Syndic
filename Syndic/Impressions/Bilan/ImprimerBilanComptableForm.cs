@@ -31,7 +31,6 @@ public partial class ImprimerBilanComptableForm : Form
 
     private DataTable CompteGestionGeneral;
     private ImmeubleEntite immeuble;
-    private List<NatureEntite> natSolde;
     private List<NatureEntite> natTravaux;
 
     public ImprimerBilanComptableForm()
@@ -74,7 +73,6 @@ public partial class ImprimerBilanComptableForm : Form
         btnEnter.Width = 0;
         var natures = NatureController.getController().GetListEntite();
         natTravaux = natures.FindAll(x => (x.type_charge & 2) == 2);
-        natSolde = [getNatureCloture()];
         var excl = ParametresDB.getParam1("NATURE", "PAS PRIVATIVES");
         if (!string.IsNullOrEmpty(excl))
         {

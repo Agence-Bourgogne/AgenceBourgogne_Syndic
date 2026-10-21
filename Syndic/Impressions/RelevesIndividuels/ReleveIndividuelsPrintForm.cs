@@ -488,7 +488,6 @@ public partial class ReleveIndividuelsPrintForm : Form, ICommonChangedListener
 
 internal class EtatFinancier
 {
-    public readonly decimal appel;
     public readonly string copro_id;
     public decimal reglement;
     public decimal releve;
@@ -502,6 +501,5 @@ internal class EtatFinancier
     public EtatFinancier(string copro, decimal appel)
     {
         copro_id = copro;
-        this.appel = appel;
     }
 }
