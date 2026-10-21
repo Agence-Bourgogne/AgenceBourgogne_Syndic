@@ -58,7 +58,6 @@ namespace EspaceSyndic.Formulaires
             bilanGénéralEtCompteExploitationToolStripMenuItem = new ToolStripMenuItem();
             relevésIndividuelsToolStripMenuItem = new ToolStripMenuItem();
             budgetPrévisionnelToolStripMenuItem = new ToolStripMenuItem();
-            bordereauRemiseDeChèquesToolStripMenuItem = new ToolStripMenuItem();
             clotureExerciceToolStripMenuItem = new ToolStripMenuItem();
             grandLivreToolStripMenuItem = new ToolStripMenuItem();
             utilitairesToolStripMenuItem = new ToolStripMenuItem();
@@ -236,7 +235,7 @@ namespace EspaceSyndic.Formulaires
             // 
             // editionsToolStripMenuItem
             // 
-            editionsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { convocationsToolStripMenuItem, feuillesDePrésenceToolStripMenuItem, bilanGénéralEtCompteExploitationToolStripMenuItem, relevésIndividuelsToolStripMenuItem, budgetPrévisionnelToolStripMenuItem, bordereauRemiseDeChèquesToolStripMenuItem, clotureExerciceToolStripMenuItem, grandLivreToolStripMenuItem });
+            editionsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { convocationsToolStripMenuItem, feuillesDePrésenceToolStripMenuItem, bilanGénéralEtCompteExploitationToolStripMenuItem, relevésIndividuelsToolStripMenuItem, budgetPrévisionnelToolStripMenuItem, clotureExerciceToolStripMenuItem, grandLivreToolStripMenuItem });
             editionsToolStripMenuItem.Name = "editionsToolStripMenuItem";
             editionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             editionsToolStripMenuItem.Text = "E&ditions";
@@ -278,13 +277,6 @@ namespace EspaceSyndic.Formulaires
             budgetPrévisionnelToolStripMenuItem.Size = new System.Drawing.Size(309, 22);
             budgetPrévisionnelToolStripMenuItem.Text = "Budgets Prévisionnels";
             budgetPrévisionnelToolStripMenuItem.Click += budgetPrévisionnelToolStripMenuItem_Click;
-            // 
-            // bordereauRemiseDeChèquesToolStripMenuItem
-            // 
-            bordereauRemiseDeChèquesToolStripMenuItem.Name = "bordereauRemiseDeChèquesToolStripMenuItem";
-            bordereauRemiseDeChèquesToolStripMenuItem.Size = new System.Drawing.Size(309, 22);
-            bordereauRemiseDeChèquesToolStripMenuItem.Text = "Bordereau Remise de Chèques";
-            bordereauRemiseDeChèquesToolStripMenuItem.Click += bordereauRemiseDeChèquesToolStripMenuItem_Click;
             // 
             // clotureExerciceToolStripMenuItem
             // 
@@ -503,7 +495,6 @@ namespace EspaceSyndic.Formulaires
         private ToolStripMenuItem quitterToolStripMenuItem;
         private ToolStripMenuItem saisieReglementCoproproToolStripMenuItem;
         private ToolStripMenuItem parametresToolStripMenuItem;
-        private ToolStripMenuItem bordereauRemiseDeChèquesToolStripMenuItem;
         private ToolStripMenuItem tableauRemiseDeClefsToolStripMenuItem;
         private ToolStripMenuItem appelDeFondDunimmeubleToolStripMenuItem;
         private ToolStripMenuItem consultationComptesPropriétairesToolStripMenuItem;

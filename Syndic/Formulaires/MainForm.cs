@@ -197,11 +197,6 @@ public partial class MainForm : Form
         ShowForm<ImprimerAppelDeFondForm>();
     }
 
-    private void bordereauRemiseDeChèquesToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm<ImprimerListeReglementForm>();
-    }
-
     private void validationToolStripMenuItem_Click(object sender, EventArgs e)
     {
         ShowForm<ValidationFactureForm>();

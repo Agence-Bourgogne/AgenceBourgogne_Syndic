@@ -191,7 +191,7 @@ namespace EspaceSyndic.Impressions.Reglement
             this.Name = "ImprimerListeReglementForm";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Impression Bordereau Remise de Chèques";
+            this.Text = "Impression Liste Réglements";
             this.Load += new System.EventHandler(this.ImprimerRemiseChequeForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.saisieremisechequeBindingSource)).EndInit();
             this.groupBox3.ResumeLayout(false);
