@@ -46,7 +46,6 @@ namespace EspaceSyndic.Impressions.Balances
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btnCompte = new System.Windows.Forms.Button();
             this.btnRapport = new System.Windows.Forms.Button();
             this.btnExport = new System.Windows.Forms.Button();
             this.btnGrid = new System.Windows.Forms.Button();
@@ -201,7 +200,6 @@ namespace EspaceSyndic.Impressions.Balances
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel1.Controls.Add(this.btnCompte);
             this.panel1.Controls.Add(this.btnRapport);
             this.panel1.Controls.Add(this.btnExport);
             this.panel1.Controls.Add(this.btnGrid);
@@ -211,23 +209,6 @@ namespace EspaceSyndic.Impressions.Balances
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(729, 39);
             this.panel1.TabIndex = 22;
-            // 
-            // btnCompte
-            // 
-            this.btnCompte.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnCompte.CausesValidation = false;
-            this.btnCompte.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnCompte.ImageIndex = 9;
-            this.btnCompte.ImageList = this.imageList1;
-            this.btnCompte.Location = new System.Drawing.Point(327, 6);
-            this.btnCompte.Name = "btnCompte";
-            this.btnCompte.Size = new System.Drawing.Size(100, 25);
-            this.btnCompte.TabIndex = 16;
-            this.btnCompte.TabStop = false;
-            this.btnCompte.Text = "&Comptes";
-            this.btnCompte.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnCompte.UseVisualStyleBackColor = true;
-            this.btnCompte.Click += new System.EventHandler(this.btnCompte_Click);
             // 
             // btnRapport
             // 
@@ -350,6 +331,5 @@ namespace EspaceSyndic.Impressions.Balances
         private Button btnEnter;
         private ReportViewer reportViewer1;
         private Button btnRapport;
-        private Button btnCompte;
     }
 }

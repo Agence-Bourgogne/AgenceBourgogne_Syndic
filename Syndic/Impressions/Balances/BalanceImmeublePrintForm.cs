@@ -127,11 +127,4 @@ public partial class BalanceImmeublePrintForm : Form
         var cols = new List<string> { "type" };
         BaseApplication.DataGridToExcel(dataGridView, cols, "", ["debit", "credit"]);
     }
-
-    private void btnCompte_Click(object sender, EventArgs e)
-    {
-        var form = MainForm.GetInstance().ShowForm<ReleveCompteCoproPrintForm>();
-        form.RefreshImmeuble(immeuble.reference);
-        form.Activate();
-    }
 }

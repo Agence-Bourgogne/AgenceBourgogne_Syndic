@@ -32,197 +32,188 @@ namespace EspaceSyndic.Impressions.RelevesComptes
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReleveCompteCoproPrintForm));
-            this.gbParams = new System.Windows.Forms.GroupBox();
-            this.cbLot = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.tbRefImmeuble = new System.Windows.Forms.TextBox();
-            this.lblImmeuble = new System.Windows.Forms.Label();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.btnRetard = new System.Windows.Forms.Button();
-            this.btnRapport = new System.Windows.Forms.Button();
-            this.btnQuit = new System.Windows.Forms.Button();
-            this.btnEnter = new System.Windows.Forms.Button();
-            this.reportViewer1 = new Microsoft.Reporting.WinForms.ReportViewer();
-            this.gbParams.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.SuspendLayout();
+            components = new Container();
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(ReleveCompteCoproPrintForm));
+            gbParams = new GroupBox();
+            cbLot = new ComboBox();
+            label1 = new Label();
+            tbRefImmeuble = new TextBox();
+            lblImmeuble = new Label();
+            imageList1 = new ImageList(components);
+            panel1 = new Panel();
+            btnRapport = new Button();
+            btnQuit = new Button();
+            btnEnter = new Button();
+            reportViewer1 = new ReportViewer();
+            gbParams.SuspendLayout();
+            panel1.SuspendLayout();
+            SuspendLayout();
             // 
             // gbParams
             // 
-            this.gbParams.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.gbParams.Controls.Add(this.cbLot);
-            this.gbParams.Controls.Add(this.label1);
-            this.gbParams.Controls.Add(this.tbRefImmeuble);
-            this.gbParams.Controls.Add(this.lblImmeuble);
-            this.gbParams.Location = new System.Drawing.Point(12, 12);
-            this.gbParams.Name = "gbParams";
-            this.gbParams.Size = new System.Drawing.Size(760, 66);
-            this.gbParams.TabIndex = 3;
-            this.gbParams.TabStop = false;
+            gbParams.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            gbParams.Controls.Add(cbLot);
+            gbParams.Controls.Add(label1);
+            gbParams.Controls.Add(tbRefImmeuble);
+            gbParams.Controls.Add(lblImmeuble);
+            gbParams.Location = new System.Drawing.Point(14, 14);
+            gbParams.Margin = new Padding(4, 3, 4, 3);
+            gbParams.Name = "gbParams";
+            gbParams.Padding = new Padding(4, 3, 4, 3);
+            gbParams.Size = new System.Drawing.Size(887, 76);
+            gbParams.TabIndex = 3;
+            gbParams.TabStop = false;
             // 
             // cbLot
             // 
-            this.cbLot.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbLot.FormattingEnabled = true;
-            this.cbLot.Location = new System.Drawing.Point(374, 24);
-            this.cbLot.Name = "cbLot";
-            this.cbLot.Size = new System.Drawing.Size(372, 21);
-            this.cbLot.TabIndex = 6;
-            this.cbLot.SelectedIndexChanged += new System.EventHandler(this.cbLot_SelectedIndexChanged);
+            cbLot.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbLot.FormattingEnabled = true;
+            cbLot.Location = new System.Drawing.Point(436, 28);
+            cbLot.Margin = new Padding(4, 3, 4, 3);
+            cbLot.Name = "cbLot";
+            cbLot.Size = new System.Drawing.Size(433, 23);
+            cbLot.TabIndex = 6;
+            cbLot.SelectedIndexChanged += cbLot_SelectedIndexChanged;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(322, 27);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(22, 13);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "&Lot";
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(376, 31);
+            label1.Margin = new Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(24, 15);
+            label1.TabIndex = 5;
+            label1.Text = "&Lot";
             // 
             // tbRefImmeuble
             // 
-            this.tbRefImmeuble.Location = new System.Drawing.Point(82, 24);
-            this.tbRefImmeuble.Name = "tbRefImmeuble";
-            this.tbRefImmeuble.Size = new System.Drawing.Size(65, 20);
-            this.tbRefImmeuble.TabIndex = 2;
-            this.tbRefImmeuble.DoubleClick += new System.EventHandler(this.tbRefImmeuble_DoubleClick);
-            this.tbRefImmeuble.Validating += new System.ComponentModel.CancelEventHandler(this.tbRefImmeuble_Validating);
+            tbRefImmeuble.Location = new System.Drawing.Point(96, 28);
+            tbRefImmeuble.Margin = new Padding(4, 3, 4, 3);
+            tbRefImmeuble.Name = "tbRefImmeuble";
+            tbRefImmeuble.Size = new System.Drawing.Size(75, 23);
+            tbRefImmeuble.TabIndex = 2;
+            tbRefImmeuble.DoubleClick += tbRefImmeuble_DoubleClick;
+            tbRefImmeuble.Validating += tbRefImmeuble_Validating;
             // 
             // lblImmeuble
             // 
-            this.lblImmeuble.AutoSize = true;
-            this.lblImmeuble.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblImmeuble.ForeColor = System.Drawing.Color.Blue;
-            this.lblImmeuble.Location = new System.Drawing.Point(6, 27);
-            this.lblImmeuble.Name = "lblImmeuble";
-            this.lblImmeuble.Size = new System.Drawing.Size(55, 13);
-            this.lblImmeuble.TabIndex = 1;
-            this.lblImmeuble.Text = "&Immeuble:";
-            this.lblImmeuble.Click += new System.EventHandler(this.tbRefImmeuble_DoubleClick);
+            lblImmeuble.AutoSize = true;
+            lblImmeuble.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            lblImmeuble.ForeColor = System.Drawing.Color.Blue;
+            lblImmeuble.Location = new System.Drawing.Point(7, 31);
+            lblImmeuble.Margin = new Padding(4, 0, 4, 0);
+            lblImmeuble.Name = "lblImmeuble";
+            lblImmeuble.Size = new System.Drawing.Size(55, 13);
+            lblImmeuble.TabIndex = 1;
+            lblImmeuble.Text = "&Immeuble:";
+            lblImmeuble.Click += tbRefImmeuble_DoubleClick;
             // 
             // imageList1
             // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Silver;
-            this.imageList1.Images.SetKeyName(0, "top.png");
-            this.imageList1.Images.SetKeyName(1, "bottom.png");
-            this.imageList1.Images.SetKeyName(2, "previous.png");
-            this.imageList1.Images.SetKeyName(3, "next.png");
-            this.imageList1.Images.SetKeyName(4, "save.png");
-            this.imageList1.Images.SetKeyName(5, "quit.png");
-            this.imageList1.Images.SetKeyName(6, "print.png");
-            this.imageList1.Images.SetKeyName(7, "add.png");
-            this.imageList1.Images.SetKeyName(8, "zoom.png");
+            imageList1.ColorDepth = ColorDepth.Depth8Bit;
+            imageList1.ImageStream = (ImageListStreamer)resources.GetObject("imageList1.ImageStream");
+            imageList1.TransparentColor = System.Drawing.Color.Silver;
+            imageList1.Images.SetKeyName(0, "top.png");
+            imageList1.Images.SetKeyName(1, "bottom.png");
+            imageList1.Images.SetKeyName(2, "previous.png");
+            imageList1.Images.SetKeyName(3, "next.png");
+            imageList1.Images.SetKeyName(4, "save.png");
+            imageList1.Images.SetKeyName(5, "quit.png");
+            imageList1.Images.SetKeyName(6, "print.png");
+            imageList1.Images.SetKeyName(7, "add.png");
+            imageList1.Images.SetKeyName(8, "zoom.png");
             // 
             // panel1
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel1.Controls.Add(this.btnRetard);
-            this.panel1.Controls.Add(this.btnRapport);
-            this.panel1.Controls.Add(this.btnQuit);
-            this.panel1.Controls.Add(this.btnEnter);
-            this.panel1.Location = new System.Drawing.Point(12, 638);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(760, 39);
-            this.panel1.TabIndex = 22;
-            // 
-            // btnRetard
-            // 
-            this.btnRetard.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnRetard.CausesValidation = false;
-            this.btnRetard.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnRetard.ImageIndex = 8;
-            this.btnRetard.ImageList = this.imageList1;
-            this.btnRetard.Location = new System.Drawing.Point(120, 6);
-            this.btnRetard.Name = "btnRetard";
-            this.btnRetard.Size = new System.Drawing.Size(100, 25);
-            this.btnRetard.TabIndex = 14;
-            this.btnRetard.TabStop = false;
-            this.btnRetard.Text = "&Retards";
-            this.btnRetard.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRetard.UseVisualStyleBackColor = true;
-            this.btnRetard.Click += new System.EventHandler(this.btnRetard_Click);
+            panel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel1.BorderStyle = BorderStyle.Fixed3D;
+            panel1.Controls.Add(btnRapport);
+            panel1.Controls.Add(btnQuit);
+            panel1.Controls.Add(btnEnter);
+            panel1.Location = new System.Drawing.Point(14, 736);
+            panel1.Margin = new Padding(4, 3, 4, 3);
+            panel1.Name = "panel1";
+            panel1.Size = new System.Drawing.Size(886, 44);
+            panel1.TabIndex = 22;
             // 
             // btnRapport
             // 
-            this.btnRapport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnRapport.CausesValidation = false;
-            this.btnRapport.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnRapport.ImageIndex = 6;
-            this.btnRapport.ImageList = this.imageList1;
-            this.btnRapport.Location = new System.Drawing.Point(14, 6);
-            this.btnRapport.Name = "btnRapport";
-            this.btnRapport.Size = new System.Drawing.Size(100, 25);
-            this.btnRapport.TabIndex = 13;
-            this.btnRapport.TabStop = false;
-            this.btnRapport.Text = "&Rapport";
-            this.btnRapport.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRapport.UseVisualStyleBackColor = true;
-            this.btnRapport.Click += new System.EventHandler(this.btnRapport_Click);
+            btnRapport.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnRapport.CausesValidation = false;
+            btnRapport.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            btnRapport.ImageIndex = 6;
+            btnRapport.ImageList = imageList1;
+            btnRapport.Location = new System.Drawing.Point(16, 7);
+            btnRapport.Margin = new Padding(4, 3, 4, 3);
+            btnRapport.Name = "btnRapport";
+            btnRapport.Size = new System.Drawing.Size(117, 29);
+            btnRapport.TabIndex = 13;
+            btnRapport.TabStop = false;
+            btnRapport.Text = "&Rapport";
+            btnRapport.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            btnRapport.UseVisualStyleBackColor = true;
+            btnRapport.Click += btnRapport_Click;
             // 
             // btnQuit
             // 
-            this.btnQuit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnQuit.CausesValidation = false;
-            this.btnQuit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnQuit.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnQuit.ImageIndex = 5;
-            this.btnQuit.ImageList = this.imageList1;
-            this.btnQuit.Location = new System.Drawing.Point(644, 6);
-            this.btnQuit.Name = "btnQuit";
-            this.btnQuit.Size = new System.Drawing.Size(100, 25);
-            this.btnQuit.TabIndex = 9;
-            this.btnQuit.TabStop = false;
-            this.btnQuit.Text = "&Quitter";
-            this.btnQuit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnQuit.UseVisualStyleBackColor = true;
+            btnQuit.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnQuit.CausesValidation = false;
+            btnQuit.DialogResult = DialogResult.Cancel;
+            btnQuit.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            btnQuit.ImageIndex = 5;
+            btnQuit.ImageList = imageList1;
+            btnQuit.Location = new System.Drawing.Point(751, 7);
+            btnQuit.Margin = new Padding(4, 3, 4, 3);
+            btnQuit.Name = "btnQuit";
+            btnQuit.Size = new System.Drawing.Size(117, 29);
+            btnQuit.TabIndex = 9;
+            btnQuit.TabStop = false;
+            btnQuit.Text = "&Quitter";
+            btnQuit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            btnQuit.UseVisualStyleBackColor = true;
             // 
             // btnEnter
             // 
-            this.btnEnter.Location = new System.Drawing.Point(397, 6);
-            this.btnEnter.Name = "btnEnter";
-            this.btnEnter.Size = new System.Drawing.Size(75, 23);
-            this.btnEnter.TabIndex = 12;
-            this.btnEnter.Text = "button1";
-            this.btnEnter.UseVisualStyleBackColor = true;
-            this.btnEnter.Click += new System.EventHandler(this.btnEnter_Click);
+            btnEnter.Location = new System.Drawing.Point(463, 7);
+            btnEnter.Margin = new Padding(4, 3, 4, 3);
+            btnEnter.Name = "btnEnter";
+            btnEnter.Size = new System.Drawing.Size(88, 27);
+            btnEnter.TabIndex = 12;
+            btnEnter.Text = "button1";
+            btnEnter.UseVisualStyleBackColor = true;
+            btnEnter.Click += btnEnter_Click;
             // 
             // reportViewer1
             // 
-            this.reportViewer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.reportViewer1.LocalReport.ReportEmbeddedResource = "EspaceSyndic.Impressions.RelevesComptes.ReleveCompteReport.rdlc";
-            this.reportViewer1.Location = new System.Drawing.Point(12, 84);
-            this.reportViewer1.Name = "reportViewer1";
-            this.reportViewer1.Size = new System.Drawing.Size(760, 537);
-            this.reportViewer1.TabIndex = 23;
+            reportViewer1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            reportViewer1.LocalReport.ReportEmbeddedResource = "EspaceSyndic.Impressions.RelevesComptes.ReleveCompteReport.rdlc";
+            reportViewer1.Location = new System.Drawing.Point(14, 97);
+            reportViewer1.Margin = new Padding(4, 3, 4, 3);
+            reportViewer1.Name = "reportViewer1";
+            reportViewer1.ServerReport.BearerToken = null;
+            reportViewer1.Size = new System.Drawing.Size(886, 619);
+            reportViewer1.TabIndex = 23;
             // 
             // ReleveCompteCoproPrintForm
             // 
-            this.AcceptButton = this.btnEnter;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.btnQuit;
-            this.ClientSize = new System.Drawing.Size(782, 689);
-            this.Controls.Add(this.reportViewer1);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.gbParams);
-            this.Name = "ReleveCompteCoproPrintForm";
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Releve Compte Coproprietaire";
-            this.Load += new System.EventHandler(this.ReleveIndividuelPrintForm_Load);
-            this.gbParams.ResumeLayout(false);
-            this.gbParams.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.ResumeLayout(false);
+            AcceptButton = btnEnter;
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btnQuit;
+            ClientSize = new System.Drawing.Size(912, 795);
+            Controls.Add(reportViewer1);
+            Controls.Add(panel1);
+            Controls.Add(gbParams);
+            Margin = new Padding(4, 3, 4, 3);
+            Name = "ReleveCompteCoproPrintForm";
+            ShowInTaskbar = false;
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Releve Compte Coproprietaire";
+            Load += ReleveIndividuelPrintForm_Load;
+            gbParams.ResumeLayout(false);
+            gbParams.PerformLayout();
+            panel1.ResumeLayout(false);
+            ResumeLayout(false);
 
         }
 
@@ -239,6 +230,5 @@ namespace EspaceSyndic.Impressions.RelevesComptes
         private ReportViewer reportViewer1;
         private ComboBox cbLot;
         private Label label1;
-        private Button btnRetard;
     }
 }

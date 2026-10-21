@@ -5,7 +5,6 @@ using System.Windows.Forms;
 using CommonProjectsPartners.Common;
 using CommonProjectsPartners.Utils;
 using EspaceSyndic.Formulaires.Immeubles;
-using EspaceSyndic.Impressions.RetardsPaiements;
 using Microsoft.Reporting.WinForms;
 using SyndicData.Common;
 using SyndicData.Controller;
@@ -33,12 +32,6 @@ public partial class ReleveCompteCoproPrintForm : Form, ICommonChangedListener
         FillComboLot();
         cbLot.SelectedValue = e.newRef2;
         commonValidating();
-    }
-
-    public void RefreshImmeuble(string ref_immeuble)
-    {
-        tbRefImmeuble.Text = ref_immeuble;
-        tbRefImmeuble_Validating(null, null);
     }
 
     private void ReleveIndividuelPrintForm_Load(object sender, EventArgs e)
@@ -152,12 +145,5 @@ public partial class ReleveCompteCoproPrintForm : Form, ICommonChangedListener
     {
         if (!bLoading)
             commonValidating();
-    }
-
-    private void btnRetard_Click(object sender, EventArgs e)
-    {
-        var form = new RetardsPaiementsForm();
-        form.immeuble_ref = tbRefImmeuble.Text;
-        form.ShowDialog();
     }
 }
