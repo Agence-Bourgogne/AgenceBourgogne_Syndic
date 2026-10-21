@@ -38,7 +38,6 @@ namespace EspaceSyndic.Formulaires
             copropriétairesToolStripMenuItem = new ToolStripMenuItem();
             fournisseursToolStripMenuItem = new ToolStripMenuItem();
             naturesToolStripMenuItem = new ToolStripMenuItem();
-            commentairesToolStripMenuItem = new ToolStripMenuItem();
             ecrituresToolStripMenuItem = new ToolStripMenuItem();
             saisieToolStripMenuItem = new ToolStripMenuItem();
             validationToolStripMenuItem = new ToolStripMenuItem();
@@ -93,7 +92,7 @@ namespace EspaceSyndic.Formulaires
             // 
             // fichiersToolStripMenuItem
             // 
-            fichiersToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { immeublesToolStripMenuItem, copropriétairesToolStripMenuItem, fournisseursToolStripMenuItem, naturesToolStripMenuItem, commentairesToolStripMenuItem });
+            fichiersToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { immeublesToolStripMenuItem, copropriétairesToolStripMenuItem, fournisseursToolStripMenuItem, naturesToolStripMenuItem });
             fichiersToolStripMenuItem.Name = "fichiersToolStripMenuItem";
             fichiersToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
             fichiersToolStripMenuItem.Text = "&Fichiers";
@@ -125,13 +124,6 @@ namespace EspaceSyndic.Formulaires
             naturesToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             naturesToolStripMenuItem.Text = "Natures";
             naturesToolStripMenuItem.Click += naturesToolStripMenuItem_Click;
-            // 
-            // commentairesToolStripMenuItem
-            // 
-            commentairesToolStripMenuItem.Name = "commentairesToolStripMenuItem";
-            commentairesToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
-            commentairesToolStripMenuItem.Text = "Aides Immeubles";
-            commentairesToolStripMenuItem.Click += commentairesToolStripMenuItem_Click;
             // 
             // ecrituresToolStripMenuItem
             // 
@@ -468,7 +460,6 @@ namespace EspaceSyndic.Formulaires
         private ToolStripMenuItem copropriétairesToolStripMenuItem;
         private ToolStripMenuItem fournisseursToolStripMenuItem;
         private ToolStripMenuItem naturesToolStripMenuItem;
-        private ToolStripMenuItem commentairesToolStripMenuItem;
         private ToolStripMenuItem ecrituresToolStripMenuItem;
         private ToolStripMenuItem saisieToolStripMenuItem;
         private ToolStripMenuItem validationToolStripMenuItem;

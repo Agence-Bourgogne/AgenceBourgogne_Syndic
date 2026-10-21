@@ -133,19 +133,6 @@ public partial class MainForm : Form
         return null;
     }
 
-    private void commentairesToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        var form = new FicheAideImmeubleForm();
-        try
-        {
-            form.ShowDialog();
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.Message);
-        }
-    }
-
     private void immeublesToolStripMenuItem_Click(object sender, EventArgs e)
     {
         ShowForm<ListeImmeubleForm>();
