@@ -63,7 +63,6 @@ namespace EspaceSyndic.Formulaires
             editionEtiquettesToolStripMenuItem = new ToolStripMenuItem();
             editionComptesFiscauxParImmeublesToolStripMenuItem = new ToolStripMenuItem();
             tableauRemiseDeClefsToolStripMenuItem = new ToolStripMenuItem();
-            balanceReglementsFacturesPourUnImmeubleToolStripMenuItem = new ToolStripMenuItem();
             balanceReglementsAppelsDeFondImmeubleToolStripMenuItem = new ToolStripMenuItem();
             outilsToolStripMenuItem = new ToolStripMenuItem();
             parametresToolStripMenuItem = new ToolStripMenuItem();
@@ -278,7 +277,7 @@ namespace EspaceSyndic.Formulaires
             // 
             // utilitairesToolStripMenuItem
             // 
-            utilitairesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { immeublesToolStripMenuItem1, editionEtiquettesToolStripMenuItem, editionComptesFiscauxParImmeublesToolStripMenuItem, tableauRemiseDeClefsToolStripMenuItem, balanceReglementsFacturesPourUnImmeubleToolStripMenuItem, balanceReglementsAppelsDeFondImmeubleToolStripMenuItem });
+            utilitairesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { immeublesToolStripMenuItem1, editionEtiquettesToolStripMenuItem, editionComptesFiscauxParImmeublesToolStripMenuItem, tableauRemiseDeClefsToolStripMenuItem, balanceReglementsAppelsDeFondImmeubleToolStripMenuItem });
             utilitairesToolStripMenuItem.Name = "utilitairesToolStripMenuItem";
             utilitairesToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
             utilitairesToolStripMenuItem.Text = "Utilitaires";
@@ -311,13 +310,6 @@ namespace EspaceSyndic.Formulaires
             tableauRemiseDeClefsToolStripMenuItem.Size = new System.Drawing.Size(351, 22);
             tableauRemiseDeClefsToolStripMenuItem.Text = "Tableau Remise de Clefs";
             tableauRemiseDeClefsToolStripMenuItem.Click += tableauRemiseDeClefsToolStripMenuItem_Click;
-            // 
-            // balanceReglementsFacturesPourUnImmeubleToolStripMenuItem
-            // 
-            balanceReglementsFacturesPourUnImmeubleToolStripMenuItem.Name = "balanceReglementsFacturesPourUnImmeubleToolStripMenuItem";
-            balanceReglementsFacturesPourUnImmeubleToolStripMenuItem.Size = new System.Drawing.Size(351, 22);
-            balanceReglementsFacturesPourUnImmeubleToolStripMenuItem.Text = "Balance Règlements-Factures Pour un Immeuble";
-            balanceReglementsFacturesPourUnImmeubleToolStripMenuItem.Click += balanceReglementsFacturesPourUnImmeubleToolStripMenuItem_Click;
             // 
             // balanceReglementsAppelsDeFondImmeubleToolStripMenuItem
             // 
@@ -486,7 +478,6 @@ namespace EspaceSyndic.Formulaires
         private ToolStripMenuItem immeublesToolStripMenuItem1;
         private ToolStripMenuItem editionEtiquettesToolStripMenuItem;
         private ToolStripMenuItem editionComptesFiscauxParImmeublesToolStripMenuItem;
-        private ToolStripMenuItem balanceReglementsFacturesPourUnImmeubleToolStripMenuItem;
         private ToolStripMenuItem balanceReglementsAppelsDeFondImmeubleToolStripMenuItem;
         private ToolStripMenuItem parametresGenerauxToolStripMenuItem;
         private ToolStripMenuItem visualisationOperationDeGestionToolStripMenuItem;

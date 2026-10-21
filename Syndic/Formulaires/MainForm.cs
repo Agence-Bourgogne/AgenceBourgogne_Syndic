@@ -224,11 +224,6 @@ public partial class MainForm : Form
         form.RefreshTypeReport(1);
     }
 
-    private void balanceReglementsFacturesPourUnImmeubleToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        ShowForm<BalanceImmeublePrintForm>();
-    }
-
     private void visualisationOperationDeGestionToolStripMenuItem_Click(object sender, EventArgs e)
     {
         ShowForm<OperationsGestionForm>();
