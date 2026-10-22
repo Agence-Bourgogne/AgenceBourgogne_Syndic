@@ -257,6 +257,7 @@ public class ExerciceComptableController : AbstractBaseController<ExerciceCompta
 
                 return new CompteCopropriete(compte.Key.nature_ref, compte.Key.nature_nom, orderedByDate, new Solde(dateSolde, -solde));
             })
+            .OrderBy(compte => compte.IdentifiantCompte)
             .ToArray(); 
         
         return operationsCopropriété;
