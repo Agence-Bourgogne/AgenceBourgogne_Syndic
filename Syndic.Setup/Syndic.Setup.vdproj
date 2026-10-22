@@ -226,15 +226,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Gestion de Coproprietes"
-        "ProductCode" = "8:{E10DE934-8E47-548A-AF7F-D56D4A3A7102}"
-        "PackageCode" = "8:{0988CB0F-9E8A-4D73-943E-60236F840A7B}"
+        "ProductCode" = "8:{040A2F27-40B7-3E76-0A29-316BC4AF89A4}"
+        "PackageCode" = "8:{B59A7850-3E63-46E7-8B4C-E64B3D30A567}"
         "UpgradeCode" = "8:{1BD31BC1-36CE-468B-A0F1-4C0BB16AFC83}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:2.2.0000"
+        "ProductVersion" = "8:3.0.0000"
         "Manufacturer" = "8:Atelier Logiciel Sandre"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -777,5 +777,4 @@
         }
     }
 }
-
 
