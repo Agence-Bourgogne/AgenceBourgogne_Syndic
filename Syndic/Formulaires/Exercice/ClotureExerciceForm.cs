@@ -475,7 +475,7 @@ public partial class ClotureExerciceForm : Form
     private FournisseurEntite getFournisseurCloture()
     {
         var reference = ParametresDB.getParam1("CLOTURE", "FOURNISSEUR");
-        return FournisseurController.getController().getEntiteFromField("reference", reference);
+        return FournisseurController.GetController().getEntiteFromField("reference", reference);
     }
 
     private NatureEntite getNatureCloture()

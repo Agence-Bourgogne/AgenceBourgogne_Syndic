@@ -75,7 +75,7 @@ public partial class CreateFacturefromOperationForm : Form
         var base_repart = tbBase.Text;
 
         var nature = NatureController.getController().getEntiteFromField("reference", ref_nature);
-        var fournisseur = FournisseurController.getController().getEntiteFromField("reference", ref_fournisseur);
+        var fournisseur = FournisseurController.GetController().getEntiteFromField("reference", ref_fournisseur);
         var cnx = Database.GetInstance();
         var trx = cnx.BeginTransaction();
 
@@ -153,7 +153,7 @@ public partial class CreateFacturefromOperationForm : Form
 
     private void tbFournisseur_Validating(object sender, CancelEventArgs e)
     {
-        fournisseur = FournisseurController.getController().getEntiteFromField("reference", tbFournisseur.Text);
+        fournisseur = FournisseurController.GetController().getEntiteFromField("reference", tbFournisseur.Text);
         if (fournisseur != null)
         {
             tbFournisseur.BackColor = Color.White;

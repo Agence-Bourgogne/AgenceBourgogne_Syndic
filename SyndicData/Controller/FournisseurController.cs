@@ -5,7 +5,7 @@ namespace SyndicData.Controller;
 
 public class FournisseurController : AbstractBaseController<FournisseurEntite>
 {
-    private static readonly FournisseurController controller = new();
+    private static readonly FournisseurController Controller = new();
 
     public FournisseurController()
     {
@@ -17,9 +17,8 @@ public class FournisseurController : AbstractBaseController<FournisseurEntite>
         return "fournisseur";
     }
 
-    public static FournisseurController getController()
+    public static FournisseurController GetController()
     {
-        return controller;
-        //return new FournisseurController();
+        return Controller;
     }
 }

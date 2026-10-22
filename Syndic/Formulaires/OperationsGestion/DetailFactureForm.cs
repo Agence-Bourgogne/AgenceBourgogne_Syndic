@@ -118,7 +118,7 @@ public partial class DetailFactureForm : DetailOperationForm
     {
         var immeuble = ImmeubleController.getController().getEntiteById(entite.immeuble_id);
         nature = NatureController.getController().getEntiteById(entite.nature_id);
-        fournisseur = FournisseurController.getController().getEntiteById(entite.fournisseur_id);
+        fournisseur = FournisseurController.GetController().getEntiteById(entite.fournisseur_id);
 
         tbRefImmeuble.Text = immeuble.reference;
 
@@ -174,7 +174,7 @@ public partial class DetailFactureForm : DetailOperationForm
         var old_nature = NatureController.getController().getEntiteById(entite.nature_id);
 
         var nature = NatureController.getController().getEntiteFromField("reference", ref_nature);
-        var fournisseur = FournisseurController.getController().getEntiteFromField("reference", ref_fournisseur);
+        var fournisseur = FournisseurController.GetController().getEntiteFromField("reference", ref_fournisseur);
         LotDescriptionEntite lot = null;
         if (base_repart == "80" && bCheckLot)
         {

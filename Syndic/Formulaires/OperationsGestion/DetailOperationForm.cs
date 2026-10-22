@@ -121,7 +121,7 @@ public partial class DetailOperationForm : Form
 
     private void tbFournisseur_Validating(object sender, CancelEventArgs e)
     {
-        fournisseur = FournisseurController.getController().getEntiteFromField("reference", tbFournisseur.Text);
+        fournisseur = FournisseurController.GetController().getEntiteFromField("reference", tbFournisseur.Text);
         if (fournisseur != null)
         {
             tbFournisseur.BackColor = Color.White;

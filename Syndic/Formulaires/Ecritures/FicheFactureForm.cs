@@ -73,7 +73,7 @@ public partial class FicheFactureForm : Form
         ControlsWindows.setAutoControle(tbRefImmeuble, ImmeubleController.getController().getAutoComplete("reference"));
         ControlsWindows.setAutoControle(tbNature, NatureController.getController().getAutoComplete("reference"));
         ControlsWindows.setAutoControle(tbFournisseur,
-            FournisseurController.getController().getAutoComplete("reference"));
+            FournisseurController.GetController().getAutoComplete("reference"));
         dataGridView.ScrollBars = ScrollBars.None;
         dataGridView.BackgroundColor = Color.LightGray;
         dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -215,12 +215,12 @@ public partial class FicheFactureForm : Form
         }
 
         ControlsWindows.setAutoControle(tbFournisseur,
-            FournisseurController.getController().getAutoComplete("reference"));
+            FournisseurController.GetController().getAutoComplete("reference"));
     }
 
     private void tbFournisseur_Validating(object sender, CancelEventArgs e)
     {
-        fournisseur = FournisseurController.getController().getEntiteFromField("reference", tbFournisseur.Text);
+        fournisseur = FournisseurController.GetController().getEntiteFromField("reference", tbFournisseur.Text);
         if (fournisseur != null)
         {
             tbFournisseur.BackColor = Color.White;

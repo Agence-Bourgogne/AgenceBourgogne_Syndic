@@ -38,7 +38,7 @@ public static class RelanceController
     public static FournisseurEntite getFournisseurRelance()
     {
         var reference = ParametresDB.getParam1("RELANCE", "FOURNISSEUR");
-        return FournisseurController.getController().getEntiteFromField("reference", reference);
+        return FournisseurController.GetController().getEntiteFromField("reference", reference);
     }
 
     public static decimal getMontantRelance(int type_relance)
